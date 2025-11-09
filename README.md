@@ -511,6 +511,62 @@ Example criterion:
 - **Airdrop Check**: 1 hour TTL
 - **Airdrops List**: 5 minutes TTL
 - **Refresh Cooldown**: 5 minutes per address
+- **Portfolio Data**: 5 minutes TTL
+- **Gas Tracker**: 5 minutes TTL
+- **Multi-Wallet Portfolio**: 5 minutes TTL
+
+## New Features Overview
+
+### Portfolio Tracker
+Track your token holdings across all supported chains with real-time USD values. View chain distribution, top tokens, and portfolio breakdown.
+
+**Access:** `/portfolio` → Portfolio tab
+
+### Gas Tracker
+Monitor your gas spending across all chains with detailed analytics including:
+- Total gas spent (USD and gas units)
+- Chain-by-chain breakdown
+- Monthly spending trends
+- Recent transaction history
+
+**Access:** `/portfolio` → Gas Tracker tab
+
+### ROI Calculator
+Calculate potential return on investment for your airdrop farming activities:
+- Estimated airdrop values based on historical data
+- Probability-weighted expected values
+- Break-even analysis
+- Personalized recommendations
+
+**Access:** `/portfolio` → ROI Calculator tab
+
+### Airdrop Claim Tracker
+Track your claimed airdrops with:
+- Claim status (claimed/pending)
+- Claim amounts and USD values
+- Transaction hashes
+- Notes and metadata
+- Total claimed value summary
+
+**Access:** `/portfolio` → Claims tab
+
+### Multi-Wallet Portfolio
+Aggregate view of up to 10 wallets showing:
+- Combined portfolio value
+- Unique token count
+- Chain distribution
+- Top holdings across all wallets
+
+**Access:** `/portfolio` → Multi-Wallet tab
+
+### Transaction Simulator
+Simulate different transaction types to see their impact on airdrop eligibility:
+- Swap, bridge, mint, and stake simulations
+- Score change predictions
+- Gas cost estimates
+- Impact scoring and recommendations
+
+**Access:** Available in dashboard and portfolio pages
 
 ## API Endpoints
 
