@@ -996,6 +996,15 @@ Simulate different transaction types to see their impact on airdrop eligibility:
 
 **Access:** Available in dashboard and portfolio pages
 
+### Protocol Insights
+Uncover which protocol categories are boosting your eligibility:
+- Focus area scoring with actionable recommendations
+- Protocol-by-protocol breakdowns with interaction depth
+- Timeline feed of the latest onchain touchpoints
+- Monthly trend summaries highlighting growth or drop-offs
+
+**Access:** `/portfolio` → Insights tab
+
 ### DeFi Positions Tracker
 Track your DeFi positions across all protocols:
 - LP positions, staking, lending, and farming
