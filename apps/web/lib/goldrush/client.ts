@@ -23,9 +23,13 @@ class GoldRushClient {
       },
     });
 
-    // Add auth interceptor
+    // Add auth interceptor - GoldRush uses API key as query parameter
     this.client.interceptors.request.use((config) => {
-      config.headers['Authorization'] = `Bearer ${this.apiKey}`;
+      // Add API key as query parameter
+      if (!config.params) {
+        config.params = {};
+      }
+      config.params.key = this.apiKey;
       return config;
     });
 
