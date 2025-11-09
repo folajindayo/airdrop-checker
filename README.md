@@ -260,14 +260,25 @@ airdrop-checker/
 │       │   ├── api/            # API endpoints
 │       │   │   ├── airdrop-check/[address]/
 │       │   │   ├── airdrops/
+│       │   │   ├── calendar/
+│       │   │   ├── compare/
+│       │   │   ├── gas-tracker/[address]/
+│       │   │   ├── multi-wallet-portfolio/
 │       │   │   ├── og/
-│       │   │   └── refresh/
+│       │   │   ├── portfolio/[address]/
+│       │   │   ├── recommendations/
+│       │   │   ├── refresh/
+│       │   │   ├── roi-calculator/
+│       │   │   ├── stats/
+│       │   │   └── transaction-simulator/
 │       │   ├── dashboard/      # Dashboard page
+│       │   ├── portfolio/      # Portfolio & analytics page
 │       │   └── page.tsx        # Landing page
 │       ├── components/         # React components
 │       │   ├── common/         # Shared components
 │       │   ├── dashboard/      # Dashboard components
 │       │   ├── landing/        # Landing page components
+│       │   ├── portfolio/      # Portfolio & analytics components
 │       │   ├── providers/      # Context providers
 │       │   ├── ui/             # UI components (Radix)
 │       │   └── wallet/         # Wallet components
