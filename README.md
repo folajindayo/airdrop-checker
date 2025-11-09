@@ -347,6 +347,126 @@ Generate OpenGraph image for social sharing.
 - `score`: User's overall score (0-100)
 - `address`: Wallet address
 
+### GET /api/portfolio/[address]
+Get comprehensive portfolio data for a wallet address.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "totalValue": 12500.50,
+  "chainBreakdown": [
+    {
+      "chainId": 1,
+      "chainName": "Ethereum",
+      "value": 8000.00,
+      "tokenCount": 12
+    }
+  ],
+  "topTokens": [...],
+  "timestamp": 1699999999999
+}
+```
+
+### GET /api/gas-tracker/[address]
+Get gas spending analytics for a wallet address.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "totalGasSpent": 5000000000000000000,
+  "totalGasSpentUSD": 125.50,
+  "chainBreakdown": [...],
+  "recentTransactions": [...],
+  "monthlyBreakdown": [...]
+}
+```
+
+### POST /api/roi-calculator
+Calculate ROI for airdrop investments.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "airdrops": [...],
+  "gasSpentUSD": 125.50
+}
+```
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "totalGasSpent": 125.50,
+  "estimatedAirdropValue": 5000.00,
+  "potentialROI": 4874.50,
+  "roiPercentage": 3886.45,
+  "airdropBreakdown": [...],
+  "recommendations": [...]
+}
+```
+
+### POST /api/multi-wallet-portfolio
+Get aggregated portfolio data for multiple wallets (up to 10).
+
+**Request:**
+```json
+{
+  "addresses": ["0x...", "0x..."]
+}
+```
+
+**Response:**
+```json
+{
+  "wallets": [...],
+  "aggregate": {
+    "totalValue": 25000.00,
+    "uniqueTokens": 45,
+    "chainsUsed": 5,
+    "walletCount": 2
+  },
+  "chainDistribution": [...],
+  "topHoldings": [...]
+}
+```
+
+### POST /api/transaction-simulator
+Simulate transactions to see their impact on airdrop eligibility.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "currentScores": {
+    "zora": 75,
+    "layerzero": 60
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "currentScores": {...},
+  "simulations": [
+    {
+      "type": "swap",
+      "protocol": "uniswap",
+      "chainId": 1,
+      "chainName": "Ethereum",
+      "estimatedGasUSD": 8.50,
+      "impactScore": 15.5,
+      "affectedAirdrops": [...]
+    }
+  ],
+  "recommendations": [...]
+}
+```
+
 ## Airdrop Criteria
 
 Airdrops are defined in `packages/shared/data/airdrops.json`. Each project includes:
