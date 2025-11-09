@@ -120,6 +120,10 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 99. **Progress Ring** - Circular progress indicators
 100. **Stat Cards** - Metrics with trend indicators
 
+### 🧠 Intelligence Enhancements
+- **Trending Airdrop Radar** - Signal-based scoring to bubble up the hottest opportunities in real time
+- **Chain Signal Filter** - Quickly pivot the radar to the chain that matters most to you
+
 ## Tech Stack
 
 ### Monorepo Structure
@@ -296,6 +300,14 @@ Get list of all tracked airdrop projects.
 
 **Query Params:**
 - `status` (optional): Filter by status (confirmed, rumored, expired, speculative)
+
+### GET /api/airdrops/trending
+Get signal-based trending rankings for top airdrops.
+
+**Query Params:**
+- `limit` (optional): Number of projects to return (default 5, max 10)
+- `status` (optional): Comma-separated statuses to include
+- `chain` (optional): Filter by chain name (e.g. `Ethereum`, `Base`)
 
 ### POST /api/refresh
 Force refresh eligibility scan for an address.
