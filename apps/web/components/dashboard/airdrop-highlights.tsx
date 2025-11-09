@@ -169,7 +169,7 @@ export function AirdropHighlights() {
               <div key={snapshot.projectId} className="text-sm">
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-medium">{snapshot.name}</span>
-                  <StatusBadge status={snapshot.status as any} />
+                  <StatusBadge status={snapshot.status} />
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Snapshot in {formatDaysUntil(snapshot.daysUntilSnapshot)} ·{' '}
@@ -195,7 +195,7 @@ export function AirdropHighlights() {
               <div key={item.projectId} className="text-sm">
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-medium">{item.name}</span>
-                  <StatusBadge status={item.status as any} />
+                  <StatusBadge status={item.status} />
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Estimated value:{' '}
@@ -224,7 +224,7 @@ export function AirdropHighlights() {
               <div key={item.projectId} className="text-sm">
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-medium">{item.name}</span>
-                  <StatusBadge status={item.status as any} />
+                  <StatusBadge status={item.status} />
                 </div>
                 <p className="text-xs text-muted-foreground">
                   {formatRelativeHours(item.hoursSinceUpdate)}
