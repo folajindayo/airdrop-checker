@@ -64,6 +64,15 @@ export interface ProtocolInsights {
     newProtocolsLast30d: number;
     avgInteractionsPerProtocol: number;
     engagementScore: number;
+    momentum: {
+      direction: 'up' | 'steady' | 'down';
+      percentChange: number;
+      deltaInteractions: number;
+    };
+    streak: {
+      activeDays: number;
+      lastActiveDate?: string;
+    };
     lastInteraction?: string;
     mostActiveCategory?: {
       category: ProtocolCategory;
@@ -238,6 +247,92 @@ export function buildFocusAreas(
   });
 }
 
+function calculateMomentum(monthlyActivity: MonthlyActivity[]): {
+  direction: 'up' | 'steady' | 'down';
+  percentChange: number;
+  deltaInteractions: number;
+} {
+  if (monthlyActivity.length < 2) {
+    return {
+      direction: 'steady',
+      percentChange: 0,
+      deltaInteractions: 0,
+    };
+  }
+
+  const sorted = [...monthlyActivity].sort((a, b) =>
+    a.month < b.month ? -1 : 1
+  );
+
+  const latest = sorted[sorted.length - 1];
+  const previous = sorted[sorted.length - 2];
+
+  const delta = latest.interactionCount - previous.interactionCount;
+  const percent =
+    previous.interactionCount === 0
+      ? latest.interactionCount > 0
+        ? 100
+        : 0
+      : Math.round((delta / previous.interactionCount) * 100);
+
+  let direction: 'up' | 'steady' | 'down' = 'steady';
+
+  if (percent > 5) direction = 'up';
+  else if (percent < -5) direction = 'down';
+
+  return {
+    direction,
+    percentChange: percent,
+    deltaInteractions: delta,
+  };
+}
+
+function calculateActiveStreakDays(timeline: TimelineEntry[]): {
+  activeDays: number;
+  lastActiveDate?: string;
+} {
+  if (timeline.length === 0) {
+    return { activeDays: 0 };
+  }
+
+  const uniqueDates = Array.from(
+    new Set(timeline.map((event) => event.date.slice(0, 10)))
+  )
+    .map((date) => new Date(date))
+    .sort((a, b) => b.getTime() - a.getTime());
+
+  const now = new Date();
+  let streak = 0;
+
+  for (let i = 0; i < uniqueDates.length; i++) {
+    const diffDays = Math.floor(
+      (now.getTime() - uniqueDates[i].getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    if (i === 0) {
+      if (diffDays > 1) break;
+      streak += 1;
+    } else {
+      const previousDate = uniqueDates[i - 1];
+      const gapDays = Math.floor(
+        (previousDate.getTime() - uniqueDates[i].getTime()) /
+          (1000 * 60 * 60 * 24)
+      );
+
+      if (gapDays <= 1) {
+        streak += 1;
+      } else {
+        break;
+      }
+    }
+  }
+
+  return {
+    activeDays: streak,
+    lastActiveDate: uniqueDates[0]?.toISOString(),
+  };
+}
+
 export function buildProtocolInsights(
   address: string,
   interactions: ProtocolInteraction[],
@@ -269,6 +364,9 @@ export function buildProtocolInsights(
         )
       : 0;
 
+  const momentum = calculateMomentum(monthlyActivity);
+  const streak = calculateActiveStreakDays(timeline);
+
   const newProtocolsLast30d = breakdown.filter((entry) => {
     if (!entry.firstInteraction) return false;
     const first = new Date(entry.firstInteraction);
@@ -293,6 +391,8 @@ export function buildProtocolInsights(
       newProtocolsLast30d,
       avgInteractionsPerProtocol: Number(avgInteractions.toFixed(2)),
       engagementScore,
+      momentum,
+      streak,
       lastInteraction,
       mostActiveCategory: mostActiveCategory
         ? {
