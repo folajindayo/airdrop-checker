@@ -522,6 +522,8 @@ export function buildProtocolInsights(
   const focusAreas = buildFocusAreas(breakdown);
   const coverage = calculateCoverageMetrics(focusAreas);
   const dormantProtocols = findDormantProtocols(breakdown);
+  const diversity = calculateDiversityMetrics(breakdown);
+  const reactivationRecommendations = buildReactivationRecommendations(dormantProtocols, coverage);
   const lastInteraction = timeline[0]?.date;
 
   const totalProtocols = new Set(breakdown.map((entry) => entry.protocol)).size;
@@ -577,6 +579,7 @@ export function buildProtocolInsights(
       velocity,
       decay,
       coverage,
+      diversity,
       lastInteraction,
       mostActiveCategory: mostActiveCategory
         ? {
@@ -592,6 +595,7 @@ export function buildProtocolInsights(
     categoryScores,
     monthlyActivity,
     dormantProtocols,
+    reactivationRecommendations,
     generatedAt: new Date().toISOString(),
   };
 }
