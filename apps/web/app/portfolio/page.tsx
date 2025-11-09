@@ -21,6 +21,11 @@ import { PortfolioPerformance } from '@/components/portfolio/portfolio-performan
 import { BatchWalletChecker } from '@/components/portfolio/batch-wallet-checker';
 import { SnapshotTracker } from '@/components/portfolio/snapshot-tracker';
 import { NewsFeed } from '@/components/portfolio/news-feed';
+import { ProbabilityPredictor } from '@/components/portfolio/probability-predictor';
+import { WalletClustering } from '@/components/portfolio/wallet-clustering';
+import { CalendarExport } from '@/components/portfolio/calendar-export';
+import { PortfolioRebalancer } from '@/components/portfolio/portfolio-rebalancer';
+import { GasHistory } from '@/components/portfolio/gas-history';
 import { ProtocolInsightsPanel } from '@/components/portfolio/protocol-insights';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/common/skeleton';
