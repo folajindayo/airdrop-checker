@@ -1069,6 +1069,52 @@ Get notified about important events:
 
 **Access:** Available via API and notification center
 
+### Airdrop Leaderboard
+Compare your airdrop eligibility scores with other users:
+- Top performers ranking
+- Your position in the leaderboard
+- Average scores and statistics
+- Top airdrop achievements
+
+**Access:** `/portfolio` → Tools tab
+
+### Portfolio Performance Tracker
+Track your portfolio value and performance over time:
+- 24h, 7d, 30d, and all-time performance
+- Value trend visualization
+- Score and activity trends
+- Historical data points
+
+**Access:** `/portfolio` → Portfolio tab
+
+### Batch Wallet Checker
+Check multiple wallets simultaneously:
+- Check up to 20 wallets at once
+- Summary statistics
+- Individual results for each wallet
+- Error handling for failed checks
+
+**Access:** `/portfolio` → Tools tab
+
+### Snapshot Tracker
+Track airdrop snapshots and claim windows:
+- Upcoming snapshots with countdown
+- Claimable airdrops
+- Completed snapshots history
+- Estimated values and dates
+
+**Access:** `/portfolio` → Tools tab
+
+### Airdrop News Feed
+Stay updated with the latest airdrop news:
+- Confirmed announcements
+- Rumors and speculation
+- Project updates
+- Category filtering
+- Priority indicators
+
+**Access:** `/portfolio` → Tools tab
+
 ### Radar Highlights
 Stay ahead with a real-time radar of the hottest opportunities:
 - Countdown to the next confirmed snapshots
