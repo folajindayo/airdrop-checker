@@ -24,6 +24,12 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@airdrop-finder/shared": [
+        "../../packages/shared/index.ts"
+      ],
+      "@airdrop-finder/shared/*": [
+        "../../packages/shared/*"
       ]
     },
     "target": "ES2017"
