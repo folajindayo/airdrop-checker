@@ -3,120 +3,96 @@ import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
-interface GasPrice {
+interface GasPriceData {
   chainId: number;
   chainName: string;
-  slow: number;
-  standard: number;
-  fast: number;
+  currentGasPrice: number; // in gwei
+  recommendedTime: string;
+  estimatedSavings: number; // percentage
+  historicalAverage: number;
+}
+
+interface GasOptimizerData {
+  recommendations: GasPriceData[];
+  bestChain: {
+    chainId: number;
+    chainName: string;
+    gasPrice: number;
+    savings: number;
+  };
+  bestTime: {
+    time: string;
+    savings: number;
+  };
   timestamp: number;
 }
 
-// Mock gas price data (in production, fetch from chain RPC or gas tracker APIs)
-async function getGasPrices(chainId: number): Promise<GasPrice> {
-  // Simulate gas prices (in gwei)
-  const basePrices: Record<number, { slow: number; standard: number; fast: number }> = {
-    1: { slow: 15, standard: 25, fast: 40 }, // Ethereum
-    8453: { slow: 0.1, standard: 0.2, fast: 0.5 }, // Base
-    42161: { slow: 0.1, standard: 0.15, fast: 0.3 }, // Arbitrum
-    10: { slow: 0.1, standard: 0.2, fast: 0.4 }, // Optimism
-    324: { slow: 0.1, standard: 0.2, fast: 0.3 }, // zkSync Era
-    137: { slow: 30, standard: 50, fast: 80 }, // Polygon
-  };
+// Mock gas price data - in production, this would fetch from a gas price API
+const MOCK_GAS_PRICES: Record<number, { current: number; average: number; bestTime: string }> = {
+  1: { current: 45, average: 35, bestTime: '02:00-06:00 UTC' }, // Ethereum
+  8453: { current: 0.1, average: 0.08, bestTime: '00:00-08:00 UTC' }, // Base
+  42161: { current: 0.2, average: 0.15, bestTime: '00:00-08:00 UTC' }, // Arbitrum
+  10: { current: 0.15, average: 0.12, bestTime: '00:00-08:00 UTC' }, // Optimism
+  324: { current: 0.3, average: 0.25, bestTime: '00:00-08:00 UTC' }, // zkSync
+  137: { current: 50, average: 40, bestTime: '02:00-06:00 UTC' }, // Polygon
+};
 
-  const prices = basePrices[chainId] || { slow: 1, standard: 2, fast: 5 };
-  
-  // Add some randomness to simulate real-time changes
-  const variation = 0.8 + Math.random() * 0.4; // ±20% variation
-  
-  return {
-    chainId,
-    chainName: SUPPORTED_CHAINS.find((c) => c.id === chainId)?.name || 'Unknown',
-    slow: Math.round(prices.slow * variation * 100) / 100,
-    standard: Math.round(prices.standard * variation * 100) / 100,
-    fast: Math.round(prices.fast * variation * 100) / 100,
-    timestamp: Date.now(),
-  };
-}
-
-/**
- * GET /api/gas-optimizer
- * Get gas price recommendations across all chains
- */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const chainId = searchParams.get('chainId');
+    const recommendations: GasPriceData[] = SUPPORTED_CHAINS.map((chain) => {
+      const gasData = MOCK_GAS_PRICES[chain.id] || {
+        current: 50,
+        average: 40,
+        bestTime: '02:00-06:00 UTC',
+      };
 
-    if (chainId) {
-      const chainIdNum = parseInt(chainId, 10);
-      const chain = SUPPORTED_CHAINS.find((c) => c.id === chainIdNum);
-      
-      if (!chain) {
-        return NextResponse.json(
-          { error: 'Unsupported chain ID' },
-          { status: 400 }
-        );
-      }
+      const savings = ((gasData.current - gasData.average) / gasData.current) * 100;
 
-      const gasPrice = await getGasPrices(chainIdNum);
-      
-      // Determine best time recommendation
-      const hour = new Date().getHours();
-      const isLowTraffic = hour >= 2 && hour <= 6; // 2 AM - 6 AM UTC
-      
-      return NextResponse.json({
-        success: true,
-        gasPrice,
-        recommendation: {
-          bestTime: isLowTraffic ? 'now' : 'wait',
-          suggestedSpeed: isLowTraffic ? 'slow' : 'standard',
-          reason: isLowTraffic 
-            ? 'Current time shows lower network activity' 
-            : 'Consider waiting for off-peak hours (2-6 AM UTC)',
-        },
-      });
-    }
+      return {
+        chainId: chain.id,
+        chainName: chain.name,
+        currentGasPrice: gasData.current,
+        recommendedTime: gasData.bestTime,
+        estimatedSavings: Math.max(0, savings),
+        historicalAverage: gasData.average,
+      };
+    });
 
-    // Fetch gas prices for all chains
-    const gasPrices = await Promise.all(
-      SUPPORTED_CHAINS.map((chain) => getGasPrices(chain.id))
-    );
+    // Find best chain (lowest gas)
+    const bestChainData = recommendations.reduce((best, current) => {
+      return current.currentGasPrice < best.currentGasPrice ? current : best;
+    });
 
-    // Find cheapest chain
-    const cheapestChain = gasPrices.reduce((min, current) => 
-      current.standard < min.standard ? current : min
-    );
+    const bestChain = {
+      chainId: bestChainData.chainId,
+      chainName: bestChainData.chainName,
+      gasPrice: bestChainData.currentGasPrice,
+      savings: bestChainData.estimatedSavings,
+    };
 
-    // Calculate savings potential
-    const savings = gasPrices.map((gp) => ({
-      chainId: gp.chainId,
-      chainName: gp.chainName,
-      savings: Math.round(((gp.standard - cheapestChain.standard) / gp.standard) * 100),
-      cost: gp.standard,
-    }));
+    // Best time is typically early morning UTC
+    const bestTime = {
+      time: '00:00-08:00 UTC',
+      savings: 20, // Average 20% savings during off-peak
+    };
 
-    return NextResponse.json({
-      success: true,
-      gasPrices,
-      cheapestChain: {
-        chainId: cheapestChain.chainId,
-        chainName: cheapestChain.chainName,
-        price: cheapestChain.standard,
-      },
-      savings,
+    const result: GasOptimizerData = {
+      recommendations: recommendations.sort((a, b) => a.currentGasPrice - b.currentGasPrice),
+      bestChain,
+      bestTime,
       timestamp: Date.now(),
+    };
+
+    return NextResponse.json(result, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+      },
     });
   } catch (error) {
-    console.error('Gas optimizer API error:', error);
+    console.error('Error optimizing gas:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to fetch gas prices',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
+      { error: 'Failed to optimize gas prices' },
       { status: 500 }
     );
   }
 }
-
