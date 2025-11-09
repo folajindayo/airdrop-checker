@@ -11,7 +11,7 @@ export const RATE_LIMITS = {
 };
 
 export const API_CONFIG = {
-  GOLDRUSH_BASE_URL: 'https://api.goldrush.dev/v1',
-  REQUEST_TIMEOUT: 10000, // 10 seconds
+  GOLDRUSH_BASE_URL: 'https://api.covalenthq.com/v1',
+  REQUEST_TIMEOUT: 30000, // 30 seconds
 };
 
