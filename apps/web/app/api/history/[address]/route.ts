@@ -3,25 +3,145 @@ import { isValidAddress } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
-interface AirdropHistory {
+interface HistoryEntry {
   id: string;
   address: string;
-  projectId: string;
-  projectName: string;
-  status: 'claimed' | 'eligible' | 'missed';
-  claimedAt?: string;
-  amount?: string;
-  value?: number;
-  txHash?: string;
-  notes?: string;
+  timestamp: number;
+  overallScore: number;
+  airdrops: Array<{
+    projectId: string;
+    projectName: string;
+    score: number;
+    status: string;
+  }>;
+  changes?: {
+    scoreDelta: number;
+    newAirdrops: string[];
+    improvedAirdrops: string[];
+    declinedAirdrops: string[];
+  };
 }
 
 // In-memory storage (in production, use database)
-const history: Map<string, AirdropHistory[]> = new Map();
+const historyStore = new Map<string, HistoryEntry[]>();
+
+/**
+ * POST /api/history/[address]
+ * Record a new history entry for an address
+ */
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ address: string }> }
+) {
+  try {
+    const { address } = await params;
+    const body = await request.json();
+    const { overallScore, airdrops } = body;
+
+    if (!isValidAddress(address)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid Ethereum address' },
+        { status: 400 }
+      );
+    }
+
+    if (!overallScore || !airdrops) {
+      return NextResponse.json(
+        { success: false, error: 'overallScore and airdrops are required' },
+        { status: 400 }
+      );
+    }
+
+    const normalizedAddress = address.toLowerCase();
+    const history = historyStore.get(normalizedAddress) || [];
+    
+    // Get previous entry to calculate changes
+    const previousEntry = history.length > 0 ? history[history.length - 1] : null;
+    
+    const newEntry: HistoryEntry = {
+      id: `history-${normalizedAddress}-${Date.now()}`,
+      address: normalizedAddress,
+      timestamp: Date.now(),
+      overallScore,
+      airdrops: airdrops.map((a: any) => ({
+        projectId: a.projectId || a.id,
+        projectName: a.project || a.name,
+        score: a.score,
+        status: a.status,
+      })),
+    };
+
+    // Calculate changes if previous entry exists
+    if (previousEntry) {
+      const scoreDelta = overallScore - previousEntry.overallScore;
+      const previousAirdropMap = new Map(
+        previousEntry.airdrops.map(a => [a.projectId, a.score])
+      );
+      const currentAirdropMap = new Map(
+        newEntry.airdrops.map(a => [a.projectId, a.score])
+      );
+
+      const newAirdrops: string[] = [];
+      const improvedAirdrops: string[] = [];
+      const declinedAirdrops: string[] = [];
+
+      // Check for new airdrops
+      newEntry.airdrops.forEach(a => {
+        if (!previousAirdropMap.has(a.projectId)) {
+          newAirdrops.push(a.projectId);
+        }
+      });
+
+      // Check for improved/declined airdrops
+      newEntry.airdrops.forEach(a => {
+        const previousScore = previousAirdropMap.get(a.projectId);
+        if (previousScore !== undefined) {
+          if (a.score > previousScore) {
+            improvedAirdrops.push(a.projectId);
+          } else if (a.score < previousScore) {
+            declinedAirdrops.push(a.projectId);
+          }
+        }
+      });
+
+      newEntry.changes = {
+        scoreDelta,
+        newAirdrops,
+        improvedAirdrops,
+        declinedAirdrops,
+      };
+    }
+
+    history.push(newEntry);
+    
+    // Keep only last 100 entries per address
+    if (history.length > 100) {
+      history.shift();
+    }
+    
+    historyStore.set(normalizedAddress, history);
+
+    return NextResponse.json({
+      success: true,
+      entry: newEntry,
+      message: 'History entry recorded',
+    });
+  } catch (error) {
+    console.error('History API error:', error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Failed to record history',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
+  }
+}
 
 /**
  * GET /api/history/[address]
- * Get airdrop claim history for an address
+ * Get history for an address
  */
 export async function GET(
   request: NextRequest,
@@ -29,36 +149,56 @@ export async function GET(
 ) {
   try {
     const { address } = await params;
+    const { searchParams } = new URL(request.url);
+    const days = parseInt(searchParams.get('days') || '30');
+    const limit = parseInt(searchParams.get('limit') || '50');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
-        { error: 'Invalid Ethereum address' },
+        { success: false, error: 'Invalid Ethereum address' },
         { status: 400 }
       );
     }
 
     const normalizedAddress = address.toLowerCase();
-    const addressHistory = history.get(normalizedAddress) || [];
+    let history = historyStore.get(normalizedAddress) || [];
+
+    // Filter by days
+    if (days > 0) {
+      const cutoffTime = Date.now() - days * 24 * 60 * 60 * 1000;
+      history = history.filter(entry => entry.timestamp >= cutoffTime);
+    }
+
+    // Sort by timestamp (newest first)
+    history.sort((a, b) => b.timestamp - a.timestamp);
+
+    // Apply limit
+    const limitedHistory = history.slice(0, limit);
 
     // Calculate statistics
     const stats = {
-      total: addressHistory.length,
-      claimed: addressHistory.filter((h) => h.status === 'claimed').length,
-      eligible: addressHistory.filter((h) => h.status === 'eligible').length,
-      missed: addressHistory.filter((h) => h.status === 'missed').length,
-      totalValue: addressHistory
-        .filter((h) => h.value)
-        .reduce((sum, h) => sum + (h.value || 0), 0),
+      totalEntries: history.length,
+      averageScore: history.length > 0
+        ? Math.round(history.reduce((sum, e) => sum + e.overallScore, 0) / history.length)
+        : 0,
+      highestScore: history.length > 0
+        ? Math.max(...history.map(e => e.overallScore))
+        : 0,
+      lowestScore: history.length > 0
+        ? Math.min(...history.map(e => e.overallScore))
+        : 0,
+      scoreTrend: history.length >= 2
+        ? history[0].overallScore - history[history.length - 1].overallScore
+        : 0,
+      totalImprovements: history.filter(e => e.changes && e.changes.scoreDelta > 0).length,
+      totalDeclines: history.filter(e => e.changes && e.changes.scoreDelta < 0).length,
     };
 
     return NextResponse.json({
       success: true,
-      history: addressHistory.sort((a, b) => {
-        const dateA = a.claimedAt ? new Date(a.claimedAt).getTime() : 0;
-        const dateB = b.claimedAt ? new Date(b.claimedAt).getTime() : 0;
-        return dateB - dateA;
-      }),
+      history: limitedHistory,
       stats,
+      count: limitedHistory.length,
     });
   } catch (error) {
     console.error('History API error:', error);
@@ -72,68 +212,3 @@ export async function GET(
     );
   }
 }
-
-/**
- * POST /api/history/[address]
- * Add an entry to airdrop history
- */
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ address: string }> }
-) {
-  try {
-    const { address } = await params;
-    const body = await request.json();
-    const { projectId, projectName, status, amount, value, txHash, notes } = body;
-
-    if (!isValidAddress(address)) {
-      return NextResponse.json(
-        { error: 'Invalid Ethereum address' },
-        { status: 400 }
-      );
-    }
-
-    if (!projectId || !status) {
-      return NextResponse.json(
-        { error: 'projectId and status are required' },
-        { status: 400 }
-      );
-    }
-
-    const normalizedAddress = address.toLowerCase();
-    const addressHistory = history.get(normalizedAddress) || [];
-
-    const entry: AirdropHistory = {
-      id: `${normalizedAddress}-${projectId}-${Date.now()}`,
-      address: normalizedAddress,
-      projectId,
-      projectName: projectName || projectId,
-      status,
-      amount,
-      value,
-      txHash,
-      notes,
-      claimedAt: status === 'claimed' ? new Date().toISOString() : undefined,
-    };
-
-    addressHistory.push(entry);
-    history.set(normalizedAddress, addressHistory);
-
-    return NextResponse.json({
-      success: true,
-      entry,
-      message: 'History entry added successfully',
-    });
-  } catch (error) {
-    console.error('History API error:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to add history entry',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    );
-  }
-}
-
