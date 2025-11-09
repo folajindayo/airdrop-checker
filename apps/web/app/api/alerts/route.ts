@@ -5,22 +5,26 @@ export const dynamic = 'force-dynamic';
 
 interface Alert {
   id: string;
+  type: 'new-airdrop' | 'score-change' | 'snapshot-reminder' | 'claim-available';
+  title: string;
+  message: string;
   address: string;
-  email?: string;
-  airdropId?: string;
-  alertType: 'new_airdrop' | 'eligibility_change' | 'claim_available' | 'snapshot_coming';
-  enabled: boolean;
+  projectId?: string;
+  priority: 'low' | 'medium' | 'high';
   createdAt: string;
-  lastTriggered?: string;
+  read: boolean;
 }
 
-// In-memory storage (in production, use database)
-const alerts: Map<string, Alert[]> = new Map();
+interface AlertsData {
+  address: string;
+  alerts: Alert[];
+  unreadCount: number;
+  timestamp: number;
+}
 
-/**
- * GET /api/alerts
- * Get alerts for an address
- */
+// In-memory storage - in production, use a database
+const alertsStorage = new Map<string, Alert[]>();
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -28,139 +32,115 @@ export async function GET(request: NextRequest) {
 
     if (!address || !isValidAddress(address)) {
       return NextResponse.json(
-        { error: 'Valid address parameter required' },
+        { error: 'Valid address is required' },
         { status: 400 }
       );
     }
 
     const normalizedAddress = address.toLowerCase();
-    const userAlerts = alerts.get(normalizedAddress) || [];
+    const alerts = alertsStorage.get(normalizedAddress) || [];
 
-    return NextResponse.json({
-      success: true,
-      alerts: userAlerts,
-      count: userAlerts.length,
-    });
+    const result: AlertsData = {
+      address: normalizedAddress,
+      alerts: alerts.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ),
+      unreadCount: alerts.filter((a) => !a.read).length,
+      timestamp: Date.now(),
+    };
+
+    return NextResponse.json(result);
   } catch (error) {
-    console.error('Alerts API error:', error);
+    console.error('Error fetching alerts:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to fetch alerts',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
+      { error: 'Failed to fetch alerts' },
       { status: 500 }
     );
   }
 }
 
-/**
- * POST /api/alerts
- * Create a new alert
- */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { address, email, airdropId, alertType } = body;
+    const { address, type, title, message, projectId, priority = 'medium' } = body;
 
     if (!address || !isValidAddress(address)) {
       return NextResponse.json(
-        { error: 'Valid address required' },
+        { error: 'Valid address is required' },
         { status: 400 }
       );
     }
 
-    if (!alertType || !['new_airdrop', 'eligibility_change', 'claim_available', 'snapshot_coming'].includes(alertType)) {
+    if (!type || !title || !message) {
       return NextResponse.json(
-        { error: 'Valid alertType required' },
+        { error: 'Type, title, and message are required' },
         { status: 400 }
       );
     }
 
     const normalizedAddress = address.toLowerCase();
+    const alerts = alertsStorage.get(normalizedAddress) || [];
+
     const alert: Alert = {
-      id: `${normalizedAddress}-${Date.now()}`,
+      id: `alert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      type,
+      title,
+      message,
       address: normalizedAddress,
-      email: email || undefined,
-      airdropId: airdropId || undefined,
-      alertType,
-      enabled: true,
+      projectId,
+      priority,
       createdAt: new Date().toISOString(),
+      read: false,
     };
 
-    const userAlerts = alerts.get(normalizedAddress) || [];
-    userAlerts.push(alert);
-    alerts.set(normalizedAddress, userAlerts);
+    alerts.push(alert);
+    alertsStorage.set(normalizedAddress, alerts);
 
-    return NextResponse.json({
-      success: true,
-      alert,
-      message: 'Alert created successfully',
-    });
+    return NextResponse.json({ success: true, alert });
   } catch (error) {
-    console.error('Alerts API error:', error);
+    console.error('Error creating alert:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to create alert',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
+      { error: 'Failed to create alert' },
       { status: 500 }
     );
   }
 }
 
-/**
- * DELETE /api/alerts
- * Delete an alert
- */
-export async function DELETE(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const address = searchParams.get('address');
-    const alertId = searchParams.get('id');
+    const body = await request.json();
+    const { address, alertId, read } = body;
 
     if (!address || !isValidAddress(address)) {
       return NextResponse.json(
-        { error: 'Valid address parameter required' },
-        { status: 400 }
-      );
-    }
-
-    if (!alertId) {
-      return NextResponse.json(
-        { error: 'Alert ID required' },
+        { error: 'Valid address is required' },
         { status: 400 }
       );
     }
 
     const normalizedAddress = address.toLowerCase();
-    const userAlerts = alerts.get(normalizedAddress) || [];
-    const filtered = userAlerts.filter((a) => a.id !== alertId);
-
-    if (filtered.length === userAlerts.length) {
+    const alerts = alertsStorage.get(normalizedAddress) || [];
+    
+    const alertIndex = alerts.findIndex((a) => a.id === alertId);
+    if (alertIndex === -1) {
       return NextResponse.json(
         { error: 'Alert not found' },
         { status: 404 }
       );
     }
 
-    alerts.set(normalizedAddress, filtered);
+    if (typeof read === 'boolean') {
+      alerts[alertIndex].read = read;
+    }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Alert deleted successfully',
-    });
+    alertsStorage.set(normalizedAddress, alerts);
+
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Alerts API error:', error);
+    console.error('Error updating alert:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to delete alert',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
+      { error: 'Failed to update alert' },
       { status: 500 }
     );
   }
 }
-
