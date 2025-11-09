@@ -640,6 +640,110 @@ Generate a personalized airdrop farming strategy.
 }
 ```
 
+### GET /api/wallet-health/[address]
+Get comprehensive wallet health analysis.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "overallScore": 75,
+  "metrics": [
+    {
+      "category": "Activity",
+      "score": 20,
+      "maxScore": 25,
+      "status": "excellent",
+      "details": [...]
+    }
+  ],
+  "riskFactors": [...],
+  "recommendations": [...]
+}
+```
+
+### GET /api/contract-analyzer/[address]
+Analyze smart contract interactions and risk levels.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "totalContracts": 25,
+  "interactions": [...],
+  "topContracts": [...],
+  "riskSummary": {
+    "low": 20,
+    "medium": 4,
+    "high": 1
+  },
+  "recommendations": [...]
+}
+```
+
+### GET /api/gas-optimizer
+Get gas price recommendations across chains.
+
+**Response:**
+```json
+{
+  "recommendations": [
+    {
+      "chainId": 8453,
+      "chainName": "Base",
+      "currentGasPrice": 0.1,
+      "recommendedTime": "00:00-08:00 UTC",
+      "estimatedSavings": 20,
+      "historicalAverage": 0.08
+    }
+  ],
+  "bestChain": {...},
+  "bestTime": {...}
+}
+```
+
+### POST /api/export-data
+Export wallet data in various formats.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "format": "json",
+  "data": {
+    "airdrops": [...],
+    "portfolio": {...},
+    "gasData": {...}
+  }
+}
+```
+
+### GET /api/alerts?address=0x...
+Get airdrop alerts for an address.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "alerts": [...],
+  "unreadCount": 3
+}
+```
+
+### POST /api/alerts
+Create a new alert.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "type": "new-airdrop",
+  "title": "New Airdrop Available",
+  "message": "Zora airdrop is now claimable",
+  "priority": "high"
+}
+```
+
 ## Airdrop Criteria
 
 Airdrops are defined in `packages/shared/data/airdrops.json`. Each project includes:
