@@ -416,6 +416,43 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
           </div>
         )}
 
+        {(velocitySummary || decaySummary) && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {velocitySummary && (
+              <div className="border rounded-lg p-4 bg-muted/30">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-semibold">Velocity Pulse</p>
+                  <span className={cn('text-lg font-semibold', velocitySummary.color)}>
+                    {velocitySummary.arrow}{' '}
+                    {velocitySummary.velocity.percentChange >= 0 ? '+' : ''}
+                    {velocitySummary.velocity.percentChange}%
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">
+                  {velocitySummary.velocity.currentAvgDaily.toFixed(2)} interactions/day
+                  {' · '}previous {velocitySummary.velocity.previousAvgDaily.toFixed(2)}
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Δ {velocitySummary.velocity.deltaInteractions >= 0 ? '+' : ''}
+                  {velocitySummary.velocity.deltaInteractions} interactions over the last 30 days
+                </p>
+              </div>
+            )}
+            {decaySummary && (
+              <div className="border rounded-lg p-4 bg-muted/30">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-semibold">Decay Monitor</p>
+                  <Badge variant="secondary" className="capitalize">
+                    {decaySummary.status}
+                  </Badge>
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">{decaySummary.label}</p>
+                <p className="text-xs text-muted-foreground mt-2">{decaySummary.description}</p>
+              </div>
+            )}
+          </div>
+        )}
+
         <Tabs defaultValue="focus" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="focus">Focus Areas</TabsTrigger>
