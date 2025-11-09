@@ -352,19 +352,24 @@ airdrop-checker/
 │       │   │   ├── calendar/
 │       │   │   ├── compare/
 │       │   │   ├── alerts/
+│       │   │   ├── batch-check/
 │       │   │   ├── contract-analyzer/[address]/
 │       │   │   ├── defi-positions/[address]/
 │       │   │   ├── export-data/
 │       │   │   ├── farming-strategy/
 │       │   │   ├── gas-optimizer/
 │       │   │   ├── gas-tracker/[address]/
+│       │   │   ├── leaderboard/
 │       │   │   ├── multi-wallet-portfolio/
+│       │   │   ├── news/
 │       │   │   ├── og/
 │       │   │   ├── portfolio/[address]/
+│       │   │   ├── portfolio-performance/[address]/
 │       │   │   ├── protocol-heatmap/[address]/
 │       │   │   ├── recommendations/
 │       │   │   ├── refresh/
 │       │   │   ├── roi-calculator/
+│       │   │   ├── snapshots/
 │       │   │   ├── stats/
 │       │   │   ├── transaction-simulator/
 │       │   │   └── wallet-health/[address]/
@@ -995,15 +1000,6 @@ Simulate different transaction types to see their impact on airdrop eligibility:
 - Impact scoring and recommendations
 
 **Access:** Available in dashboard and portfolio pages
-
-### Protocol Insights
-Uncover which protocol categories are boosting your eligibility:
-- Focus area scoring with actionable recommendations
-- Protocol-by-protocol breakdowns with interaction depth
-- Timeline feed of the latest onchain touchpoints
-- Monthly trend summaries highlighting growth or drop-offs
-
-**Access:** `/portfolio` → Insights tab
 
 ### DeFi Positions Tracker
 Track your DeFi positions across all protocols:
