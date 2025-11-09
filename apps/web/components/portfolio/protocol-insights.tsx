@@ -11,7 +11,7 @@ import {
 import { Skeleton } from '@/components/common/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Activity, BarChart3, Flame, LineChart, Target } from 'lucide-react';
+import { Activity, BarChart3, Flame, Gauge, LineChart, Target } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface FocusArea {
@@ -19,8 +19,18 @@ interface FocusArea {
   categoryLabel: string;
   interactions: number;
   uniqueProtocols: number;
+  score: number;
   status: 'strong' | 'needs_attention' | 'missing';
   recommendation: string;
+}
+
+interface CategoryScore {
+  category: string;
+  categoryLabel: string;
+  score: number;
+  interactions: number;
+  uniqueProtocols: number;
+  status: 'strong' | 'needs_attention' | 'missing';
 }
 
 interface TimelineEntry {
@@ -59,6 +69,7 @@ interface ProtocolInsights {
     activeCategories: number;
     newProtocolsLast30d: number;
     avgInteractionsPerProtocol: number;
+    engagementScore: number;
     lastInteraction?: string;
     mostActiveCategory?: {
       category: string;
@@ -69,6 +80,7 @@ interface ProtocolInsights {
   breakdown: ProtocolBreakdownEntry[];
   timeline: TimelineEntry[];
   focusAreas: FocusArea[];
+  categoryScores: CategoryScore[];
   monthlyActivity: MonthlyActivity[];
   generatedAt: string;
 }
@@ -141,6 +153,11 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
 
     const cards = [
       {
+        label: 'Engagement Score',
+        value: data.summary.engagementScore,
+        icon: Gauge,
+      },
+      {
         label: 'Protocols Touched',
         value: data.summary.totalProtocols,
         icon: Activity,
@@ -210,7 +227,7 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
       <CardContent className="space-y-6">
         {/* Summary cards */}
         {summaryCards && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {summaryCards.map((card, index) => (
               <div key={card.label + index} className="bg-muted/40 rounded-lg p-4 border">
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -218,8 +235,25 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
                   <card.icon className="h-4 w-4" />
                 </div>
                 <p className="text-2xl font-semibold mt-2">
-                  {typeof card.value === 'number' ? card.value.toLocaleString() : card.value}
+                  {typeof card.value === 'number'
+                    ? card.label === 'Engagement Score'
+                      ? `${card.value.toLocaleString()}`
+                      : card.value.toLocaleString()
+                    : card.value}
                 </p>
+                {card.label === 'Engagement Score' && (
+                  <div className="mt-3">
+                    <div className="h-2 w-full bg-muted rounded-full">
+                      <div
+                        className="h-2 rounded-full bg-primary transition-all"
+                        style={{ width: `${Math.min(card.value as number, 100)}%` }}
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Composite score across all protocol categories
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -245,6 +279,47 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
           </TabsList>
 
           <TabsContent value="focus" className="space-y-4">
+            {data.categoryScores?.length > 0 && (
+              <div>
+                <h3 className="font-semibold mb-3">Category Scores</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {data.categoryScores.map((category) => (
+                    <div key={category.category} className="border rounded-lg p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-semibold">{category.categoryLabel}</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {category.interactions.toLocaleString()} interaction
+                            {category.interactions === 1 ? '' : 's'} ·{' '}
+                            {category.uniqueProtocols} protocol
+                            {category.uniqueProtocols === 1 ? '' : 's'}
+                          </p>
+                        </div>
+                        <span className="text-lg font-semibold text-foreground">
+                          {category.score}
+                        </span>
+                      </div>
+                      <div className="h-2 w-full bg-muted rounded-full mt-3">
+                        <div
+                          className={cn(
+                            'h-2 rounded-full transition-all',
+                            category.score >= 70 ? 'bg-emerald-500' : category.score >= 40 ? 'bg-amber-500' : 'bg-slate-400'
+                          )}
+                          style={{ width: `${Math.min(category.score, 100)}%` }}
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Status:{' '}
+                        <span className="font-medium capitalize">
+                          {category.status.replace('_', ' ')}
+                        </span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {data.focusAreas.map((area) => (
                 <div key={area.category} className="border rounded-lg p-4">
@@ -261,6 +336,21 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
                     <Badge className={cn('uppercase tracking-wide text-xs', STATUS_BADGE[area.status])}>
                       {area.status.replace('_', ' ')}
                     </Badge>
+                  </div>
+                  <div className="mt-3">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                      <span>Engagement</span>
+                      <span className="font-semibold text-foreground">{area.score}</span>
+                    </div>
+                    <div className="h-2 w-full bg-muted rounded-full">
+                      <div
+                        className={cn(
+                          'h-2 rounded-full transition-all',
+                          area.score >= 70 ? 'bg-emerald-500' : area.score >= 40 ? 'bg-amber-500' : 'bg-slate-400'
+                        )}
+                        style={{ width: `${Math.min(area.score, 100)}%` }}
+                      />
+                    </div>
                   </div>
                   <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
                     {area.recommendation}
