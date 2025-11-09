@@ -105,6 +105,7 @@ export interface ProtocolInsights {
     };
     velocity: VelocityMetrics;
     decay: DecayMetrics;
+    coverage: CoverageMetrics;
     lastInteraction?: string;
     mostActiveCategory?: {
       category: ProtocolCategory;
@@ -117,6 +118,7 @@ export interface ProtocolInsights {
   focusAreas: FocusArea[];
   categoryScores: CategoryScore[];
   monthlyActivity: MonthlyActivity[];
+  dormantProtocols: DormantProtocol[];
   generatedAt: string;
 }
 
@@ -491,6 +493,23 @@ export function buildProtocolInsights(
     .filter((area) => area.interactions > 0)
     .sort((a, b) => b.interactions - a.interactions)[0];
 
+  const dormantProtocols: DormantProtocol[] = [];
+  const allProtocols = new Set(breakdown.map((entry) => entry.protocol));
+  const coveredProtocols = new Set(focusAreas.map((area) => area.categoryLabel));
+
+  allProtocols.forEach((protocol) => {
+    if (!coveredProtocols.has(protocol)) {
+      const metadata = KNOWN_PROTOCOLS[protocol];
+      if (metadata) {
+        dormantProtocols.push({
+          protocol,
+          categoryLabel: metadata.categoryLabel,
+          daysSinceInteraction: null,
+        });
+      }
+    }
+  });
+
   return {
     address,
     summary: {
@@ -503,6 +522,14 @@ export function buildProtocolInsights(
       streak,
       velocity,
       decay,
+      coverage: {
+        score: 0, // Placeholder, needs actual calculation
+        coveredCategories: Array.from(coveredProtocols),
+        totalCategories: allProtocols.size,
+        missingCategories: Array.from(allProtocols).filter(
+          (p) => !coveredProtocols.has(p)
+        ),
+      },
       lastInteraction,
       mostActiveCategory: mostActiveCategory
         ? {
@@ -517,6 +544,7 @@ export function buildProtocolInsights(
     focusAreas,
     categoryScores,
     monthlyActivity,
+    dormantProtocols,
     generatedAt: new Date().toISOString(),
   };
 }
