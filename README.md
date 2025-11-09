@@ -572,12 +572,6 @@ Get gas spending analytics for a wallet address.
 ### GET /api/protocol-insights/[address]
 Get protocol focus areas, engagement scores, timeline feed, and monthly trends for a wallet.
 
-**Highlights:**
-- `summary.engagementScore` condenses category strength into a single 0-100 score.
-- `summary.momentum` shows month-over-month trajectory (direction, percent change, delta interactions).
-- `summary.streak` tracks consecutive active days and last interaction.
-- `categoryScores` adds per-category scoring with interaction and diversity context.
-
 **Response:**
 ```json
 {
@@ -1018,6 +1012,107 @@ Get airdrop news feed.
     "confirmed": 2,
     "update": 1
   }
+}
+```
+
+### POST /api/probability-predictor/[address]
+Predict airdrop eligibility probabilities using ML algorithms.
+
+**Request:**
+```json
+{
+  "airdrops": [...],
+  "activityLevel": 30,
+  "gasSpentUSD": 125.50
+}
+```
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "predictions": [
+    {
+      "projectId": "zora",
+      "projectName": "Zora",
+      "probability": 85.5,
+      "confidence": "high",
+      "factors": [...],
+      "estimatedValue": 2000,
+      "recommendedActions": [...]
+    }
+  ],
+  "overallProbability": 72.3,
+  "topOpportunities": [...]
+}
+```
+
+### GET /api/wallet-clustering/[address]
+Detect related wallets and potential clustering.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "clusterSize": 5,
+  "relatedWallets": [...],
+  "riskLevel": "medium",
+  "recommendations": [...]
+}
+```
+
+### GET /api/calendar-export/[address]?format=ical
+Export airdrop snapshots and claims to calendar format.
+
+**Query Params:**
+- `format`: ical (default) or json
+
+**Response:** iCal file (.ics) or JSON
+
+### POST /api/portfolio-rebalancer
+Generate portfolio rebalancing recommendations.
+
+**Request:**
+```json
+{
+  "address": "0x..."
+}
+```
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "currentTotalValue": 12500.00,
+  "currentAllocation": {...},
+  "recommendations": [...],
+  "targetAllocation": {...},
+  "estimatedGasCost": 25.00
+}
+```
+
+### GET /api/gas-history?chainId=1&days=30
+Get historical gas price data.
+
+**Query Params:**
+- `chainId` (optional): Filter by chain
+- `days` (optional): Number of days (default: 30)
+
+**Response:**
+```json
+{
+  "chains": {
+    "1": {
+      "chainId": 1,
+      "chainName": "Ethereum",
+      "dataPoints": [...],
+      "average": 35.2,
+      "min": 20.1,
+      "max": 50.5,
+      "current": 45.0
+    }
+  },
+  "bestTimes": [...]
 }
 ```
 
