@@ -144,6 +144,7 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 ### 🧠 Intelligence Enhancements
 - **Trending Airdrop Radar** - Signal-based scoring to bubble up the hottest opportunities in real time
 - **Chain Signal Filter** - Quickly pivot the radar to the chain that matters most to you
+- **Radar Highlights Panel** - Upcoming snapshots, high-value drops, and fresh updates refreshed every 2 minutes
 
 ## Tech Stack
 
