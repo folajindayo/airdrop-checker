@@ -21,7 +21,7 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 14. **Social Sharing** - Share results on Twitter/X with Web Share API
 15. **Personalized Recommendations** - AI-driven airdrop suggestions
 
-### 💼 Portfolio & Analytics Features (16-40)
+### 💼 Portfolio & Analytics Features (16-42)
 16. **Portfolio Tracker** - Track token holdings across all chains with real-time values
 17. **Gas Tracker** - Monitor gas spending by chain, month, and transaction
 18. **ROI Calculator** - Calculate potential return on airdrop investments
@@ -47,6 +47,8 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 38. **Portfolio Value Tracking** - Real-time USD value of all holdings
 39. **Protocol-by-Protocol Breakdown** - Detailed DeFi position analysis
 40. **Interaction Timeline** - See when and how often you interact with protocols
+41. **Protocol Engagement Score** - Composite scoring across all protocol categories
+42. **Category Scoreboard** - Visualize category strength with weighted scores
 
 ### 📊 UI Components Library (26-70)
 26. **Alert Component** - Multiple variants with action buttons
