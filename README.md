@@ -116,6 +116,46 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 98. **Expected Value Calculator** - Probability-weighted airdrop values
 99. **Break-Even Analysis** - Calculate minimum airdrop value needed
 100. **Smart Transaction Recommendations** - Get personalized transaction suggestions
+101. **Portfolio Tracker Component** - Comprehensive portfolio value tracking UI
+102. **Gas Tracker Component** - Track gas spending across all chains
+103. **ROI Calculator Component** - Visual ROI calculation interface
+104. **Airdrop Claim Tracker** - Track and manage airdrop claims with transaction history
+105. **Multi-Wallet Portfolio** - Manage and compare multiple wallets in one interface
+106. **Trending Airdrops API** - Discover hottest airdrop opportunities
+107. **Risk Analyzer** - Analyze sybil detection and farming risks
+108. **Opportunity Finder** - Find best airdrop opportunities based on current eligibility
+109. **Personalized Insights** - Get AI-driven recommendations and activity patterns
+110. **Gas Tracker API** - Detailed gas spending analysis by chain
+111. **Easy Wins Finder** - Identify quick opportunities with low effort
+112. **High Value Opportunities** - Filter airdrops by estimated value
+113. **Quick Actions** - Find time-sensitive opportunities with upcoming snapshots
+114. **Activity Pattern Analysis** - Understand your onchain behavior patterns
+115. **Sybil Risk Detection** - Identify potential sybil detection patterns
+116. **Concentration Risk Analysis** - Check if you're too focused on one protocol
+117. **Timing Risk Assessment** - Analyze if activity is too concentrated in time
+118. **Improvement Recommendations** - Get specific actions to improve eligibility
+119. **Portfolio Tabbed Interface** - Organized portfolio view with multiple tabs
+120. **Claim History Management** - Add, edit, and track airdrop claims
+121. **Data Export System** - Export eligibility data in JSON, CSV, or TXT formats
+122. **Notification System** - Real-time notifications for airdrop updates and reminders
+123. **Leaderboard** - Compare your ranking with other airdrop farmers
+124. **Platform Analytics** - Comprehensive platform-wide statistics and insights
+125. **CSV Export** - Export data for spreadsheet analysis
+126. **Plain Text Reports** - Human-readable eligibility reports
+127. **Notification Management** - Mark as read, delete, and filter notifications
+128. **Snapshot Reminders** - Get notified before important snapshots
+129. **Claim Availability Alerts** - Know when claims go live
+130. **Eligibility Change Notifications** - Track score improvements
+131. **New Airdrop Alerts** - Discover new opportunities as they're added
+132. **Leaderboard Rankings** - See how you compare to top farmers
+133. **Platform Statistics** - View overall platform health and metrics
+134. **Chain Distribution Analytics** - Understand airdrop distribution across chains
+135. **Criteria Analysis** - Deep dive into eligibility criteria patterns
+136. **Timeline Analytics** - Track snapshot dates and claim windows
+137. **Activity Metrics** - Track total checks, unique addresses, and average scores
+138. **Value Analysis** - Analyze estimated airdrop values across projects
+139. **Multi-Format Export** - Choose from JSON, CSV, or TXT export formats
+140. **Comprehensive Reporting** - Detailed reports with activity summaries
 
 ### 💬 Communication & Social
 - **Chat Component** - Real-time messaging with sidebar
