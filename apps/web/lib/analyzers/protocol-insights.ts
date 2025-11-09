@@ -349,9 +349,91 @@ function findDormantProtocols(
     .filter((item) =>
       item.daysSinceInteraction === null || item.daysSinceInteraction >= thresholdDays
     )
-    .sort((a, b) => (b.sortOrder - a.sortOrder))
+    .sort((a, b) => b.sortOrder - a.sortOrder)
     .slice(0, limit)
     .map(({ sortOrder, ...rest }) => rest);
+}
+
+function calculateDiversityMetrics(
+  breakdown: ProtocolBreakdownEntry[]
+): DiversityMetrics {
+  if (breakdown.length === 0) {
+    return {
+      score: 0,
+      entropy: 0,
+      categoryDistribution: [],
+    };
+  }
+
+  const counts = new Map<string, number>();
+  breakdown.forEach((entry) => {
+    counts.set(entry.categoryLabel, (counts.get(entry.categoryLabel) ?? 0) + entry.interactionCount);
+  });
+
+  const totalInteractions = Array.from(counts.values()).reduce((sum, value) => sum + value, 0);
+  if (totalInteractions === 0) {
+    return {
+      score: 0,
+      entropy: 0,
+      categoryDistribution: Array.from(counts.keys()).map((key) => ({ category: key, percentage: 0 })),
+    };
+  }
+
+  const entropy = Array.from(counts.values()).reduce((sum, value) => {
+    const p = value / totalInteractions;
+    return p > 0 ? sum - p * Math.log(p) : sum;
+  }, 0);
+
+  const maxEntropy = Math.log(Math.max(counts.size, 1));
+  const normalizedEntropy = maxEntropy === 0 ? 0 : entropy / maxEntropy;
+  const score = Math.round(normalizedEntropy * 100);
+
+  const categoryDistribution = Array.from(counts.entries()).map(([category, value]) => ({
+    category,
+    percentage: Number(((value / totalInteractions) * 100).toFixed(1)),
+  }));
+
+  return {
+    score,
+    entropy: Number(entropy.toFixed(4)),
+    categoryDistribution,
+  };
+}
+
+function buildReactivationRecommendations(
+  dormant: DormantProtocol[],
+  coverage: CoverageMetrics
+): ReactivationRecommendation[] {
+  if (dormant.length === 0) return [];
+
+  const messages = dormant.map((protocol) => {
+    const base = `Re-engage with ${protocol.protocol} (${protocol.categoryLabel})`;
+    if (protocol.daysSinceInteraction === null) {
+      return {
+        protocol: protocol.protocol,
+        categoryLabel: protocol.categoryLabel,
+        recommendation: `${base} to activate this protocol for the first time.`,
+      };
+    }
+
+    const days = protocol.daysSinceInteraction;
+    const recency = days >= 90 ? 'It has been over three months.' : `Inactive for ${days} day${
+      days === 1 ? '' : 's'
+    }.`;
+
+    let coverageHint = '';
+    if (coverage.missingCategories.includes(protocol.categoryLabel)) {
+      coverageHint = ' This category is currently missing from your coverage profile.';
+    }
+
+    return {
+      protocol: protocol.protocol,
+      categoryLabel: protocol.categoryLabel,
+      recommendation: `${base}. ${recency}${coverageHint}`.trim(),
+    };
+  });
+
+  return messages;
 }
 
 function calculateVelocityMetrics(timeline: TimelineEntry[]): VelocityMetrics {
