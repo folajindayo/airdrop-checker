@@ -111,38 +111,35 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 98. **Expected Value Calculator** - Probability-weighted airdrop values
 99. **Break-Even Analysis** - Calculate minimum airdrop value needed
 100. **Smart Transaction Recommendations** - Get personalized transaction suggestions
-98. **Contract Function Analysis** - Analyze function calls to smart contracts
-99. **Portfolio Token List** - View all tokens with balances and values
-100. **Gas Optimization Recommendations** - Get recommendations for best interaction times
 
-### 💬 Communication & Social (101-104)
-101. **Chat Component** - Real-time messaging with sidebar
-102. **Support Chat** - Live support widget
-103. **Timeline Component** - Vertical and horizontal variants
-104. **Activity Feed** - Real-time activity stream
+### 💬 Communication & Social
+- **Chat Component** - Real-time messaging with sidebar
+- **Support Chat** - Live support widget
+- **Timeline Component** - Vertical and horizontal variants
+- **Activity Feed** - Real-time activity stream
 
-### 🎬 Media & Content (105-107)
-105. **Video Player** - Full controls with chapters
-106. **Rating System** - Stars, hearts, thumbs variants
-107. **Review Cards** - User reviews with helpful voting
+### 🎬 Media & Content
+- **Video Player** - Full controls with chapters
+- **Rating System** - Stars, hearts, thumbs variants
+- **Review Cards** - User reviews with helpful voting
 
-### 💰 Commerce & Pricing (108-109)
-108. **Pricing Table** - Billing toggle with comparison
-109. **Enterprise Pricing** - Custom solutions CTA
+### 💰 Commerce & Pricing
+- **Pricing Table** - Billing toggle with comparison
+- **Enterprise Pricing** - Custom solutions CTA
 
-### 🎓 Onboarding & Help (110-112)
-110. **Onboarding Tour** - Interactive spotlight guide
-111. **Step Guide** - Sequential tutorial steps
-112. **Welcome Checklist** - Getting started tasks
+### 🎓 Onboarding & Help
+- **Onboarding Tour** - Interactive spotlight guide
+- **Step Guide** - Sequential tutorial steps
+- **Welcome Checklist** - Getting started tasks
 
-### 📈 Data Visualization (113-119)
-113. **Bar Chart** - Horizontal bar charts
-114. **Donut Chart** - Pie charts with legend
-115. **Line Chart** - Time series visualization
-116. **Area Chart** - Filled line charts
-117. **Heatmap** - Data density visualization
-118. **Progress Ring** - Circular progress indicators
-119. **Stat Cards** - Metrics with trend indicators
+### 📈 Data Visualization
+- **Bar Chart** - Horizontal bar charts
+- **Donut Chart** - Pie charts with legend
+- **Line Chart** - Time series visualization
+- **Area Chart** - Filled line charts
+- **Heatmap** - Data density visualization
+- **Progress Ring** - Circular progress indicators
+- **Stat Cards** - Metrics with trend indicators
 
 ### 🧠 Intelligence Enhancements
 - **Trending Airdrop Radar** - Signal-based scoring to bubble up the hottest opportunities in real time
