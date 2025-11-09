@@ -13,6 +13,23 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  webpack: (config, { isServer }) => {
+    // Ignore optional dependencies for web-only app
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      '@react-native-async-storage/async-storage': false,
+      'pino-pretty': false,
+      'lokijs': false,
+      'encoding': false,
+    };
+    
+    config.externals.push({
+      'utf-8-validate': 'commonjs utf-8-validate',
+      'bufferutil': 'commonjs bufferutil',
+    });
+    
+    return config;
+  },
 }
 
 export default nextConfig
