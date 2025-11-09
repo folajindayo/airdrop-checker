@@ -216,11 +216,6 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 203. **Eligibility History Tracking** - Track score changes and improvements over time
 204. **Risk Calculator** - Calculate risk vs reward ratios and break-even probabilities
 205. **Enhanced Farm Script** - Resume capability, auto-retry, and better error handling
-201. **Telegram Integration** - Send notifications via Telegram bots
-202. **Email Notifications** - Subscribe to email alerts and updates
-203. **Advanced Reporting** - Comprehensive reports with recommendations
-204. **API Versioning** - Versioned API endpoints for stability
-205. **Rate Limiting** - Per-endpoint rate limiting and monitoring
 206. **API Key Authentication** - Secure API access with keys
 207. **Telegram Bot Support** - Configure Telegram bots for notifications
 208. **Email Verification** - Verify email addresses for subscriptions
