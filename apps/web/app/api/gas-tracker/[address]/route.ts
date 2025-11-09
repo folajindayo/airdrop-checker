@@ -1,42 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
+import { isValidAddress } from '@airdrop-finder/shared';
+import { fetchAllChainTransactions } from '@/lib/goldrush';
 
 export const dynamic = 'force-dynamic';
 
-interface GasTransaction {
-  tx_hash: string;
-  block_height: number;
-  block_signed_at: string;
-  gas_price: number;
-  gas_used: number;
-  gas_spent: number;
-  gas_quote: number;
-  chain_id: number;
-  chain_name: string;
-}
-
-interface GasTrackerData {
-  address: string;
-  totalGasSpent: number;
-  totalGasSpentUSD: number;
-  chainBreakdown: Array<{
-    chainId: number;
-    chainName: string;
-    gasSpent: number;
-    gasSpentUSD: number;
-    transactionCount: number;
-    avgGasPrice: number;
-  }>;
-  recentTransactions: GasTransaction[];
-  monthlyBreakdown: Array<{
-    month: string;
-    gasSpentUSD: number;
-    transactionCount: number;
-  }>;
-  timestamp: number;
-}
-
+/**
+ * GET /api/gas-tracker/[address]
+ * Track gas spending for a wallet address
+ */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ address: string }> }
@@ -44,137 +15,71 @@ export async function GET(
   try {
     const { address } = await params;
 
-    if (!address || !/^0x[a-fA-F0-9]{40}$/.test(address)) {
+    if (!isValidAddress(address)) {
       return NextResponse.json(
         { error: 'Invalid Ethereum address' },
         { status: 400 }
       );
     }
 
-    const allTransactions: GasTransaction[] = [];
-    const chainStats: Record<number, {
-      gasSpent: number;
-      gasSpentUSD: number;
-      transactionCount: number;
-      totalGasPrice: number;
-    }> = {};
+    const normalizedAddress = address.toLowerCase();
 
-    // Fetch transactions from all supported chains
-    for (const chain of SUPPORTED_CHAINS) {
-      try {
-        const response = await goldrushClient.get(
-          `/${chain.goldrushName}/address/${address}/transactions_v2/`,
-          {
-            'page-size': 100,
-            'page-number': 1,
-          }
-        );
+    // Fetch all transactions
+    const chainTransactions = await fetchAllChainTransactions(normalizedAddress);
 
-        if (response.data && response.data.items) {
-          const txs = response.data.items.map((tx: any) => ({
-            tx_hash: tx.tx_hash,
-            block_height: tx.block_height,
-            block_signed_at: tx.block_signed_at,
-            gas_price: tx.gas_price || 0,
-            gas_used: tx.gas_used || 0,
-            gas_spent: tx.gas_spent || 0,
-            gas_quote: tx.gas_quote || 0,
-            chain_id: chain.id,
-            chain_name: chain.name,
-          }));
-
-          allTransactions.push(...txs);
-
-          // Aggregate chain stats
-          if (!chainStats[chain.id]) {
-            chainStats[chain.id] = {
-              gasSpent: 0,
-              gasSpentUSD: 0,
-              transactionCount: 0,
-              totalGasPrice: 0,
-            };
-          }
-
-          txs.forEach((tx: GasTransaction) => {
-            chainStats[chain.id].gasSpent += tx.gas_spent;
-            chainStats[chain.id].gasSpentUSD += tx.gas_quote;
-            chainStats[chain.id].transactionCount += 1;
-            chainStats[chain.id].totalGasPrice += tx.gas_price;
-          });
-        }
-      } catch (error) {
-        console.error(`Error fetching transactions for ${chain.name}:`, error);
-      }
-    }
-
-    // Calculate totals
-    const totalGasSpent = Object.values(chainStats).reduce((sum, stat) => sum + stat.gasSpent, 0);
-    const totalGasSpentUSD = Object.values(chainStats).reduce((sum, stat) => sum + stat.gasSpentUSD, 0);
-
-    // Build chain breakdown
-    const chainBreakdown = SUPPORTED_CHAINS.map((chain) => {
-      const stats = chainStats[chain.id];
-      if (!stats || stats.transactionCount === 0) {
-        return null;
-      }
-
-      return {
-        chainId: chain.id,
-        chainName: chain.name,
-        gasSpent: stats.gasSpent,
-        gasSpentUSD: stats.gasSpentUSD,
-        transactionCount: stats.transactionCount,
-        avgGasPrice: stats.totalGasPrice / stats.transactionCount,
-      };
-    }).filter(Boolean) as GasTrackerData['chainBreakdown'];
-
-    // Get recent transactions (last 50)
-    const recentTransactions = allTransactions
-      .sort((a, b) => new Date(b.block_signed_at).getTime() - new Date(a.block_signed_at).getTime())
-      .slice(0, 50);
-
-    // Build monthly breakdown
-    const monthlyMap = new Map<string, { gasSpentUSD: number; transactionCount: number }>();
-    
-    allTransactions.forEach((tx) => {
-      const date = new Date(tx.block_signed_at);
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      
-      if (!monthlyMap.has(monthKey)) {
-        monthlyMap.set(monthKey, { gasSpentUSD: 0, transactionCount: 0 });
-      }
-      
-      const monthData = monthlyMap.get(monthKey)!;
-      monthData.gasSpentUSD += tx.gas_quote;
-      monthData.transactionCount += 1;
-    });
-
-    const monthlyBreakdown = Array.from(monthlyMap.entries())
-      .map(([month, data]) => ({ month, ...data }))
-      .sort((a, b) => b.month.localeCompare(a.month))
-      .slice(0, 12);
-
-    const response: GasTrackerData = {
-      address,
-      totalGasSpent,
-      totalGasSpentUSD,
-      chainBreakdown,
-      recentTransactions,
-      monthlyBreakdown,
-      timestamp: Date.now(),
+    // Gas price estimates by chain (in gwei)
+    const gasPriceByChain: Record<number, number> = {
+      1: 25, // Ethereum
+      8453: 0.2, // Base
+      42161: 0.15, // Arbitrum
+      10: 0.2, // Optimism
+      324: 0.2, // zkSync Era
+      137: 50, // Polygon
     };
 
-    return NextResponse.json(response, {
-      headers: {
-        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
-      },
+    // Calculate gas spent
+    let totalGasSpentUSD = 0;
+    const gasByChain: Record<number, { gasUsed: number; costUSD: number; txCount: number }> = {};
+
+    Object.entries(chainTransactions).forEach(([chainId, txs]) => {
+      const chainIdNum = parseInt(chainId, 10);
+      const avgGasPrice = gasPriceByChain[chainIdNum] || 1;
+      
+      let gasUsed = 0;
+      txs.forEach((tx: any) => {
+        // Use actual gas_used if available, otherwise estimate 100k per tx
+        const gas = tx.gas_used || 100000;
+        gasUsed += gas;
+      });
+
+      // Convert to USD (rough estimate: 1 gwei = $0.000001 per gas unit)
+      const costUSD = (gasUsed * avgGasPrice) / 1e9;
+      totalGasSpentUSD += costUSD;
+
+      gasByChain[chainIdNum] = {
+        gasUsed,
+        costUSD,
+        txCount: txs.length,
+      };
+    });
+
+    return NextResponse.json({
+      success: true,
+      address: normalizedAddress,
+      totalGasSpentUSD: Math.round(totalGasSpentUSD * 100) / 100,
+      gasByChain,
+      totalTransactions: Object.values(chainTransactions).reduce((sum, txs) => sum + txs.length, 0),
+      timestamp: Date.now(),
     });
   } catch (error) {
-    console.error('Error fetching gas tracker data:', error);
+    console.error('Gas tracker API error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch gas tracker data' },
+      {
+        success: false,
+        error: 'Failed to track gas spending',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
 }
-
