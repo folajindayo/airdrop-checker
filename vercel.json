@@ -1,0 +1,13 @@
+{
+  "buildCommand": "cd apps/web && npm run build",
+  "devCommand": "cd apps/web && npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "outputDirectory": "apps/web/.next",
+  "env": {
+    "NEXT_PUBLIC_REOWN_PROJECT_ID": "@reown_project_id",
+    "GOLDRUSH_API_KEY": "@goldrush_api_key",
+    "DATABASE_URL": "@database_url"
+  }
+}
+
