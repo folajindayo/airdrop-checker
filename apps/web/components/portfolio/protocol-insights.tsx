@@ -116,6 +116,7 @@ interface ProtocolInsights {
     streak: StreakMetrics;
     velocity: VelocityMetrics;
     decay: DecayMetrics;
+    coverage: CoverageMetrics;
     lastInteraction?: string;
     mostActiveCategory?: {
       category: string;
@@ -128,6 +129,7 @@ interface ProtocolInsights {
   focusAreas: FocusArea[];
   categoryScores: CategoryScore[];
   monthlyActivity: MonthlyActivity[];
+  dormantProtocols: DormantProtocol[];
   generatedAt: string;
 }
 
