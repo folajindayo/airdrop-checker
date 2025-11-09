@@ -92,11 +92,10 @@ async function seedAirdrops() {
     console.error('❌ Error seeding database:', error);
     process.exit(1);
   } finally {
-    // Close connection
+    // Close Prisma connection
     try {
-      const { getClient } = await import('../lib/db/client.js');
-      const client = await getClient();
-      await client.close();
+      const prisma = (await import('../lib/db/prisma.js')).default;
+      await prisma.$disconnect();
       console.log('\n🔌 Database connection closed');
     } catch (err) {
       console.error('Error closing connection:', err);

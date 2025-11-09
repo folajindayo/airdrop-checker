@@ -1,16 +1,5 @@
-import { Collection, ObjectId } from 'mongodb';
-import { getDatabase } from '../client';
+import prisma from '../prisma';
 import type { AirdropProject, AirdropStatus } from '@airdrop-finder/shared';
-
-const COLLECTION_NAME = 'projects';
-
-/**
- * Get projects collection
- */
-async function getCollection(): Promise<Collection<AirdropProject>> {
-  const db = await getDatabase();
-  return db.collection<AirdropProject>(COLLECTION_NAME);
-}
 
 /**
  * Create a new airdrop project
@@ -18,25 +7,39 @@ async function getCollection(): Promise<Collection<AirdropProject>> {
 export async function createProject(
   project: Omit<AirdropProject, 'createdAt' | 'updatedAt'>
 ): Promise<AirdropProject> {
-  const collection = await getCollection();
-  
-  const now = new Date();
-  const newProject: AirdropProject = {
-    ...project,
-    createdAt: now,
-    updatedAt: now,
-  };
+  const result = await prisma.airdropProject.create({
+    data: {
+      id: project.id,
+      name: project.name,
+      slug: project.slug,
+      status: project.status,
+      logo: project.logo,
+      description: project.description,
+      officialUrl: project.officialUrl,
+      claimUrl: project.claimUrl,
+      criteria: project.criteria as any,
+      tags: project.tags || [],
+      chainIds: project.chainIds || [],
+      estimatedValue: project.estimatedValue,
+      deadline: project.deadline,
+    },
+  });
 
-  await collection.insertOne(newProject as any);
-  return newProject;
+  return {
+    ...result,
+    criteria: result.criteria as any,
+  };
 }
 
 /**
  * Find all projects
  */
 export async function findAllProjects(): Promise<AirdropProject[]> {
-  const collection = await getCollection();
-  return collection.find({}).toArray();
+  const projects = await prisma.airdropProject.findMany();
+  return projects.map(p => ({
+    ...p,
+    criteria: p.criteria as any,
+  }));
 }
 
 /**
@@ -45,24 +48,41 @@ export async function findAllProjects(): Promise<AirdropProject[]> {
 export async function findProjectsByStatus(
   status: AirdropStatus
 ): Promise<AirdropProject[]> {
-  const collection = await getCollection();
-  return collection.find({ status }).toArray();
+  const projects = await prisma.airdropProject.findMany({
+    where: { status },
+  });
+  return projects.map(p => ({
+    ...p,
+    criteria: p.criteria as any,
+  }));
 }
 
 /**
  * Find a project by ID
  */
 export async function findProjectById(id: string): Promise<AirdropProject | null> {
-  const collection = await getCollection();
-  return collection.findOne({ id });
+  const project = await prisma.airdropProject.findUnique({
+    where: { id },
+  });
+  if (!project) return null;
+  return {
+    ...project,
+    criteria: project.criteria as any,
+  };
 }
 
 /**
  * Find a project by slug
  */
 export async function findProjectBySlug(slug: string): Promise<AirdropProject | null> {
-  const collection = await getCollection();
-  return collection.findOne({ slug });
+  const project = await prisma.airdropProject.findUnique({
+    where: { slug },
+  });
+  if (!project) return null;
+  return {
+    ...project,
+    criteria: project.criteria as any,
+  };
 }
 
 /**
@@ -72,49 +92,45 @@ export async function updateProject(
   id: string,
   updates: Partial<Omit<AirdropProject, 'id' | 'createdAt'>>
 ): Promise<boolean> {
-  const collection = await getCollection();
-  
-  const result = await collection.updateOne(
-    { id },
-    {
-      $set: {
+  try {
+    await prisma.airdropProject.update({
+      where: { id },
+      data: {
         ...updates,
-        updatedAt: new Date(),
+        criteria: updates.criteria as any,
       },
-    }
-  );
-
-  return result.modifiedCount > 0;
+    });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
  * Delete a project
  */
 export async function deleteProject(id: string): Promise<boolean> {
-  const collection = await getCollection();
-  const result = await collection.deleteOne({ id });
-  return result.deletedCount > 0;
+  try {
+    await prisma.airdropProject.delete({
+      where: { id },
+    });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
  * Count projects by status
  */
 export async function countProjectsByStatus(): Promise<Record<string, number>> {
-  const collection = await getCollection();
-  
-  const results = await collection
-    .aggregate([
-      {
-        $group: {
-          _id: '$status',
-          count: { $sum: 1 },
-        },
-      },
-    ])
-    .toArray();
+  const results = await prisma.airdropProject.groupBy({
+    by: ['status'],
+    _count: true,
+  });
 
   return results.reduce((acc, curr) => {
-    acc[curr._id] = curr.count;
+    acc[curr.status] = curr._count;
     return acc;
   }, {} as Record<string, number>);
 }
@@ -123,20 +139,15 @@ export async function countProjectsByStatus(): Promise<Record<string, number>> {
  * Check if collection is empty
  */
 export async function isCollectionEmpty(): Promise<boolean> {
-  const collection = await getCollection();
-  const count = await collection.countDocuments();
+  const count = await prisma.airdropProject.count();
   return count === 0;
 }
 
 /**
- * Create indexes for the collection
+ * Create indexes for the collection (Prisma handles this automatically via schema)
  */
 export async function createIndexes(): Promise<void> {
-  const collection = await getCollection();
-  
-  await collection.createIndex({ id: 1 }, { unique: true });
-  await collection.createIndex({ slug: 1 }, { unique: true });
-  await collection.createIndex({ status: 1 });
-  await collection.createIndex({ tags: 1 });
+  // Indexes are defined in schema.prisma and created via migrations
+  // This function is kept for compatibility with the seed script
+  console.log('Indexes are managed by Prisma schema');
 }
-

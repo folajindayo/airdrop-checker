@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AirdropProject {
+  id            String   @id
+  name          String
+  slug          String   @unique
+  status        String   // confirmed, rumored, expired, speculative
+  logo          String?
+  description   String?
+  officialUrl   String?  @map("official_url")
+  claimUrl      String?  @map("claim_url")
+  criteria      Json     // Array of eligibility criteria
+  tags          String[] // Array of tags
+  chainIds      Int[]    @map("chain_ids") // Array of chain IDs
+  estimatedValue String? @map("estimated_value")
+  deadline      String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([slug])
+  @@map("airdrop_projects")
+}
+
