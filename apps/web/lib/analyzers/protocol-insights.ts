@@ -56,6 +56,22 @@ export interface MonthlyActivity {
   uniqueProtocols: number;
 }
 
+export type VelocityTrend = 'accelerating' | 'steady' | 'cooling';
+export type DecayStatus = 'fresh' | 'warm' | 'stale';
+
+export interface VelocityMetrics {
+  currentAvgDaily: number;
+  previousAvgDaily: number;
+  percentChange: number;
+  deltaInteractions: number;
+  trend: VelocityTrend;
+}
+
+export interface DecayMetrics {
+  daysSinceInteraction: number | null;
+  status: DecayStatus;
+}
+
 export interface ProtocolInsights {
   address: string;
   summary: {
@@ -73,6 +89,8 @@ export interface ProtocolInsights {
       activeDays: number;
       lastActiveDate?: string;
     };
+    velocity: VelocityMetrics;
+    decay: DecayMetrics;
     lastInteraction?: string;
     mostActiveCategory?: {
       category: ProtocolCategory;
