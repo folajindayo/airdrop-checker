@@ -342,6 +342,44 @@ Get signal-based trending rankings for top airdrops.
 - `status` (optional): Comma-separated statuses to include
 - `chain` (optional): Filter by chain name (e.g. `Ethereum`, `Base`)
 
+### GET /api/airdrops/highlights
+Get radar highlights for upcoming snapshots, highest estimated values, and recently updated projects.
+
+**Response:**
+```json
+{
+  "highlights": {
+    "upcomingSnapshots": [
+      {
+        "projectId": "scroll",
+        "name": "Scroll",
+        "status": "confirmed",
+        "snapshotDate": "2025-03-20T00:00:00.000Z",
+        "daysUntilSnapshot": 12.5
+      }
+    ],
+    "highestValue": [
+      {
+        "projectId": "layerzero",
+        "name": "LayerZero",
+        "status": "rumored",
+        "estimatedValue": "$5,000",
+        "estimatedValueUSD": 5000
+      }
+    ],
+    "recentlyUpdated": [
+      {
+        "projectId": "zora",
+        "name": "Zora",
+        "status": "confirmed",
+        "hoursSinceUpdate": 5
+      }
+    ],
+    "generatedAt": "2025-03-08T12:00:00.000Z"
+  }
+}
+```
+
 ### POST /api/refresh
 Force refresh eligibility scan for an address.
 
