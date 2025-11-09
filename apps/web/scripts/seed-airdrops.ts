@@ -5,11 +5,15 @@
  * Run with: pnpm seed (from apps/web directory)
  */
 
-// Load environment variables from .env.local using dynamic import
 import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-// Manually load .env.local file
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Manually load .env.local file BEFORE any other imports
 try {
   const envPath = resolve(__dirname, '../.env.local');
   const envContent = readFileSync(envPath, 'utf-8');
@@ -25,22 +29,26 @@ try {
   });
   console.log('✓ Loaded environment variables from .env.local');
 } catch (error) {
-  console.warn('⚠️  Could not load .env.local file. Make sure environment variables are set.');
+  console.error('❌ Could not load .env.local file:', error);
+  console.error('Make sure the .env.local file exists in apps/web/');
+  process.exit(1);
 }
 
-import { AIRDROPS } from '../../../packages/shared/data';
-import {
-  createProject,
-  isCollectionEmpty,
-  createIndexes,
-  findAllProjects,
-} from '../lib/db/models/project';
-import { getClient } from '../lib/db/client';
-
+// Now dynamically import modules that need environment variables
 async function seedAirdrops() {
   console.log('🌱 Starting airdrop database seeding...');
 
   try {
+    // Dynamic imports after env vars are set
+    const { AIRDROPS } = await import('../../../packages/shared/data/index.js');
+    const {
+      createProject,
+      isCollectionEmpty,
+      createIndexes,
+      findAllProjects,
+    } = await import('../lib/db/models/project.js');
+    const { getClient } = await import('../lib/db/client.js');
+
     // Check if collection is already populated
     const isEmpty = await isCollectionEmpty();
 
@@ -85,9 +93,14 @@ async function seedAirdrops() {
     process.exit(1);
   } finally {
     // Close connection
-    const client = await getClient();
-    await client.close();
-    console.log('\n🔌 Database connection closed');
+    try {
+      const { getClient } = await import('../lib/db/client.js');
+      const client = await getClient();
+      await client.close();
+      console.log('\n🔌 Database connection closed');
+    } catch (err) {
+      console.error('Error closing connection:', err);
+    }
   }
 }
 
@@ -101,4 +114,3 @@ seedAirdrops()
     console.error('Fatal error:', error);
     process.exit(1);
   });
-
