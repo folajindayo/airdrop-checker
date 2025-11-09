@@ -1398,6 +1398,174 @@ Get platform-wide analytics and statistics.
 }
 ```
 
+### Airdrop Prediction
+```
+GET /api/predict?timeframe=30
+```
+Predict likely airdrops based on patterns and trends.
+
+**Query Params:**
+- `timeframe` (optional): Days to look ahead (default: 30)
+
+**Response:**
+```json
+{
+  "predictions": [
+    {
+      "projectId": "zora",
+      "name": "Zora",
+      "probability": 85,
+      "factors": ["Recently updated", "Multi-chain support"],
+      "estimatedLaunch": "2024-02-15",
+      "chains": ["Ethereum", "Base"]
+    }
+  ],
+  "timeframe": 30
+}
+```
+
+### Batch Operations
+```
+POST /api/batch
+```
+Process multiple addresses in batch (up to 50 addresses).
+
+**Request:**
+```json
+{
+  "addresses": ["0x...", "0x..."],
+  "operation": "check"
+}
+```
+
+**Operations:**
+- `check` - Batch eligibility check
+- `portfolio` - Batch portfolio analysis
+
+**Response:**
+```json
+{
+  "success": true,
+  "operation": "check",
+  "results": [...],
+  "total": 10,
+  "successful": 9,
+  "failed": 1
+}
+```
+
+### Webhooks
+```
+GET /api/webhooks?address=0x...
+POST /api/webhooks
+DELETE /api/webhooks?id=...&address=0x...
+```
+Manage webhooks for real-time event notifications.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "url": "https://your-app.com/webhook",
+  "events": ["eligibility_change", "new_airdrop"],
+  "secret": "optional-secret-key"
+}
+```
+
+**Supported Events:**
+- `eligibility_change` - Eligibility score changed
+- `new_airdrop` - New airdrop added
+- `claim_available` - Claim is now available
+- `snapshot_coming` - Snapshot date approaching
+- `score_improvement` - Score improved
+
+### Advanced Search
+```
+GET /api/search?q=zora&status=confirmed&chain=ethereum&sortBy=name
+```
+Advanced search and filtering for airdrops.
+
+**Query Params:**
+- `q` - Text search query
+- `status` - Filter by status (confirmed, rumored, etc.)
+- `chain` - Filter by chain
+- `hasSnapshot` - Filter by snapshot availability (true/false)
+- `hasClaim` - Filter by claim availability (true/false)
+- `hasValue` - Filter by estimated value (true/false)
+- `sortBy` - Sort field (name, status, criteria, chains, snapshot)
+- `sortOrder` - Sort order (asc, desc)
+- `limit` - Result limit (default: 50)
+
+**Response:**
+```json
+{
+  "results": [...],
+  "total": 25,
+  "returned": 25,
+  "filters": {...}
+}
+```
+
+### Usage Analytics
+```
+GET /api/usage/[address]
+```
+Get API usage statistics and rate limit information.
+
+**Response:**
+```json
+{
+  "stats": {
+    "totalRequests": 150,
+    "requestsByEndpoint": {
+      "/api/airdrop-check": 100,
+      "/api/portfolio": 50
+    },
+    "dailyUsage": [
+      {"date": "2024-01-15", "count": 25}
+    ]
+  },
+  "rateLimit": {
+    "limit": 1000,
+    "remaining": 850,
+    "resetAt": "2024-01-16T00:00:00Z"
+  }
+}
+```
+
+### Social Sharing
+```
+POST /api/share
+GET /api/share?id=...
+```
+Create and retrieve shareable links.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "shareType": "eligibility",
+  "data": {...},
+  "public": false,
+  "expiresInHours": 24
+}
+```
+
+**Share Types:**
+- `eligibility` - Eligibility results
+- `portfolio` - Portfolio data
+- `roi` - ROI calculations
+- `comparison` - Wallet comparisons
+
+**Response:**
+```json
+{
+  "shareId": "abc123...",
+  "shareUrl": "https://app.com/share/abc123...",
+  "expiresAt": "2024-01-16T12:00:00Z"
+}
+```
+
 ## Development Scripts
 
 ```bash
