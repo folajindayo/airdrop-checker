@@ -218,6 +218,10 @@ export default function PortfolioPage() {
                     <BatchWalletChecker />
                     <SnapshotTracker />
                   </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <PortfolioRebalancer address={address} />
+                    <CalendarExport address={address} />
+                  </div>
                   <div className="grid grid-cols-1 gap-6">
                     <Leaderboard address={address} />
                     <NewsFeed />
