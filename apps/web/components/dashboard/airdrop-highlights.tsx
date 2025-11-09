@@ -10,11 +10,12 @@ import {
 import { Skeleton } from '@/components/common/skeleton';
 import { StatusBadge } from '@/components/common/status-badge';
 import { Separator } from '@/components/ui/separator';
+import type { AirdropStatus } from '@airdrop-finder/shared';
 
 interface SnapshotHighlight {
   projectId: string;
   name: string;
-  status: string;
+  status: AirdropStatus;
   snapshotDate: string;
   daysUntilSnapshot: number;
 }
@@ -22,7 +23,7 @@ interface SnapshotHighlight {
 interface ValueHighlight {
   projectId: string;
   name: string;
-  status: string;
+  status: AirdropStatus;
   estimatedValue: string;
   estimatedValueUSD: number;
 }
@@ -30,7 +31,7 @@ interface ValueHighlight {
 interface ActivityHighlight {
   projectId: string;
   name: string;
-  status: string;
+  status: AirdropStatus;
   updatedAt?: string;
   hoursSinceUpdate: number | null;
 }
