@@ -555,6 +555,7 @@ Example criterion:
 - **Portfolio Data**: 5 minutes TTL
 - **Gas Tracker**: 5 minutes TTL
 - **Multi-Wallet Portfolio**: 5 minutes TTL
+- **Highlights Radar**: 1 minute TTL
 
 ## New Features Overview
 
