@@ -111,14 +111,6 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 98. **Expected Value Calculator** - Probability-weighted airdrop values
 99. **Break-Even Analysis** - Calculate minimum airdrop value needed
 100. **Smart Transaction Recommendations** - Get personalized transaction suggestions
-90. **Smart Contract Analyzer** - Analyze smart contract interactions and patterns
-91. **Portfolio Breakdown** - View portfolio by chain, token, and value
-92. **Gas Price Comparison** - Compare gas prices across all supported chains
-93. **Eligibility Simulation** - Test how different interactions affect scores
-94. **Wallet Comparison** - Compare multiple wallets side-by-side
-95. **Claim History** - Track all claimed airdrops with transaction hashes
-96. **Interaction Analytics** - Detailed analytics on protocol interactions
-97. **ROI Opportunities** - Ranked list of best ROI opportunities
 98. **Contract Function Analysis** - Analyze function calls to smart contracts
 99. **Portfolio Token List** - View all tokens with balances and values
 100. **Gas Optimization Recommendations** - Get recommendations for best interaction times
