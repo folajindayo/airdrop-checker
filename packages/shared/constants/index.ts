@@ -4,6 +4,7 @@ export const CACHE_TTL = {
   AIRDROP_CHECK: 60 * 60 * 1000, // 1 hour
   AIRDROPS_LIST: 5 * 60 * 1000, // 5 minutes
   GOLDRUSH_DATA: 60 * 60 * 1000, // 1 hour
+  AIRDROP_TRENDING: 60 * 1000, // 1 minute
 };
 
 export const RATE_LIMITS = {
