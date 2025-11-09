@@ -1,0 +1,236 @@
+[
+  {
+    "id": "zora",
+    "name": "Zora",
+    "slug": "zora",
+    "status": "confirmed",
+    "description": "Zora is a decentralized protocol for creating, sharing, and trading NFTs on Ethereum and Base.",
+    "officialUrl": "https://zora.co",
+    "criteria": [
+      {
+        "description": "Minted NFT on Zora",
+        "check": "nft_platform=zora"
+      },
+      {
+        "description": "Used Base network",
+        "check": "chain=base"
+      },
+      {
+        "description": "Created on Zora protocol",
+        "check": "protocol=zora"
+      }
+    ],
+    "chainIds": [1, 8453],
+    "tags": ["nft", "creator", "confirmed"]
+  },
+  {
+    "id": "layerzero",
+    "name": "LayerZero",
+    "slug": "layerzero",
+    "status": "rumored",
+    "description": "LayerZero is an omnichain interoperability protocol that enables cross-chain messaging.",
+    "officialUrl": "https://layerzero.network",
+    "criteria": [
+      {
+        "description": "Used Stargate bridge",
+        "check": "protocol=stargate"
+      },
+      {
+        "description": "Bridged to 3+ chains",
+        "check": "bridge_count>=3"
+      },
+      {
+        "description": "Made cross-chain transactions",
+        "check": "cross_chain_tx>0"
+      }
+    ],
+    "chainIds": [1, 10, 42161, 137],
+    "tags": ["bridge", "defi", "rumored"]
+  },
+  {
+    "id": "starknet",
+    "name": "Starknet",
+    "slug": "starknet",
+    "status": "rumored",
+    "description": "Starknet is a permissionless decentralized ZK-Rollup operating as an L2 network over Ethereum.",
+    "officialUrl": "https://starknet.io",
+    "criteria": [
+      {
+        "description": "Bridged to Starknet",
+        "check": "bridge_to=starknet"
+      },
+      {
+        "description": "Made transactions on Starknet",
+        "check": "starknet_tx>0"
+      },
+      {
+        "description": "Interacted with Starknet protocols",
+        "check": "starknet_protocols>0"
+      }
+    ],
+    "tags": ["layer2", "zk-rollup", "rumored"]
+  },
+  {
+    "id": "scroll",
+    "name": "Scroll",
+    "slug": "scroll",
+    "status": "confirmed",
+    "description": "Scroll is a zkEVM-based zkRollup on Ethereum that enables native compatibility for existing applications.",
+    "officialUrl": "https://scroll.io",
+    "criteria": [
+      {
+        "description": "Bridged to Scroll",
+        "check": "bridge_to=scroll"
+      },
+      {
+        "description": "Made transactions on Scroll",
+        "check": "scroll_tx>=5"
+      },
+      {
+        "description": "Used Scroll ecosystem dApps",
+        "check": "scroll_dapps>0"
+      }
+    ],
+    "chainIds": [534352],
+    "tags": ["layer2", "zk-rollup", "confirmed"]
+  },
+  {
+    "id": "eigenlayer",
+    "name": "EigenLayer",
+    "slug": "eigenlayer",
+    "status": "confirmed",
+    "description": "EigenLayer is a restaking protocol built on Ethereum that allows users to restake their ETH or LSTs.",
+    "officialUrl": "https://eigenlayer.xyz",
+    "criteria": [
+      {
+        "description": "Deposited to EigenLayer",
+        "check": "protocol=eigenlayer,action=deposit"
+      },
+      {
+        "description": "Restaked ETH or LST",
+        "check": "eigenlayer_restake>0"
+      },
+      {
+        "description": "Used for 30+ days",
+        "check": "eigenlayer_duration>=30"
+      }
+    ],
+    "chainIds": [1],
+    "tags": ["defi", "restaking", "confirmed"]
+  },
+  {
+    "id": "zkSync",
+    "name": "zkSync Era",
+    "slug": "zksync-era",
+    "status": "confirmed",
+    "description": "zkSync Era is a Layer 2 scaling solution that uses zero-knowledge proofs.",
+    "officialUrl": "https://zksync.io",
+    "criteria": [
+      {
+        "description": "Bridged to zkSync Era",
+        "check": "bridge_to=zksync"
+      },
+      {
+        "description": "Made 10+ transactions",
+        "check": "zksync_tx>=10"
+      },
+      {
+        "description": "Used zkSync ecosystem",
+        "check": "zksync_protocols>0"
+      }
+    ],
+    "chainIds": [324],
+    "tags": ["layer2", "zk-rollup", "confirmed"]
+  },
+  {
+    "id": "base",
+    "name": "Base",
+    "slug": "base",
+    "status": "rumored",
+    "description": "Base is Coinbase's Ethereum L2 built on the OP Stack, designed to be a secure, low-cost, builder-friendly way to bring the next billion users onchain.",
+    "officialUrl": "https://base.org",
+    "criteria": [
+      {
+        "description": "Made transactions on Base",
+        "check": "chain=base,tx_count>=5"
+      },
+      {
+        "description": "Used Base ecosystem dApps",
+        "check": "base_protocols>=3"
+      },
+      {
+        "description": "Held assets on Base",
+        "check": "base_balance>0"
+      }
+    ],
+    "chainIds": [8453],
+    "tags": ["layer2", "optimism", "rumored"]
+  },
+  {
+    "id": "polygon-zkevm",
+    "name": "Polygon zkEVM",
+    "slug": "polygon-zkevm",
+    "status": "rumored",
+    "description": "Polygon zkEVM is a Layer 2 scaling solution for Ethereum using zero-knowledge technology.",
+    "officialUrl": "https://polygon.technology/polygon-zkevm",
+    "criteria": [
+      {
+        "description": "Bridged to Polygon zkEVM",
+        "check": "bridge_to=polygon-zkevm"
+      },
+      {
+        "description": "Made transactions on Polygon zkEVM",
+        "check": "polygon_zkevm_tx>=5"
+      },
+      {
+        "description": "Used Polygon zkEVM dApps",
+        "check": "polygon_zkevm_protocols>0"
+      }
+    ],
+    "tags": ["layer2", "zk-rollup", "rumored"]
+  },
+  {
+    "id": "linea",
+    "name": "Linea",
+    "slug": "linea",
+    "status": "rumored",
+    "description": "Linea is a type 2 zero knowledge Ethereum Virtual Machine (zkEVM) developed by ConsenSys.",
+    "officialUrl": "https://linea.build",
+    "criteria": [
+      {
+        "description": "Bridged to Linea",
+        "check": "bridge_to=linea"
+      },
+      {
+        "description": "Made transactions on Linea",
+        "check": "linea_tx>=5"
+      },
+      {
+        "description": "Used Linea protocols",
+        "check": "linea_protocols>0"
+      }
+    ],
+    "tags": ["layer2", "zk-rollup", "rumored"]
+  },
+  {
+    "id": "arbitrum-odyssey",
+    "name": "Arbitrum Odyssey",
+    "slug": "arbitrum-odyssey",
+    "status": "expired",
+    "description": "The Arbitrum Odyssey was a journey through the Arbitrum ecosystem (already distributed).",
+    "officialUrl": "https://arbitrum.io",
+    "criteria": [
+      {
+        "description": "Completed Odyssey tasks",
+        "check": "arbitrum_odyssey_complete=true"
+      },
+      {
+        "description": "Used Arbitrum protocols",
+        "check": "arbitrum_protocols>=5"
+      }
+    ],
+    "chainIds": [42161],
+    "tags": ["layer2", "expired"]
+  }
+]
+
