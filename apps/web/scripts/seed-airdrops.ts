@@ -4,6 +4,12 @@
  * Seed script to populate MongoDB with initial airdrop projects
  */
 
+import { config } from 'dotenv';
+import { resolve } from 'path';
+
+// Load environment variables from .env.local
+config({ path: resolve(__dirname, '../.env.local') });
+
 import { AIRDROPS } from '../../../packages/shared/data';
 import {
   createProject,
