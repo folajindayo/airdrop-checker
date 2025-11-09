@@ -353,6 +353,36 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 338. **Validation Types** - Multiple validation types supported
 339. **Sanitization Rules** - Configurable sanitization rules
 340. **Security Validation** - Security-focused validation
+341. **User Preferences** - Customizable user settings
+342. **Notification Preferences** - Configure notification channels
+343. **Display Preferences** - Theme, currency, language settings
+344. **Alert Preferences** - Customize alert types
+345. **Privacy Settings** - Control data sharing
+346. **Cost Calculator** - Calculate farming costs
+347. **Gas Cost Estimation** - Estimate gas costs for activities
+348. **ROI Calculator** - Calculate return on investment
+349. **Activity Cost Breakdown** - Detailed cost breakdown
+350. **Gas Price Tracker** - Real-time gas price monitoring
+351. **Multi-Chain Gas Prices** - Gas prices across all chains
+352. **Gas Price Trends** - Historical gas price trends
+353. **Gas Price Alerts** - Get notified of gas price changes
+354. **Token Price Tracking** - Track airdrop token prices
+355. **Price Change Tracking** - 24h price changes
+356. **Market Cap Data** - Token market capitalization
+357. **Volume Tracking** - 24h trading volume
+358. **Portfolio Comparison** - Compare multiple wallets
+359. **Performance Metrics** - Compare wallet performance
+360. **Gas Efficiency Ranking** - Rank wallets by efficiency
+361. **Historical Analysis** - Analyze historical trends
+362. **Pattern Recognition** - Identify activity patterns
+363. **Trend Analysis** - Analyze airdrop trends
+364. **Predictive Analytics** - Predict future airdrops
+365. **Usage Tracking** - Track API usage
+366. **Usage Statistics** - Detailed usage analytics
+367. **Endpoint Analytics** - Per-endpoint usage stats
+368. **Performance Monitoring** - Track API performance
+369. **Response Time Tracking** - Monitor response times
+370. **Success Rate Monitoring** - Track API success rates
 
 ### 💬 Communication & Social
 - **Chat Component** - Real-time messaging with sidebar
