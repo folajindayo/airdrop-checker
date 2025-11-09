@@ -52,11 +52,9 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 43. **Portfolio Value Tracking** - Real-time USD value of all holdings
 44. **Protocol-by-Protocol Breakdown** - Detailed DeFi position analysis
 45. **Interaction Timeline** - See when and how often you interact with protocols
-41. **Protocol Engagement Score** - Composite scoring across all protocol categories
-42. **Category Scoreboard** - Visualize category strength with weighted scores
 
-### 📊 UI Components Library (26-70)
-26. **Alert Component** - Multiple variants with action buttons
+### 📊 UI Components Library (46-90)
+46. **Alert Component** - Multiple variants with action buttons
 27. **Avatar Component** - Wallet, user, group, status variants
 28. **Badge Component** - Multiple variants and sizes
 29. **Breadcrumb Navigation** - Responsive with custom separators
