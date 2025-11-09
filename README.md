@@ -2561,6 +2561,256 @@ Calculate risk vs reward ratios and break-even probabilities for airdrop farming
 - `medium` - Moderate risk, decent reward ratio (2-5)
 - `low` - High risk or low reward ratio (<2)
 
+### Wallet Comparison Tool
+```
+POST /api/compare-wallets
+```
+Compare eligibility across multiple wallet addresses (2-10 wallets).
+
+**Request:**
+```json
+{
+  "addresses": ["0x...", "0x...", "0x..."],
+  "includeDetails": false
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "wallets": [
+    {
+      "address": "0x...",
+      "overallScore": 75,
+      "eligibleCount": 8,
+      "totalValue": 5000,
+      "chainsUsed": 4,
+      "activityLevel": "high",
+      "topAirdrops": [...]
+    }
+  ],
+  "comparison": {
+    "bestWallet": {
+      "address": "0x...",
+      "metric": "Overall Score",
+      "value": 85
+    },
+    "averageScore": 72,
+    "scoreRange": {
+      "min": 60,
+      "max": 85
+    },
+    "uniqueAirdrops": ["scroll", "layerzero"],
+    "commonAirdrops": ["zora", "base"],
+    "recommendations": [
+      "Wallet 0x742... has significantly higher score. Consider replicating its activity patterns."
+    ]
+  }
+}
+```
+
+### Strategy Optimizer
+```
+POST /api/strategy-optimizer
+```
+Optimize airdrop farming strategy based on budget and goals.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "currentScore": 50,
+  "targetScore": 80,
+  "budget": 100,
+  "preferredChains": ["Ethereum", "Base"],
+  "maxGasPrice": 50
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "address": "0x...",
+  "currentScore": 50,
+  "targetScore": 80,
+  "budget": 100,
+  "optimizedPlan": {
+    "totalCost": 85,
+    "estimatedScore": 78,
+    "roi": 3850,
+    "steps": [
+      {
+        "action": "Mint NFT on Zora",
+        "protocol": "Zora",
+        "chain": "Base",
+        "cost": 2,
+        "scoreImpact": 10,
+        "priority": "high",
+        "estimatedTime": "3 minutes"
+      }
+    ]
+  },
+  "alternatives": [
+    {
+      "name": "Low-Cost Strategy",
+      "totalCost": 25,
+      "estimatedScore": 65,
+      "roi": 3225,
+      "description": "Focus on low-cost, high-impact actions"
+    }
+  ],
+  "recommendations": [
+    "Optimized plan will increase score by 28 points for $85."
+  ]
+}
+```
+
+### Wallet Validator
+```
+POST /api/wallet-validator
+```
+Validate wallet address and check for common issues.
+
+**Request:**
+```json
+{
+  "address": "0x..."
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "address": "0x...",
+  "isValid": true,
+  "checks": {
+    "format": true,
+    "checksum": true,
+    "isContract": false,
+    "hasActivity": true,
+    "balance": {
+      "hasBalance": true,
+      "totalBalance": "0.5 ETH"
+    }
+  },
+  "warnings": [],
+  "recommendations": [
+    "Wallet looks healthy. Continue farming activities."
+  ],
+  "healthScore": 100
+}
+```
+
+### Smart Recommendations Engine
+```
+POST /api/smart-recommendations
+```
+Get AI-powered personalized recommendations for airdrop farming.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "includeInsights": true
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "address": "0x...",
+  "recommendations": [
+    {
+      "type": "action",
+      "priority": "high",
+      "title": "Start Basic Farming Activities",
+      "description": "Your score is low. Begin with fundamental activities.",
+      "action": "Swap tokens on Uniswap, bridge to L2, mint an NFT",
+      "estimatedCost": 20,
+      "estimatedImpact": 25,
+      "timeframe": "1-2 days"
+    }
+  ],
+  "insights": {
+    "currentStrengths": ["Good multi-chain presence"],
+    "currentWeaknesses": ["Low overall eligibility score"],
+    "opportunities": ["5 confirmed airdrops to focus on"],
+    "threats": []
+  },
+  "personalizedScore": 65
+}
+```
+
+**Recommendation Types:**
+- `action` - Specific actions to take
+- `airdrop` - Airdrop-specific recommendations
+- `strategy` - Strategic recommendations
+- `warning` - Important warnings
+
+### Analytics Aggregator
+```
+POST /api/analytics-aggregator
+```
+Get comprehensive analytics and insights for a wallet.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "timeframe": "30d"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "address": "0x...",
+  "timeframe": "30d",
+  "overview": {
+    "totalAirdrops": 25,
+    "eligibleAirdrops": 18,
+    "averageScore": 72,
+    "totalPotentialValue": 12500,
+    "activityTrend": "increasing"
+  },
+  "breakdown": {
+    "byStatus": {
+      "confirmed": 10,
+      "rumored": 15
+    },
+    "byChain": {
+      "Ethereum": 12,
+      "Base": 8,
+      "Arbitrum": 5
+    },
+    "scoreDistribution": {
+      "excellent": 8,
+      "good": 10,
+      "fair": 5,
+      "poor": 2
+    }
+  },
+  "trends": {
+    "scoreChange": 5,
+    "newAirdrops": 3,
+    "improvedAirdrops": 7,
+    "topPerformingChains": ["Ethereum", "Base", "Arbitrum"]
+  },
+  "insights": [
+    "Strong overall eligibility with high average score",
+    "Good multi-chain diversification"
+  ],
+  "recommendations": [
+    "Focus on improving scores for low-performing airdrops"
+  ]
+}
+```
+
 ## Enhanced Farm Script Features
 
 The `farm.sh` script now includes advanced features for better reliability and usability:
