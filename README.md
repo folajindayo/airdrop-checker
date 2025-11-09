@@ -80,28 +80,37 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 69. **Aspect Ratio** - Responsive media containers
 70. **Progress Tracker** - Step-by-step progress visualization
 
-### 🚀 Advanced Features (61-100)
-61. **Score History** - Track historical scores with charts
-62. **Watchlist** - Monitor up to 10 wallets
-63. **Mobile Navigation** - Responsive slide-out menu
-64. **Theme Toggle** - Dark/light/system themes
-65. **Rate Limiting** - API protection middleware
-66. **Notification Center** - Real-time alerts system
-67. **Error Boundary** - Graceful error handling
-68. **Help/FAQ Page** - 15+ questions with accordion UI
-69. **Settings Page** - 5-tab settings interface
-70. **Scroll to Top** - Multiple variants with progress
-71. **Transaction Details** - Full tx info display
-72. **Chain Selector** - Dropdown and grid variants
-73. **Confirmation Dialog** - Preset confirmations
-74. **Advanced Search** - Filters sheet with active badges
-75. **Rich Text Editor** - Formatting toolbar with markdown
-76. **File Upload** - Drag-and-drop with preview
-77. **Analytics Widget** - User and airdrop analytics
-78. **Multi-Step Form** - Progress tracking with validation
-79. **Kanban Board** - Drag-and-drop project tracking
-80. **QR Code Generator** - With scanner and share variants
-81. **File Manager** - Grid/list view with file operations
+### 🚀 Advanced Features (71-100)
+71. **Score History** - Track historical scores with charts
+72. **Watchlist** - Monitor up to 10 wallets
+73. **Mobile Navigation** - Responsive slide-out menu
+74. **Theme Toggle** - Dark/light/system themes
+75. **Rate Limiting** - API protection middleware
+76. **Notification Center** - Real-time alerts system
+77. **Error Boundary** - Graceful error handling
+78. **Help/FAQ Page** - 15+ questions with accordion UI
+79. **Settings Page** - 5-tab settings interface
+80. **Scroll to Top** - Multiple variants with progress
+81. **Transaction Details** - Full tx info display
+82. **Chain Selector** - Dropdown and grid variants
+83. **Confirmation Dialog** - Preset confirmations
+84. **Advanced Search** - Filters sheet with active badges
+85. **Rich Text Editor** - Formatting toolbar with markdown
+86. **File Upload** - Drag-and-drop with preview
+87. **Analytics Widget** - User and airdrop analytics
+88. **Multi-Step Form** - Progress tracking with validation
+89. **Kanban Board** - Drag-and-drop project tracking
+90. **QR Code Generator** - With scanner and share variants
+91. **File Manager** - Grid/list view with file operations
+92. **Portfolio Page** - Comprehensive portfolio analytics dashboard
+93. **Gas Spending Analytics** - Detailed gas cost analysis by chain
+94. **ROI Recommendations** - AI-powered investment suggestions
+95. **Claim History** - Track all claimed airdrops with metadata
+96. **Multi-Wallet Aggregation** - Combined portfolio view
+97. **Transaction Impact Analysis** - See how transactions affect scores
+98. **Expected Value Calculator** - Probability-weighted airdrop values
+99. **Break-Even Analysis** - Calculate minimum airdrop value needed
+100. **Smart Transaction Recommendations** - Get personalized transaction suggestions
 82. **Portfolio Value Tracker** - Track total portfolio value across all chains
 83. **Airdrop Alerts System** - Email notifications for new airdrops and eligibility changes
 84. **Gas Fee Optimizer** - Find best times and chains for lowest gas fees
