@@ -263,6 +263,8 @@ airdrop-checker/
 │       │   ├── api/            # API endpoints
 │       │   │   ├── airdrop-check/[address]/
 │       │   │   ├── airdrops/
+│       │   │   │   ├── highlights/
+│       │   │   │   └── trending/
 │       │   │   ├── calendar/
 │       │   │   ├── compare/
 │       │   │   ├── gas-tracker/[address]/
