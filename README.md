@@ -600,6 +600,14 @@ Get gas spending analytics for a wallet address.
 ### GET /api/protocol-insights/[address]
 Get protocol focus areas, engagement scores, timeline feed, and monthly trends for a wallet.
 
+**Highlights:**
+- `summary.engagementScore` condenses category strength into a single 0-100 score.
+- `summary.momentum` shows month-over-month trajectory (direction, percent change, delta interactions).
+- `summary.streak` tracks consecutive active days and last interaction.
+- `summary.velocity` compares the last 30 days of activity with the previous 30-day window.
+- `summary.decay` flags how recently the wallet touched any tracked protocol.
+- `categoryScores` adds per-category scoring with interaction and diversity context.
+
 **Response:**
 ```json
 {
