@@ -5,6 +5,7 @@ import type {
   TrendingSignalType,
   AirdropStatus,
 } from '@airdrop-finder/shared';
+import { daysUntil, parseEstimatedValue } from './utils';
 
 interface TrendingOptions {
   limit?: number;
@@ -27,38 +28,6 @@ const SIGNAL_LABELS: Record<TrendingSignalType, string> = {
   claim: 'Claim window open',
   chain: 'Multi-chain exposure',
 };
-
-function parseEstimatedValue(value?: string): number {
-  if (!value) return 0;
-
-  const normalized = value.replace(/[$,\s]/g, '').toLowerCase();
-  const match = normalized.match(/([\d.]+)([kmbt]?)/);
-  if (!match) return 0;
-
-  const amount = parseFloat(match[1]);
-  const suffix = match[2];
-
-  if (Number.isNaN(amount)) return 0;
-
-  const multipliers: Record<string, number> = {
-    k: 1e3,
-    m: 1e6,
-    b: 1e9,
-    t: 1e12,
-  };
-
-  return amount * (multipliers[suffix] ?? 1);
-}
-
-function daysUntilSnapshot(snapshotDate?: string): number | null {
-  if (!snapshotDate) return null;
-
-  const target = new Date(snapshotDate).getTime();
-  if (Number.isNaN(target)) return null;
-
-  const diffMs = target - Date.now();
-  return diffMs / (1000 * 60 * 60 * 24);
-}
 
 function buildSignal(type: TrendingSignalType, weight: number): TrendingSignal {
   return {
@@ -83,7 +52,7 @@ function scoreProject(project: AirdropProject): {
     signals.push(buildSignal('value', valueWeight));
   }
 
-  const snapshotDiff = daysUntilSnapshot(project.snapshotDate);
+  const snapshotDiff = daysUntil(project.snapshotDate);
   if (snapshotDiff !== null) {
     if (snapshotDiff >= 0 && snapshotDiff <= 3) {
       score += 16;
