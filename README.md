@@ -2179,6 +2179,141 @@ System health check endpoint for monitoring.
 }
 ```
 
+### Telegram Integration
+```
+POST /api/integrations/telegram
+GET /api/integrations/telegram?address=0x...
+```
+Configure Telegram bot notifications.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "botToken": "123456:ABC-DEF1234ghIkl",
+  "chatId": "123456789",
+  "events": ["eligibility_change", "new_airdrop"]
+}
+```
+
+### Email Notifications
+```
+POST /api/notifications/email
+GET /api/notifications/email?address=0x...
+PATCH /api/notifications/email
+```
+Subscribe to email notifications.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "email": "user@example.com",
+  "events": ["eligibility_change", "claim_available"]
+}
+```
+
+**PATCH Request (Verify):**
+```json
+{
+  "address": "0x...",
+  "token": "verification-token"
+}
+```
+
+### Advanced Reports
+```
+GET /api/reports/[address]?format=json&includeCharts=true
+```
+Generate comprehensive reports with recommendations.
+
+**Query Params:**
+- `format` - Report format (json, pdf - coming soon)
+- `includeCharts` - Include chart data (true/false)
+
+**Response:**
+```json
+{
+  "summary": {
+    "overallScore": 72,
+    "stats": {...}
+  },
+  "eligibility": [...],
+  "activity": {...},
+  "recommendations": [
+    "Focus on 5 projects with scores below 50%",
+    "Consider: Mint NFT on Zora, Use Base network"
+  ]
+}
+```
+
+### API Versioning
+```
+GET /api/v1
+```
+Get API version information and available endpoints.
+
+**Response:**
+```json
+{
+  "version": "1.0.0",
+  "status": "stable",
+  "endpoints": {...},
+  "changelog": [...],
+  "documentation": "https://docs.airdrop-finder.com/api/v1"
+}
+```
+
+### Rate Limiting
+```
+GET /api/rate-limit?endpoint=/api/airdrop-check&address=0x...
+```
+Get rate limit information for an endpoint.
+
+**Response:**
+```json
+{
+  "endpoint": "/api/airdrop-check",
+  "limit": 100,
+  "window": 3600,
+  "remaining": 85,
+  "resetAt": "2024-01-16T12:00:00Z",
+  "used": 15
+}
+```
+
+### API Key Authentication
+```
+POST /api/auth/api-key
+GET /api/auth/api-key?address=0x...
+DELETE /api/auth/api-key?id=...
+```
+Generate and manage API keys for secure access.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "name": "My API Key",
+  "permissions": ["read", "write"],
+  "expiresInDays": 90
+}
+```
+
+**Response:**
+```json
+{
+  "apiKey": "ak_abc123...",
+  "keyData": {
+    "id": "key_123",
+    "name": "My API Key",
+    "permissions": ["read", "write"],
+    "expiresAt": "2024-04-01T00:00:00Z"
+  },
+  "warning": "Store this API key securely. It will not be shown again."
+}
+```
+
 ## Development Scripts
 
 ```bash
