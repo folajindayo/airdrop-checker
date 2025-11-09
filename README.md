@@ -734,7 +734,9 @@ Get protocol focus areas, engagement scores, timeline feed, and monthly trends f
 - `summary.velocity` compares the last 30 days of activity with the previous 30-day window.
 - `summary.decay` flags how recently the wallet touched any tracked protocol.
 - `summary.coverage` reveals category coverage, missing categories, and total breadth.
+- `summary.diversity` captures entropy-based protocol variety and distribution.
 - `dormantProtocols` surfaces protocols that need attention after prolonged inactivity.
+- `reactivationRecommendations` provides tailored action items to revive dormant protocols.
 
 **Response:**
 ```json
