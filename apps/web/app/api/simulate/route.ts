@@ -105,10 +105,17 @@ export async function POST(request: NextRequest) {
       };
     });
 
-    // Calculate improvements
-    const currentResults = await fetch(`http://localhost:3000/api/airdrop-check/${normalizedAddress}`)
-      .then((res) => res.json())
-      .catch(() => ({ airdrops: [] }));
+    // Calculate improvements - fetch current eligibility
+    let currentResults = { airdrops: [], overallScore: 0 };
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || request.nextUrl.origin;
+      const currentResponse = await fetch(`${baseUrl}/api/airdrop-check/${normalizedAddress}`);
+      if (currentResponse.ok) {
+        currentResults = await currentResponse.json();
+      }
+    } catch (error) {
+      console.error('Failed to fetch current eligibility:', error);
+    }
 
     const improvements = results.map((simulated) => {
       const current = currentResults.airdrops?.find(
