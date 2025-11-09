@@ -2314,6 +2314,268 @@ Generate and manage API keys for secure access.
 }
 ```
 
+### Airdrop Scheduler
+```
+POST /api/scheduler
+GET /api/scheduler?address=0x...
+DELETE /api/scheduler?id=...
+PATCH /api/scheduler
+```
+Schedule automatic airdrop eligibility checks for specific times.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "scheduleTime": "2024-03-20T10:00:00Z",
+  "frequency": "daily"
+}
+```
+
+**Frequency Options:**
+- `once` - Run once (default)
+- `daily` - Run daily at scheduled time
+- `weekly` - Run weekly
+- `monthly` - Run monthly
+
+**Response:**
+```json
+{
+  "success": true,
+  "scheduledCheck": {
+    "id": "0x...-1234567890",
+    "address": "0x...",
+    "scheduleTime": "2024-03-20T10:00:00Z",
+    "frequency": "daily",
+    "enabled": true,
+    "nextRun": "2024-03-20T10:00:00Z",
+    "runCount": 0
+  }
+}
+```
+
+**GET Response:**
+```json
+{
+  "success": true,
+  "checks": [...],
+  "count": 3
+}
+```
+
+### Reminder System
+```
+POST /api/reminders
+GET /api/reminders?address=0x...&upcoming=true
+DELETE /api/reminders?id=...
+PATCH /api/reminders
+```
+Set reminders for airdrop snapshots, claims, and announcements.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "projectId": "zora",
+  "projectName": "Zora",
+  "type": "snapshot",
+  "reminderTime": "2024-03-20T10:00:00Z",
+  "message": "Zora snapshot in 3 days"
+}
+```
+
+**Reminder Types:**
+- `snapshot` - Reminder for snapshot date
+- `claim` - Reminder for claim availability
+- `announcement` - Reminder for project announcements
+- `custom` - Custom reminder
+
+**Response:**
+```json
+{
+  "success": true,
+  "reminder": {
+    "id": "reminder-0x...-1234567890",
+    "address": "0x...",
+    "type": "snapshot",
+    "reminderTime": "2024-03-20T10:00:00Z",
+    "message": "Zora snapshot in 3 days",
+    "enabled": true,
+    "sent": false
+  }
+}
+```
+
+**GET Query Params:**
+- `address` - Wallet address (required)
+- `upcoming` - Filter upcoming reminders (true/false)
+- `sent` - Filter sent reminders (true/false)
+
+### Eligibility History Tracking
+```
+POST /api/history/[address]
+GET /api/history/[address]?days=30&limit=50
+```
+Track eligibility score changes and improvements over time.
+
+**POST Request:**
+```json
+{
+  "overallScore": 75,
+  "airdrops": [
+    {
+      "projectId": "zora",
+      "project": "Zora",
+      "score": 85,
+      "status": "confirmed"
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "entry": {
+    "id": "history-0x...-1234567890",
+    "address": "0x...",
+    "timestamp": 1234567890000,
+    "overallScore": 75,
+    "airdrops": [...],
+    "changes": {
+      "scoreDelta": 5,
+      "newAirdrops": ["scroll"],
+      "improvedAirdrops": ["zora"],
+      "declinedAirdrops": []
+    }
+  }
+}
+```
+
+**GET Query Params:**
+- `days` - Number of days to look back (default: 30)
+- `limit` - Maximum entries to return (default: 50)
+
+**Response:**
+```json
+{
+  "success": true,
+  "history": [...],
+  "stats": {
+    "totalEntries": 25,
+    "averageScore": 72,
+    "highestScore": 85,
+    "lowestScore": 60,
+    "scoreTrend": 5,
+    "totalImprovements": 10,
+    "totalDeclines": 3
+  },
+  "count": 25
+}
+```
+
+### Risk Calculator
+```
+POST /api/risk-calculator
+```
+Calculate risk vs reward ratios and break-even probabilities for airdrop farming.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "totalGasSpentUSD": 125.50,
+  "airdrops": [
+    {
+      "projectId": "zora",
+      "score": 85,
+      "estimatedValueUSD": 2000
+    }
+  ],
+  "riskFactors": {
+    "sybilRisk": 25,
+    "timingRisk": 30,
+    "concentrationRisk": 20,
+    "gasSpendingRisk": 15,
+    "protocolRisk": 10
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "address": "0x...",
+  "totalInvestment": 125.50,
+  "potentialReward": 2000.00,
+  "riskScore": 28,
+  "rewardRiskRatio": 15.94,
+  "breakEvenProbability": 6.28,
+  "expectedValue": 1874.50,
+  "confidenceLevel": "high",
+  "recommendations": [
+    "Positive expected value of $1874.50. Strategy looks promising."
+  ],
+  "riskFactors": {...}
+}
+```
+
+**Confidence Levels:**
+- `high` - Low risk, high reward ratio (>5)
+- `medium` - Moderate risk, decent reward ratio (2-5)
+- `low` - High risk or low reward ratio (<2)
+
+## Enhanced Farm Script Features
+
+The `farm.sh` script now includes advanced features for better reliability and usability:
+
+### New Features
+
+1. **Resume Capability** - Resume from last saved state
+   ```bash
+   ./farm.sh --resume
+   ```
+
+2. **Auto-Retry** - Automatic retry on failures with exponential backoff
+   ```bash
+   ./farm.sh --max-retries 5
+   ```
+
+3. **State Persistence** - Saves state periodically to `.farm-state` file
+
+4. **Better Error Handling** - Improved error recovery and logging
+
+### Usage Examples
+
+```bash
+# Resume from last saved state
+./farm.sh --resume
+
+# Set custom retry count
+./farm.sh --max-retries 5
+
+# Combine options
+./farm.sh --resume --max-retries 3 --delay 5 --verbose
+```
+
+### State File
+
+The script saves state to `.farm-state` file:
+```json
+{
+  "commits_made": 150,
+  "pushes_made": 150,
+  "messages_skipped": 5,
+  "errors_count": 2,
+  "start_time": 1234567890,
+  "last_updated": 1234567890,
+  "current_branch": "main",
+  "delay": 1
+}
+```
+
 ## Development Scripts
 
 ```bash
