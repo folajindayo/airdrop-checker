@@ -349,6 +349,11 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
     return data.summary.coverage;
   }, [data]);
 
+  const diversityDistribution = useMemo(() => {
+    if (!data) return [];
+    return data.summary.diversity.categoryDistribution;
+  }, [data]);
+
   if (state === 'loading' || state === 'idle') {
     return (
       <Card className={className}>
