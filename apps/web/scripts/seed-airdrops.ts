@@ -2,13 +2,31 @@
 
 /**
  * Seed script to populate MongoDB with initial airdrop projects
+ * Run with: pnpm seed (from apps/web directory)
  */
 
-import { config } from 'dotenv';
+// Load environment variables from .env.local using dynamic import
+import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-// Load environment variables from .env.local
-config({ path: resolve(__dirname, '../.env.local') });
+// Manually load .env.local file
+try {
+  const envPath = resolve(__dirname, '../.env.local');
+  const envContent = readFileSync(envPath, 'utf-8');
+  
+  envContent.split('\n').forEach(line => {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#')) {
+      const [key, ...valueParts] = trimmed.split('=');
+      if (key && valueParts.length > 0) {
+        process.env[key.trim()] = valueParts.join('=').trim();
+      }
+    }
+  });
+  console.log('✓ Loaded environment variables from .env.local');
+} catch (error) {
+  console.warn('⚠️  Could not load .env.local file. Make sure environment variables are set.');
+}
 
 import { AIRDROPS } from '../../../packages/shared/data';
 import {
