@@ -663,7 +663,8 @@ Get protocol focus areas, engagement scores, timeline feed, and monthly trends f
 - `summary.streak` tracks consecutive active days and last interaction.
 - `summary.velocity` compares the last 30 days of activity with the previous 30-day window.
 - `summary.decay` flags how recently the wallet touched any tracked protocol.
-- `categoryScores` adds per-category scoring with interaction and diversity context.
+- `summary.coverage` reveals category coverage, missing categories, and total breadth.
+- `dormantProtocols` surfaces protocols that need attention after prolonged inactivity.
 
 **Response:**
 ```json
@@ -2610,7 +2611,7 @@ The `farm.sh` script now includes advanced features for better reliability and u
 ### New Features
 
 1. **Resume Capability** - Resume from last saved state
-   ```bash
+```bash
    ./farm.sh --resume
    ```
 
@@ -2976,140 +2977,3 @@ Comprehensive analytics dashboard data.
 
 ### Multi-language Support
 ```
-GET /api/i18n?lang=en|es|zh|ja
-```
-Get internationalization translations.
-
-**Query Params:**
-- `lang` - Language code (en, es, zh, ja)
-
-**Response:**
-```json
-{
-  "language": "en",
-  "translations": {
-    "dashboard.title": "Airdrop Dashboard",
-    "dashboard.overallScore": "Overall Score"
-  },
-  "supportedLanguages": ["en", "es", "zh", "ja"]
-}
-```
-
-### Excel Export
-```
-GET /api/export/excel/[address]
-```
-Export eligibility data to Excel format (.xls).
-
-**Response:** Excel file download
-
-### Full-Text Search
-```
-POST /api/search/fulltext
-```
-Advanced full-text search with fuzzy matching.
-
-**Request:**
-```json
-{
-  "query": "zora nft",
-  "fuzzy": true,
-  "limit": 50
-}
-```
-
-**Response:**
-```json
-{
-  "results": [
-    {
-      "projectId": "zora",
-      "name": "Zora",
-      "score": 15,
-      "matchedFields": ["name", "description"],
-      "snippet": "...Zora is an NFT platform..."
-    }
-  ]
-}
-```
-
-### IP Whitelisting
-```
-GET /api/security/whitelist?address=0x...
-POST /api/security/whitelist
-DELETE /api/security/whitelist?address=0x...
-```
-Manage IP whitelist for API access.
-
-**POST Request:**
-```json
-{
-  "address": "0x...",
-  "ipAddresses": ["192.168.1.1", "10.0.0.1"]
-}
-```
-
-### API Documentation
-```
-GET /api/docs
-```
-Get auto-generated API documentation.
-
-**Response:**
-```json
-{
-  "version": "1.0.0",
-  "endpoints": [...],
-  "authentication": {...},
-  "rateLimits": {...},
-  "errorCodes": {...},
-  "examples": {
-    "curl": {...},
-    "javascript": {...}
-  }
-}
-```
-
-## Development Scripts
-
-```bash
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm run start
-
-# Lint code
-npm run lint
-
-# Database commands
-cd apps/web
-npx prisma generate    # Generate Prisma client
-npx prisma db push     # Push schema to database
-npx prisma studio      # Open database GUI
-npm run seed           # Seed database with airdrop projects
-```
-
-## Contributing
-
-This project follows the monorepo structure with npm workspaces. Key guidelines:
-
-- Files should be 200-400 lines (max 500, never exceed 800-1000)
-- Use NativeWind/TailwindCSS, not StyleSheet
-- All environment variables must be set via terminal (no hardcoding)
-- Single README.md at root only
-
-## License
-
-MIT
-
-## Support
-
-For issues and questions, please open an issue on GitHub.
-
----
-
-Built with ❤️ using Next.js, TailwindCSS, and GoldRush API
