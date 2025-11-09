@@ -1338,6 +1338,56 @@ Stay updated with the latest airdrop news:
 
 **Access:** `/portfolio` → Tools tab
 
+### Airdrop Probability Predictor
+ML-powered probability predictions for airdrop eligibility:
+- Probability scores (0-100%) for each airdrop
+- Confidence levels (high/medium/low)
+- Impact factors analysis
+- Estimated airdrop values
+- Personalized recommendations
+
+**Access:** `/portfolio` → Health tab
+
+### Wallet Clustering Detection
+Detect related wallets and potential clustering:
+- Related wallet identification
+- Similarity scoring
+- Relationship type classification
+- Risk level assessment
+- Clustering recommendations
+
+**Access:** `/portfolio` → Health tab
+
+### Calendar Export
+Export airdrop events to your calendar:
+- iCal format (.ics) compatible with all major calendars
+- Snapshot dates and claim windows
+- Automatic reminders
+- Estimated values included
+- One-click export
+
+**Access:** `/portfolio` → Tools tab
+
+### Portfolio Rebalancer
+Optimize your portfolio allocation:
+- Current vs recommended allocation
+- Buy/sell recommendations
+- Priority-based suggestions
+- Gas cost estimates
+- Target allocation goals
+
+**Access:** `/portfolio` → Tools tab
+
+### Gas Price History
+Historical gas price analysis:
+- 7, 30, and 90-day trends
+- Multi-chain comparison
+- Best times to transact
+- Min/max/average prices
+- Interactive charts
+
+**Access:** `/portfolio` → Gas tab
+
 ### Radar Highlights
 Stay ahead with a real-time radar of the hottest opportunities:
 - Countdown to the next confirmed snapshots
