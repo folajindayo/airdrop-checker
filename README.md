@@ -2,7 +2,7 @@
 
 A read-only onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users simply connect their wallet via WalletConnect and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria.
 
-## 🎉 100+ Production-Ready Features!
+## 🎉 120+ Production-Ready Features!
 
 ### 🎯 Core Features (1-15)
 1. **WalletConnect Integration** - Connect securely using WalletConnect v2 (Reown SDK)
@@ -522,6 +522,72 @@ Simulate transactions to see their impact on airdrop eligibility.
       "affectedAirdrops": [...]
     }
   ],
+  "recommendations": [...]
+}
+```
+
+### GET /api/defi-positions/[address]
+Get DeFi positions (LP, staking, lending) across all protocols.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "totalValue": 5000.00,
+  "positions": [...],
+  "byProtocol": {...},
+  "byChain": {...}
+}
+```
+
+### GET /api/protocol-heatmap/[address]
+Get protocol interaction heatmap data showing activity over time.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "interactions": [...],
+  "protocolList": ["uniswap", "aave", ...],
+  "dateRange": {
+    "start": "2024-01-01",
+    "end": "2024-12-31"
+  },
+  "totalInteractions": 150,
+  "topProtocols": [...]
+}
+```
+
+### POST /api/farming-strategy
+Generate a personalized airdrop farming strategy.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "currentScores": {
+    "zora": 50,
+    "layerzero": 40
+  },
+  "targetScore": 80
+}
+```
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "currentScore": 45,
+  "targetScore": 80,
+  "estimatedTotalGas": 150.00,
+  "estimatedTotalValue": 5000.00,
+  "steps": [...],
+  "timeline": {
+    "week1": [...],
+    "week2": [...],
+    "week3": [...],
+    "week4": [...]
+  },
   "recommendations": [...]
 }
 ```
