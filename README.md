@@ -4,6 +4,7 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 
 ## Features
 
+### Core Features
 - **WalletConnect Integration**: Connect your wallet securely using WalletConnect v2 (Reown SDK)
 - **Multi-Chain Support**: Analyze activity across Ethereum, Base, Arbitrum, Optimism, zkSync Era, and Polygon
 - **Eligibility Scoring**: Get scored on 10+ confirmed and rumored airdrops
@@ -11,6 +12,16 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 - **Rate-Limited Refresh**: Update your eligibility with built-in rate limiting
 - **Shareable Results**: Generate social sharing cards with your airdrop score
 - **Responsive Design**: Beautiful UI built with Next.js 15, React 19, and TailwindCSS
+
+### New Advanced Features ✨
+- **📊 Activity Summary**: Comprehensive wallet activity overview with transaction counts, chains used, and protocols interacted with
+- **🔍 Filter & Sort**: Advanced filtering by airdrop status, minimum score, and sorting options
+- **📥 Export Reports**: Download eligibility reports in JSON, CSV, or TXT formats
+- **📅 Activity Timeline**: Visual timeline of wallet transactions, milestones, and achievements
+- **⚖️ Wallet Comparison**: Compare up to 5 wallets side-by-side with winner detection
+- **🎯 Protocol Insights**: Detailed breakdown of protocols used with airdrop potential ratings
+- **📆 Airdrop Calendar**: Track upcoming snapshot dates, claim periods, and announcements
+- **🏆 Gamification**: Badges and achievements for multi-chain usage and transaction milestones
 
 ## Tech Stack
 
@@ -202,6 +213,84 @@ Example criterion:
 - **Airdrop Check**: 1 hour TTL
 - **Airdrops List**: 5 minutes TTL
 - **Refresh Cooldown**: 5 minutes per address
+
+## API Endpoints
+
+### Airdrop Eligibility Check
+```
+GET /api/airdrop-check/[address]
+```
+Check airdrop eligibility for a specific wallet address.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "overallScore": 72,
+  "airdrops": [
+    {
+      "project": "Zora",
+      "projectId": "zora",
+      "status": "confirmed",
+      "score": 100,
+      "criteria": [...]
+    }
+  ]
+}
+```
+
+### List All Airdrops
+```
+GET /api/airdrops
+```
+Get list of all tracked airdrop projects.
+
+### Wallet Comparison
+```
+POST /api/compare
+```
+Compare multiple wallet addresses (2-5 wallets).
+
+**Request:**
+```json
+{
+  "addresses": ["0x...", "0x..."]
+}
+```
+
+**Response:**
+```json
+{
+  "wallets": [...],
+  "winner": {
+    "address": "0x...",
+    "metric": "Overall Score",
+    "value": 85
+  },
+  "summary": {...}
+}
+```
+
+### Airdrop Calendar
+```
+GET /api/calendar
+```
+Get upcoming airdrop events (snapshots, claims, announcements).
+
+**Response:**
+```json
+{
+  "events": [...],
+  "groupedByMonth": {...},
+  "totalEvents": 15
+}
+```
+
+### Refresh Eligibility
+```
+POST /api/refresh
+```
+Trigger a fresh eligibility check (rate-limited to 1 per 5 minutes per address).
 
 ## Development Scripts
 
