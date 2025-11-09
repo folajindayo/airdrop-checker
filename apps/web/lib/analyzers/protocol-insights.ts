@@ -351,6 +351,81 @@ function calculateActiveStreakDays(timeline: TimelineEntry[]): {
   };
 }
 
+function calculateVelocityMetrics(timeline: TimelineEntry[]): VelocityMetrics {
+  const now = new Date();
+  const dayMs = 24 * 60 * 60 * 1000;
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * dayMs);
+  const sixtyDaysAgo = new Date(now.getTime() - 60 * dayMs);
+
+  let currentCount = 0;
+  let previousCount = 0;
+
+  timeline.forEach((event) => {
+    const eventDate = new Date(event.date);
+    if (eventDate >= thirtyDaysAgo) {
+      currentCount += 1;
+    } else if (eventDate >= sixtyDaysAgo) {
+      previousCount += 1;
+    }
+  });
+
+  const currentAvgDaily = Number((currentCount / 30).toFixed(2));
+  const previousAvgDaily = Number((previousCount / 30).toFixed(2));
+
+  let percentChange = 0;
+  if (previousAvgDaily === 0) {
+    percentChange = currentAvgDaily > 0 ? 100 : 0;
+  } else {
+    percentChange = Number(
+      (((currentAvgDaily - previousAvgDaily) / previousAvgDaily) * 100).toFixed(1)
+    );
+  }
+
+  const deltaInteractions = currentCount - previousCount;
+
+  let trend: VelocityTrend = 'steady';
+  if (percentChange > 15) {
+    trend = 'accelerating';
+  } else if (percentChange < -15) {
+    trend = 'cooling';
+  }
+
+  return {
+    currentAvgDaily,
+    previousAvgDaily,
+    percentChange,
+    deltaInteractions,
+    trend,
+  };
+}
+
+function calculateDecayMetrics(lastInteraction?: string): DecayMetrics {
+  if (!lastInteraction) {
+    return {
+      daysSinceInteraction: null,
+      status: 'stale',
+    };
+  }
+
+  const now = new Date();
+  const last = new Date(lastInteraction);
+  const dayMs = 24 * 60 * 60 * 1000;
+  const diffMs = now.getTime() - last.getTime();
+  const days = Math.max(Math.round(diffMs / dayMs), 0);
+
+  let status: DecayStatus = 'stale';
+  if (days <= 7) {
+    status = 'fresh';
+  } else if (days <= 30) {
+    status = 'warm';
+  }
+
+  return {
+    daysSinceInteraction: days,
+    status,
+  };
+}
+
 export function buildProtocolInsights(
   address: string,
   interactions: ProtocolInteraction[],
