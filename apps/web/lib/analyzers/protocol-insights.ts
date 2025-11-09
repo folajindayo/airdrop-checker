@@ -36,8 +36,18 @@ export interface FocusArea {
   categoryLabel: string;
   interactions: number;
   uniqueProtocols: number;
+  score: number;
   status: 'strong' | 'needs_attention' | 'missing';
   recommendation: string;
+}
+
+export interface CategoryScore {
+  category: ProtocolCategory;
+  categoryLabel: string;
+  score: number;
+  interactions: number;
+  uniqueProtocols: number;
+  status: FocusArea['status'];
 }
 
 export interface MonthlyActivity {
@@ -53,6 +63,7 @@ export interface ProtocolInsights {
     activeCategories: number;
     newProtocolsLast30d: number;
     avgInteractionsPerProtocol: number;
+    engagementScore: number;
     lastInteraction?: string;
     mostActiveCategory?: {
       category: ProtocolCategory;
@@ -63,6 +74,7 @@ export interface ProtocolInsights {
   breakdown: ProtocolBreakdownEntry[];
   timeline: TimelineEntry[];
   focusAreas: FocusArea[];
+  categoryScores: CategoryScore[];
   monthlyActivity: MonthlyActivity[];
   generatedAt: string;
 }
@@ -203,8 +215,12 @@ export function buildFocusAreas(
     const interactions = stats.interactions;
     const uniqueProtocols = stats.protocols.size;
 
+    const interactionFactor = Math.min(interactions / 20, 1);
+    const diversityFactor = Math.min(uniqueProtocols / 5, 1);
+    const score = Math.round((interactionFactor * 0.6 + diversityFactor * 0.4) * 100);
+
     let status: FocusArea['status'] = 'missing';
-    if (interactions >= 10) {
+    if (score >= 70) {
       status = 'strong';
     } else if (interactions > 0) {
       status = 'needs_attention';
@@ -215,6 +231,7 @@ export function buildFocusAreas(
       categoryLabel: getCategoryLabel(category),
       interactions,
       uniqueProtocols,
+      score,
       status,
       recommendation: CATEGORY_RECOMMENDATIONS[category],
     };
@@ -234,6 +251,23 @@ export function buildProtocolInsights(
   const totalProtocols = new Set(breakdown.map((entry) => entry.protocol)).size;
   const last30d = new Date();
   last30d.setDate(last30d.getDate() - 30);
+
+  const categoryScores: CategoryScore[] = focusAreas.map((area) => ({
+    category: area.category,
+    categoryLabel: area.categoryLabel,
+    score: area.score,
+    interactions: area.interactions,
+    uniqueProtocols: area.uniqueProtocols,
+    status: area.status,
+  }));
+
+  const engagementScore =
+    categoryScores.length > 0
+      ? Math.round(
+          categoryScores.reduce((sum, category) => sum + category.score, 0) /
+            categoryScores.length
+        )
+      : 0;
 
   const newProtocolsLast30d = breakdown.filter((entry) => {
     if (!entry.firstInteraction) return false;
@@ -258,6 +292,7 @@ export function buildProtocolInsights(
       activeCategories: focusAreas.filter((area) => area.interactions > 0).length,
       newProtocolsLast30d,
       avgInteractionsPerProtocol: Number(avgInteractions.toFixed(2)),
+      engagementScore,
       lastInteraction,
       mostActiveCategory: mostActiveCategory
         ? {
@@ -270,6 +305,7 @@ export function buildProtocolInsights(
     breakdown,
     timeline,
     focusAreas,
+    categoryScores,
     monthlyActivity,
     generatedAt: new Date().toISOString(),
   };
