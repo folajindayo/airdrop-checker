@@ -2,7 +2,7 @@
 
 A read-only onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users simply connect their wallet via WalletConnect and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria.
 
-## 🎉 140+ Production-Ready Features!
+## 🎉 170+ Production-Ready Features!
 
 ### 🎯 Core Features (1-15)
 1. **WalletConnect Integration** - Connect securely using WalletConnect v2 (Reown SDK)
