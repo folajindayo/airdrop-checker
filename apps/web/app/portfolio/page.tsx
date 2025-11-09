@@ -157,12 +157,22 @@ export default function PortfolioPage() {
                 <>
                   <WalletHealthDashboard address={address} />
                   {airdropData && (
-                    <FarmingStrategyBuilder
-                      address={address}
-                      currentScores={Object.fromEntries(
-                        airdropData.airdrops.map((a) => [a.projectId, a.score])
-                      )}
-                    />
+                    <>
+                      <FarmingStrategyBuilder
+                        address={address}
+                        currentScores={Object.fromEntries(
+                          airdropData.airdrops.map((a) => [a.projectId, a.score])
+                        )}
+                      />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <ProbabilityPredictor
+                          address={address}
+                          airdrops={airdropData.airdrops}
+                          gasSpentUSD={gasSpentUSD}
+                        />
+                        <WalletClustering address={address} />
+                      </div>
+                    </>
                   )}
                 </>
               )}
