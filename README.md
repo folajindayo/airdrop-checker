@@ -2809,6 +2809,61 @@ Get security audit log for an address.
 }
 ```
 
+### Airdrop Simulator
+```
+POST /api/airdrop-simulator
+```
+Simulate different farming scenarios to see their impact on eligibility.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "currentScore": 50,
+  "scenario": "optimistic",
+  "actions": [
+    {
+      "action": "Swap tokens on Uniswap",
+      "protocol": "Uniswap",
+      "chain": "Ethereum",
+      "cost": 15,
+      "scoreImpact": 8
+    }
+  ]
+}
+```
+
+**Scenarios:** `optimistic` (1.2x), `realistic` (1.0x), `conservative` (0.8x)
+
+### Gas Price Tracker
+```
+GET /api/gas-price-tracker?chainId=1&hours=24
+```
+Get real-time gas price data across multiple chains with recommendations.
+
+### Portfolio Optimizer
+```
+POST /api/portfolio-optimizer
+```
+Optimize portfolio allocation for better airdrop eligibility across chains.
+
+### Notification Preferences
+```
+GET /api/notification-preferences?address=0x...
+POST /api/notification-preferences
+DELETE /api/notification-preferences?address=0x...
+```
+Manage notification settings, channels, frequency, and thresholds.
+
+### Airdrop Claim Tracker
+```
+POST /api/claim-tracker
+GET /api/claim-tracker?address=0x...&status=claimed
+PATCH /api/claim-tracker
+DELETE /api/claim-tracker?id=...&address=0x...
+```
+Track claimed airdrops with amounts, transaction hashes, and statistics.
+
 ## Development Scripts
 
 ```bash
