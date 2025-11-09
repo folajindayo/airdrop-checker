@@ -147,6 +147,45 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 - In-memory caching with TTL
 - GoldRush API for blockchain data
 
+## 🌐 Deploy to Vercel
+
+### Quick Deploy (Automated)
+```bash
+chmod +x deploy.sh
+./deploy.sh
+```
+
+### One-Click Deploy
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/airdrop-checker&env=NEXT_PUBLIC_REOWN_PROJECT_ID,GOLDRUSH_API_KEY,DATABASE_URL)
+
+### Manual Deployment Steps
+
+1. **Install Vercel CLI**
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **Login to Vercel**
+   ```bash
+   vercel login
+   ```
+
+3. **Deploy**
+   ```bash
+   vercel --prod
+   ```
+
+4. **Add Environment Variables** (in Vercel Dashboard or CLI)
+   ```env
+   NEXT_PUBLIC_REOWN_PROJECT_ID=5c4d877bba011237894e33bce008ddd1
+   GOLDRUSH_API_KEY=cqt_rQMcBkPqGr9GVCkpQrHbHvfgRKr
+   DATABASE_URL=postgresql://postgres:jZEokyUlaozzpRNrtFuYSneJKYDVSwYw@nozomi.proxy.rlwy.net:39734/railway
+   ```
+
+📚 **Detailed Instructions**: See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
+
+---
+
 ## Getting Started
 
 ### Prerequisites
