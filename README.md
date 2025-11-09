@@ -111,14 +111,6 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 98. **Expected Value Calculator** - Probability-weighted airdrop values
 99. **Break-Even Analysis** - Calculate minimum airdrop value needed
 100. **Smart Transaction Recommendations** - Get personalized transaction suggestions
-82. **Portfolio Value Tracker** - Track total portfolio value across all chains
-83. **Airdrop Alerts System** - Email notifications for new airdrops and eligibility changes
-84. **Gas Fee Optimizer** - Find best times and chains for lowest gas fees
-85. **Airdrop Simulator** - Simulate eligibility impact before interacting with protocols
-86. **Multi-Wallet Manager** - Manage and track up to 10 wallets in one place
-87. **Airdrop History Tracker** - Track claimed airdrops and eligibility history
-88. **Protocol Interaction Tracker** - Detailed breakdown of protocol interactions
-89. **ROI Calculator** - Calculate potential return on investment for airdrop farming
 90. **Smart Contract Analyzer** - Analyze smart contract interactions and patterns
 91. **Portfolio Breakdown** - View portfolio by chain, token, and value
 92. **Gas Price Comparison** - Compare gas prices across all supported chains
