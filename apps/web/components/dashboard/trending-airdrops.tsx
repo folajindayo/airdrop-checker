@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/common/skeleton';
 import { StatusBadge } from '@/components/common/status-badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -26,6 +27,8 @@ export function TrendingAirdrops({ limit = 4 }: TrendingAirdropsProps) {
   const [state, setState] = useState<FetchState>('idle');
   const [data, setData] = useState<TrendingProjectSummary[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [availableChains, setAvailableChains] = useState<string[]>([]);
+  const [selectedChain, setSelectedChain] = useState<string>('all');
 
   useEffect(() => {
     let isMounted = true;
@@ -35,7 +38,12 @@ export function TrendingAirdrops({ limit = 4 }: TrendingAirdropsProps) {
         setState('loading');
         setError(null);
 
-        const response = await fetch(`/api/airdrops/trending?limit=${limit}`);
+        const query = new URLSearchParams({ limit: limit.toString() });
+        if (selectedChain !== 'all') {
+          query.set('chain', selectedChain);
+        }
+
+        const response = await fetch(`/api/airdrops/trending?${query.toString()}`);
         const json = (await response.json()) as TrendingResponse;
 
         if (!response.ok) {
@@ -44,6 +52,13 @@ export function TrendingAirdrops({ limit = 4 }: TrendingAirdropsProps) {
 
         if (isMounted) {
           setData(json.trending);
+          if (selectedChain === 'all') {
+            const chains = new Set<string>();
+            json.trending.forEach((project) => {
+              project.chains.forEach((chainName) => chains.add(chainName));
+            });
+            setAvailableChains(Array.from(chains).sort((a, b) => a.localeCompare(b)));
+          }
           setState('success');
         }
       } catch (err) {
@@ -62,7 +77,7 @@ export function TrendingAirdrops({ limit = 4 }: TrendingAirdropsProps) {
       isMounted = false;
       clearInterval(interval);
     };
-  }, [limit]);
+  }, [limit, selectedChain]);
 
   const hasData = data.length > 0;
 
@@ -187,13 +202,26 @@ export function TrendingAirdrops({ limit = 4 }: TrendingAirdropsProps) {
 
   return (
     <section>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-4">
         <div>
           <h2 className="text-2xl font-bold">Trending Airdrops</h2>
           <p className="text-sm text-muted-foreground">
             Real-time signal-based ranking across the ecosystem.
           </p>
         </div>
+        <Select value={selectedChain} onValueChange={setSelectedChain}>
+          <SelectTrigger className="w-full md:w-48">
+            <SelectValue placeholder="All chains" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All chains</SelectItem>
+            {availableChains.map((chain) => (
+              <SelectItem key={chain} value={chain}>
+                {chain}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
       {content}
     </section>
