@@ -63,6 +63,34 @@ interface MonthlyActivity {
   uniqueProtocols: number;
 }
 
+type MomentumDirection = 'up' | 'steady' | 'down';
+type VelocityTrend = 'accelerating' | 'steady' | 'cooling';
+type DecayStatus = 'fresh' | 'warm' | 'stale';
+
+interface VelocityMetrics {
+  currentAvgDaily: number;
+  previousAvgDaily: number;
+  percentChange: number;
+  deltaInteractions: number;
+  trend: VelocityTrend;
+}
+
+interface DecayMetrics {
+  daysSinceInteraction: number | null;
+  status: DecayStatus;
+}
+
+interface MomentumMetrics {
+  direction: MomentumDirection;
+  percentChange: number;
+  deltaInteractions: number;
+}
+
+interface StreakMetrics {
+  activeDays: number;
+  lastActiveDate?: string;
+}
+
 interface ProtocolInsights {
   summary: {
     totalProtocols: number;
@@ -70,6 +98,10 @@ interface ProtocolInsights {
     newProtocolsLast30d: number;
     avgInteractionsPerProtocol: number;
     engagementScore: number;
+    momentum: MomentumMetrics;
+    streak: StreakMetrics;
+    velocity: VelocityMetrics;
+    decay: DecayMetrics;
     lastInteraction?: string;
     mostActiveCategory?: {
       category: string;
