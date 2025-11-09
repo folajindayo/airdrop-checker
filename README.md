@@ -313,6 +313,46 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 298. **Authentication Guide** - API key authentication guide
 299. **Response Schema** - Detailed response schemas
 300. **Query Examples** - Example queries for all endpoints
+301. **WebSocket Support** - Real-time bidirectional communication
+302. **Advanced Cache Management** - Tag-based cache invalidation
+303. **Data Validation API** - Validate and sanitize input data
+304. **Performance Optimization** - Get optimization recommendations
+305. **Testing Utilities** - Integration testing endpoints
+306. **Monitoring Alerts** - Create and manage monitoring alerts
+307. **Data Migration Tools** - Transfer and merge data utilities
+308. **WebSocket Connection Info** - WebSocket endpoint details
+309. **Cache Warming** - Pre-populate cache for better performance
+310. **Cache Tagging** - Tag-based cache organization
+311. **Cache Invalidation** - Invalidate cache by tags or patterns
+312. **Input Validation** - Validate addresses, emails, URLs, IPs
+313. **Data Sanitization** - Sanitize user input for security
+314. **XSS Protection** - Script tag removal and sanitization
+315. **Performance Recommendations** - Get optimization suggestions
+316. **Endpoint Optimization** - Per-endpoint optimization tips
+317. **Database Optimization** - Indexing and connection pooling tips
+318. **Connectivity Tests** - Test API connectivity
+319. **Validation Tests** - Test validation functions
+320. **Performance Tests** - Measure API response times
+321. **Integration Test Suite** - Run full integration tests
+322. **Alert Management** - Create, list, and delete alerts
+323. **Alert Types** - Error rate, response time, uptime alerts
+24. **Alert Thresholds** - Configurable alert thresholds
+325. **Alert Triggering** - Automatic alert triggering
+326. **Data Transfer** - Transfer history between addresses
+327. **Data Merging** - Merge data from multiple sources
+328. **Format Conversion** - Convert data between formats
+329. **Migration Operations** - Various migration operations
+330. **Real-time Communication** - WebSocket for live updates
+331. **Bidirectional Updates** - Two-way communication support
+332. **Event Subscriptions** - Subscribe to specific events
+333. **Heartbeat Support** - Connection heartbeat mechanism
+334. **Auto Reconnection** - Automatic WebSocket reconnection
+335. **Cache Statistics** - Detailed cache performance metrics
+336. **Cache Strategies** - Different caching strategies per endpoint
+337. **Cache Recommendations** - Get cache optimization tips
+338. **Validation Types** - Multiple validation types supported
+339. **Sanitization Rules** - Configurable sanitization rules
+340. **Security Validation** - Security-focused validation
 
 ### 💬 Communication & Social
 - **Chat Component** - Real-time messaging with sidebar
