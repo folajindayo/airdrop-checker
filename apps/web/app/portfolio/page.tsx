@@ -127,12 +127,31 @@ export default function PortfolioPage() {
               {address && <GasTracker address={address} />}
             </TabsContent>
 
+            <TabsContent value="defi" className="space-y-6">
+              {address && <DeFiPositionsTracker address={address} />}
+            </TabsContent>
+
+            <TabsContent value="heatmap" className="space-y-6">
+              {address && <ProtocolHeatmap address={address} />}
+            </TabsContent>
+
             <TabsContent value="roi" className="space-y-6">
               {address && airdropData && (
                 <ROICalculator
                   address={address}
                   airdrops={airdropData.airdrops}
                   gasSpentUSD={gasSpentUSD}
+                />
+              )}
+            </TabsContent>
+
+            <TabsContent value="strategy" className="space-y-6">
+              {address && airdropData && (
+                <FarmingStrategyBuilder
+                  address={address}
+                  currentScores={Object.fromEntries(
+                    airdropData.airdrops.map((a) => [a.projectId, a.score])
+                  )}
                 />
               )}
             </TabsContent>
