@@ -336,7 +336,7 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 321. **Integration Test Suite** - Run full integration tests
 322. **Alert Management** - Create, list, and delete alerts
 323. **Alert Types** - Error rate, response time, uptime alerts
-24. **Alert Thresholds** - Configurable alert thresholds
+324. **Alert Thresholds** - Configurable alert thresholds
 325. **Alert Triggering** - Automatic alert triggering
 326. **Data Transfer** - Transfer history between addresses
 327. **Data Merging** - Merge data from multiple sources
