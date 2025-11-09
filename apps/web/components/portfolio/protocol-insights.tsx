@@ -182,6 +182,50 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
     return cards;
   }, [data]);
 
+  const momentumSummary = useMemo(() => {
+    if (!data) return null;
+    const { momentum } = data.summary;
+
+    const arrow =
+      momentum.direction === 'up'
+        ? '↑'
+        : momentum.direction === 'down'
+        ? '↓'
+        : '→';
+
+    const text =
+      momentum.direction === 'steady'
+        ? 'Activity steady compared to last month'
+        : `Activity ${momentum.direction === 'up' ? 'up' : 'down'} ${
+            momentum.percentChange
+          }% (${momentum.deltaInteractions > 0 ? '+' : ''}${
+            momentum.deltaInteractions
+          } interactions)`;
+
+    return {
+      arrow,
+      text,
+      direction: momentum.direction,
+    };
+  }, [data]);
+
+  const streakSummary = useMemo(() => {
+    if (!data) return null;
+    const { streak } = data.summary;
+
+    if (streak.activeDays === 0) {
+      return 'No recent activity streak detected';
+    }
+
+    const lastSeen = streak.lastActiveDate
+      ? new Date(streak.lastActiveDate).toLocaleDateString()
+      : null;
+
+    return `Active ${streak.activeDays} day${
+      streak.activeDays === 1 ? '' : 's'
+    } in a row${lastSeen ? ` · Last interaction ${lastSeen}` : ''}`;
+  }, [data]);
+
   if (state === 'loading' || state === 'idle') {
     return (
       <Card className={className}>
@@ -268,6 +312,24 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
             <p className="text-sm text-muted-foreground mt-1">
               {data.summary.mostActiveCategory.interactionCount.toLocaleString()} interactions recorded recently.
             </p>
+            {momentumSummary && (
+              <p
+                className={cn(
+                  'text-xs mt-3 font-medium flex items-center gap-1',
+                  momentumSummary.direction === 'up'
+                    ? 'text-emerald-600'
+                    : momentumSummary.direction === 'down'
+                    ? 'text-rose-600'
+                    : 'text-muted-foreground'
+                )}
+              >
+                <span>{momentumSummary.arrow}</span>
+                <span>{momentumSummary.text}</span>
+              </p>
+            )}
+            {streakSummary && (
+              <p className="text-xs text-muted-foreground mt-2">{streakSummary}</p>
+            )}
           </div>
         )}
 
