@@ -34,51 +34,51 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 25. **Portfolio Value Tracking** - Real-time USD value of all holdings
 
 ### 📊 UI Components Library (26-70)
-16. **Alert Component** - Multiple variants with action buttons
-17. **Avatar Component** - Wallet, user, group, status variants
-18. **Badge Component** - Multiple variants and sizes
-19. **Breadcrumb Navigation** - Responsive with custom separators
-20. **Button Component** - Multiple variants and sizes
-21. **Calendar Component** - Date picker, range picker, events
-22. **Card Component** - Flexible container with header/footer
-23. **Checkbox Component** - With groups and indeterminate state
-24. **Collapsible Component** - Icon, card, and group variants
-25. **Command Menu** - Keyboard shortcuts (Cmd+K/Ctrl+K)
-26. **Context Menu** - Right-click menus with shortcuts
-27. **Copy Button** - One-click copy with toast feedback
-28. **Data Table** - Sortable, searchable, paginated tables
-29. **Dialog Component** - Modal dialogs with variants
-30. **Dropdown Menu** - Nested menus with shortcuts
-31. **Empty State** - 10+ preset scenarios with illustrations
-32. **Form Component** - React Hook Form integration
-33. **Hover Card** - Rich tooltips with content
-34. **Input Component** - Multiple variants and validation
-35. **Label Component** - Accessible form labels
-36. **Loading States** - Spinners, skeletons, progress indicators
-37. **Menubar Component** - Application menu with submenus
-38. **Navigation Menu** - Dropdown navigation with mega menu
-39. **Pagination Component** - Full pagination controls
-40. **Popover Component** - Floating content containers
-41. **Progress Component** - Linear and circular progress bars
-42. **Radio Group** - Multiple variants including cards
-43. **Resizable Panels** - Split view layouts with drag handles
-44. **Scroll Area** - Custom scrollbars with variants
-45. **Select Component** - Dropdown selection with search
-46. **Separator Component** - Dividers with multiple styles
-47. **Sheet Component** - Slide-out panels from all sides
-48. **Skeleton Component** - Loading placeholders
-49. **Slider Component** - Range sliders with markers
-50. **Statistics Widget** - Trend indicators and comparisons
-51. **Switch Component** - Toggle with labels
-52. **Table Component** - Data display primitives
-53. **Tabs Component** - Tabbed content containers
-54. **Textarea Component** - Multi-line input with auto-resize
-55. **Toast Provider** - Notification system with presets
-56. **Toggle Component** - Single toggle button
-57. **Toggle Group** - Multi-select toggle groups
-58. **Tooltip Component** - Enhanced tooltips with variants
-59. **Aspect Ratio** - Responsive media containers
-60. **Progress Tracker** - Step-by-step progress visualization
+26. **Alert Component** - Multiple variants with action buttons
+27. **Avatar Component** - Wallet, user, group, status variants
+28. **Badge Component** - Multiple variants and sizes
+29. **Breadcrumb Navigation** - Responsive with custom separators
+30. **Button Component** - Multiple variants and sizes
+31. **Calendar Component** - Date picker, range picker, events
+32. **Card Component** - Flexible container with header/footer
+33. **Checkbox Component** - With groups and indeterminate state
+34. **Collapsible Component** - Icon, card, and group variants
+35. **Command Menu** - Keyboard shortcuts (Cmd+K/Ctrl+K)
+36. **Context Menu** - Right-click menus with shortcuts
+37. **Copy Button** - One-click copy with toast feedback
+38. **Data Table** - Sortable, searchable, paginated tables
+39. **Dialog Component** - Modal dialogs with variants
+40. **Dropdown Menu** - Nested menus with shortcuts
+41. **Empty State** - 10+ preset scenarios with illustrations
+42. **Form Component** - React Hook Form integration
+43. **Hover Card** - Rich tooltips with content
+44. **Input Component** - Multiple variants and validation
+45. **Label Component** - Accessible form labels
+46. **Loading States** - Spinners, skeletons, progress indicators
+47. **Menubar Component** - Application menu with submenus
+48. **Navigation Menu** - Dropdown navigation with mega menu
+49. **Pagination Component** - Full pagination controls
+50. **Popover Component** - Floating content containers
+51. **Progress Component** - Linear and circular progress bars
+52. **Radio Group** - Multiple variants including cards
+53. **Resizable Panels** - Split view layouts with drag handles
+54. **Scroll Area** - Custom scrollbars with variants
+55. **Select Component** - Dropdown selection with search
+56. **Separator Component** - Dividers with multiple styles
+57. **Sheet Component** - Slide-out panels from all sides
+58. **Skeleton Component** - Loading placeholders
+59. **Slider Component** - Range sliders with markers
+60. **Statistics Widget** - Trend indicators and comparisons
+61. **Switch Component** - Toggle with labels
+62. **Table Component** - Data display primitives
+63. **Tabs Component** - Tabbed content containers
+64. **Textarea Component** - Multi-line input with auto-resize
+65. **Toast Provider** - Notification system with presets
+66. **Toggle Component** - Single toggle button
+67. **Toggle Group** - Multi-select toggle groups
+68. **Tooltip Component** - Enhanced tooltips with variants
+69. **Aspect Ratio** - Responsive media containers
+70. **Progress Tracker** - Step-by-step progress visualization
 
 ### 🚀 Advanced Features (61-100)
 61. **Score History** - Track historical scores with charts
