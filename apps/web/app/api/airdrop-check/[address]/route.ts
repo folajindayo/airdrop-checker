@@ -80,12 +80,12 @@ export async function GET(
       return {
         project: project.name,
         projectId: project.id,
-        slug: project.slug,
         status: project.status,
         score: Math.round(score),
         criteria: criteriaResults,
-        logo: project.logo,
-        officialUrl: project.officialUrl,
+        logoUrl: project.logoUrl,
+        websiteUrl: project.websiteUrl,
+        claimUrl: project.claimUrl,
       };
     });
 

@@ -13,17 +13,16 @@ export interface EligibilityCriteria {
 export interface AirdropProject {
   id: string;
   name: string;
-  slug: string;
-  status: AirdropStatus;
-  logo?: string;
   description?: string;
-  officialUrl?: string;
+  status: AirdropStatus;
+  logoUrl?: string;
+  websiteUrl?: string;
+  twitterUrl?: string;
   claimUrl?: string;
   criteria: EligibilityCriteria[];
-  tags?: string[];
-  chainIds?: number[];
+  chains?: string[];
   estimatedValue?: string;
-  deadline?: string;
+  snapshotDate?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -38,12 +37,12 @@ export interface CheckResult {
 export interface AirdropCheckResult {
   project: string;
   projectId: string;
-  slug: string;
   status: AirdropStatus;
   score: number;
   criteria: CriteriaResult[];
-  logo?: string;
-  officialUrl?: string;
+  logoUrl?: string;
+  websiteUrl?: string;
+  claimUrl?: string;
 }
 
 export interface CriteriaResult {

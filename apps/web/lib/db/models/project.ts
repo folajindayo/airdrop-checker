@@ -7,27 +7,38 @@ import type { AirdropProject, AirdropStatus } from '@airdrop-finder/shared';
 export async function createProject(
   project: Omit<AirdropProject, 'createdAt' | 'updatedAt'>
 ): Promise<AirdropProject> {
-  const result = await prisma.airdropProject.create({
+  const result = await prisma.project.create({
     data: {
       id: project.id,
       name: project.name,
-      slug: project.slug,
       status: project.status,
-      logo: project.logo,
       description: project.description,
-      officialUrl: project.officialUrl,
+      logoUrl: project.logoUrl,
+      websiteUrl: project.websiteUrl,
+      twitterUrl: project.twitterUrl,
       claimUrl: project.claimUrl,
       criteria: project.criteria as any,
-      tags: project.tags || [],
-      chainIds: project.chainIds || [],
+      chains: project.chains || [],
       estimatedValue: project.estimatedValue,
-      deadline: project.deadline,
+      snapshotDate: project.snapshotDate,
     },
   });
 
   return {
-    ...result,
+    id: result.id,
+    name: result.name,
+    description: result.description || undefined,
+    status: result.status as AirdropStatus,
+    logoUrl: result.logoUrl || undefined,
+    websiteUrl: result.websiteUrl || undefined,
+    twitterUrl: result.twitterUrl || undefined,
+    claimUrl: result.claimUrl || undefined,
     criteria: result.criteria as any,
+    chains: result.chains || [],
+    estimatedValue: result.estimatedValue || undefined,
+    snapshotDate: result.snapshotDate || undefined,
+    createdAt: result.createdAt,
+    updatedAt: result.updatedAt,
   };
 }
 
@@ -35,10 +46,22 @@ export async function createProject(
  * Find all projects
  */
 export async function findAllProjects(): Promise<AirdropProject[]> {
-  const projects = await prisma.airdropProject.findMany();
+  const projects = await prisma.project.findMany();
   return projects.map(p => ({
-    ...p,
+    id: p.id,
+    name: p.name,
+    description: p.description || undefined,
+    status: p.status as AirdropStatus,
+    logoUrl: p.logoUrl || undefined,
+    websiteUrl: p.websiteUrl || undefined,
+    twitterUrl: p.twitterUrl || undefined,
+    claimUrl: p.claimUrl || undefined,
     criteria: p.criteria as any,
+    chains: p.chains || [],
+    estimatedValue: p.estimatedValue || undefined,
+    snapshotDate: p.snapshotDate || undefined,
+    createdAt: p.createdAt,
+    updatedAt: p.updatedAt,
   }));
 }
 
@@ -48,12 +71,24 @@ export async function findAllProjects(): Promise<AirdropProject[]> {
 export async function findProjectsByStatus(
   status: AirdropStatus
 ): Promise<AirdropProject[]> {
-  const projects = await prisma.airdropProject.findMany({
+  const projects = await prisma.project.findMany({
     where: { status },
   });
   return projects.map(p => ({
-    ...p,
+    id: p.id,
+    name: p.name,
+    description: p.description || undefined,
+    status: p.status as AirdropStatus,
+    logoUrl: p.logoUrl || undefined,
+    websiteUrl: p.websiteUrl || undefined,
+    twitterUrl: p.twitterUrl || undefined,
+    claimUrl: p.claimUrl || undefined,
     criteria: p.criteria as any,
+    chains: p.chains || [],
+    estimatedValue: p.estimatedValue || undefined,
+    snapshotDate: p.snapshotDate || undefined,
+    createdAt: p.createdAt,
+    updatedAt: p.updatedAt,
   }));
 }
 
@@ -61,27 +96,25 @@ export async function findProjectsByStatus(
  * Find a project by ID
  */
 export async function findProjectById(id: string): Promise<AirdropProject | null> {
-  const project = await prisma.airdropProject.findUnique({
+  const p = await prisma.project.findUnique({
     where: { id },
   });
-  if (!project) return null;
+  if (!p) return null;
   return {
-    ...project,
-    criteria: project.criteria as any,
-  };
-}
-
-/**
- * Find a project by slug
- */
-export async function findProjectBySlug(slug: string): Promise<AirdropProject | null> {
-  const project = await prisma.airdropProject.findUnique({
-    where: { slug },
-  });
-  if (!project) return null;
-  return {
-    ...project,
-    criteria: project.criteria as any,
+    id: p.id,
+    name: p.name,
+    description: p.description || undefined,
+    status: p.status as AirdropStatus,
+    logoUrl: p.logoUrl || undefined,
+    websiteUrl: p.websiteUrl || undefined,
+    twitterUrl: p.twitterUrl || undefined,
+    claimUrl: p.claimUrl || undefined,
+    criteria: p.criteria as any,
+    chains: p.chains || [],
+    estimatedValue: p.estimatedValue || undefined,
+    snapshotDate: p.snapshotDate || undefined,
+    createdAt: p.createdAt,
+    updatedAt: p.updatedAt,
   };
 }
 
@@ -93,11 +126,20 @@ export async function updateProject(
   updates: Partial<Omit<AirdropProject, 'id' | 'createdAt'>>
 ): Promise<boolean> {
   try {
-    await prisma.airdropProject.update({
+    await prisma.project.update({
       where: { id },
       data: {
-        ...updates,
+        name: updates.name,
+        description: updates.description,
+        status: updates.status,
+        logoUrl: updates.logoUrl,
+        websiteUrl: updates.websiteUrl,
+        twitterUrl: updates.twitterUrl,
+        claimUrl: updates.claimUrl,
         criteria: updates.criteria as any,
+        chains: updates.chains,
+        estimatedValue: updates.estimatedValue,
+        snapshotDate: updates.snapshotDate,
       },
     });
     return true;
@@ -111,7 +153,7 @@ export async function updateProject(
  */
 export async function deleteProject(id: string): Promise<boolean> {
   try {
-    await prisma.airdropProject.delete({
+    await prisma.project.delete({
       where: { id },
     });
     return true;
@@ -124,7 +166,7 @@ export async function deleteProject(id: string): Promise<boolean> {
  * Count projects by status
  */
 export async function countProjectsByStatus(): Promise<Record<string, number>> {
-  const results = await prisma.airdropProject.groupBy({
+  const results = await prisma.project.groupBy({
     by: ['status'],
     _count: true,
   });
@@ -139,7 +181,7 @@ export async function countProjectsByStatus(): Promise<Record<string, number>> {
  * Check if collection is empty
  */
 export async function isCollectionEmpty(): Promise<boolean> {
-  const count = await prisma.airdropProject.count();
+  const count = await prisma.project.count();
   return count === 0;
 }
 

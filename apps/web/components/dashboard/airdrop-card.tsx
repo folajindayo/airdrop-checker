@@ -36,9 +36,9 @@ export function AirdropCard({ airdrop, className }: AirdropCardProps) {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-3xl font-bold">{airdrop.score}%</span>
-              {airdrop.officialUrl && (
+              {airdrop.websiteUrl && (
                 <a
-                  href={airdrop.officialUrl}
+                  href={airdrop.websiteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-foreground transition-colors"
