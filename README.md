@@ -369,6 +369,7 @@ airdrop-checker/
 │       │   │   ├── og/
 │       │   │   ├── portfolio/[address]/
 │       │   │   ├── portfolio-performance/[address]/
+│       │   │   ├── protocol-insights/[address]/
 │       │   │   ├── protocol-heatmap/[address]/
 │       │   │   ├── recommendations/
 │       │   │   ├── refresh/
