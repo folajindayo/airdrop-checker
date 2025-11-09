@@ -199,7 +199,10 @@ export default function PortfolioPage() {
               {address && (
                 <>
                   <GasTracker address={address} />
-                  <GasOptimizer />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <GasOptimizer />
+                    <GasHistory />
+                  </div>
                 </>
               )}
             </TabsContent>
