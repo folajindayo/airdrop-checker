@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Seed script to populate MongoDB with initial airdrop projects
- * Run with: pnpm seed (from apps/web directory)
+ * Seed script to populate PostgreSQL with initial airdrop projects
+ * Run with: npm run seed (from apps/web directory)
  */
 
 import { readFileSync } from 'fs';
@@ -38,46 +38,52 @@ try {
 async function seedAirdrops() {
   console.log('🌱 Starting airdrop database seeding...');
 
+  let prisma: any;
+  
   try {
     // Dynamic imports after env vars are set
     const { AIRDROPS } = await import('../../../packages/shared/data/index.js');
-    const {
-      createProject,
-      isCollectionEmpty,
-      createIndexes,
-      findAllProjects,
-    } = await import('../lib/db/models/project.js');
-    const { getClient } = await import('../lib/db/client.js');
+    const prismaModule = await import('../lib/db/prisma.js');
+    prisma = prismaModule.default;
 
-    // Check if collection is already populated
-    const isEmpty = await isCollectionEmpty();
+    // Check if database is already populated
+    const existingCount = await prisma.project.count();
 
-    if (!isEmpty) {
-      const existingProjects = await findAllProjects();
+    if (existingCount > 0) {
       console.log(
-        `⚠️  Database already contains ${existingProjects.length} projects.`
+        `⚠️  Database already contains ${existingCount} projects.`
       );
       console.log('Skipping seed. Delete existing data first if you want to reseed.');
       return;
     }
 
-    // Create indexes
-    console.log('📑 Creating database indexes...');
-    await createIndexes();
-    console.log('✅ Indexes created successfully');
-
     // Insert projects
     console.log(`📦 Inserting ${AIRDROPS.length} airdrop projects...`);
     
     for (const airdrop of AIRDROPS) {
-      await createProject(airdrop);
+      await prisma.project.create({
+        data: {
+          id: airdrop.id,
+          name: airdrop.name,
+          description: airdrop.description || '',
+          status: airdrop.status,
+          logoUrl: airdrop.logoUrl,
+          websiteUrl: airdrop.websiteUrl,
+          twitterUrl: airdrop.twitterUrl,
+          criteria: airdrop.criteria as any, // Prisma will handle the Json type
+          chains: airdrop.chains || [],
+          estimatedValue: airdrop.estimatedValue,
+          snapshotDate: airdrop.snapshotDate,
+          claimUrl: airdrop.claimUrl,
+        },
+      });
       console.log(`  ✓ Added: ${airdrop.name} (${airdrop.status})`);
     }
 
     console.log(`\n✅ Successfully seeded ${AIRDROPS.length} airdrop projects!`);
     
     // Display summary
-    const projects = await findAllProjects();
+    const projects = await prisma.project.findMany();
     const summary = projects.reduce((acc, p) => {
       acc[p.status] = (acc[p.status] || 0) + 1;
       return acc;
@@ -93,12 +99,13 @@ async function seedAirdrops() {
     process.exit(1);
   } finally {
     // Close Prisma connection
-    try {
-      const prisma = (await import('../lib/db/prisma.js')).default;
-      await prisma.$disconnect();
-      console.log('\n🔌 Database connection closed');
-    } catch (err) {
-      console.error('Error closing connection:', err);
+    if (prisma) {
+      try {
+        await prisma.$disconnect();
+        console.log('\n🔌 Database connection closed');
+      } catch (err) {
+        console.error('Error closing connection:', err);
+      }
     }
   }
 }

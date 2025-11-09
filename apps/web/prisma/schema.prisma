@@ -10,25 +10,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AirdropProject {
-  id            String   @id
-  name          String
-  slug          String   @unique
-  status        String   // confirmed, rumored, expired, speculative
-  logo          String?
-  description   String?
-  officialUrl   String?  @map("official_url")
-  claimUrl      String?  @map("claim_url")
-  criteria      Json     // Array of eligibility criteria
-  tags          String[] // Array of tags
-  chainIds      Int[]    @map("chain_ids") // Array of chain IDs
-  estimatedValue String? @map("estimated_value")
-  deadline      String?
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
+model Project {
+  id             String   @id
+  name           String
+  description    String?
+  status         String   // confirmed, rumored, expired, speculative
+  logoUrl        String?
+  websiteUrl     String?
+  twitterUrl     String?
+  criteria       Json     // Array of eligibility criteria
+  chains         String[] // Array of chain names
+  estimatedValue String?
+  snapshotDate   String?
+  claimUrl       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@index([status])
-  @@index([slug])
-  @@map("airdrop_projects")
+  @@map("projects")
 }
 
