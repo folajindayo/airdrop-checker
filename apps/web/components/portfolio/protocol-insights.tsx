@@ -258,6 +258,57 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
     } in a row${lastSeen ? ` · Last interaction ${lastSeen}` : ''}`;
   }, [data]);
 
+  const velocitySummary = useMemo(() => {
+    if (!data) return null;
+    const velocity = data.summary.velocity;
+    const arrow =
+      velocity.trend === 'accelerating'
+        ? '↑'
+        : velocity.trend === 'cooling'
+        ? '↓'
+        : '→';
+    const color =
+      velocity.trend === 'accelerating'
+        ? 'text-emerald-600'
+        : velocity.trend === 'cooling'
+        ? 'text-rose-600'
+        : 'text-muted-foreground';
+
+    return {
+      arrow,
+      color,
+      velocity,
+    };
+  }, [data]);
+
+  const decaySummary = useMemo(() => {
+    if (!data) return null;
+    const decay = data.summary.decay;
+
+    if (decay.daysSinceInteraction === null) {
+      return {
+        label: 'No recent activity',
+        description: 'No onchain interactions recorded yet',
+        status: decay.status,
+      };
+    }
+
+    let label = 'Stale cadence';
+    if (decay.status === 'fresh') {
+      label = 'Fresh activity';
+    } else if (decay.status === 'warm') {
+      label = 'Active recently';
+    }
+
+    return {
+      label,
+      description: `${decay.daysSinceInteraction} day${
+        decay.daysSinceInteraction === 1 ? '' : 's'
+      } since last interaction`,
+      status: decay.status,
+    };
+  }, [data]);
+
   if (state === 'loading' || state === 'idle') {
     return (
       <Card className={className}>
