@@ -2904,6 +2904,170 @@ DELETE /api/claim-tracker?id=...&address=0x...
 ```
 Track claimed airdrops with amounts, transaction hashes, and statistics.
 
+### ML Prediction Engine
+```
+GET /api/ml/predict/[address]
+```
+Machine learning-powered airdrop likelihood prediction.
+
+**Response:**
+```json
+{
+  "predictions": [
+    {
+      "projectId": "zora",
+      "name": "Zora",
+      "likelihood": 85,
+      "confidence": "high",
+      "factors": {
+        "chainMatch": true,
+        "highActivity": true,
+        "diverseProtocols": true,
+        "matureAccount": true
+      },
+      "estimatedLaunch": "2024-02-15"
+    }
+  ],
+  "features": {
+    "totalTransactions": 150,
+    "chainsUsed": 4,
+    "uniqueProtocols": 12,
+    "accountAge": 365
+  },
+  "modelVersion": "1.0"
+}
+```
+
+### Advanced Analytics Dashboard
+```
+GET /api/analytics/dashboard?timeframe=30
+```
+Comprehensive analytics dashboard data.
+
+**Query Params:**
+- `timeframe` - Days to analyze (default: 30)
+
+**Response:**
+```json
+{
+  "dashboard": {
+    "overview": {
+      "totalProjects": 50,
+      "activeProjects": 35,
+      "totalEstimatedValue": 50000
+    },
+    "trends": {
+      "newProjectsLast30Days": 5,
+      "growthRate": 10.5
+    },
+    "chains": {
+      "distribution": {...},
+      "mostPopularChain": "Ethereum"
+    },
+    "timeline": {
+      "upcomingSnapshots": [...],
+      "nextSnapshot": {...}
+    }
+  }
+}
+```
+
+### Multi-language Support
+```
+GET /api/i18n?lang=en|es|zh|ja
+```
+Get internationalization translations.
+
+**Query Params:**
+- `lang` - Language code (en, es, zh, ja)
+
+**Response:**
+```json
+{
+  "language": "en",
+  "translations": {
+    "dashboard.title": "Airdrop Dashboard",
+    "dashboard.overallScore": "Overall Score"
+  },
+  "supportedLanguages": ["en", "es", "zh", "ja"]
+}
+```
+
+### Excel Export
+```
+GET /api/export/excel/[address]
+```
+Export eligibility data to Excel format (.xls).
+
+**Response:** Excel file download
+
+### Full-Text Search
+```
+POST /api/search/fulltext
+```
+Advanced full-text search with fuzzy matching.
+
+**Request:**
+```json
+{
+  "query": "zora nft",
+  "fuzzy": true,
+  "limit": 50
+}
+```
+
+**Response:**
+```json
+{
+  "results": [
+    {
+      "projectId": "zora",
+      "name": "Zora",
+      "score": 15,
+      "matchedFields": ["name", "description"],
+      "snippet": "...Zora is an NFT platform..."
+    }
+  ]
+}
+```
+
+### IP Whitelisting
+```
+GET /api/security/whitelist?address=0x...
+POST /api/security/whitelist
+DELETE /api/security/whitelist?address=0x...
+```
+Manage IP whitelist for API access.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "ipAddresses": ["192.168.1.1", "10.0.0.1"]
+}
+```
+
+### API Documentation
+```
+GET /api/docs
+```
+Get auto-generated API documentation.
+
+**Response:**
+```json
+{
+  "version": "1.0.0",
+  "endpoints": [...],
+  "authentication": {...},
+  "rateLimits": {...},
+  "errorCodes": {...},
+  "examples": {
+    "curl": {...},
+    "javascript": {...}
+  }
+}
+```
+
 ## Development Scripts
 
 ```bash
