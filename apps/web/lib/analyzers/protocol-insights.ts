@@ -435,6 +435,7 @@ export function buildProtocolInsights(
   const timeline = buildTimeline(chainTransactions);
   const monthlyActivity = buildMonthlyActivity(timeline);
   const focusAreas = buildFocusAreas(breakdown);
+  const lastInteraction = timeline[0]?.date;
 
   const totalProtocols = new Set(breakdown.map((entry) => entry.protocol)).size;
   const last30d = new Date();
@@ -459,6 +460,8 @@ export function buildProtocolInsights(
 
   const momentum = calculateMomentum(monthlyActivity);
   const streak = calculateActiveStreakDays(timeline);
+  const velocity = calculateVelocityMetrics(timeline);
+  const decay = calculateDecayMetrics(lastInteraction);
 
   const newProtocolsLast30d = breakdown.filter((entry) => {
     if (!entry.firstInteraction) return false;
@@ -474,8 +477,6 @@ export function buildProtocolInsights(
     .filter((area) => area.interactions > 0)
     .sort((a, b) => b.interactions - a.interactions)[0];
 
-  const lastInteraction = timeline[0]?.date;
-
   return {
     address,
     summary: {
@@ -486,6 +487,8 @@ export function buildProtocolInsights(
       engagementScore,
       momentum,
       streak,
+      velocity,
+      decay,
       lastInteraction,
       mostActiveCategory: mostActiveCategory
         ? {
