@@ -1002,6 +1002,165 @@ Analyze smart contract interactions for a wallet.
 }
 ```
 
+### Export Data
+```
+GET /api/export/[address]?format=json|csv|txt
+```
+Export eligibility data in multiple formats.
+
+**Formats:**
+- `json` - Full JSON export (default)
+- `csv` - CSV format for spreadsheet import
+- `txt` - Plain text report
+
+### Notifications
+```
+GET /api/notifications?address=0x...&unreadOnly=true
+POST /api/notifications
+PATCH /api/notifications
+DELETE /api/notifications?id=...&address=0x...
+```
+Manage notifications for airdrop updates, reminders, and alerts.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "type": "snapshot_reminder",
+  "title": "Snapshot Coming Soon",
+  "message": "Zora snapshot in 3 days",
+  "projectId": "zora",
+  "actionUrl": "/dashboard"
+}
+```
+
+### Trending Airdrops
+```
+GET /api/trending
+```
+Get trending airdrops based on multiple scoring factors.
+
+**Response:**
+```json
+{
+  "trending": [
+    {
+      "projectId": "zora",
+      "name": "Zora",
+      "status": "confirmed",
+      "score": 95,
+      "chains": ["Ethereum", "Base"],
+      "snapshotDate": "2024-02-01",
+      "estimatedValue": "$500-$2000"
+    }
+  ]
+}
+```
+
+### Risk Analyzer
+```
+GET /api/risk-analyzer/[address]
+```
+Analyze farming risks including sybil detection, timing, and concentration risks.
+
+**Response:**
+```json
+{
+  "risks": {
+    "sybilRisk": 25,
+    "timingRisk": 40,
+    "concentrationRisk": 15,
+    "gasSpendingRisk": 10,
+    "overallRisk": 28
+  },
+  "recommendations": [
+    "Spread activity over longer time periods",
+    "Diversify across more protocols"
+  ]
+}
+```
+
+### Opportunity Finder
+```
+GET /api/opportunities/[address]
+```
+Find best airdrop opportunities based on current eligibility.
+
+**Response:**
+```json
+{
+  "opportunities": [...],
+  "categories": {
+    "easyWins": [...],
+    "highValue": [...],
+    "quickActions": [...]
+  }
+}
+```
+
+### Personalized Insights
+```
+GET /api/insights/[address]
+```
+Get personalized insights and recommendations.
+
+**Response:**
+```json
+{
+  "insights": {
+    "activity": {...},
+    "eligibility": {...},
+    "recommendations": [...]
+  },
+  "activityPatterns": {
+    "isDiversified": true,
+    "isActive": true,
+    "hasNFTs": false
+  }
+}
+```
+
+### Leaderboard
+```
+GET /api/leaderboard
+```
+Get top airdrop farmers leaderboard.
+
+**Response:**
+```json
+{
+  "leaderboard": [
+    {
+      "rank": 1,
+      "address": "0x742...bEb",
+      "score": 95,
+      "eligibleCount": 12,
+      "chainsUsed": 6
+    }
+  ],
+  "totalParticipants": 1250
+}
+```
+
+### Platform Analytics
+```
+GET /api/analytics
+```
+Get platform-wide analytics and statistics.
+
+**Response:**
+```json
+{
+  "analytics": {
+    "projects": {...},
+    "chains": {...},
+    "criteria": {...},
+    "timeline": {...},
+    "activity": {...}
+  }
+}
+```
+
 ## Development Scripts
 
 ```bash
