@@ -216,11 +216,11 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 203. **Eligibility History Tracking** - Track score changes and improvements over time
 204. **Risk Calculator** - Calculate risk vs reward ratios and break-even probabilities
 205. **Enhanced Farm Script** - Resume capability, auto-retry, and better error handling
-206. **API Key Authentication** - Secure API access with keys
-207. **Telegram Bot Support** - Configure Telegram bots for notifications
-208. **Email Verification** - Verify email addresses for subscriptions
-209. **Report Generation** - Generate detailed eligibility reports
-210. **API Version Management** - Track API versions and changelog
+206. **Wallet Comparison Tool** - Compare eligibility across multiple wallets (2-10)
+207. **Strategy Optimizer** - Optimize farming strategy based on budget and goals
+208. **Wallet Validator** - Validate addresses and check for common issues
+209. **Smart Recommendations Engine** - AI-powered personalized farming suggestions
+210. **Analytics Aggregator** - Comprehensive analytics and insights dashboard
 211. **Endpoint Rate Limits** - Different limits per endpoint type
 212. **Rate Limit Monitoring** - Track usage and remaining requests
 213. **API Key Management** - Generate, list, and revoke API keys
