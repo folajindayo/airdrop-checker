@@ -2610,6 +2610,205 @@ The script saves state to `.farm-state` file:
 }
 ```
 
+### GraphQL API
+```
+POST /api/graphql
+```
+Flexible GraphQL endpoint for custom queries.
+
+**Request:**
+```json
+{
+  "query": "query { projects(status: \"confirmed\", limit: 10) { id name status chains } }",
+  "variables": {}
+}
+```
+
+**Response:**
+```json
+{
+  "data": {
+    "projects": [...],
+    "totalCount": 25
+  }
+}
+```
+
+### Advanced Filtering
+```
+POST /api/filter
+```
+Advanced filtering and aggregation with complex queries.
+
+**Request:**
+```json
+{
+  "filters": {
+    "status": ["confirmed", "rumored"],
+    "chains": ["Ethereum", "Base"],
+    "hasSnapshot": true,
+    "minCriteria": 2,
+    "snapshotAfter": "2024-01-01"
+  },
+  "aggregations": {
+    "groupByStatus": true,
+    "groupByChain": true,
+    "avgCriteria": true
+  },
+  "sort": {
+    "field": "name",
+    "order": "asc"
+  },
+  "limit": 50,
+  "offset": 0
+}
+```
+
+**Response:**
+```json
+{
+  "results": [...],
+  "pagination": {
+    "total": 25,
+    "limit": 50,
+    "offset": 0,
+    "hasMore": false
+  },
+  "aggregations": {
+    "byStatus": {...},
+    "byChain": {...},
+    "avgCriteria": 3.5
+  }
+}
+```
+
+### Data Visualization
+```
+GET /api/visualization/[address]?type=scores|timeline|chains|protocols|all
+```
+Get data formatted for visualization (charts, graphs).
+
+**Query Params:**
+- `type` - Visualization type (scores, timeline, chains, protocols, all)
+
+**Response:**
+```json
+{
+  "visualization": {
+    "scoreDistribution": {
+      "labels": ["Zora", "Base", ...],
+      "datasets": [{
+        "label": "Eligibility Score",
+        "data": [100, 85, ...],
+        "backgroundColor": [...]
+      }]
+    },
+    "activityTimeline": {
+      "labels": ["2024-01-01", ...],
+      "data": [5, 10, ...]
+    },
+    "chainDistribution": {...},
+    "protocolActivity": {...}
+  }
+}
+```
+
+### Mobile API
+```
+GET /api/mobile/[address]
+```
+Mobile-optimized lightweight API endpoint.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "stats": {
+    "overallScore": 72,
+    "eligibleCount": 8,
+    "totalChecked": 20,
+    "chainsUsed": 3,
+    "totalTxs": 150
+  },
+  "topAirdrops": [...],
+  "timestamp": 1234567890
+}
+```
+
+### Webhook Event History
+```
+GET /api/webhooks/events?address=0x...&webhookId=...&status=delivered&limit=50
+```
+Get webhook event delivery history.
+
+**Query Params:**
+- `address` - Wallet address (required)
+- `webhookId` - Filter by webhook ID (optional)
+- `status` - Filter by status (pending, delivered, failed)
+- `limit` - Result limit (default: 50)
+
+**Response:**
+```json
+{
+  "events": [
+    {
+      "id": "...",
+      "webhookId": "...",
+      "eventType": "eligibility_change",
+      "status": "delivered",
+      "attempts": 1,
+      "createdAt": "2024-01-15T12:00:00Z",
+      "deliveredAt": "2024-01-15T12:00:01Z"
+    }
+  ],
+  "stats": {
+    "total": 150,
+    "pending": 2,
+    "delivered": 145,
+    "failed": 3,
+    "successRate": 96.67
+  }
+}
+```
+
+### Security Audit Log
+```
+GET /api/security/audit/[address]?eventType=api_access&severity=high&limit=100
+```
+Get security audit log for an address.
+
+**Query Params:**
+- `eventType` - Filter by event type (optional)
+- `severity` - Filter by severity (low, medium, high, critical)
+- `limit` - Result limit (default: 100)
+
+**Response:**
+```json
+{
+  "events": [
+    {
+      "id": "...",
+      "eventType": "api_access",
+      "details": {...},
+      "ipAddress": "192.168.1.1",
+      "userAgent": "Mozilla/5.0...",
+      "timestamp": "2024-01-15T12:00:00Z",
+      "severity": "low"
+    }
+  ],
+  "stats": {
+    "total": 500,
+    "byType": {...},
+    "bySeverity": {
+      "low": 450,
+      "medium": 40,
+      "high": 9,
+      "critical": 1
+    }
+  }
+}
+```
+
 ## Development Scripts
 
 ```bash
