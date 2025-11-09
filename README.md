@@ -21,7 +21,7 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 14. **Social Sharing** - Share results on Twitter/X with Web Share API
 15. **Personalized Recommendations** - AI-driven airdrop suggestions
 
-### 💼 Portfolio & Analytics Features (16-36)
+### 💼 Portfolio & Analytics Features (16-40)
 16. **Portfolio Tracker** - Track token holdings across all chains with real-time values
 17. **Gas Tracker** - Monitor gas spending by chain, month, and transaction
 18. **ROI Calculator** - Calculate potential return on airdrop investments
@@ -36,13 +36,17 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 27. **Gas Optimizer** - Find best chains and times for lowest gas fees
 28. **Data Exporter** - Export data in JSON, CSV, or TXT formats
 29. **Airdrop Alert System** - Get notified about new airdrops and eligibility changes
-30. **Chain Distribution Analysis** - Visual breakdown of assets by chain
-31. **Top Holdings View** - See your most valuable token positions
-32. **Monthly Gas Breakdown** - Historical gas spending trends
-33. **Portfolio Value Tracking** - Real-time USD value of all holdings
-34. **Protocol-by-Protocol Breakdown** - Detailed DeFi position analysis with focus scoring
-35. **Interaction Timeline** - See when and how often you interact with protocols across chains
-36. **Monthly Activity Trends** - Month-over-month protocol activity insights
+30. **Airdrop Leaderboard** - Compare your scores with other users
+31. **Portfolio Performance Tracker** - Track value changes and trends over time
+32. **Batch Wallet Checker** - Check up to 20 wallets simultaneously
+33. **Snapshot Tracker** - Track upcoming and completed airdrop snapshots
+34. **Airdrop News Feed** - Latest airdrop news, announcements, and rumors
+35. **Chain Distribution Analysis** - Visual breakdown of assets by chain
+36. **Top Holdings View** - See your most valuable token positions
+37. **Monthly Gas Breakdown** - Historical gas spending trends
+38. **Portfolio Value Tracking** - Real-time USD value of all holdings
+39. **Protocol-by-Protocol Breakdown** - Detailed DeFi position analysis
+40. **Interaction Timeline** - See when and how often you interact with protocols
 
 ### 📊 UI Components Library (26-70)
 26. **Alert Component** - Multiple variants with action buttons
