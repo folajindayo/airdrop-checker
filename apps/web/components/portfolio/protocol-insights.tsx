@@ -239,6 +239,11 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
         value: data.summary.avgInteractionsPerProtocol,
         icon: BarChart3,
       },
+      {
+        label: 'Diversity Index',
+        value: data.summary.diversity.score,
+        icon: Target,
+      },
     ];
 
     return cards;
@@ -389,7 +394,7 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
       <CardContent className="space-y-6">
         {/* Summary cards */}
         {summaryCards && (
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4">
             {summaryCards.map((card, index) => (
               <div key={card.label + index} className="bg-muted/40 rounded-lg p-4 border">
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
