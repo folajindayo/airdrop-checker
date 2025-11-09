@@ -610,6 +610,15 @@ Simulate different transaction types to see their impact on airdrop eligibility:
 
 **Access:** Available in dashboard and portfolio pages
 
+### Radar Highlights
+Stay ahead with a real-time radar of the hottest opportunities:
+- Countdown to the next confirmed snapshots
+- Highest estimated value drops across the ecosystem
+- Recently updated projects that may ship soon
+- Auto-refreshing insight card on the dashboard every two minutes
+
+**Access:** `/dashboard` → Highlights panel
+
 ## API Endpoints
 
 ### Airdrop Eligibility Check
