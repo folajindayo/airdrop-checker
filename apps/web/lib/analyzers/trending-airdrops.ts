@@ -116,8 +116,9 @@ function scoreProject(project: AirdropProject): {
     signals.push(buildSignal('claim', 10));
   }
 
-  if ((project.chains?.length ?? 0) > 1) {
-    const chainWeight = Math.min((project.chains!.length - 1) * 2, 8);
+  const chainCount = project.chains?.length ?? 0;
+  if (chainCount > 1) {
+    const chainWeight = Math.min((chainCount - 1) * 2, 8);
     score += chainWeight;
     signals.push(buildSignal('chain', chainWeight));
   }
