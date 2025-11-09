@@ -783,6 +783,120 @@ Create a new alert.
 }
 ```
 
+### GET /api/leaderboard?address=0x...
+Get airdrop eligibility leaderboard.
+
+**Query Params:**
+- `address` (optional): Your address to see your rank
+- `limit` (optional): Number of entries (default: 50)
+
+**Response:**
+```json
+{
+  "entries": [...],
+  "totalParticipants": 1000,
+  "yourRank": 42,
+  "timestamp": 1699999999999
+}
+```
+
+### POST /api/leaderboard
+Submit your score to the leaderboard.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "overallScore": 75,
+  "airdrops": [...]
+}
+```
+
+### GET /api/portfolio-performance/[address]
+Get portfolio performance tracking data.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "currentValue": 12500.00,
+  "performance": {
+    "day1": 2.5,
+    "day7": 8.3,
+    "day30": 15.7,
+    "allTime": 25.0
+  },
+  "dataPoints": [...],
+  "trends": {
+    "valueTrend": "up",
+    "scoreTrend": "up",
+    "activityTrend": "stable"
+  }
+}
+```
+
+### POST /api/batch-check
+Check multiple wallets at once (up to 20).
+
+**Request:**
+```json
+{
+  "addresses": ["0x...", "0x...", "0x..."]
+}
+```
+
+**Response:**
+```json
+{
+  "results": [...],
+  "summary": {
+    "totalChecked": 3,
+    "successful": 3,
+    "failed": 0,
+    "averageScore": 65.5,
+    "totalValue": 25000.00
+  }
+}
+```
+
+### GET /api/snapshots?status=upcoming
+Get airdrop snapshot information.
+
+**Query Params:**
+- `status` (optional): Filter by status (upcoming, completed, claimable)
+- `projectId` (optional): Filter by project
+
+**Response:**
+```json
+{
+  "snapshots": [...],
+  "upcoming": [...],
+  "completed": [...],
+  "claimable": [...]
+}
+```
+
+### GET /api/news?category=confirmed
+Get airdrop news feed.
+
+**Query Params:**
+- `category` (optional): Filter by category (announcement, rumor, confirmed, update)
+- `projectId` (optional): Filter by project
+- `limit` (optional): Number of items (default: 20)
+
+**Response:**
+```json
+{
+  "items": [...],
+  "categories": {
+    "announcement": 5,
+    "rumor": 3,
+    "confirmed": 2,
+    "update": 1
+  }
+}
+```
+
 ## Airdrop Criteria
 
 Airdrops are defined in `packages/shared/data/airdrops.json`. Each project includes:
