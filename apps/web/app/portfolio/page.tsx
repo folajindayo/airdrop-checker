@@ -112,15 +112,13 @@ export default function PortfolioPage() {
           </div>
         ) : (
           <Tabs defaultValue="portfolio" className="w-full">
-            <TabsList className="grid w-full grid-cols-8 mb-8">
+            <TabsList className="grid w-full grid-cols-6 mb-8">
               <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
-              <TabsTrigger value="gas">Gas</TabsTrigger>
+              <TabsTrigger value="health">Health</TabsTrigger>
               <TabsTrigger value="defi">DeFi</TabsTrigger>
-              <TabsTrigger value="heatmap">Heatmap</TabsTrigger>
-              <TabsTrigger value="roi">ROI</TabsTrigger>
-              <TabsTrigger value="strategy">Strategy</TabsTrigger>
-              <TabsTrigger value="claims">Claims</TabsTrigger>
-              <TabsTrigger value="multi">Multi-Wallet</TabsTrigger>
+              <TabsTrigger value="contracts">Contracts</TabsTrigger>
+              <TabsTrigger value="gas">Gas</TabsTrigger>
+              <TabsTrigger value="tools">Tools</TabsTrigger>
             </TabsList>
 
             <TabsContent value="portfolio" className="space-y-6">
