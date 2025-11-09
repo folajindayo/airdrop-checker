@@ -14,7 +14,7 @@ const nextConfig = {
     unoptimized: true,
   },
   webpack: (config, { isServer }) => {
-    // Ignore optional dependencies for web-only app
+    // Ignore optional dependencies for web-only app (for non-turbo builds)
     config.resolve.fallback = {
       ...config.resolve.fallback,
       '@react-native-async-storage/async-storage': false,
