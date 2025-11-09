@@ -100,37 +100,37 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 69. **Aspect Ratio** - Responsive media containers
 70. **Progress Tracker** - Step-by-step progress visualization
 
-### 🚀 Advanced Features (71-100)
-71. **Score History** - Track historical scores with charts
-72. **Watchlist** - Monitor up to 10 wallets
-73. **Mobile Navigation** - Responsive slide-out menu
-74. **Theme Toggle** - Dark/light/system themes
-75. **Rate Limiting** - API protection middleware
-76. **Notification Center** - Real-time alerts system
-77. **Error Boundary** - Graceful error handling
-78. **Help/FAQ Page** - 15+ questions with accordion UI
-79. **Settings Page** - 5-tab settings interface
-80. **Scroll to Top** - Multiple variants with progress
-81. **Transaction Details** - Full tx info display
-82. **Chain Selector** - Dropdown and grid variants
-83. **Confirmation Dialog** - Preset confirmations
-84. **Advanced Search** - Filters sheet with active badges
-85. **Rich Text Editor** - Formatting toolbar with markdown
-86. **File Upload** - Drag-and-drop with preview
-87. **Analytics Widget** - User and airdrop analytics
-88. **Multi-Step Form** - Progress tracking with validation
-89. **Kanban Board** - Drag-and-drop project tracking
-90. **QR Code Generator** - With scanner and share variants
-91. **File Manager** - Grid/list view with file operations
-92. **Portfolio Page** - Comprehensive portfolio analytics dashboard
-93. **Gas Spending Analytics** - Detailed gas cost analysis by chain
-94. **ROI Recommendations** - AI-powered investment suggestions
-95. **Claim History** - Track all claimed airdrops with metadata
-96. **Multi-Wallet Aggregation** - Combined portfolio view
-97. **Transaction Impact Analysis** - See how transactions affect scores
-98. **Expected Value Calculator** - Probability-weighted airdrop values
-99. **Break-Even Analysis** - Calculate minimum airdrop value needed
-100. **Smart Transaction Recommendations** - Get personalized transaction suggestions
+### 🚀 Advanced Features (91-120)
+91. **Score History** - Track historical scores with charts
+92. **Watchlist** - Monitor up to 10 wallets
+93. **Mobile Navigation** - Responsive slide-out menu
+94. **Theme Toggle** - Dark/light/system themes
+95. **Rate Limiting** - API protection middleware
+96. **Notification Center** - Real-time alerts system
+97. **Error Boundary** - Graceful error handling
+98. **Help/FAQ Page** - 15+ questions with accordion UI
+99. **Settings Page** - 5-tab settings interface
+100. **Scroll to Top** - Multiple variants with progress
+101. **Transaction Details** - Full tx info display
+102. **Chain Selector** - Dropdown and grid variants
+103. **Confirmation Dialog** - Preset confirmations
+104. **Advanced Search** - Filters sheet with active badges
+105. **Rich Text Editor** - Formatting toolbar with markdown
+106. **File Upload** - Drag-and-drop with preview
+107. **Analytics Widget** - User and airdrop analytics
+108. **Multi-Step Form** - Progress tracking with validation
+109. **Kanban Board** - Drag-and-drop project tracking
+110. **QR Code Generator** - With scanner and share variants
+111. **File Manager** - Grid/list view with file operations
+112. **Portfolio Page** - Comprehensive portfolio analytics dashboard
+113. **Gas Spending Analytics** - Detailed gas cost analysis by chain
+114. **ROI Recommendations** - AI-powered investment suggestions
+115. **Claim History** - Track all claimed airdrops with metadata
+116. **Multi-Wallet Aggregation** - Combined portfolio view
+117. **Transaction Impact Analysis** - See how transactions affect scores
+118. **Expected Value Calculator** - Probability-weighted airdrop values
+119. **Break-Even Analysis** - Calculate minimum airdrop value needed
+120. **Smart Transaction Recommendations** - Get personalized transaction suggestions
 101. **Portfolio Tracker Component** - Comprehensive portfolio value tracking UI
 102. **Gas Tracker Component** - Track gas spending across all chains
 103. **ROI Calculator Component** - Visual ROI calculation interface
