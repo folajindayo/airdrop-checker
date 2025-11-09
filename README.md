@@ -459,6 +459,205 @@ POST /api/refresh
 ```
 Trigger a fresh eligibility check (rate-limited to 1 per 5 minutes per address).
 
+### Portfolio Value Tracker
+```
+GET /api/portfolio/[address]
+```
+Get portfolio value and token breakdown for a wallet address across all chains.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "totalValue": 12345.67,
+  "chainBreakdown": [
+    {
+      "chainId": 1,
+      "chainName": "Ethereum",
+      "value": 8000.00,
+      "tokenCount": 15,
+      "percentage": 64.8
+    }
+  ],
+  "topTokens": [...],
+  "totalTokens": 45
+}
+```
+
+### Airdrop Alerts
+```
+GET /api/alerts?address=0x...
+POST /api/alerts
+DELETE /api/alerts?id=...&address=0x...
+```
+Manage airdrop alerts for notifications on new airdrops, eligibility changes, claim availability, and upcoming snapshots.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "email": "user@example.com",
+  "airdropId": "zora",
+  "alertType": "eligibility_change"
+}
+```
+
+### Gas Fee Optimizer
+```
+GET /api/gas-optimizer
+GET /api/gas-optimizer?chainId=1
+```
+Get gas price recommendations across all chains or for a specific chain.
+
+**Response:**
+```json
+{
+  "gasPrices": [
+    {
+      "chainId": 1,
+      "chainName": "Ethereum",
+      "slow": 15.2,
+      "standard": 25.5,
+      "fast": 40.1
+    }
+  ],
+  "cheapestChain": {
+    "chainId": 8453,
+    "chainName": "Base",
+    "price": 0.2
+  },
+  "recommendation": {
+    "bestTime": "now",
+    "suggestedSpeed": "slow",
+    "reason": "Current time shows lower network activity"
+  }
+}
+```
+
+### Airdrop Simulator
+```
+POST /api/simulate
+```
+Simulate airdrop eligibility with hypothetical interactions.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "simulatedInteractions": [
+    {
+      "type": "swap",
+      "protocol": "Uniswap",
+      "chain": "ethereum",
+      "count": 5
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "currentScore": 65,
+  "simulatedScore": 78,
+  "improvement": 13,
+  "airdrops": [...]
+}
+```
+
+### Multi-Wallet Manager
+```
+GET /api/wallets?userId=...
+POST /api/wallets
+DELETE /api/wallets?id=...&userId=...
+```
+Manage multiple wallets (up to 10 per user).
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "label": "Main Wallet",
+  "userId": "user123"
+}
+```
+
+### Airdrop History
+```
+GET /api/history/[address]
+POST /api/history/[address]
+```
+Get or add airdrop claim history for an address.
+
+**POST Request:**
+```json
+{
+  "projectId": "zora",
+  "projectName": "Zora",
+  "status": "claimed",
+  "amount": "1000",
+  "value": 500,
+  "txHash": "0x...",
+  "notes": "Claimed via official site"
+}
+```
+
+### ROI Calculator
+```
+POST /api/roi
+```
+Calculate return on investment for airdrop farming activities.
+
+**Request:**
+```json
+{
+  "address": "0x...",
+  "gasPriceMultiplier": 1.0
+}
+```
+
+**Response:**
+```json
+{
+  "totalGasSpent": 125.50,
+  "potentialAirdropValue": 2500.00,
+  "roi": 1892.4,
+  "breakEvenValue": 125.50,
+  "topOpportunities": [...]
+}
+```
+
+### Smart Contract Analyzer
+```
+GET /api/contracts/[address]
+```
+Analyze smart contract interactions for a wallet.
+
+**Response:**
+```json
+{
+  "interactions": [
+    {
+      "contractAddress": "0x...",
+      "chainId": 1,
+      "interactionCount": 25,
+      "firstInteraction": "2024-01-01T00:00:00Z",
+      "lastInteraction": "2024-01-15T00:00:00Z",
+      "totalValue": 1.5,
+      "functionCalls": {
+        "swap": 15,
+        "addLiquidity": 10
+      }
+    }
+  ],
+  "stats": {
+    "totalContracts": 12,
+    "totalInteractions": 150,
+    "uniqueChains": 3
+  }
+}
+```
+
 ## Development Scripts
 
 ```bash
