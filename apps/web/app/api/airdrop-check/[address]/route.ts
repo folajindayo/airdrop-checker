@@ -48,8 +48,12 @@ export async function GET(
 
     if (projects.length === 0) {
       return NextResponse.json(
-        { error: 'No airdrop projects found. Please run the seed script.' },
-        { status: 500 }
+        { 
+          error: 'No airdrop projects found', 
+          message: 'The database has not been seeded yet. Please run: cd apps/web && pnpm seed',
+          details: 'MongoDB needs at least 500MB free space to seed the database.'
+        },
+        { status: 503 }
       );
     }
 

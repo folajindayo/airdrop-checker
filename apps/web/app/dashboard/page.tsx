@@ -38,12 +38,16 @@ export default function DashboardPage() {
     setLoading(true);
     try {
       const response = await fetch(`/api/airdrop-check/${address}`);
+      const data = await response.json();
       
       if (!response.ok) {
-        throw new Error('Failed to fetch eligibility data');
+        // Show detailed error message from API
+        const errorMsg = data.message || data.error || 'Failed to fetch eligibility data';
+        console.error('API Error:', data);
+        toast.error(errorMsg, { duration: 5000 });
+        return;
       }
 
-      const data = await response.json();
       setResult(data);
       
       if (data.cached) {
@@ -51,7 +55,7 @@ export default function DashboardPage() {
       }
     } catch (error) {
       console.error('Error fetching eligibility:', error);
-      toast.error('Failed to load eligibility data. Please try again.');
+      toast.error('Failed to load eligibility data. Please check the console for details.');
     } finally {
       setLoading(false);
     }
