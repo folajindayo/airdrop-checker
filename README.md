@@ -21,7 +21,19 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 14. **Social Sharing** - Share results on Twitter/X with Web Share API
 15. **Personalized Recommendations** - AI-driven airdrop suggestions
 
-### 📊 UI Components Library (16-60)
+### 💼 Portfolio & Analytics Features (16-25)
+16. **Portfolio Tracker** - Track token holdings across all chains with real-time values
+17. **Gas Tracker** - Monitor gas spending by chain, month, and transaction
+18. **ROI Calculator** - Calculate potential return on airdrop investments
+19. **Airdrop Claim Tracker** - Track claimed airdrops with amounts and transaction hashes
+20. **Multi-Wallet Portfolio** - Aggregate view of up to 10 wallets
+21. **Transaction Simulator** - Simulate transactions to see eligibility impact
+22. **Chain Distribution Analysis** - Visual breakdown of assets by chain
+23. **Top Holdings View** - See your most valuable token positions
+24. **Monthly Gas Breakdown** - Historical gas spending trends
+25. **Portfolio Value Tracking** - Real-time USD value of all holdings
+
+### 📊 UI Components Library (26-70)
 16. **Alert Component** - Multiple variants with action buttons
 17. **Avatar Component** - Wallet, user, group, status variants
 18. **Badge Component** - Multiple variants and sizes
