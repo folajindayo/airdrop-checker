@@ -196,6 +196,14 @@ export default function PortfolioPage() {
                     <AirdropClaimTracker address={address} />
                     <MultiWalletPortfolio />
                   </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <BatchWalletChecker />
+                    <SnapshotTracker />
+                  </div>
+                  <div className="grid grid-cols-1 gap-6">
+                    <Leaderboard address={address} />
+                    <NewsFeed />
+                  </div>
                   {airdropData && (
                     <DataExporter
                       address={address}
