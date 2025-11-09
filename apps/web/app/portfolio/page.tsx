@@ -165,10 +165,7 @@ export default function PortfolioPage() {
               {address && (
                 <>
                   <ProtocolInsightsPanel address={address} />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <ProtocolHeatmap address={address} />
-                    <DeFiPositionsTracker address={address} />
-                  </div>
+                  <ProtocolHeatmap address={address} />
                 </>
               )}
             </TabsContent>
