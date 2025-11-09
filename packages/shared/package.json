@@ -1,0 +1,18 @@
+{
+  "name": "@airdrop-finder/shared",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./types": "./types/index.ts",
+    "./constants": "./constants/index.ts",
+    "./utils": "./utils/index.ts",
+    "./data": "./data/index.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
+
