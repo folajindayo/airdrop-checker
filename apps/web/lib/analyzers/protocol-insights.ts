@@ -1,4 +1,4 @@
-import type { AirdropStatus, ProtocolInteraction, GoldRushTransaction } from '@airdrop-finder/shared';
+import type { ProtocolInteraction, GoldRushTransaction } from '@airdrop-finder/shared';
 import { CHAIN_ID_TO_NAME } from '@airdrop-finder/shared';
 import {
   KNOWN_PROTOCOLS,
