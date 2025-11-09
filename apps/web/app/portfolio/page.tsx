@@ -12,6 +12,10 @@ import { MultiWalletPortfolio } from '@/components/portfolio/multi-wallet-portfo
 import { DeFiPositionsTracker } from '@/components/portfolio/defi-positions-tracker';
 import { ProtocolHeatmap } from '@/components/portfolio/protocol-heatmap';
 import { FarmingStrategyBuilder } from '@/components/portfolio/farming-strategy-builder';
+import { WalletHealthDashboard } from '@/components/portfolio/wallet-health-dashboard';
+import { ContractAnalyzer } from '@/components/portfolio/contract-analyzer';
+import { GasOptimizer } from '@/components/portfolio/gas-optimizer';
+import { DataExporter } from '@/components/portfolio/data-exporter';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/common/skeleton';
 import { ArrowLeft } from 'lucide-react';
