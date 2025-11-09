@@ -556,6 +556,39 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
           </div>
         )}
 
+        {diversityDistribution.length > 0 && (
+          <div className="border rounded-lg p-4">
+            <p className="text-sm font-semibold mb-3">Category Distribution</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-muted-foreground">
+              {diversityDistribution.map((item) => (
+                <div key={item.category} className="flex items-center justify-between p-2 bg-muted/30 rounded">
+                  <span className="font-medium capitalize text-foreground">{item.category}</span>
+                  <span>{item.percentage}%</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              Diversity score: {data.summary.diversity.score} · Entropy {data.summary.diversity.entropy}
+            </p>
+          </div>
+        )}
+
+        {data.reactivationRecommendations.length > 0 && (
+          <div className="border rounded-lg p-4">
+            <p className="text-sm font-semibold mb-3">Reactivation Recommendations</p>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              {data.reactivationRecommendations.map((recommendation, index) => (
+                <div key={recommendation.protocol + index} className="p-3 bg-muted/30 rounded">
+                  <p className="font-medium text-foreground">
+                    {recommendation.protocol} · {recommendation.categoryLabel}
+                  </p>
+                  <p className="text-xs mt-1">{recommendation.recommendation}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <Tabs defaultValue="focus" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="focus">Focus Areas</TabsTrigger>
