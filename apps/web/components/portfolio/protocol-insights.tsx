@@ -129,6 +129,7 @@ interface ProtocolInsights {
     velocity: VelocityMetrics;
     decay: DecayMetrics;
     coverage: CoverageMetrics;
+    diversity: DiversityMetrics;
     lastInteraction?: string;
     mostActiveCategory?: {
       category: string;
@@ -142,6 +143,7 @@ interface ProtocolInsights {
   categoryScores: CategoryScore[];
   monthlyActivity: MonthlyActivity[];
   dormantProtocols: DormantProtocol[];
+  reactivationRecommendations: ReactivationRecommendation[];
   generatedAt: string;
 }
 
