@@ -325,6 +325,11 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
     };
   }, [data]);
 
+  const coverageSummary = useMemo(() => {
+    if (!data) return null;
+    return data.summary.coverage;
+  }, [data]);
+
   if (state === 'loading' || state === 'idle') {
     return (
       <Card className={className}>
