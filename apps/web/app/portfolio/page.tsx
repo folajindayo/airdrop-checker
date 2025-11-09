@@ -132,6 +132,7 @@ export default function PortfolioPage() {
               {address && (
                 <>
                   <PortfolioTracker address={address} />
+                  <PortfolioPerformance address={address} />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <ProtocolHeatmap address={address} />
                     {airdropData && (
