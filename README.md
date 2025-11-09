@@ -2,7 +2,7 @@
 
 A read-only onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users simply connect their wallet via WalletConnect and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria.
 
-## 🎉 120+ Production-Ready Features!
+## 🎉 100+ Production-Ready Features!
 
 ### 🎯 Core Features (1-15)
 1. **WalletConnect Integration** - Connect securely using WalletConnect v2 (Reown SDK)
@@ -272,10 +272,13 @@ airdrop-checker/
 │       │   │   │   └── trending/
 │       │   │   ├── calendar/
 │       │   │   ├── compare/
+│       │   │   ├── defi-positions/[address]/
+│       │   │   ├── farming-strategy/
 │       │   │   ├── gas-tracker/[address]/
 │       │   │   ├── multi-wallet-portfolio/
 │       │   │   ├── og/
 │       │   │   ├── portfolio/[address]/
+│       │   │   ├── protocol-heatmap/[address]/
 │       │   │   ├── recommendations/
 │       │   │   ├── refresh/
 │       │   │   ├── roi-calculator/
@@ -628,6 +631,8 @@ Example criterion:
 - **Portfolio Data**: 5 minutes TTL
 - **Gas Tracker**: 5 minutes TTL
 - **Multi-Wallet Portfolio**: 5 minutes TTL
+- **DeFi Positions**: 5 minutes TTL
+- **Protocol Heatmap**: 10 minutes TTL
 - **Highlights Radar**: 1 minute TTL
 
 ## New Features Overview
@@ -682,6 +687,34 @@ Simulate different transaction types to see their impact on airdrop eligibility:
 - Impact scoring and recommendations
 
 **Access:** Available in dashboard and portfolio pages
+
+### DeFi Positions Tracker
+Track your DeFi positions across all protocols:
+- LP positions, staking, lending, and farming
+- Protocol-by-protocol breakdown
+- Chain distribution of positions
+- Total DeFi value tracking
+
+**Access:** `/portfolio` → DeFi tab
+
+### Protocol Interaction Heatmap
+Visualize your protocol interactions over time:
+- Daily interaction intensity
+- Top protocols by activity
+- Date range analysis
+- Visual heatmap grid
+
+**Access:** `/portfolio` → Heatmap tab
+
+### Farming Strategy Builder
+Generate a personalized 4-week airdrop farming plan:
+- Step-by-step action plan
+- Priority-based recommendations
+- Gas cost estimates
+- Expected score improvements
+- Timeline distribution
+
+**Access:** `/portfolio` → Strategy tab
 
 ### Radar Highlights
 Stay ahead with a real-time radar of the hottest opportunities:
