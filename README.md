@@ -110,34 +110,34 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 99. **Portfolio Token List** - View all tokens with balances and values
 100. **Gas Optimization Recommendations** - Get recommendations for best interaction times
 
-### 💬 Communication & Social (82-85)
-82. **Chat Component** - Real-time messaging with sidebar
-83. **Support Chat** - Live support widget
-84. **Timeline Component** - Vertical and horizontal variants
-85. **Activity Feed** - Real-time activity stream
+### 💬 Communication & Social (101-104)
+101. **Chat Component** - Real-time messaging with sidebar
+102. **Support Chat** - Live support widget
+103. **Timeline Component** - Vertical and horizontal variants
+104. **Activity Feed** - Real-time activity stream
 
-### 🎬 Media & Content (86-88)
-86. **Video Player** - Full controls with chapters
-87. **Rating System** - Stars, hearts, thumbs variants
-88. **Review Cards** - User reviews with helpful voting
+### 🎬 Media & Content (105-107)
+105. **Video Player** - Full controls with chapters
+106. **Rating System** - Stars, hearts, thumbs variants
+107. **Review Cards** - User reviews with helpful voting
 
-### 💰 Commerce & Pricing (89-90)
-89. **Pricing Table** - Billing toggle with comparison
-90. **Enterprise Pricing** - Custom solutions CTA
+### 💰 Commerce & Pricing (108-109)
+108. **Pricing Table** - Billing toggle with comparison
+109. **Enterprise Pricing** - Custom solutions CTA
 
-### 🎓 Onboarding & Help (91-93)
-91. **Onboarding Tour** - Interactive spotlight guide
-92. **Step Guide** - Sequential tutorial steps
-93. **Welcome Checklist** - Getting started tasks
+### 🎓 Onboarding & Help (110-112)
+110. **Onboarding Tour** - Interactive spotlight guide
+111. **Step Guide** - Sequential tutorial steps
+112. **Welcome Checklist** - Getting started tasks
 
-### 📈 Data Visualization (94-100)
-94. **Bar Chart** - Horizontal bar charts
-95. **Donut Chart** - Pie charts with legend
-96. **Line Chart** - Time series visualization
-97. **Area Chart** - Filled line charts
-98. **Heatmap** - Data density visualization
-99. **Progress Ring** - Circular progress indicators
-100. **Stat Cards** - Metrics with trend indicators
+### 📈 Data Visualization (113-119)
+113. **Bar Chart** - Horizontal bar charts
+114. **Donut Chart** - Pie charts with legend
+115. **Line Chart** - Time series visualization
+116. **Area Chart** - Filled line charts
+117. **Heatmap** - Data density visualization
+118. **Progress Ring** - Circular progress indicators
+119. **Stat Cards** - Metrics with trend indicators
 
 ### 🧠 Intelligence Enhancements
 - **Trending Airdrop Radar** - Signal-based scoring to bubble up the hottest opportunities in real time
