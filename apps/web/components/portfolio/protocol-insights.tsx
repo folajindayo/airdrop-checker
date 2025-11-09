@@ -437,8 +437,8 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
           </div>
         )}
 
-        {(velocitySummary || decaySummary) && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {(velocitySummary || decaySummary || coverageSummary) && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {velocitySummary && (
               <div className="border rounded-lg p-4 bg-muted/30">
                 <div className="flex items-center justify-between">
@@ -450,12 +450,12 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground mt-2">
-                  {velocitySummary.velocity.currentAvgDaily.toFixed(2)} interactions/day
-                  {' · '}previous {velocitySummary.velocity.previousAvgDaily.toFixed(2)}
+                  {velocitySummary.velocity.currentAvgDaily.toFixed(2)} interactions/day · prev{' '}
+                  {velocitySummary.velocity.previousAvgDaily.toFixed(2)}
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
                   Δ {velocitySummary.velocity.deltaInteractions >= 0 ? '+' : ''}
-                  {velocitySummary.velocity.deltaInteractions} interactions over the last 30 days
+                  {velocitySummary.velocity.deltaInteractions} interactions (30d)
                 </p>
               </div>
             )}
@@ -471,6 +471,64 @@ export function ProtocolInsightsPanel({ address, className = '' }: ProtocolInsig
                 <p className="text-xs text-muted-foreground mt-2">{decaySummary.description}</p>
               </div>
             )}
+            {coverageSummary && (
+              <div className="border rounded-lg p-4 bg-muted/30">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-semibold">Coverage Score</p>
+                  <span className="text-lg font-semibold text-foreground">{coverageSummary.score}</span>
+                </div>
+                <div className="h-2 w-full bg-muted rounded-full mt-3">
+                  <div
+                    className="h-2 rounded-full bg-primary transition-all"
+                    style={{ width: `${Math.min(coverageSummary.score, 100)}%` }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  {coverageSummary.coveredCategories.length} / {coverageSummary.totalCategories} categories active
+                </p>
+                {coverageSummary.missingCategories.length > 0 && (
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Missing: {coverageSummary.missingCategories.join(', ')}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {data.dormantProtocols.length > 0 && (
+          <div className="border rounded-lg p-4">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-sm font-semibold">Dormant Protocols</p>
+              <span className="text-xs text-muted-foreground">
+                {data.dormantProtocols.length} flagged
+              </span>
+            </div>
+            <div className="space-y-2">
+              {data.dormantProtocols.map((protocol) => (
+                <div
+                  key={`${protocol.protocol}-${protocol.categoryLabel}`}
+                  className="flex items-center justify-between p-3 bg-muted/30 rounded"
+                >
+                  <div>
+                    <p className="font-medium capitalize">{protocol.protocol}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {protocol.categoryLabel}
+                    </p>
+                  </div>
+                  <div className="text-right text-xs text-muted-foreground">
+                    <p>
+                      {protocol.daysSinceInteraction === null
+                        ? 'No activity recorded'
+                        : `${protocol.daysSinceInteraction}d inactive`}
+                    </p>
+                    {protocol.lastInteraction && (
+                      <p>{new Date(protocol.lastInteraction).toLocaleDateString()}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
