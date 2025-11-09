@@ -7,12 +7,14 @@ The application has been migrated from MongoDB to PostgreSQL with Prisma ORM.
 Run these commands in your terminal:
 
 ```bash
-# Navigate to the web app directory
-cd /Users/mac/airdrop-checker/apps/web
+# Navigate to the project root
+cd /Users/mac/airdrop-checker
 
-# Install dependencies (if not already installed)
-# Note: If you have corepack issues, try: corepack disable
-npm install @prisma/client prisma --legacy-peer-deps
+# Install all dependencies (monorepo)
+npm install
+
+# Navigate to the web app directory
+cd apps/web
 
 # Generate Prisma client
 npx prisma generate
@@ -44,10 +46,12 @@ DATABASE_URL=postgresql://postgres:jZEokyUlaozzpRNrtFuYSneJKYDVSwYw@nozomi.proxy
 
 ## Troubleshooting
 
-### If corepack is causing issues:
+### If you encounter dependency issues:
 ```bash
-corepack disable
-npm install -g pnpm@8.15.0
+# Clear caches and reinstall
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install
 ```
 
 ### To view your database:

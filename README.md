@@ -15,8 +15,8 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 ## Tech Stack
 
 ### Monorepo Structure
-- **pnpm workspaces** for dependency management
-- **apps/web**: Next.js 15 application
+- **npm workspaces** for dependency management
+- **apps/web**: Next.js 15 application with Prisma ORM
 - **packages/shared**: Shared types, utilities, and constants
 
 ### Frontend
@@ -35,7 +35,7 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 
 ### Backend & Data
 - Next.js API Routes (serverless)
-- MongoDB for airdrop project registry
+- PostgreSQL with Prisma ORM for airdrop project registry
 - In-memory caching with TTL
 - GoldRush API for blockchain data
 
@@ -44,8 +44,8 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 ### Prerequisites
 
 - Node.js >= 18.0.0
-- pnpm >= 8.0.0
-- MongoDB instance
+- npm >= 8.0.0
+- PostgreSQL database
 
 ### Environment Variables
 
@@ -54,22 +54,28 @@ Create a `.env.local` file in `apps/web/`:
 ```env
 NEXT_PUBLIC_REOWN_PROJECT_ID=your_reown_project_id
 GOLDRUSH_API_KEY=your_goldrush_api_key
-MONGODB_URI=your_mongodb_connection_string
+DATABASE_URL=your_postgresql_connection_string
 ```
 
 ### Installation
 
 ```bash
 # Install dependencies
-pnpm install
+npm install
+
+# Generate Prisma client
+cd apps/web
+npx prisma generate
+
+# Push database schema
+npx prisma db push
 
 # Seed the database with airdrop projects
-cd apps/web
-pnpm seed
+npm run seed
 
 # Start development server
 cd ../..
-pnpm dev
+npm run dev
 ```
 
 The application will be available at `http://localhost:3000`
@@ -201,24 +207,28 @@ Example criterion:
 
 ```bash
 # Start development server
-pnpm dev
+npm run dev
 
 # Build for production
-pnpm build
+npm run build
 
 # Start production server
-pnpm start
+npm run start
 
 # Lint code
-pnpm lint
+npm run lint
 
-# Seed database
-cd apps/web && pnpm seed
+# Database commands
+cd apps/web
+npx prisma generate    # Generate Prisma client
+npx prisma db push     # Push schema to database
+npx prisma studio      # Open database GUI
+npm run seed           # Seed database with airdrop projects
 ```
 
 ## Contributing
 
-This project follows the monorepo structure with pnpm workspaces. Key guidelines:
+This project follows the monorepo structure with npm workspaces. Key guidelines:
 
 - Files should be 200-400 lines (max 500, never exceed 800-1000)
 - Use NativeWind/TailwindCSS, not StyleSheet

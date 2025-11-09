@@ -3,17 +3,21 @@
   "version": "1.0.0",
   "private": true,
   "description": "Airdrop Finder - Check wallet eligibility for airdrops",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "pnpm --filter @airdrop-finder/web dev",
-    "build": "pnpm --filter @airdrop-finder/web build",
-    "start": "pnpm --filter @airdrop-finder/web start",
-    "lint": "pnpm --filter @airdrop-finder/web lint",
-    "clean": "pnpm -r exec rm -rf node_modules .next dist"
+    "dev": "npm run dev --workspace=apps/web",
+    "build": "npm run build --workspace=apps/web",
+    "start": "npm run start --workspace=apps/web",
+    "lint": "npm run lint --workspace=apps/web",
+    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules .next dist",
+    "install:all": "npm install"
   },
   "engines": {
     "node": ">=18.0.0",
-    "pnpm": ">=8.0.0"
-  },
-  "packageManager": "pnpm@8.15.0"
+    "npm": ">=8.0.0"
+  }
 }
 
