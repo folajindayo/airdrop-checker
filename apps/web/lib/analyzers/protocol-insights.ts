@@ -118,6 +118,7 @@ export interface ProtocolInsights {
     velocity: VelocityMetrics;
     decay: DecayMetrics;
     coverage: CoverageMetrics;
+    diversity: DiversityMetrics;
     lastInteraction?: string;
     mostActiveCategory?: {
       category: ProtocolCategory;
@@ -131,6 +132,7 @@ export interface ProtocolInsights {
   categoryScores: CategoryScore[];
   monthlyActivity: MonthlyActivity[];
   dormantProtocols: DormantProtocol[];
+  reactivationRecommendations: ReactivationRecommendation[];
   generatedAt: string;
 }
 
