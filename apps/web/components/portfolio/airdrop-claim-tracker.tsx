@@ -1,323 +1,317 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Gift, CheckCircle2, Clock, XCircle, Plus } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/common/skeleton';
+import { Plus, CheckCircle, XCircle, Clock, ExternalLink } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
-interface AirdropClaim {
+interface AirdropClaimTrackerProps {
+  address: string;
+}
+
+interface HistoryEntry {
   id: string;
   projectId: string;
   projectName: string;
-  claimed: boolean;
-  claimDate?: string;
-  claimAmount?: number;
-  claimValueUSD?: number;
+  status: 'claimed' | 'eligible' | 'missed';
+  claimedAt?: string;
+  amount?: string;
+  value?: number;
   txHash?: string;
   notes?: string;
 }
 
-interface AirdropClaimTrackerProps {
-  address: string;
-  className?: string;
+interface HistoryStats {
+  total: number;
+  claimed: number;
+  eligible: number;
+  missed: number;
+  totalValue: number;
 }
 
-const STORAGE_KEY = 'airdrop-claims';
-
-export function AirdropClaimTracker({ address, className = '' }: AirdropClaimTrackerProps) {
-  const [claims, setClaims] = useState<AirdropClaim[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [newClaim, setNewClaim] = useState({
+export function AirdropClaimTracker({ address }: AirdropClaimTrackerProps) {
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [stats, setStats] = useState<HistoryStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [formData, setFormData] = useState({
     projectId: '',
     projectName: '',
-    claimAmount: '',
-    claimValueUSD: '',
+    status: 'claimed' as 'claimed' | 'eligible' | 'missed',
+    amount: '',
+    value: '',
     txHash: '',
     notes: '',
   });
 
   useEffect(() => {
-    loadClaims();
+    fetchHistory();
   }, [address]);
 
-  function loadClaims() {
+  async function fetchHistory() {
+    setLoading(true);
     try {
-      const stored = localStorage.getItem(`${STORAGE_KEY}-${address}`);
-      if (stored) {
-        setClaims(JSON.parse(stored));
-      }
+      const response = await fetch(`/api/history/${address}`);
+      if (!response.ok) throw new Error('Failed to fetch history');
+
+      const data = await response.json();
+      setHistory(data.history || []);
+      setStats(data.stats || null);
     } catch (error) {
-      console.error('Failed to load claims:', error);
+      console.error('Error fetching history:', error);
+    } finally {
+      setLoading(false);
     }
   }
 
-  function saveClaims(newClaims: AirdropClaim[]) {
-    try {
-      localStorage.setItem(`${STORAGE_KEY}-${address}`, JSON.stringify(newClaims));
-      setClaims(newClaims);
-    } catch (error) {
-      console.error('Failed to save claims:', error);
-      toast.error('Failed to save claim data');
-    }
-  }
-
-  function handleAddClaim() {
-    if (!newClaim.projectId || !newClaim.projectName) {
-      toast.error('Please fill in project ID and name');
+  async function addEntry() {
+    if (!formData.projectId || !formData.projectName) {
+      toast.error('Project ID and name are required');
       return;
     }
 
-    const claim: AirdropClaim = {
-      id: `claim-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      projectId: newClaim.projectId,
-      projectName: newClaim.projectName,
-      claimed: true,
-      claimDate: new Date().toISOString(),
-      claimAmount: newClaim.claimAmount ? parseFloat(newClaim.claimAmount) : undefined,
-      claimValueUSD: newClaim.claimValueUSD ? parseFloat(newClaim.claimValueUSD) : undefined,
-      txHash: newClaim.txHash || undefined,
-      notes: newClaim.notes || undefined,
-    };
+    try {
+      const response = await fetch(`/api/history/${address}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          value: formData.value ? parseFloat(formData.value) : undefined,
+        }),
+      });
 
-    saveClaims([...claims, claim]);
-    setNewClaim({
-      projectId: '',
-      projectName: '',
-      claimAmount: '',
-      claimValueUSD: '',
-      txHash: '',
-      notes: '',
-    });
-    setIsDialogOpen(false);
-    toast.success('Claim added successfully');
+      if (!response.ok) throw new Error('Failed to add entry');
+
+      toast.success('History entry added');
+      setDialogOpen(false);
+      setFormData({
+        projectId: '',
+        projectName: '',
+        status: 'claimed',
+        amount: '',
+        value: '',
+        txHash: '',
+        notes: '',
+      });
+      fetchHistory();
+    } catch (error) {
+      console.error('Error adding entry:', error);
+      toast.error('Failed to add entry');
+    }
   }
 
-  function handleToggleClaim(id: string) {
-    const updated = claims.map((claim) =>
-      claim.id === id
-        ? { ...claim, claimed: !claim.claimed }
-        : claim
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-32 w-full" />
+        <Skeleton className="h-64 w-full" />
+      </div>
     );
-    saveClaims(updated);
   }
-
-  function handleDeleteClaim(id: string) {
-    const updated = claims.filter((claim) => claim.id !== id);
-    saveClaims(updated);
-    toast.success('Claim removed');
-  }
-
-  const formatCurrency = (value?: number) => {
-    if (!value) return 'N/A';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
-
-  const totalClaimedValue = claims
-    .filter((c) => c.claimed && c.claimValueUSD)
-    .reduce((sum, c) => sum + (c.claimValueUSD || 0), 0);
-
-  const claimedCount = claims.filter((c) => c.claimed).length;
-  const pendingCount = claims.filter((c) => !c.claimed).length;
 
   return (
-    <Card className={className}>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <Gift className="h-5 w-5" />
-              Airdrop Claim Tracker
-            </CardTitle>
-            <CardDescription>Track your claimed airdrops</CardDescription>
-          </div>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Claim
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add Airdrop Claim</DialogTitle>
-                <DialogDescription>
-                  Record a claimed airdrop to track your earnings
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="projectId">Project ID</Label>
-                  <Input
-                    id="projectId"
-                    placeholder="e.g., zora"
-                    value={newClaim.projectId}
-                    onChange={(e) => setNewClaim({ ...newClaim, projectId: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="projectName">Project Name</Label>
-                  <Input
-                    id="projectName"
-                    placeholder="e.g., Zora"
-                    value={newClaim.projectName}
-                    onChange={(e) => setNewClaim({ ...newClaim, projectName: e.target.value })}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="claimAmount">Claim Amount</Label>
-                    <Input
-                      id="claimAmount"
-                      type="number"
-                      placeholder="0"
-                      value={newClaim.claimAmount}
-                      onChange={(e) => setNewClaim({ ...newClaim, claimAmount: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="claimValueUSD">Value (USD)</Label>
-                    <Input
-                      id="claimValueUSD"
-                      type="number"
-                      placeholder="0"
-                      value={newClaim.claimValueUSD}
-                      onChange={(e) => setNewClaim({ ...newClaim, claimValueUSD: e.target.value })}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="txHash">Transaction Hash (Optional)</Label>
-                  <Input
-                    id="txHash"
-                    placeholder="0x..."
-                    value={newClaim.txHash}
-                    onChange={(e) => setNewClaim({ ...newClaim, txHash: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="notes">Notes (Optional)</Label>
-                  <Input
-                    id="notes"
-                    placeholder="Additional notes..."
-                    value={newClaim.notes}
-                    onChange={(e) => setNewClaim({ ...newClaim, notes: e.target.value })}
-                  />
-                </div>
-                <Button onClick={handleAddClaim} className="w-full">
-                  Add Claim
-                </Button>
+    <div className="space-y-6">
+      {/* Stats */}
+      {stats && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.total}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Claimed</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-500">{stats.claimed}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Eligible</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-500">{stats.eligible}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Value</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                ${stats.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </div>
-            </DialogContent>
-          </Dialog>
+            </CardContent>
+          </Card>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Summary */}
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-muted/50 rounded-lg p-4 text-center">
-            <p className="text-sm text-muted-foreground">Total Claims</p>
-            <p className="text-2xl font-bold mt-1">{claims.length}</p>
-          </div>
-          <div className="bg-green-50 dark:bg-green-950/20 rounded-lg p-4 text-center">
-            <p className="text-sm text-green-700 dark:text-green-300">Claimed</p>
-            <p className="text-2xl font-bold mt-1 text-green-600 dark:text-green-400">
-              {claimedCount}
-            </p>
-          </div>
-          <div className="bg-muted/50 rounded-lg p-4 text-center">
-            <p className="text-sm text-muted-foreground">Total Value</p>
-            <p className="text-2xl font-bold mt-1">{formatCurrency(totalClaimedValue)}</p>
-          </div>
-        </div>
+      )}
 
-        {/* Claims List */}
-        <div className="space-y-2">
-          {claims.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <Gift className="h-12 w-12 mx-auto mb-2 opacity-50" />
-              <p>No claims tracked yet</p>
-              <p className="text-sm mt-1">Add your first claim to get started</p>
+      {/* Add Entry Dialog */}
+      <div className="flex justify-end">
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Claim Entry
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add Airdrop Claim Entry</DialogTitle>
+              <DialogDescription>
+                Track your airdrop claims and eligibility
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div>
+                <Label>Project ID</Label>
+                <Input
+                  value={formData.projectId}
+                  onChange={(e) => setFormData({ ...formData, projectId: e.target.value })}
+                  placeholder="e.g., zora"
+                />
+              </div>
+              <div>
+                <Label>Project Name</Label>
+                <Input
+                  value={formData.projectName}
+                  onChange={(e) => setFormData({ ...formData, projectName: e.target.value })}
+                  placeholder="e.g., Zora"
+                />
+              </div>
+              <div>
+                <Label>Status</Label>
+                <select
+                  className="w-full p-2 border rounded-md"
+                  value={formData.status}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
+                >
+                  <option value="claimed">Claimed</option>
+                  <option value="eligible">Eligible</option>
+                  <option value="missed">Missed</option>
+                </select>
+              </div>
+              <div>
+                <Label>Amount (optional)</Label>
+                <Input
+                  value={formData.amount}
+                  onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                  placeholder="e.g., 1000"
+                />
+              </div>
+              <div>
+                <Label>Value USD (optional)</Label>
+                <Input
+                  type="number"
+                  value={formData.value}
+                  onChange={(e) => setFormData({ ...formData, value: e.target.value })}
+                  placeholder="e.g., 500"
+                />
+              </div>
+              <div>
+                <Label>Transaction Hash (optional)</Label>
+                <Input
+                  value={formData.txHash}
+                  onChange={(e) => setFormData({ ...formData, txHash: e.target.value })}
+                  placeholder="0x..."
+                />
+              </div>
+              <div>
+                <Label>Notes (optional)</Label>
+                <Input
+                  value={formData.notes}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  placeholder="Additional notes"
+                />
+              </div>
+              <Button onClick={addEntry} className="w-full">
+                Add Entry
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* History List */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Claim History</CardTitle>
+          <CardDescription>Track all your airdrop claims and eligibility</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {history.length > 0 ? (
+            <div className="space-y-4">
+              {history.map((entry) => (
+                <div key={entry.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <div className="font-semibold">{entry.projectName}</div>
+                      <Badge
+                        variant={
+                          entry.status === 'claimed'
+                            ? 'default'
+                            : entry.status === 'eligible'
+                            ? 'secondary'
+                            : 'outline'
+                        }
+                      >
+                        {entry.status === 'claimed' && <CheckCircle className="h-3 w-3 mr-1" />}
+                        {entry.status === 'eligible' && <Clock className="h-3 w-3 mr-1" />}
+                        {entry.status === 'missed' && <XCircle className="h-3 w-3 mr-1" />}
+                        {entry.status}
+                      </Badge>
+                    </div>
+                    <div className="text-sm text-muted-foreground mt-1">
+                      {entry.claimedAt && (
+                        <span>Claimed: {new Date(entry.claimedAt).toLocaleDateString()}</span>
+                      )}
+                      {entry.amount && <span className="ml-2">Amount: {entry.amount}</span>}
+                      {entry.value && (
+                        <span className="ml-2">Value: ${entry.value.toLocaleString()}</span>
+                      )}
+                    </div>
+                    {entry.notes && (
+                      <div className="text-sm text-muted-foreground mt-1">{entry.notes}</div>
+                    )}
+                  </div>
+                  {entry.txHash && (
+                    <a
+                      href={`https://etherscan.io/tx/${entry.txHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ml-4"
+                    >
+                      <ExternalLink className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+                    </a>
+                  )}
+                </div>
+              ))}
             </div>
           ) : (
-            claims.map((claim) => (
-              <div
-                key={claim.id}
-                className={cn(
-                  "flex items-center justify-between p-4 border rounded-lg",
-                  claim.claimed && "bg-green-50/50 dark:bg-green-950/10"
-                )}
-              >
-                <div className="flex items-center gap-3 flex-1">
-                  <Checkbox
-                    checked={claim.claimed}
-                    onCheckedChange={() => handleToggleClaim(claim.id)}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium">{claim.projectName}</span>
-                      {claim.claimed ? (
-                        <Badge variant="default" className="bg-green-600">
-                          <CheckCircle2 className="h-3 w-3 mr-1" />
-                          Claimed
-                        </Badge>
-                      ) : (
-                        <Badge variant="secondary">
-                          <Clock className="h-3 w-3 mr-1" />
-                          Pending
-                        </Badge>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
-                      {claim.claimDate && (
-                        <span>
-                          {new Date(claim.claimDate).toLocaleDateString()}
-                        </span>
-                      )}
-                      {claim.claimAmount && (
-                        <span>{claim.claimAmount} tokens</span>
-                      )}
-                      {claim.claimValueUSD && (
-                        <span className="font-semibold text-foreground">
-                          {formatCurrency(claim.claimValueUSD)}
-                        </span>
-                      )}
-                    </div>
-                    {claim.txHash && (
-                      <p className="text-xs font-mono text-muted-foreground mt-1 truncate">
-                        {claim.txHash}
-                      </p>
-                    )}
-                    {claim.notes && (
-                      <p className="text-xs text-muted-foreground mt-1">{claim.notes}</p>
-                    )}
-                  </div>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleDeleteClaim(claim.id)}
-                  className="ml-2"
-                >
-                  <XCircle className="h-4 w-4" />
-                </Button>
-              </div>
-            ))
+            <div className="text-center py-8 text-muted-foreground">
+              No claim history yet. Add your first entry above.
+            </div>
           )}
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
-
