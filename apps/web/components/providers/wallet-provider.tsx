@@ -6,19 +6,44 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createAppKit } from '@reown/appkit/react';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { mainnet, base, arbitrum, optimism, polygon } from '@reown/appkit/networks';
-import { wagmiConfig, projectId, metadata, zkSync } from '@/lib/wallet/config';
+import { projectId, metadata } from '@/lib/wallet/config';
 
 // Set up QueryClient for React Query
 const queryClient = new QueryClient();
 
-// Create the modal (AppKit)
-const modal = createAppKit({
-  adapters: [new WagmiAdapter({
-    networks: [mainnet, base, arbitrum, optimism, zkSync, polygon],
-    projectId,
-  })],
+// Custom zkSync network for AppKit
+const zkSyncNetwork = {
+  id: 324,
+  name: 'zkSync Era',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://mainnet.era.zksync.io'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'zkSync Explorer',
+      url: 'https://explorer.zksync.io',
+    },
+  },
+};
+
+// Create wagmi adapter
+const wagmiAdapter = new WagmiAdapter({
+  networks: [mainnet, base, arbitrum, optimism, zkSyncNetwork as any, polygon],
   projectId,
-  networks: [mainnet, base, arbitrum, optimism, zkSync as any, polygon],
+});
+
+// Create the modal (AppKit)
+createAppKit({
+  adapters: [wagmiAdapter],
+  projectId,
+  networks: [mainnet, base, arbitrum, optimism, zkSyncNetwork as any, polygon],
   metadata,
   features: {
     analytics: true,
@@ -36,7 +61,7 @@ interface WalletProviderProps {
 
 export function WalletProvider({ children }: WalletProviderProps) {
   return (
-    <WagmiProvider config={wagmiConfig}>
+    <WagmiProvider config={wagmiAdapter.wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         {children}
       </QueryClientProvider>
