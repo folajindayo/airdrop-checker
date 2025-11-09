@@ -216,11 +216,11 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 203. **Eligibility History Tracking** - Track score changes and improvements over time
 204. **Risk Calculator** - Calculate risk vs reward ratios and break-even probabilities
 205. **Enhanced Farm Script** - Resume capability, auto-retry, and better error handling
-206. **Wallet Comparison Tool** - Compare eligibility across multiple wallets (2-10)
-207. **Strategy Optimizer** - Optimize farming strategy based on budget and goals
-208. **Wallet Validator** - Validate addresses and check for common issues
-209. **Smart Recommendations Engine** - AI-powered personalized farming suggestions
-210. **Analytics Aggregator** - Comprehensive analytics and insights dashboard
+206. **API Key Authentication** - Secure API access with keys
+207. **Telegram Bot Support** - Configure Telegram bots for notifications
+208. **Email Verification** - Verify email addresses for subscriptions
+209. **Report Generation** - Generate detailed eligibility reports
+210. **API Version Management** - Track API versions and changelog
 211. **Endpoint Rate Limits** - Different limits per endpoint type
 212. **Rate Limit Monitoring** - Track usage and remaining requests
 213. **API Key Management** - Generate, list, and revoke API keys
@@ -241,6 +241,36 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 228. **Version Compatibility** - Maintain backward compatibility
 229. **Rate Limit Configuration** - Customizable rate limits
 230. **API Key Last Used** - Track when API keys were last used
+231. **GraphQL API** - Flexible GraphQL endpoint for custom queries
+232. **Advanced Filtering** - Complex filtering with multiple criteria
+233. **Data Aggregation** - Group and aggregate data by various fields
+234. **Data Visualization** - Chart-ready data formats
+235. **Mobile API** - Lightweight mobile-optimized endpoints
+236. **Webhook Event History** - Track webhook delivery history
+237. **Security Audit Log** - Comprehensive security event logging
+238. **GraphQL Queries** - Query projects, stats, and more via GraphQL
+239. **Multi-Criteria Filtering** - Filter by status, chains, dates, criteria count
+240. **Date Range Filtering** - Filter by snapshot dates
+241. **Aggregation Functions** - Group by status, chain, calculate averages
+242. **Chart Data Formats** - Pre-formatted data for popular chart libraries
+243. **Score Distribution Charts** - Visualize eligibility score distribution
+244. **Activity Timeline Data** - Time-series data for activity charts
+245. **Chain Distribution Data** - Data for chain usage charts
+246. **Protocol Activity Data** - Protocol interaction visualization data
+247. **Mobile Optimization** - Reduced payload sizes for mobile apps
+248. **Lightweight Responses** - Essential data only for mobile
+249. **Webhook Delivery Tracking** - Monitor webhook delivery status
+250. **Webhook Success Rates** - Track webhook delivery success rates
+251. **Event History Filtering** - Filter webhook events by type and status
+252. **Security Event Logging** - Log all security-relevant events
+253. **IP Address Tracking** - Track IP addresses for security events
+254. **User Agent Logging** - Log user agents for audit purposes
+255. **Severity Classification** - Classify security events by severity
+256. **Audit Log Filtering** - Filter audit logs by type and severity
+257. **Suspicious Activity Detection** - Detect and log suspicious patterns
+258. **API Access Logging** - Log all API access attempts
+259. **Data Export Logging** - Track data export activities
+260. **Key Management Logging** - Log API key generation and revocation
 
 ### 💬 Communication & Social
 - **Chat Component** - Real-time messaging with sidebar
