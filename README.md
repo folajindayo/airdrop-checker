@@ -1161,6 +1161,9 @@ Example criterion:
 - **Portfolio Performance**: 10 minutes TTL
 - **Snapshots**: 5 minutes TTL
 - **News Feed**: 10 minutes TTL
+- **Probability Predictor**: 10 minutes TTL
+- **Wallet Clustering**: 15 minutes TTL
+- **Gas History**: 30 minutes TTL
 
 ## New Features Overview
 
