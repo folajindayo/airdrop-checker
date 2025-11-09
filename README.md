@@ -221,11 +221,11 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 208. **Email Verification** - Verify email addresses for subscriptions
 209. **Report Generation** - Generate detailed eligibility reports
 210. **API Version Management** - Track API versions and changelog
-211. **Endpoint Rate Limits** - Different limits per endpoint type
-212. **Rate Limit Monitoring** - Track usage and remaining requests
-213. **API Key Management** - Generate, list, and revoke API keys
-214. **Key Permissions** - Granular permissions for API keys
-215. **Key Expiration** - Set expiration dates for API keys
+211. **Airdrop Simulator** - Simulate different farming scenarios to see impact
+212. **Gas Price Tracker** - Real-time gas price monitoring across all chains
+213. **Portfolio Optimizer** - Optimize portfolio allocation for better eligibility
+214. **Notification Preferences** - Manage notification settings and preferences
+215. **Airdrop Claim Tracker** - Track claimed airdrops with amounts and transaction hashes
 216. **Telegram Bot Token Validation** - Verify bot tokens before setup
 217. **Email Subscription Management** - Manage multiple email subscriptions
 218. **Report Formats** - Multiple report output formats
