@@ -2947,6 +2947,165 @@ DELETE /api/claim-tracker?id=...&address=0x...
 ```
 Track claimed airdrops with amounts, transaction hashes, and statistics.
 
+### WebSocket Support
+```
+GET /api/websocket?address=0x...
+```
+Get WebSocket connection information and instructions.
+
+**Response:**
+```json
+{
+  "websocket": {
+    "protocol": "ws",
+    "secureProtocol": "wss",
+    "endpoint": "/ws",
+    "supportedEvents": [
+      "eligibility_update",
+      "new_airdrop",
+      "score_change"
+    ],
+    "heartbeat": {
+      "interval": 30000,
+      "timeout": 60000
+    }
+  },
+  "instructions": {...},
+  "example": {
+    "javascript": "..."
+  }
+}
+```
+
+### Advanced Cache Management
+```
+GET /api/cache/advanced?action=stats|warm
+POST /api/cache/advanced
+```
+Advanced cache management with tagging and warming.
+
+**Actions:**
+- `stats` - Get detailed cache statistics
+- `warm` - Warm cache for an address
+
+**POST Request (Invalidate):**
+```json
+{
+  "tags": ["eligibility", "address"],
+  "pattern": "airdrop-check:*",
+  "address": "0x..."
+}
+```
+
+### Data Validation
+```
+POST /api/validate
+```
+Validate and sanitize input data.
+
+**Request:**
+```json
+{
+  "type": "address|email|url|ip|number|string",
+  "value": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+}
+```
+
+**Response:**
+```json
+{
+  "validation": {
+    "valid": true,
+    "sanitized": "0x742d35cc6634c0532925a3b844bc9e7595f0beb",
+    "errors": [],
+    "warnings": []
+  }
+}
+```
+
+### Performance Optimization
+```
+GET /api/optimize?address=0x...&endpoint=/api/airdrop-check
+```
+Get performance optimization recommendations.
+
+**Response:**
+```json
+{
+  "optimizations": {
+    "general": [
+      {
+        "type": "caching",
+        "priority": "high",
+        "recommendation": "Enable caching",
+        "impact": "Reduce response time by 60-80%",
+        "effort": "low"
+      }
+    ],
+    "endpoints": {...},
+    "database": [...]
+  }
+}
+```
+
+### Testing Utilities
+```
+GET /api/test?test=connectivity|validation|performance
+POST /api/test
+```
+Testing utilities and health checks.
+
+**GET Tests:**
+- `connectivity` - Test API connectivity
+- `validation` - Test validation functions
+- `performance` - Measure response times
+
+**POST Request:**
+```json
+{
+  "testSuite": "full",
+  "address": "0x..."
+}
+```
+
+### Monitoring Alerts
+```
+GET /api/monitor/alerts
+POST /api/monitor/alerts
+DELETE /api/monitor/alerts?id=...
+```
+Create and manage monitoring alerts.
+
+**POST Request:**
+```json
+{
+  "type": "error_rate|response_time|uptime|cache_hit_rate",
+  "condition": "greater_than",
+  "threshold": 5
+}
+```
+
+### Data Migration
+```
+POST /api/migrate
+```
+Data migration utilities.
+
+**Request:**
+```json
+{
+  "operation": "transfer_history|merge_data|export_format",
+  "sourceAddress": "0x...",
+  "targetAddress": "0x...",
+  "data": [...]
+}
+```
+
+**Operations:**
+- `transfer_history` - Transfer history between addresses
+- `merge_data` - Merge data from multiple sources
+- `export_format` - Export data in specific format
+
 ### ML Prediction Engine
 ```
 GET /api/ml/predict/[address]
