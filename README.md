@@ -1829,6 +1829,153 @@ Create and retrieve shareable links.
 }
 ```
 
+### Real-time Updates (SSE)
+```
+GET /api/realtime/[address]
+```
+Server-Sent Events endpoint for real-time eligibility updates.
+
+**Response:** Event stream with updates every 30 seconds
+
+**Event Types:**
+- `connected` - Connection established
+- `eligibility_update` - Eligibility score updated
+- `new_airdrop` - New airdrop detected
+
+### Performance Monitoring
+```
+GET /api/performance
+```
+Get performance metrics and system health.
+
+**Response:**
+```json
+{
+  "metrics": {
+    "api": {
+      "averageResponseTime": 125,
+      "totalRequests": 125000,
+      "errorRate": 0.02,
+      "requestsPerSecond": 45
+    },
+    "database": {...},
+    "cache": {...},
+    "system": {...}
+  },
+  "healthScore": 92,
+  "status": "healthy"
+}
+```
+
+### Backup & Restore
+```
+GET /api/backup/[address]
+POST /api/backup/[address]
+```
+Create and restore user data backups.
+
+**GET Response:** JSON backup file download
+
+**POST Request:**
+```json
+{
+  "backup": {
+    "version": "1.0",
+    "address": "0x...",
+    "data": {...}
+  }
+}
+```
+
+### Advanced Analytics
+```
+GET /api/analytics/advanced?timeframe=30
+```
+Get advanced analytics with trends and predictions.
+
+**Query Params:**
+- `timeframe` - Days to analyze (default: 30)
+
+**Response:**
+```json
+{
+  "trends": {
+    "newAirdrops": 5,
+    "confirmedAirdrops": 12,
+    "chainGrowth": {...},
+    "valueDistribution": {...}
+  },
+  "predictions": {
+    "likelyToConfirm": 8,
+    "estimatedTotalValue": 12000
+  },
+  "engagement": {...}
+}
+```
+
+### Discord Integration
+```
+POST /api/integrations/discord
+GET /api/integrations/discord?address=0x...
+```
+Configure Discord webhook notifications.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "webhookUrl": "https://discord.com/api/webhooks/...",
+  "events": ["eligibility_change", "new_airdrop"]
+}
+```
+
+### Cache Management
+```
+GET /api/cache?action=stats
+DELETE /api/cache?pattern=airdrop-check:*
+```
+Monitor and manage cache.
+
+**Actions:**
+- `stats` - Get cache statistics
+- `clear` - Clear all cache (via DELETE)
+
+**Response:**
+```json
+{
+  "stats": {
+    "totalKeys": 1250,
+    "hitRate": 0.85,
+    "missRate": 0.15,
+    "totalSize": 256
+  }
+}
+```
+
+### Health Check
+```
+GET /api/health
+```
+System health check endpoint for monitoring.
+
+**Response:**
+```json
+{
+  "status": "healthy",
+  "services": {
+    "database": {
+      "status": "healthy",
+      "responseTime": "15ms"
+    },
+    "api": {
+      "status": "configured"
+    }
+  },
+  "uptime": 86400,
+  "responseTime": "2ms"
+}
+```
+
 ## Development Scripts
 
 ```bash
