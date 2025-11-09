@@ -21,6 +21,7 @@ import { PortfolioPerformance } from '@/components/portfolio/portfolio-performan
 import { BatchWalletChecker } from '@/components/portfolio/batch-wallet-checker';
 import { SnapshotTracker } from '@/components/portfolio/snapshot-tracker';
 import { NewsFeed } from '@/components/portfolio/news-feed';
+import { ProtocolInsightsPanel } from '@/components/portfolio/protocol-insights';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/common/skeleton';
 import { ArrowLeft } from 'lucide-react';
