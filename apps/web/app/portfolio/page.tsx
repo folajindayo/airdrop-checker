@@ -122,48 +122,75 @@ export default function PortfolioPage() {
             </TabsList>
 
             <TabsContent value="portfolio" className="space-y-6">
-              {address && <PortfolioTracker address={address} />}
+              {address && (
+                <>
+                  <PortfolioTracker address={address} />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <ProtocolHeatmap address={address} />
+                    {airdropData && (
+                      <ROICalculator
+                        address={address}
+                        airdrops={airdropData.airdrops}
+                        gasSpentUSD={gasSpentUSD}
+                      />
+                    )}
+                  </div>
+                </>
+              )}
             </TabsContent>
 
-            <TabsContent value="gas" className="space-y-6">
-              {address && <GasTracker address={address} />}
+            <TabsContent value="health" className="space-y-6">
+              {address && (
+                <>
+                  <WalletHealthDashboard address={address} />
+                  {airdropData && (
+                    <FarmingStrategyBuilder
+                      address={address}
+                      currentScores={Object.fromEntries(
+                        airdropData.airdrops.map((a) => [a.projectId, a.score])
+                      )}
+                    />
+                  )}
+                </>
+              )}
             </TabsContent>
 
             <TabsContent value="defi" className="space-y-6">
               {address && <DeFiPositionsTracker address={address} />}
             </TabsContent>
 
-            <TabsContent value="heatmap" className="space-y-6">
-              {address && <ProtocolHeatmap address={address} />}
+            <TabsContent value="contracts" className="space-y-6">
+              {address && <ContractAnalyzer address={address} />}
             </TabsContent>
 
-            <TabsContent value="roi" className="space-y-6">
-              {address && airdropData && (
-                <ROICalculator
-                  address={address}
-                  airdrops={airdropData.airdrops}
-                  gasSpentUSD={gasSpentUSD}
-                />
+            <TabsContent value="gas" className="space-y-6">
+              {address && (
+                <>
+                  <GasTracker address={address} />
+                  <GasOptimizer />
+                </>
               )}
             </TabsContent>
 
-            <TabsContent value="strategy" className="space-y-6">
-              {address && airdropData && (
-                <FarmingStrategyBuilder
-                  address={address}
-                  currentScores={Object.fromEntries(
-                    airdropData.airdrops.map((a) => [a.projectId, a.score])
+            <TabsContent value="tools" className="space-y-6">
+              {address && (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <AirdropClaimTracker address={address} />
+                    <MultiWalletPortfolio />
+                  </div>
+                  {airdropData && (
+                    <DataExporter
+                      address={address}
+                      data={{
+                        airdrops: airdropData.airdrops,
+                        portfolio: { totalValue: 0 }, // Would fetch actual portfolio data
+                        gasData: { totalGasSpentUSD: gasSpentUSD },
+                      }}
+                    />
                   )}
-                />
+                </>
               )}
-            </TabsContent>
-
-            <TabsContent value="claims" className="space-y-6">
-              {address && <AirdropClaimTracker address={address} />}
-            </TabsContent>
-
-            <TabsContent value="multi" className="space-y-6">
-              <MultiWalletPortfolio />
             </TabsContent>
           </Tabs>
         )}
