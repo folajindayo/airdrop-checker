@@ -80,6 +80,20 @@ interface DecayMetrics {
   status: DecayStatus;
 }
 
+interface CoverageMetrics {
+  score: number;
+  coveredCategories: string[];
+  totalCategories: number;
+  missingCategories: string[];
+}
+
+interface DormantProtocol {
+  protocol: string;
+  categoryLabel: string;
+  daysSinceInteraction: number | null;
+  lastInteraction?: string;
+}
+
 interface MomentumMetrics {
   direction: MomentumDirection;
   percentChange: number;
