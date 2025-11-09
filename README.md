@@ -539,6 +539,63 @@ Get gas spending analytics for a wallet address.
 }
 ```
 
+### GET /api/protocol-insights/[address]
+Get protocol focus areas, timeline feed, and monthly trends for a wallet.
+
+**Response:**
+```json
+{
+  "address": "0x...",
+  "insights": {
+    "summary": {
+      "totalProtocols": 18,
+      "activeCategories": 5,
+      "newProtocolsLast30d": 3,
+      "avgInteractionsPerProtocol": 4.2,
+      "mostActiveCategory": {
+        "category": "dex",
+        "label": "Decentralized Exchange",
+        "interactionCount": 24
+      }
+    },
+    "focusAreas": [
+      {
+        "category": "bridge",
+        "categoryLabel": "Bridge / Interop",
+        "interactions": 6,
+        "uniqueProtocols": 2,
+        "status": "needs_attention",
+        "recommendation": "Bridge assets across chains to qualify for interoperability airdrops."
+      }
+    ],
+    "breakdown": [
+      {
+        "protocol": "uniswap",
+        "category": "dex",
+        "chainName": "Ethereum",
+        "interactionCount": 12,
+        "daysActive": 45
+      }
+    ],
+    "timeline": [
+      {
+        "protocol": "Stargate",
+        "categoryLabel": "Bridge / Interop",
+        "chainName": "Arbitrum One",
+        "date": "2025-03-04T14:12:00.000Z"
+      }
+    ],
+    "monthlyActivity": [
+      {
+        "month": "2025-02",
+        "interactionCount": 28,
+        "uniqueProtocols": 9
+      }
+    ]
+  }
+}
+```
+
 ### POST /api/roi-calculator
 Calculate ROI for airdrop investments.
 
