@@ -3136,6 +3136,243 @@ Data migration utilities.
 - `merge_data` - Merge data from multiple sources
 - `export_format` - Export data in specific format
 
+### User Preferences
+```
+GET /api/preferences?address=0x...
+POST /api/preferences
+```
+Manage user preferences and settings.
+
+**GET Response:**
+```json
+{
+  "preferences": {
+    "address": "0x...",
+    "notifications": {
+      "email": false,
+      "push": true,
+      "discord": false,
+      "telegram": false
+    },
+    "display": {
+      "theme": "auto",
+      "currency": "USD",
+      "language": "en"
+    },
+    "alerts": {
+      "newAirdrops": true,
+      "eligibilityUpdates": true,
+      "claimReminders": true,
+      "gasPriceAlerts": false
+    },
+    "privacy": {
+      "shareAnalytics": true,
+      "publicProfile": false
+    }
+  }
+}
+```
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "preferences": {
+    "notifications": {
+      "email": true
+    },
+    "display": {
+      "theme": "dark"
+    }
+  }
+}
+```
+
+### Cost Calculator
+```
+POST /api/cost-calculator
+```
+Calculate costs for airdrop farming activities.
+
+**Request:**
+```json
+{
+  "activities": [
+    {"type": "swap"},
+    {"type": "stake"},
+    {"type": "bridge"}
+  ],
+  "gasPrice": 25,
+  "chain": "ethereum"
+}
+```
+
+**Response:**
+```json
+{
+  "calculation": {
+    "totalActivities": 3,
+    "totalGasUsed": 450000,
+    "totalCostETH": 0.01125,
+    "totalCostUSD": 28.13,
+    "breakdown": [...]
+  },
+  "roi": {
+    "estimatedAirdropValue": 1000,
+    "totalCost": 28.13,
+    "estimatedROI": 3456.78,
+    "breakEvenAirdrops": 1
+  },
+  "recommendations": [...]
+}
+```
+
+### Gas Price Tracker
+```
+GET /api/gas-price?chain=ethereum|base|all&timeframe=24h
+```
+Get current and historical gas prices across chains.
+
+**Response:**
+```json
+{
+  "chain": "ethereum",
+  "current": {
+    "slow": 15,
+    "standard": 25,
+    "fast": 35,
+    "instant": 50
+  },
+  "average": 25,
+  "trend": "down",
+  "change24h": -5,
+  "historical": [...],
+  "alerts": []
+}
+```
+
+### Token Price Tracking
+```
+GET /api/token-price?token=ARB&chain=arbitrum
+GET /api/token-price?chain=all
+```
+Get token prices for airdrop tokens.
+
+**Response:**
+```json
+{
+  "token": {
+    "symbol": "ARB",
+    "name": "Arbitrum",
+    "price": 1.25,
+    "change24h": 2.5,
+    "marketCap": 1500000000,
+    "volume24h": 50000000,
+    "chain": "arbitrum"
+  }
+}
+```
+
+### Portfolio Comparison
+```
+POST /api/portfolio/compare
+```
+Compare multiple wallet portfolios.
+
+**Request:**
+```json
+{
+  "addresses": [
+    "0x...",
+    "0x...",
+    "0x..."
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "comparison": {
+    "portfolios": [...],
+    "metrics": {
+      "totalValue": {
+        "highest": {...},
+        "lowest": {...},
+        "average": 30000
+      },
+      "eligibleAirdrops": {...},
+      "gasEfficiency": [...]
+    },
+    "insights": [...]
+  }
+}
+```
+
+### Historical Data Analysis
+```
+GET /api/history/analyze?address=0x...&timeframe=30d&metric=all
+```
+Analyze historical airdrop data and trends.
+
+**Response:**
+```json
+{
+  "analysis": {
+    "trends": {
+      "airdropFrequency": {
+        "current": 12,
+        "previous": 8,
+        "change": 50,
+        "trend": "increasing"
+      }
+    },
+    "patterns": {
+      "mostActiveDay": "Tuesday",
+      "mostActiveHour": 14,
+      "preferredChains": ["ethereum", "base"],
+      "topProtocols": ["Uniswap", "Aave"]
+    },
+    "predictions": {
+      "nextAirdropLikely": "2024-02-15",
+      "estimatedValue": 1500,
+      "confidence": 75
+    },
+    "statistics": {...}
+  }
+}
+```
+
+### API Usage Tracking
+```
+POST /api/usage/track
+GET /api/usage/track?address=0x...&endpoint=/api/airdrop-check&timeframe=24h
+```
+Track API usage for analytics.
+
+**POST Request:**
+```json
+{
+  "address": "0x...",
+  "endpoint": "/api/airdrop-check",
+  "responseTime": 250,
+  "statusCode": 200
+}
+```
+
+**GET Response:**
+```json
+{
+  "statistics": {
+    "totalRequests": 150,
+    "averageResponseTime": 245,
+    "successRate": 98.5,
+    "endpointBreakdown": {...},
+    "statusCodeBreakdown": {...}
+  }
+}
+```
+
 ### ML Prediction Engine
 ```
 GET /api/ml/predict/[address]
