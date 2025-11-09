@@ -769,6 +769,21 @@ Get protocol focus areas, engagement scores, timeline feed, and monthly trends f
         "daysSinceInteraction": 2,
         "status": "fresh"
       },
+      "coverage": {
+        "score": 80,
+        "coveredCategories": ["Decentralized Exchange", "Bridge / Interop"],
+        "totalCategories": 6,
+        "missingCategories": ["Restaking", "NFT / Creator"]
+      },
+      "diversity": {
+        "score": 76,
+        "entropy": 1.3863,
+        "categoryDistribution": [
+          { "category": "Decentralized Exchange", "percentage": 45.5 },
+          { "category": "Bridge / Interop", "percentage": 32.5 },
+          { "category": "Restaking", "percentage": 22.0 }
+        ]
+      },
       "mostActiveCategory": {
         "category": "dex",
         "label": "Decentralized Exchange",
@@ -818,6 +833,21 @@ Get protocol focus areas, engagement scores, timeline feed, and monthly trends f
         "month": "2025-02",
         "interactionCount": 28,
         "uniqueProtocols": 9
+      }
+    ],
+    "dormantProtocols": [
+      {
+        "protocol": "aave",
+        "categoryLabel": "DeFi Protocol",
+        "daysSinceInteraction": 45,
+        "lastInteraction": "2025-01-20T00:00:00.000Z"
+      }
+    ],
+    "reactivationRecommendations": [
+      {
+        "protocol": "aave",
+        "categoryLabel": "DeFi Protocol",
+        "recommendation": "Re-engage with aave (DeFi Protocol). Inactive for 45 days. This category is currently missing from your coverage profile."
       }
     ]
   }
