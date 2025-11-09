@@ -16,6 +16,7 @@ import { WalletHealthDashboard } from '@/components/portfolio/wallet-health-dash
 import { ContractAnalyzer } from '@/components/portfolio/contract-analyzer';
 import { GasOptimizer } from '@/components/portfolio/gas-optimizer';
 import { DataExporter } from '@/components/portfolio/data-exporter';
+import { ProtocolInsightsPanel } from '@/components/portfolio/protocol-insights';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/common/skeleton';
 import { ArrowLeft } from 'lucide-react';
@@ -112,10 +113,11 @@ export default function PortfolioPage() {
           </div>
         ) : (
           <Tabs defaultValue="portfolio" className="w-full">
-            <TabsList className="grid w-full grid-cols-6 mb-8">
+            <TabsList className="grid w-full grid-cols-7 mb-8">
               <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
               <TabsTrigger value="health">Health</TabsTrigger>
               <TabsTrigger value="defi">DeFi</TabsTrigger>
+              <TabsTrigger value="insights">Insights</TabsTrigger>
               <TabsTrigger value="contracts">Contracts</TabsTrigger>
               <TabsTrigger value="gas">Gas</TabsTrigger>
               <TabsTrigger value="tools">Tools</TabsTrigger>
@@ -157,6 +159,18 @@ export default function PortfolioPage() {
 
             <TabsContent value="defi" className="space-y-6">
               {address && <DeFiPositionsTracker address={address} />}
+            </TabsContent>
+
+            <TabsContent value="insights" className="space-y-6">
+              {address && (
+                <>
+                  <ProtocolInsightsPanel address={address} />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <ProtocolHeatmap address={address} />
+                    <DeFiPositionsTracker address={address} />
+                  </div>
+                </>
+              )}
             </TabsContent>
 
             <TabsContent value="contracts" className="space-y-6">
