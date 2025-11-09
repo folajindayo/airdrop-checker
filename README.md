@@ -2,7 +2,7 @@
 
 A read-only onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users simply connect their wallet via WalletConnect and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria.
 
-## 🎉 140+ Production-Ready Features!
+## 🎉 81 Production-Ready Features!
 
 ### 🎯 Core Features (1-15)
 1. **WalletConnect Integration** - Connect securely using WalletConnect v2 (Reown SDK)
@@ -21,180 +21,104 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 14. **Social Sharing** - Share results on Twitter/X with Web Share API
 15. **Personalized Recommendations** - AI-driven airdrop suggestions
 
-### 💼 Portfolio & Analytics Features (16-35)
-16. **Portfolio Tracker** - Track token holdings across all chains with real-time values
-17. **Gas Tracker** - Monitor gas spending by chain, month, and transaction
-18. **ROI Calculator** - Calculate potential return on airdrop investments
-19. **Airdrop Claim Tracker** - Track claimed airdrops with amounts and transaction hashes
-20. **Multi-Wallet Portfolio** - Aggregate view of up to 10 wallets
-21. **Transaction Simulator** - Simulate transactions to see eligibility impact
-22. **DeFi Positions Tracker** - Track LP positions, staking, lending across protocols
-23. **Protocol Interaction Heatmap** - Visualize protocol interactions over time
-24. **Farming Strategy Builder** - Generate personalized 4-week airdrop farming plan
-25. **Wallet Health Dashboard** - Comprehensive health analysis with risk factors
-26. **Smart Contract Analyzer** - Analyze contract interactions and risk levels
-27. **Gas Optimizer** - Find best chains and times for lowest gas fees
-28. **Data Exporter** - Export data in JSON, CSV, or TXT formats
-29. **Airdrop Alert System** - Get notified about new airdrops and eligibility changes
-30. **Chain Distribution Analysis** - Visual breakdown of assets by chain
-31. **Top Holdings View** - See your most valuable token positions
-32. **Monthly Gas Breakdown** - Historical gas spending trends
-33. **Portfolio Value Tracking** - Real-time USD value of all holdings
-34. **Protocol-by-Protocol Breakdown** - Detailed DeFi position analysis
-35. **Interaction Timeline** - See when and how often you interact with protocols
+### 📊 UI Components Library (16-60)
+16. **Alert Component** - Multiple variants with action buttons
+17. **Avatar Component** - Wallet, user, group, status variants
+18. **Badge Component** - Multiple variants and sizes
+19. **Breadcrumb Navigation** - Responsive with custom separators
+20. **Button Component** - Multiple variants and sizes
+21. **Calendar Component** - Date picker, range picker, events
+22. **Card Component** - Flexible container with header/footer
+23. **Checkbox Component** - With groups and indeterminate state
+24. **Collapsible Component** - Icon, card, and group variants
+25. **Command Menu** - Keyboard shortcuts (Cmd+K/Ctrl+K)
+26. **Context Menu** - Right-click menus with shortcuts
+27. **Copy Button** - One-click copy with toast feedback
+28. **Data Table** - Sortable, searchable, paginated tables
+29. **Dialog Component** - Modal dialogs with variants
+30. **Dropdown Menu** - Nested menus with shortcuts
+31. **Empty State** - 10+ preset scenarios with illustrations
+32. **Form Component** - React Hook Form integration
+33. **Hover Card** - Rich tooltips with content
+34. **Input Component** - Multiple variants and validation
+35. **Label Component** - Accessible form labels
+36. **Loading States** - Spinners, skeletons, progress indicators
+37. **Menubar Component** - Application menu with submenus
+38. **Navigation Menu** - Dropdown navigation with mega menu
+39. **Pagination Component** - Full pagination controls
+40. **Popover Component** - Floating content containers
+41. **Progress Component** - Linear and circular progress bars
+42. **Radio Group** - Multiple variants including cards
+43. **Resizable Panels** - Split view layouts with drag handles
+44. **Scroll Area** - Custom scrollbars with variants
+45. **Select Component** - Dropdown selection with search
+46. **Separator Component** - Dividers with multiple styles
+47. **Sheet Component** - Slide-out panels from all sides
+48. **Skeleton Component** - Loading placeholders
+49. **Slider Component** - Range sliders with markers
+50. **Statistics Widget** - Trend indicators and comparisons
+51. **Switch Component** - Toggle with labels
+52. **Table Component** - Data display primitives
+53. **Tabs Component** - Tabbed content containers
+54. **Textarea Component** - Multi-line input with auto-resize
+55. **Toast Provider** - Notification system with presets
+56. **Toggle Component** - Single toggle button
+57. **Toggle Group** - Multi-select toggle groups
+58. **Tooltip Component** - Enhanced tooltips with variants
+59. **Aspect Ratio** - Responsive media containers
+60. **Progress Tracker** - Step-by-step progress visualization
 
-### 📊 UI Components Library (26-70)
-26. **Alert Component** - Multiple variants with action buttons
-27. **Avatar Component** - Wallet, user, group, status variants
-28. **Badge Component** - Multiple variants and sizes
-29. **Breadcrumb Navigation** - Responsive with custom separators
-30. **Button Component** - Multiple variants and sizes
-31. **Calendar Component** - Date picker, range picker, events
-32. **Card Component** - Flexible container with header/footer
-33. **Checkbox Component** - With groups and indeterminate state
-34. **Collapsible Component** - Icon, card, and group variants
-35. **Command Menu** - Keyboard shortcuts (Cmd+K/Ctrl+K)
-36. **Context Menu** - Right-click menus with shortcuts
-37. **Copy Button** - One-click copy with toast feedback
-38. **Data Table** - Sortable, searchable, paginated tables
-39. **Dialog Component** - Modal dialogs with variants
-40. **Dropdown Menu** - Nested menus with shortcuts
-41. **Empty State** - 10+ preset scenarios with illustrations
-42. **Form Component** - React Hook Form integration
-43. **Hover Card** - Rich tooltips with content
-44. **Input Component** - Multiple variants and validation
-45. **Label Component** - Accessible form labels
-46. **Loading States** - Spinners, skeletons, progress indicators
-47. **Menubar Component** - Application menu with submenus
-48. **Navigation Menu** - Dropdown navigation with mega menu
-49. **Pagination Component** - Full pagination controls
-50. **Popover Component** - Floating content containers
-51. **Progress Component** - Linear and circular progress bars
-52. **Radio Group** - Multiple variants including cards
-53. **Resizable Panels** - Split view layouts with drag handles
-54. **Scroll Area** - Custom scrollbars with variants
-55. **Select Component** - Dropdown selection with search
-56. **Separator Component** - Dividers with multiple styles
-57. **Sheet Component** - Slide-out panels from all sides
-58. **Skeleton Component** - Loading placeholders
-59. **Slider Component** - Range sliders with markers
-60. **Statistics Widget** - Trend indicators and comparisons
-61. **Switch Component** - Toggle with labels
-62. **Table Component** - Data display primitives
-63. **Tabs Component** - Tabbed content containers
-64. **Textarea Component** - Multi-line input with auto-resize
-65. **Toast Provider** - Notification system with presets
-66. **Toggle Component** - Single toggle button
-67. **Toggle Group** - Multi-select toggle groups
-68. **Tooltip Component** - Enhanced tooltips with variants
-69. **Aspect Ratio** - Responsive media containers
-70. **Progress Tracker** - Step-by-step progress visualization
+### 🚀 Advanced Features (61-81)
+61. **Score History** - Track historical scores with charts
+62. **Watchlist** - Monitor up to 10 wallets
+63. **Mobile Navigation** - Responsive slide-out menu
+64. **Theme Toggle** - Dark/light/system themes
+65. **Rate Limiting** - API protection middleware
+66. **Notification Center** - Real-time alerts system
+67. **Error Boundary** - Graceful error handling
+68. **Help/FAQ Page** - 15+ questions with accordion UI
+69. **Settings Page** - 5-tab settings interface
+70. **Scroll to Top** - Multiple variants with progress
+71. **Transaction Details** - Full tx info display
+72. **Chain Selector** - Dropdown and grid variants
+73. **Confirmation Dialog** - Preset confirmations
+74. **Advanced Search** - Filters sheet with active badges
+75. **Rich Text Editor** - Formatting toolbar with markdown
+76. **File Upload** - Drag-and-drop with preview
+77. **Analytics Widget** - User and airdrop analytics
+78. **Multi-Step Form** - Progress tracking with validation
+79. **Kanban Board** - Drag-and-drop project tracking
+80. **QR Code Generator** - With scanner and share variants
+81. **File Manager** - Grid/list view with file operations
 
-### 🚀 Advanced Features (71-100)
-71. **Score History** - Track historical scores with charts
-72. **Watchlist** - Monitor up to 10 wallets
-73. **Mobile Navigation** - Responsive slide-out menu
-74. **Theme Toggle** - Dark/light/system themes
-75. **Rate Limiting** - API protection middleware
-76. **Notification Center** - Real-time alerts system
-77. **Error Boundary** - Graceful error handling
-78. **Help/FAQ Page** - 15+ questions with accordion UI
-79. **Settings Page** - 5-tab settings interface
-80. **Scroll to Top** - Multiple variants with progress
-81. **Transaction Details** - Full tx info display
-82. **Chain Selector** - Dropdown and grid variants
-83. **Confirmation Dialog** - Preset confirmations
-84. **Advanced Search** - Filters sheet with active badges
-85. **Rich Text Editor** - Formatting toolbar with markdown
-86. **File Upload** - Drag-and-drop with preview
-87. **Analytics Widget** - User and airdrop analytics
-88. **Multi-Step Form** - Progress tracking with validation
-89. **Kanban Board** - Drag-and-drop project tracking
-90. **QR Code Generator** - With scanner and share variants
-91. **File Manager** - Grid/list view with file operations
-92. **Portfolio Page** - Comprehensive portfolio analytics dashboard
-93. **Gas Spending Analytics** - Detailed gas cost analysis by chain
-94. **ROI Recommendations** - AI-powered investment suggestions
-95. **Claim History** - Track all claimed airdrops with metadata
-96. **Multi-Wallet Aggregation** - Combined portfolio view
-97. **Transaction Impact Analysis** - See how transactions affect scores
-98. **Expected Value Calculator** - Probability-weighted airdrop values
-99. **Break-Even Analysis** - Calculate minimum airdrop value needed
-100. **Smart Transaction Recommendations** - Get personalized transaction suggestions
-101. **Portfolio Tracker Component** - Comprehensive portfolio value tracking UI
-102. **Gas Tracker Component** - Track gas spending across all chains
-103. **ROI Calculator Component** - Visual ROI calculation interface
-104. **Airdrop Claim Tracker** - Track and manage airdrop claims with transaction history
-105. **Multi-Wallet Portfolio** - Manage and compare multiple wallets in one interface
-106. **Trending Airdrops API** - Discover hottest airdrop opportunities
-107. **Risk Analyzer** - Analyze sybil detection and farming risks
-108. **Opportunity Finder** - Find best airdrop opportunities based on current eligibility
-109. **Personalized Insights** - Get AI-driven recommendations and activity patterns
-110. **Gas Tracker API** - Detailed gas spending analysis by chain
-111. **Easy Wins Finder** - Identify quick opportunities with low effort
-112. **High Value Opportunities** - Filter airdrops by estimated value
-113. **Quick Actions** - Find time-sensitive opportunities with upcoming snapshots
-114. **Activity Pattern Analysis** - Understand your onchain behavior patterns
-115. **Sybil Risk Detection** - Identify potential sybil detection patterns
-116. **Concentration Risk Analysis** - Check if you're too focused on one protocol
-117. **Timing Risk Assessment** - Analyze if activity is too concentrated in time
-118. **Improvement Recommendations** - Get specific actions to improve eligibility
-119. **Portfolio Tabbed Interface** - Organized portfolio view with multiple tabs
-120. **Claim History Management** - Add, edit, and track airdrop claims
-121. **Data Export System** - Export eligibility data in JSON, CSV, or TXT formats
-122. **Notification System** - Real-time notifications for airdrop updates and reminders
-123. **Leaderboard** - Compare your ranking with other airdrop farmers
-124. **Platform Analytics** - Comprehensive platform-wide statistics and insights
-125. **CSV Export** - Export data for spreadsheet analysis
-126. **Plain Text Reports** - Human-readable eligibility reports
-127. **Notification Management** - Mark as read, delete, and filter notifications
-128. **Snapshot Reminders** - Get notified before important snapshots
-129. **Claim Availability Alerts** - Know when claims go live
-130. **Eligibility Change Notifications** - Track score improvements
-131. **New Airdrop Alerts** - Discover new opportunities as they're added
-132. **Leaderboard Rankings** - See how you compare to top farmers
-133. **Platform Statistics** - View overall platform health and metrics
-134. **Chain Distribution Analytics** - Understand airdrop distribution across chains
-135. **Criteria Analysis** - Deep dive into eligibility criteria patterns
-136. **Timeline Analytics** - Track snapshot dates and claim windows
-137. **Activity Metrics** - Track total checks, unique addresses, and average scores
-138. **Value Analysis** - Analyze estimated airdrop values across projects
-139. **Multi-Format Export** - Choose from JSON, CSV, or TXT export formats
-140. **Comprehensive Reporting** - Detailed reports with activity summaries
+### 💬 Communication & Social (82-85)
+82. **Chat Component** - Real-time messaging with sidebar
+83. **Support Chat** - Live support widget
+84. **Timeline Component** - Vertical and horizontal variants
+85. **Activity Feed** - Real-time activity stream
 
-### 💬 Communication & Social
-- **Chat Component** - Real-time messaging with sidebar
-- **Support Chat** - Live support widget
-- **Timeline Component** - Vertical and horizontal variants
-- **Activity Feed** - Real-time activity stream
+### 🎬 Media & Content (86-88)
+86. **Video Player** - Full controls with chapters
+87. **Rating System** - Stars, hearts, thumbs variants
+88. **Review Cards** - User reviews with helpful voting
 
-### 🎬 Media & Content
-- **Video Player** - Full controls with chapters
-- **Rating System** - Stars, hearts, thumbs variants
-- **Review Cards** - User reviews with helpful voting
+### 💰 Commerce & Pricing (89-90)
+89. **Pricing Table** - Billing toggle with comparison
+90. **Enterprise Pricing** - Custom solutions CTA
 
-### 💰 Commerce & Pricing
-- **Pricing Table** - Billing toggle with comparison
-- **Enterprise Pricing** - Custom solutions CTA
+### 🎓 Onboarding & Help (91-93)
+91. **Onboarding Tour** - Interactive spotlight guide
+92. **Step Guide** - Sequential tutorial steps
+93. **Welcome Checklist** - Getting started tasks
 
-### 🎓 Onboarding & Help
-- **Onboarding Tour** - Interactive spotlight guide
-- **Step Guide** - Sequential tutorial steps
-- **Welcome Checklist** - Getting started tasks
-
-### 📈 Data Visualization
-- **Bar Chart** - Horizontal bar charts
-- **Donut Chart** - Pie charts with legend
-- **Line Chart** - Time series visualization
-- **Area Chart** - Filled line charts
-- **Heatmap** - Data density visualization
-- **Progress Ring** - Circular progress indicators
-- **Stat Cards** - Metrics with trend indicators
-
-### 🧠 Intelligence Enhancements
-- **Trending Airdrop Radar** - Signal-based scoring to bubble up the hottest opportunities in real time
-- **Chain Signal Filter** - Quickly pivot the radar to the chain that matters most to you
-- **Radar Highlights Panel** - Upcoming snapshots, high-value drops, and fresh updates refreshed every 2 minutes
+### 📈 Data Visualization (94-100)
+94. **Bar Chart** - Horizontal bar charts
+95. **Donut Chart** - Pie charts with legend
+96. **Line Chart** - Time series visualization
+97. **Area Chart** - Filled line charts
+98. **Heatmap** - Data density visualization
+99. **Progress Ring** - Circular progress indicators
+100. **Stat Cards** - Metrics with trend indicators
 
 ## Tech Stack
 
@@ -313,30 +237,14 @@ airdrop-checker/
 │       │   ├── api/            # API endpoints
 │       │   │   ├── airdrop-check/[address]/
 │       │   │   ├── airdrops/
-│       │   │   │   ├── highlights/
-│       │   │   │   └── trending/
-│       │   │   ├── calendar/
-│       │   │   ├── compare/
-│       │   │   ├── defi-positions/[address]/
-│       │   │   ├── farming-strategy/
-│       │   │   ├── gas-tracker/[address]/
-│       │   │   ├── multi-wallet-portfolio/
 │       │   │   ├── og/
-│       │   │   ├── portfolio/[address]/
-│       │   │   ├── protocol-heatmap/[address]/
-│       │   │   ├── recommendations/
-│       │   │   ├── refresh/
-│       │   │   ├── roi-calculator/
-│       │   │   ├── stats/
-│       │   │   └── transaction-simulator/
+│       │   │   └── refresh/
 │       │   ├── dashboard/      # Dashboard page
-│       │   ├── portfolio/      # Portfolio & analytics page
 │       │   └── page.tsx        # Landing page
 │       ├── components/         # React components
 │       │   ├── common/         # Shared components
 │       │   ├── dashboard/      # Dashboard components
 │       │   ├── landing/        # Landing page components
-│       │   ├── portfolio/      # Portfolio & analytics components
 │       │   ├── providers/      # Context providers
 │       │   ├── ui/             # UI components (Radix)
 │       │   └── wallet/         # Wallet components
@@ -389,52 +297,6 @@ Get list of all tracked airdrop projects.
 **Query Params:**
 - `status` (optional): Filter by status (confirmed, rumored, expired, speculative)
 
-### GET /api/airdrops/trending
-Get signal-based trending rankings for top airdrops.
-
-**Query Params:**
-- `limit` (optional): Number of projects to return (default 5, max 10)
-- `status` (optional): Comma-separated statuses to include
-- `chain` (optional): Filter by chain name (e.g. `Ethereum`, `Base`)
-
-### GET /api/airdrops/highlights
-Get radar highlights for upcoming snapshots, highest estimated values, and recently updated projects.
-
-**Response:**
-```json
-{
-  "highlights": {
-    "upcomingSnapshots": [
-      {
-        "projectId": "scroll",
-        "name": "Scroll",
-        "status": "confirmed",
-        "snapshotDate": "2025-03-20T00:00:00.000Z",
-        "daysUntilSnapshot": 12.5
-      }
-    ],
-    "highestValue": [
-      {
-        "projectId": "layerzero",
-        "name": "LayerZero",
-        "status": "rumored",
-        "estimatedValue": "$5,000",
-        "estimatedValueUSD": 5000
-      }
-    ],
-    "recentlyUpdated": [
-      {
-        "projectId": "zora",
-        "name": "Zora",
-        "status": "confirmed",
-        "hoursSinceUpdate": 5
-      }
-    ],
-    "generatedAt": "2025-03-08T12:00:00.000Z"
-  }
-}
-```
-
 ### POST /api/refresh
 Force refresh eligibility scan for an address.
 
@@ -453,296 +315,6 @@ Generate OpenGraph image for social sharing.
 **Query Params:**
 - `score`: User's overall score (0-100)
 - `address`: Wallet address
-
-### GET /api/portfolio/[address]
-Get comprehensive portfolio data for a wallet address.
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "totalValue": 12500.50,
-  "chainBreakdown": [
-    {
-      "chainId": 1,
-      "chainName": "Ethereum",
-      "value": 8000.00,
-      "tokenCount": 12
-    }
-  ],
-  "topTokens": [...],
-  "timestamp": 1699999999999
-}
-```
-
-### GET /api/gas-tracker/[address]
-Get gas spending analytics for a wallet address.
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "totalGasSpent": 5000000000000000000,
-  "totalGasSpentUSD": 125.50,
-  "chainBreakdown": [...],
-  "recentTransactions": [...],
-  "monthlyBreakdown": [...]
-}
-```
-
-### POST /api/roi-calculator
-Calculate ROI for airdrop investments.
-
-**Request:**
-```json
-{
-  "address": "0x...",
-  "airdrops": [...],
-  "gasSpentUSD": 125.50
-}
-```
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "totalGasSpent": 125.50,
-  "estimatedAirdropValue": 5000.00,
-  "potentialROI": 4874.50,
-  "roiPercentage": 3886.45,
-  "airdropBreakdown": [...],
-  "recommendations": [...]
-}
-```
-
-### POST /api/multi-wallet-portfolio
-Get aggregated portfolio data for multiple wallets (up to 10).
-
-**Request:**
-```json
-{
-  "addresses": ["0x...", "0x..."]
-}
-```
-
-**Response:**
-```json
-{
-  "wallets": [...],
-  "aggregate": {
-    "totalValue": 25000.00,
-    "uniqueTokens": 45,
-    "chainsUsed": 5,
-    "walletCount": 2
-  },
-  "chainDistribution": [...],
-  "topHoldings": [...]
-}
-```
-
-### POST /api/transaction-simulator
-Simulate transactions to see their impact on airdrop eligibility.
-
-**Request:**
-```json
-{
-  "address": "0x...",
-  "currentScores": {
-    "zora": 75,
-    "layerzero": 60
-  }
-}
-```
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "currentScores": {...},
-  "simulations": [
-    {
-      "type": "swap",
-      "protocol": "uniswap",
-      "chainId": 1,
-      "chainName": "Ethereum",
-      "estimatedGasUSD": 8.50,
-      "impactScore": 15.5,
-      "affectedAirdrops": [...]
-    }
-  ],
-  "recommendations": [...]
-}
-```
-
-### GET /api/defi-positions/[address]
-Get DeFi positions (LP, staking, lending) across all protocols.
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "totalValue": 5000.00,
-  "positions": [...],
-  "byProtocol": {...},
-  "byChain": {...}
-}
-```
-
-### GET /api/protocol-heatmap/[address]
-Get protocol interaction heatmap data showing activity over time.
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "interactions": [...],
-  "protocolList": ["uniswap", "aave", ...],
-  "dateRange": {
-    "start": "2024-01-01",
-    "end": "2024-12-31"
-  },
-  "totalInteractions": 150,
-  "topProtocols": [...]
-}
-```
-
-### POST /api/farming-strategy
-Generate a personalized airdrop farming strategy.
-
-**Request:**
-```json
-{
-  "address": "0x...",
-  "currentScores": {
-    "zora": 50,
-    "layerzero": 40
-  },
-  "targetScore": 80
-}
-```
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "currentScore": 45,
-  "targetScore": 80,
-  "estimatedTotalGas": 150.00,
-  "estimatedTotalValue": 5000.00,
-  "steps": [...],
-  "timeline": {
-    "week1": [...],
-    "week2": [...],
-    "week3": [...],
-    "week4": [...]
-  },
-  "recommendations": [...]
-}
-```
-
-### GET /api/wallet-health/[address]
-Get comprehensive wallet health analysis.
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "overallScore": 75,
-  "metrics": [
-    {
-      "category": "Activity",
-      "score": 20,
-      "maxScore": 25,
-      "status": "excellent",
-      "details": [...]
-    }
-  ],
-  "riskFactors": [...],
-  "recommendations": [...]
-}
-```
-
-### GET /api/contract-analyzer/[address]
-Analyze smart contract interactions and risk levels.
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "totalContracts": 25,
-  "interactions": [...],
-  "topContracts": [...],
-  "riskSummary": {
-    "low": 20,
-    "medium": 4,
-    "high": 1
-  },
-  "recommendations": [...]
-}
-```
-
-### GET /api/gas-optimizer
-Get gas price recommendations across chains.
-
-**Response:**
-```json
-{
-  "recommendations": [
-    {
-      "chainId": 8453,
-      "chainName": "Base",
-      "currentGasPrice": 0.1,
-      "recommendedTime": "00:00-08:00 UTC",
-      "estimatedSavings": 20,
-      "historicalAverage": 0.08
-    }
-  ],
-  "bestChain": {...},
-  "bestTime": {...}
-}
-```
-
-### POST /api/export-data
-Export wallet data in various formats.
-
-**Request:**
-```json
-{
-  "address": "0x...",
-  "format": "json",
-  "data": {
-    "airdrops": [...],
-    "portfolio": {...},
-    "gasData": {...}
-  }
-}
-```
-
-### GET /api/alerts?address=0x...
-Get airdrop alerts for an address.
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "alerts": [...],
-  "unreadCount": 3
-}
-```
-
-### POST /api/alerts
-Create a new alert.
-
-**Request:**
-```json
-{
-  "address": "0x...",
-  "type": "new-airdrop",
-  "title": "New Airdrop Available",
-  "message": "Zora airdrop is now claimable",
-  "priority": "high"
-}
-```
 
 ## Airdrop Criteria
 
@@ -777,102 +349,6 @@ Example criterion:
 - **Airdrop Check**: 1 hour TTL
 - **Airdrops List**: 5 minutes TTL
 - **Refresh Cooldown**: 5 minutes per address
-- **Portfolio Data**: 5 minutes TTL
-- **Gas Tracker**: 5 minutes TTL
-- **Multi-Wallet Portfolio**: 5 minutes TTL
-- **DeFi Positions**: 5 minutes TTL
-- **Protocol Heatmap**: 10 minutes TTL
-- **Highlights Radar**: 1 minute TTL
-
-## New Features Overview
-
-### Portfolio Tracker
-Track your token holdings across all supported chains with real-time USD values. View chain distribution, top tokens, and portfolio breakdown.
-
-**Access:** `/portfolio` → Portfolio tab
-
-### Gas Tracker
-Monitor your gas spending across all chains with detailed analytics including:
-- Total gas spent (USD and gas units)
-- Chain-by-chain breakdown
-- Monthly spending trends
-- Recent transaction history
-
-**Access:** `/portfolio` → Gas Tracker tab
-
-### ROI Calculator
-Calculate potential return on investment for your airdrop farming activities:
-- Estimated airdrop values based on historical data
-- Probability-weighted expected values
-- Break-even analysis
-- Personalized recommendations
-
-**Access:** `/portfolio` → ROI Calculator tab
-
-### Airdrop Claim Tracker
-Track your claimed airdrops with:
-- Claim status (claimed/pending)
-- Claim amounts and USD values
-- Transaction hashes
-- Notes and metadata
-- Total claimed value summary
-
-**Access:** `/portfolio` → Claims tab
-
-### Multi-Wallet Portfolio
-Aggregate view of up to 10 wallets showing:
-- Combined portfolio value
-- Unique token count
-- Chain distribution
-- Top holdings across all wallets
-
-**Access:** `/portfolio` → Multi-Wallet tab
-
-### Transaction Simulator
-Simulate different transaction types to see their impact on airdrop eligibility:
-- Swap, bridge, mint, and stake simulations
-- Score change predictions
-- Gas cost estimates
-- Impact scoring and recommendations
-
-**Access:** Available in dashboard and portfolio pages
-
-### DeFi Positions Tracker
-Track your DeFi positions across all protocols:
-- LP positions, staking, lending, and farming
-- Protocol-by-protocol breakdown
-- Chain distribution of positions
-- Total DeFi value tracking
-
-**Access:** `/portfolio` → DeFi tab
-
-### Protocol Interaction Heatmap
-Visualize your protocol interactions over time:
-- Daily interaction intensity
-- Top protocols by activity
-- Date range analysis
-- Visual heatmap grid
-
-**Access:** `/portfolio` → Heatmap tab
-
-### Farming Strategy Builder
-Generate a personalized 4-week airdrop farming plan:
-- Step-by-step action plan
-- Priority-based recommendations
-- Gas cost estimates
-- Expected score improvements
-- Timeline distribution
-
-**Access:** `/portfolio` → Strategy tab
-
-### Radar Highlights
-Stay ahead with a real-time radar of the hottest opportunities:
-- Countdown to the next confirmed snapshots
-- Highest estimated value drops across the ecosystem
-- Recently updated projects that may ship soon
-- Auto-refreshing insight card on the dashboard every two minutes
-
-**Access:** `/dashboard` → Highlights panel
 
 ## API Endpoints
 
@@ -951,364 +427,6 @@ Get upcoming airdrop events (snapshots, claims, announcements).
 POST /api/refresh
 ```
 Trigger a fresh eligibility check (rate-limited to 1 per 5 minutes per address).
-
-### Portfolio Value Tracker
-```
-GET /api/portfolio/[address]
-```
-Get portfolio value and token breakdown for a wallet address across all chains.
-
-**Response:**
-```json
-{
-  "address": "0x...",
-  "totalValue": 12345.67,
-  "chainBreakdown": [
-    {
-      "chainId": 1,
-      "chainName": "Ethereum",
-      "value": 8000.00,
-      "tokenCount": 15,
-      "percentage": 64.8
-    }
-  ],
-  "topTokens": [...],
-  "totalTokens": 45
-}
-```
-
-### Airdrop Alerts
-```
-GET /api/alerts?address=0x...
-POST /api/alerts
-DELETE /api/alerts?id=...&address=0x...
-```
-Manage airdrop alerts for notifications on new airdrops, eligibility changes, claim availability, and upcoming snapshots.
-
-**POST Request:**
-```json
-{
-  "address": "0x...",
-  "email": "user@example.com",
-  "airdropId": "zora",
-  "alertType": "eligibility_change"
-}
-```
-
-### Gas Fee Optimizer
-```
-GET /api/gas-optimizer
-GET /api/gas-optimizer?chainId=1
-```
-Get gas price recommendations across all chains or for a specific chain.
-
-**Response:**
-```json
-{
-  "gasPrices": [
-    {
-      "chainId": 1,
-      "chainName": "Ethereum",
-      "slow": 15.2,
-      "standard": 25.5,
-      "fast": 40.1
-    }
-  ],
-  "cheapestChain": {
-    "chainId": 8453,
-    "chainName": "Base",
-    "price": 0.2
-  },
-  "recommendation": {
-    "bestTime": "now",
-    "suggestedSpeed": "slow",
-    "reason": "Current time shows lower network activity"
-  }
-}
-```
-
-### Airdrop Simulator
-```
-POST /api/simulate
-```
-Simulate airdrop eligibility with hypothetical interactions.
-
-**Request:**
-```json
-{
-  "address": "0x...",
-  "simulatedInteractions": [
-    {
-      "type": "swap",
-      "protocol": "Uniswap",
-      "chain": "ethereum",
-      "count": 5
-    }
-  ]
-}
-```
-
-**Response:**
-```json
-{
-  "currentScore": 65,
-  "simulatedScore": 78,
-  "improvement": 13,
-  "airdrops": [...]
-}
-```
-
-### Multi-Wallet Manager
-```
-GET /api/wallets?userId=...
-POST /api/wallets
-DELETE /api/wallets?id=...&userId=...
-```
-Manage multiple wallets (up to 10 per user).
-
-**POST Request:**
-```json
-{
-  "address": "0x...",
-  "label": "Main Wallet",
-  "userId": "user123"
-}
-```
-
-### Airdrop History
-```
-GET /api/history/[address]
-POST /api/history/[address]
-```
-Get or add airdrop claim history for an address.
-
-**POST Request:**
-```json
-{
-  "projectId": "zora",
-  "projectName": "Zora",
-  "status": "claimed",
-  "amount": "1000",
-  "value": 500,
-  "txHash": "0x...",
-  "notes": "Claimed via official site"
-}
-```
-
-### ROI Calculator
-```
-POST /api/roi
-```
-Calculate return on investment for airdrop farming activities.
-
-**Request:**
-```json
-{
-  "address": "0x...",
-  "gasPriceMultiplier": 1.0
-}
-```
-
-**Response:**
-```json
-{
-  "totalGasSpent": 125.50,
-  "potentialAirdropValue": 2500.00,
-  "roi": 1892.4,
-  "breakEvenValue": 125.50,
-  "topOpportunities": [...]
-}
-```
-
-### Smart Contract Analyzer
-```
-GET /api/contracts/[address]
-```
-Analyze smart contract interactions for a wallet.
-
-**Response:**
-```json
-{
-  "interactions": [
-    {
-      "contractAddress": "0x...",
-      "chainId": 1,
-      "interactionCount": 25,
-      "firstInteraction": "2024-01-01T00:00:00Z",
-      "lastInteraction": "2024-01-15T00:00:00Z",
-      "totalValue": 1.5,
-      "functionCalls": {
-        "swap": 15,
-        "addLiquidity": 10
-      }
-    }
-  ],
-  "stats": {
-    "totalContracts": 12,
-    "totalInteractions": 150,
-    "uniqueChains": 3
-  }
-}
-```
-
-### Export Data
-```
-GET /api/export/[address]?format=json|csv|txt
-```
-Export eligibility data in multiple formats.
-
-**Formats:**
-- `json` - Full JSON export (default)
-- `csv` - CSV format for spreadsheet import
-- `txt` - Plain text report
-
-### Notifications
-```
-GET /api/notifications?address=0x...&unreadOnly=true
-POST /api/notifications
-PATCH /api/notifications
-DELETE /api/notifications?id=...&address=0x...
-```
-Manage notifications for airdrop updates, reminders, and alerts.
-
-**POST Request:**
-```json
-{
-  "address": "0x...",
-  "type": "snapshot_reminder",
-  "title": "Snapshot Coming Soon",
-  "message": "Zora snapshot in 3 days",
-  "projectId": "zora",
-  "actionUrl": "/dashboard"
-}
-```
-
-### Trending Airdrops
-```
-GET /api/trending
-```
-Get trending airdrops based on multiple scoring factors.
-
-**Response:**
-```json
-{
-  "trending": [
-    {
-      "projectId": "zora",
-      "name": "Zora",
-      "status": "confirmed",
-      "score": 95,
-      "chains": ["Ethereum", "Base"],
-      "snapshotDate": "2024-02-01",
-      "estimatedValue": "$500-$2000"
-    }
-  ]
-}
-```
-
-### Risk Analyzer
-```
-GET /api/risk-analyzer/[address]
-```
-Analyze farming risks including sybil detection, timing, and concentration risks.
-
-**Response:**
-```json
-{
-  "risks": {
-    "sybilRisk": 25,
-    "timingRisk": 40,
-    "concentrationRisk": 15,
-    "gasSpendingRisk": 10,
-    "overallRisk": 28
-  },
-  "recommendations": [
-    "Spread activity over longer time periods",
-    "Diversify across more protocols"
-  ]
-}
-```
-
-### Opportunity Finder
-```
-GET /api/opportunities/[address]
-```
-Find best airdrop opportunities based on current eligibility.
-
-**Response:**
-```json
-{
-  "opportunities": [...],
-  "categories": {
-    "easyWins": [...],
-    "highValue": [...],
-    "quickActions": [...]
-  }
-}
-```
-
-### Personalized Insights
-```
-GET /api/insights/[address]
-```
-Get personalized insights and recommendations.
-
-**Response:**
-```json
-{
-  "insights": {
-    "activity": {...},
-    "eligibility": {...},
-    "recommendations": [...]
-  },
-  "activityPatterns": {
-    "isDiversified": true,
-    "isActive": true,
-    "hasNFTs": false
-  }
-}
-```
-
-### Leaderboard
-```
-GET /api/leaderboard
-```
-Get top airdrop farmers leaderboard.
-
-**Response:**
-```json
-{
-  "leaderboard": [
-    {
-      "rank": 1,
-      "address": "0x742...bEb",
-      "score": 95,
-      "eligibleCount": 12,
-      "chainsUsed": 6
-    }
-  ],
-  "totalParticipants": 1250
-}
-```
-
-### Platform Analytics
-```
-GET /api/analytics
-```
-Get platform-wide analytics and statistics.
-
-**Response:**
-```json
-{
-  "analytics": {
-    "projects": {...},
-    "chains": {...},
-    "criteria": {...},
-    "timeline": {...},
-    "activity": {...}
-  }
-}
-```
 
 ## Development Scripts
 
