@@ -17,6 +17,9 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
   { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Simulate', href: '/simulate' },
+  { label: 'ROI Calculator', href: '/roi' },
   { label: 'Compare', href: '/compare' },
   { label: 'Calendar', href: '/calendar' },
   { label: 'Statistics', href: '/stats' },
