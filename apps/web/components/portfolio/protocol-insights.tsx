@@ -94,6 +94,18 @@ interface DormantProtocol {
   lastInteraction?: string;
 }
 
+interface DiversityMetrics {
+  score: number;
+  entropy: number;
+  categoryDistribution: Array<{ category: string; percentage: number }>;
+}
+
+interface ReactivationRecommendation {
+  protocol: string;
+  categoryLabel: string;
+  recommendation: string;
+}
+
 interface MomentumMetrics {
   direction: MomentumDirection;
   percentChange: number;
