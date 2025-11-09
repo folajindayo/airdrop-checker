@@ -2,7 +2,7 @@
 
 A read-only onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users simply connect their wallet via WalletConnect and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria.
 
-## 🎉 200+ Production-Ready Features!
+## 🎉 120+ Production-Ready Features!
 
 ### 🎯 Core Features (1-15)
 1. **WalletConnect Integration** - Connect securely using WalletConnect v2 (Reown SDK)
@@ -131,11 +131,6 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 118. **Expected Value Calculator** - Probability-weighted airdrop values
 119. **Break-Even Analysis** - Calculate minimum airdrop value needed
 120. **Smart Transaction Recommendations** - Get personalized transaction suggestions
-101. **Portfolio Tracker Component** - Comprehensive portfolio value tracking UI
-102. **Gas Tracker Component** - Track gas spending across all chains
-103. **ROI Calculator Component** - Visual ROI calculation interface
-104. **Airdrop Claim Tracker** - Track and manage airdrop claims with transaction history
-105. **Multi-Wallet Portfolio** - Manage and compare multiple wallets in one interface
 106. **Trending Airdrops API** - Discover hottest airdrop opportunities
 107. **Risk Analyzer** - Analyze sybil detection and farming risks
 108. **Opportunity Finder** - Find best airdrop opportunities based on current eligibility
