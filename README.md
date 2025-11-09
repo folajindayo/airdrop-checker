@@ -100,7 +100,7 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 89. **Aspect Ratio** - Responsive media containers
 90. **Progress Tracker** - Step-by-step progress visualization
 
-### 🚀 Advanced Features (91-120)
+### 🚀 Advanced Features (91-205)
 91. **Score History** - Track historical scores with charts
 92. **Watchlist** - Monitor up to 10 wallets
 93. **Mobile Navigation** - Responsive slide-out menu
@@ -131,101 +131,91 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 118. **Expected Value Calculator** - Probability-weighted airdrop values
 119. **Break-Even Analysis** - Calculate minimum airdrop value needed
 120. **Smart Transaction Recommendations** - Get personalized transaction suggestions
-106. **Trending Airdrops API** - Discover hottest airdrop opportunities
-107. **Risk Analyzer** - Analyze sybil detection and farming risks
-108. **Opportunity Finder** - Find best airdrop opportunities based on current eligibility
-109. **Personalized Insights** - Get AI-driven recommendations and activity patterns
-110. **Gas Tracker API** - Detailed gas spending analysis by chain
-111. **Easy Wins Finder** - Identify quick opportunities with low effort
-112. **High Value Opportunities** - Filter airdrops by estimated value
-113. **Quick Actions** - Find time-sensitive opportunities with upcoming snapshots
-114. **Activity Pattern Analysis** - Understand your onchain behavior patterns
-115. **Sybil Risk Detection** - Identify potential sybil detection patterns
-116. **Concentration Risk Analysis** - Check if you're too focused on one protocol
-117. **Timing Risk Assessment** - Analyze if activity is too concentrated in time
-118. **Improvement Recommendations** - Get specific actions to improve eligibility
-119. **Portfolio Tabbed Interface** - Organized portfolio view with multiple tabs
-120. **Claim History Management** - Add, edit, and track airdrop claims
-121. **Data Export System** - Export eligibility data in JSON, CSV, or TXT formats
-122. **Notification System** - Real-time notifications for airdrop updates and reminders
-123. **Leaderboard** - Compare your ranking with other airdrop farmers
-124. **Platform Analytics** - Comprehensive platform-wide statistics and insights
-125. **CSV Export** - Export data for spreadsheet analysis
-126. **Plain Text Reports** - Human-readable eligibility reports
-127. **Notification Management** - Mark as read, delete, and filter notifications
-128. **Snapshot Reminders** - Get notified before important snapshots
-129. **Claim Availability Alerts** - Know when claims go live
-130. **Eligibility Change Notifications** - Track score improvements
-131. **New Airdrop Alerts** - Discover new opportunities as they're added
-132. **Leaderboard Rankings** - See how you compare to top farmers
-133. **Platform Statistics** - View overall platform health and metrics
-134. **Chain Distribution Analytics** - Understand airdrop distribution across chains
-135. **Criteria Analysis** - Deep dive into eligibility criteria patterns
-136. **Timeline Analytics** - Track snapshot dates and claim windows
-137. **Activity Metrics** - Track total checks, unique addresses, and average scores
-138. **Value Analysis** - Analyze estimated airdrop values across projects
-139. **Multi-Format Export** - Choose from JSON, CSV, or TXT export formats
-140. **Comprehensive Reporting** - Detailed reports with activity summaries
-141. **Airdrop Prediction Engine** - AI-powered forecasting of likely airdrops
-142. **Batch Operations** - Process multiple addresses simultaneously
-143. **Webhook Support** - Real-time event notifications via webhooks
-144. **Advanced Search API** - Powerful filtering and search capabilities
-145. **Usage Analytics** - Track API usage and rate limiting
-146. **Social Sharing** - Create shareable links for results
-147. **Probability Scoring** - Predict airdrop likelihood with confidence scores
-148. **Timeline Estimation** - Estimate when airdrops might launch
-149. **Factor Analysis** - Understand prediction reasoning
-150. **Batch Eligibility Checks** - Check up to 50 addresses at once
-151. **Batch Portfolio Analysis** - Analyze multiple portfolios simultaneously
-152. **Webhook Events** - Subscribe to eligibility changes, new airdrops, claims
-153. **Webhook Management** - Create, list, and delete webhooks
-154. **Multi-Event Webhooks** - Subscribe to multiple event types
-155. **Search Filters** - Filter by status, chain, snapshot, claim, value
-156. **Advanced Sorting** - Sort by name, status, criteria, chains, snapshot date
-157. **Text Search** - Search across names, IDs, descriptions, and tags
-158. **Usage Tracking** - Monitor API usage per address
-159. **Rate Limit Monitoring** - Track remaining requests and reset times
-160. **Daily Usage Stats** - View usage trends over time
-161. **Shareable Links** - Generate public or private share links
-162. **Link Expiration** - Set expiration times for share links
-163. **View Tracking** - Track how many times links are viewed
-164. **Multiple Share Types** - Share eligibility, portfolio, ROI, or comparisons
-165. **Prediction Factors** - See why predictions are made
-166. **Similar Project Analysis** - Find patterns from confirmed airdrops
-167. **Launch Timeline Prediction** - Estimate launch dates
-168. **Batch Processing** - Efficient handling of multiple requests
-169. **Webhook Security** - Optional secret keys for webhook verification
-170. **Search Pagination** - Limit and paginate search results
-171. **Usage Statistics** - Detailed breakdown by endpoint
-172. **Share Privacy Controls** - Public or private sharing options
-173. **Real-time Updates** - Server-Sent Events (SSE) for live data streaming
-174. **Performance Monitoring** - Track API performance and system health
-175. **Backup & Restore** - Backup and restore user data
-176. **Advanced Analytics Dashboard** - Trends, predictions, and engagement metrics
-177. **Discord Integration** - Send notifications to Discord webhooks
-178. **Cache Management** - Monitor and manage cache performance
-179. **Health Check API** - System health monitoring endpoint
-180. **SSE Streaming** - Real-time eligibility updates via Server-Sent Events
-181. **Performance Metrics** - API response times, error rates, throughput
-182. **System Health Monitoring** - CPU, memory, database, and cache status
-183. **Data Backup** - Export complete user data snapshot
-184. **Data Restore** - Import and restore from backup files
-185. **Trend Analysis** - Track airdrop trends over time
-186. **Engagement Metrics** - Active projects, claimable airdrops, multi-chain projects
-187. **Prediction Analytics** - Likely confirmations and value estimates
-188. **Discord Webhooks** - Configure Discord notifications for events
-189. **Cache Statistics** - Hit rates, miss rates, total size tracking
-190. **Cache Control** - Clear cache by pattern or globally
-191. **Health Status** - Database, API, and service health checks
-192. **Response Time Monitoring** - Track API response times
-193. **Error Rate Tracking** - Monitor API error rates
-194. **Uptime Monitoring** - Track system uptime
-195. **Service Status** - Individual service health status
-196. **Backup Validation** - Validate backup file integrity
-197. **Restore Verification** - Verify restored data completeness
-198. **Integration Management** - Manage external service integrations
-199. **Webhook Testing** - Test webhook configurations
-200. **Real-time Event Streaming** - Stream events as they happen
+121. **Portfolio Tracker Component** - Comprehensive portfolio value tracking UI
+122. **Gas Tracker Component** - Track gas spending across all chains
+123. **ROI Calculator Component** - Visual ROI calculation interface
+124. **Airdrop Claim Tracker** - Track and manage airdrop claims with transaction history
+125. **Multi-Wallet Portfolio** - Manage and compare multiple wallets in one interface
+126. **Trending Airdrops API** - Discover hottest airdrop opportunities
+127. **Risk Analyzer** - Analyze sybil detection and farming risks
+128. **Opportunity Finder** - Find best airdrop opportunities based on current eligibility
+129. **Personalized Insights** - Get AI-driven recommendations and activity patterns
+130. **Gas Tracker API** - Detailed gas spending analysis by chain
+131. **Easy Wins Finder** - Identify quick opportunities with low effort
+132. **High Value Opportunities** - Filter airdrops by estimated value
+133. **Quick Actions** - Find time-sensitive opportunities with upcoming snapshots
+134. **Activity Pattern Analysis** - Understand your onchain behavior patterns
+135. **Sybil Risk Detection** - Identify potential sybil detection patterns
+136. **Concentration Risk Analysis** - Check if you're too focused on one protocol
+137. **Timing Risk Assessment** - Analyze if activity is too concentrated in time
+138. **Improvement Recommendations** - Get specific actions to improve eligibility
+139. **Portfolio Tabbed Interface** - Organized portfolio view with multiple tabs
+140. **Claim History Management** - Add, edit, and track airdrop claims
+141. **Data Export System** - Export eligibility data in JSON, CSV, or TXT formats
+142. **Notification System** - Real-time notifications for airdrop updates and reminders
+143. **Leaderboard** - Compare your ranking with other airdrop farmers
+144. **Platform Analytics** - Comprehensive platform-wide statistics and insights
+145. **CSV Export** - Export data for spreadsheet analysis
+146. **Plain Text Reports** - Human-readable eligibility reports
+147. **Notification Management** - Mark as read, delete, and filter notifications
+148. **Snapshot Reminders** - Get notified before important snapshots
+149. **Claim Availability Alerts** - Know when claims go live
+150. **Eligibility Change Notifications** - Track score improvements
+151. **New Airdrop Alerts** - Discover new opportunities as they're added
+152. **Leaderboard Rankings** - See how you compare to top farmers
+153. **Platform Statistics** - View overall platform health and metrics
+154. **Chain Distribution Analytics** - Understand airdrop distribution across chains
+155. **Criteria Analysis** - Deep dive into eligibility criteria patterns
+156. **Timeline Analytics** - Track snapshot dates and claim windows
+157. **Activity Metrics** - Track total checks, unique addresses, and average scores
+158. **Value Analysis** - Analyze estimated airdrop values across projects
+159. **Multi-Format Export** - Choose from JSON, CSV, or TXT export formats
+160. **Comprehensive Reporting** - Detailed reports with activity summaries
+161. **Airdrop Prediction Engine** - AI-powered forecasting of likely airdrops
+162. **Batch Operations** - Process multiple addresses simultaneously
+163. **Webhook Support** - Real-time event notifications via webhooks
+164. **Advanced Search API** - Powerful filtering and search capabilities
+165. **Usage Analytics** - Track API usage and rate limiting
+166. **Social Sharing** - Create shareable links for results
+167. **Probability Scoring** - Predict airdrop likelihood with confidence scores
+168. **Timeline Estimation** - Estimate when airdrops might launch
+169. **Factor Analysis** - Understand prediction reasoning
+170. **Batch Eligibility Checks** - Check up to 50 addresses at once
+171. **Batch Portfolio Analysis** - Analyze multiple portfolios simultaneously
+172. **Webhook Events** - Subscribe to eligibility changes, new airdrops, claims
+173. **Webhook Management** - Create, list, and delete webhooks
+174. **Multi-Event Webhooks** - Subscribe to multiple event types
+175. **Search Filters** - Filter by status, chain, snapshot, claim, value
+176. **Advanced Sorting** - Sort by name, status, criteria, chains, snapshot date
+177. **Text Search** - Search across names, IDs, descriptions, and tags
+178. **Usage Tracking** - Monitor API usage per address
+179. **Rate Limit Monitoring** - Track remaining requests and reset times
+180. **Daily Usage Stats** - View usage trends over time
+181. **Shareable Links** - Generate public or private share links
+182. **Link Expiration** - Set expiration times for share links
+183. **View Tracking** - Track how many times links are viewed
+184. **Multiple Share Types** - Share eligibility, portfolio, ROI, or comparisons
+185. **Prediction Factors** - See why predictions are made
+186. **Similar Project Analysis** - Find patterns from confirmed airdrops
+187. **Launch Timeline Prediction** - Estimate launch dates
+188. **Batch Processing** - Efficient handling of multiple requests
+189. **Webhook Security** - Optional secret keys for webhook verification
+190. **Search Pagination** - Limit and paginate search results
+191. **Usage Statistics** - Detailed breakdown by endpoint
+192. **Share Privacy Controls** - Public or private sharing options
+193. **Real-time Updates** - Server-Sent Events (SSE) for live data streaming
+194. **Performance Monitoring** - Track API performance and system health
+195. **Backup & Restore** - Backup and restore user data
+196. **Advanced Analytics Dashboard** - Trends, predictions, and engagement metrics
+197. **Discord Integration** - Send notifications to Discord webhooks
+198. **Cache Management** - Monitor and manage cache performance
+199. **Health Check API** - System health monitoring endpoint
+200. **SSE Streaming** - Real-time eligibility updates via Server-Sent Events
+201. **Airdrop Scheduler** - Schedule automatic eligibility checks for specific times
+202. **Reminder System** - Set reminders for snapshots, claims, and announcements
+203. **Eligibility History Tracking** - Track score changes and improvements over time
+204. **Risk Calculator** - Calculate risk vs reward ratios and break-even probabilities
+205. **Enhanced Farm Script** - Resume capability, auto-retry, and better error handling
 201. **Telegram Integration** - Send notifications via Telegram bots
 202. **Email Notifications** - Subscribe to email alerts and updates
 203. **Advanced Reporting** - Comprehensive reports with recommendations
