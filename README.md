@@ -21,7 +21,7 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 14. **Social Sharing** - Share results on Twitter/X with Web Share API
 15. **Personalized Recommendations** - AI-driven airdrop suggestions
 
-### 💼 Portfolio & Analytics Features (16-42)
+### 💼 Portfolio & Analytics Features (16-45)
 16. **Portfolio Tracker** - Track token holdings across all chains with real-time values
 17. **Gas Tracker** - Monitor gas spending by chain, month, and transaction
 18. **ROI Calculator** - Calculate potential return on airdrop investments
@@ -41,12 +41,17 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 32. **Batch Wallet Checker** - Check up to 20 wallets simultaneously
 33. **Snapshot Tracker** - Track upcoming and completed airdrop snapshots
 34. **Airdrop News Feed** - Latest airdrop news, announcements, and rumors
-35. **Chain Distribution Analysis** - Visual breakdown of assets by chain
-36. **Top Holdings View** - See your most valuable token positions
-37. **Monthly Gas Breakdown** - Historical gas spending trends
-38. **Portfolio Value Tracking** - Real-time USD value of all holdings
-39. **Protocol-by-Protocol Breakdown** - Detailed DeFi position analysis
-40. **Interaction Timeline** - See when and how often you interact with protocols
+35. **Airdrop Probability Predictor** - ML-powered probability predictions for eligibility
+36. **Wallet Clustering Detection** - Detect related wallets and potential clustering
+37. **Calendar Export** - Export snapshots and claims to iCal format
+38. **Portfolio Rebalancer** - Optimize portfolio allocation for better eligibility
+39. **Gas Price History** - Historical gas price trends and best times to transact
+40. **Chain Distribution Analysis** - Visual breakdown of assets by chain
+41. **Top Holdings View** - See your most valuable token positions
+42. **Monthly Gas Breakdown** - Historical gas spending trends
+43. **Portfolio Value Tracking** - Real-time USD value of all holdings
+44. **Protocol-by-Protocol Breakdown** - Detailed DeFi position analysis
+45. **Interaction Timeline** - See when and how often you interact with protocols
 41. **Protocol Engagement Score** - Composite scoring across all protocol categories
 42. **Category Scoreboard** - Visualize category strength with weighted scores
 
