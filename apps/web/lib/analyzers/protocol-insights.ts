@@ -86,6 +86,18 @@ export interface DormantProtocol {
   lastInteraction?: string;
 }
 
+export interface DiversityMetrics {
+  score: number;
+  entropy: number;
+  categoryDistribution: Array<{ category: string; percentage: number }>;
+}
+
+export interface ReactivationRecommendation {
+  protocol: string;
+  categoryLabel: string;
+  recommendation: string;
+}
+
 export interface ProtocolInsights {
   address: string;
   summary: {
