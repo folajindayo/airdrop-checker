@@ -26,7 +26,6 @@ import { WalletClustering } from '@/components/portfolio/wallet-clustering';
 import { CalendarExport } from '@/components/portfolio/calendar-export';
 import { PortfolioRebalancer } from '@/components/portfolio/portfolio-rebalancer';
 import { GasHistory } from '@/components/portfolio/gas-history';
-import { ProtocolInsightsPanel } from '@/components/portfolio/protocol-insights';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/common/skeleton';
 import { ArrowLeft } from 'lucide-react';
