@@ -1,13 +1,15 @@
 import type { Metadata } from "next"
 import { Inter } from 'next/font/google'
 import "./globals.css"
+import { WalletProvider } from "@/components/providers/wallet-provider"
+import { Toaster } from "sonner"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "My Next.js App",
-  description: "A new Next.js application",
-    generator: 'v0.dev'
+  title: "Airdrop Finder - Check Your Eligibility",
+  description: "Discover airdrops you're eligible for based on your onchain activity. Check wallet eligibility for popular crypto airdrops.",
+  keywords: ["airdrop", "crypto", "blockchain", "eligibility", "wallet"],
 }
 
 export default function RootLayout({
@@ -17,7 +19,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <WalletProvider>
+          {children}
+          <Toaster richColors />
+        </WalletProvider>
+      </body>
     </html>
   )
 }
