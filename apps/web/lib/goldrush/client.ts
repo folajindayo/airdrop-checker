@@ -20,16 +20,16 @@ class GoldRushClient {
       timeout: API_CONFIG.REQUEST_TIMEOUT,
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'User-Agent': 'AirdropFinder/1.0',
       },
     });
 
-    // Add auth interceptor - GoldRush uses API key as query parameter
+    // Add auth interceptor - GoldRush uses Authorization header with Basic auth
     this.client.interceptors.request.use((config) => {
-      // Add API key as query parameter
-      if (!config.params) {
-        config.params = {};
-      }
-      config.params.key = this.apiKey;
+      // Use Basic Authentication with API key as username and empty password
+      const auth = Buffer.from(`${this.apiKey}:`).toString('base64');
+      config.headers['Authorization'] = `Basic ${auth}`;
       return config;
     });
 
