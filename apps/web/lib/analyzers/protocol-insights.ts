@@ -72,6 +72,20 @@ export interface DecayMetrics {
   status: DecayStatus;
 }
 
+export interface CoverageMetrics {
+  score: number;
+  coveredCategories: string[];
+  totalCategories: number;
+  missingCategories: string[];
+}
+
+export interface DormantProtocol {
+  protocol: string;
+  categoryLabel: string;
+  daysSinceInteraction: number | null;
+  lastInteraction?: string;
+}
+
 export interface ProtocolInsights {
   address: string;
   summary: {
