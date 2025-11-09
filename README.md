@@ -570,7 +570,7 @@ Get gas spending analytics for a wallet address.
 ```
 
 ### GET /api/protocol-insights/[address]
-Get protocol focus areas, timeline feed, and monthly trends for a wallet.
+Get protocol focus areas, engagement scores, timeline feed, and monthly trends for a wallet.
 
 **Response:**
 ```json
@@ -582,6 +582,16 @@ Get protocol focus areas, timeline feed, and monthly trends for a wallet.
       "activeCategories": 5,
       "newProtocolsLast30d": 3,
       "avgInteractionsPerProtocol": 4.2,
+      "engagementScore": 74,
+      "momentum": {
+        "direction": "up",
+        "percentChange": 26,
+        "deltaInteractions": 5
+      },
+      "streak": {
+        "activeDays": 3,
+        "lastActiveDate": "2025-03-05T00:00:00.000Z"
+      },
       "mostActiveCategory": {
         "category": "dex",
         "label": "Decentralized Exchange",
@@ -594,8 +604,19 @@ Get protocol focus areas, timeline feed, and monthly trends for a wallet.
         "categoryLabel": "Bridge / Interop",
         "interactions": 6,
         "uniqueProtocols": 2,
+        "score": 58,
         "status": "needs_attention",
         "recommendation": "Bridge assets across chains to qualify for interoperability airdrops."
+      }
+    ],
+    "categoryScores": [
+      {
+        "category": "dex",
+        "categoryLabel": "Decentralized Exchange",
+        "score": 82,
+        "interactions": 24,
+        "uniqueProtocols": 4,
+        "status": "strong"
       }
     ],
     "breakdown": [
