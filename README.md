@@ -628,6 +628,17 @@ Get protocol focus areas, engagement scores, timeline feed, and monthly trends f
         "activeDays": 3,
         "lastActiveDate": "2025-03-05T00:00:00.000Z"
       },
+      "velocity": {
+        "currentAvgDaily": 0.93,
+        "previousAvgDaily": 0.67,
+        "percentChange": 38.8,
+        "deltaInteractions": 8,
+        "trend": "accelerating"
+      },
+      "decay": {
+        "daysSinceInteraction": 2,
+        "status": "fresh"
+      },
       "mostActiveCategory": {
         "category": "dex",
         "label": "Decentralized Exchange",
