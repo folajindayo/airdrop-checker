@@ -16,6 +16,11 @@ import { WalletHealthDashboard } from '@/components/portfolio/wallet-health-dash
 import { ContractAnalyzer } from '@/components/portfolio/contract-analyzer';
 import { GasOptimizer } from '@/components/portfolio/gas-optimizer';
 import { DataExporter } from '@/components/portfolio/data-exporter';
+import { Leaderboard } from '@/components/portfolio/leaderboard';
+import { PortfolioPerformance } from '@/components/portfolio/portfolio-performance';
+import { BatchWalletChecker } from '@/components/portfolio/batch-wallet-checker';
+import { SnapshotTracker } from '@/components/portfolio/snapshot-tracker';
+import { NewsFeed } from '@/components/portfolio/news-feed';
 import { ProtocolInsightsPanel } from '@/components/portfolio/protocol-insights';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/common/skeleton';
