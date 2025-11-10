@@ -1,160 +1,142 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
-import { isValidAddress } from '@airdrop-finder/shared';
-import { cache } from '@airdrop-finder/shared';
-
-export const dynamic = 'force-dynamic';
-
-interface RelatedWallet {
-  address: string;
-  similarity: number; // 0-100
-  sharedContracts: number;
-  sharedTokens: number;
-  relationshipType: 'funding' | 'interaction' | 'token' | 'unknown';
-  firstInteraction: string;
-  lastInteraction: string;
-}
-
-interface ClusteringData {
-  address: string;
-  clusterSize: number;
-  relatedWallets: RelatedWallet[];
-  riskLevel: 'low' | 'medium' | 'high';
-  recommendations: string[];
-  timestamp: number;
-}
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ address: string }> }
+  { params }: { params: { address: string } }
 ) {
   try {
-    const { address } = await params;
+    const { address } = params;
 
-    if (!isValidAddress(address)) {
-      return NextResponse.json(
-        { error: 'Invalid Ethereum address' },
-        { status: 400 }
-      );
+    if (!address) {
+      return NextResponse.json({ error: 'Address is required' }, { status: 400 });
     }
 
-    const normalizedAddress = address.toLowerCase();
-    const cacheKey = `wallet-clustering:${normalizedAddress}`;
-    const cachedResult = cache.get<ClusteringData>(cacheKey);
+    const clusteringData = generateMockClusteringData(address);
 
-    if (cachedResult) {
-      return NextResponse.json({
-        ...cachedResult,
-        cached: true,
-      });
-    }
-
-    const relatedWallets: RelatedWallet[] = [];
-    const interactedAddresses = new Set<string>();
-    const tokenAddresses = new Set<string>();
-
-    // Analyze transactions to find related wallets
-    for (const chain of SUPPORTED_CHAINS.slice(0, 3)) { // Limit to first 3 chains for performance
-      try {
-        const response = await goldrushClient.get(
-          `/${chain.goldrushName}/address/${normalizedAddress}/transactions_v2/`,
-          { 'page-size': 100 }
-        );
-
-        if (response.data?.items) {
-          response.data.items.forEach((tx: any) => {
-            // Track interacted addresses
-            if (tx.to_address && tx.to_address.toLowerCase() !== normalizedAddress) {
-              interactedAddresses.add(tx.to_address.toLowerCase());
-            }
-            if (tx.from_address && tx.from_address.toLowerCase() !== normalizedAddress) {
-              interactedAddresses.add(tx.from_address.toLowerCase());
-            }
-
-            // Track token transfers
-            if (tx.log_events) {
-              tx.log_events.forEach((log: any) => {
-                if (log.decoded?.name === 'Transfer' && log.sender_address) {
-                  tokenAddresses.add(log.sender_address.toLowerCase());
-                }
-              });
-            }
-          });
-        }
-      } catch (error) {
-        console.error(`Error analyzing ${chain.name}:`, error);
-      }
-    }
-
-    // Find wallets that appear frequently (potential cluster members)
-    const addressFrequency = new Map<string, number>();
-    Array.from(interactedAddresses).forEach((addr) => {
-      addressFrequency.set(addr, (addressFrequency.get(addr) || 0) + 1);
-    });
-
-    // Identify potential cluster members (appear in multiple transactions)
-    Array.from(addressFrequency.entries())
-      .filter(([_, count]) => count >= 3) // Appear in at least 3 transactions
-      .slice(0, 20) // Limit to top 20
-      .forEach(([relatedAddr, count]) => {
-        const similarity = Math.min(100, count * 10); // Simple similarity metric
-        
-        let relationshipType: RelatedWallet['relationshipType'] = 'unknown';
-        if (tokenAddresses.has(relatedAddr)) {
-          relationshipType = 'token';
-        } else if (count > 10) {
-          relationshipType = 'interaction';
-        }
-
-        relatedWallets.push({
-          address: relatedAddr,
-          similarity,
-          sharedContracts: count,
-          sharedTokens: tokenAddresses.has(relatedAddr) ? 1 : 0,
-          relationshipType,
-          firstInteraction: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString(),
-          lastInteraction: new Date().toISOString(),
-        });
-      });
-
-    // Sort by similarity
-    relatedWallets.sort((a, b) => b.similarity - a.similarity);
-
-    // Determine risk level
-    let riskLevel: 'low' | 'medium' | 'high' = 'low';
-    if (relatedWallets.length > 10) {
-      riskLevel = 'high';
-    } else if (relatedWallets.length > 5) {
-      riskLevel = 'medium';
-    }
-
-    const recommendations: string[] = [];
-    if (relatedWallets.length > 10) {
-      recommendations.push('High number of related wallets detected. Consider diversifying activity patterns.');
-    }
-    if (riskLevel === 'high') {
-      recommendations.push('Wallet clustering may affect airdrop eligibility. Spread activity across different addresses.');
-    }
-
-    const result: ClusteringData = {
-      address: normalizedAddress,
-      clusterSize: relatedWallets.length,
-      relatedWallets: relatedWallets.slice(0, 10),
-      riskLevel,
-      recommendations,
-      timestamp: Date.now(),
-    };
-
-    cache.set(cacheKey, result, 15 * 60 * 1000);
-
-    return NextResponse.json(result);
+    return NextResponse.json(clusteringData);
   } catch (error) {
-    console.error('Error analyzing wallet clustering:', error);
+    console.error('Wallet clustering API error:', error);
     return NextResponse.json(
-      { error: 'Failed to analyze wallet clustering' },
+      { error: 'Failed to fetch wallet clustering data' },
       { status: 500 }
     );
   }
 }
 
+function generateMockClusteringData(address: string) {
+  const relationships: ('funding' | 'funded_by' | 'shared_activity' | 'similar_pattern' | 'cluster')[] = [
+    'funding',
+    'funded_by',
+    'shared_activity',
+    'similar_pattern',
+    'cluster',
+  ];
+
+  const protocols = ['Uniswap', 'Aave', 'Curve', 'Compound', 'Yearn', 'GMX', 'Stargate'];
+
+  // Generate related wallets
+  const relatedWallets = Array.from({ length: 20 }, (_, i) => {
+    const relationship = relationships[Math.floor(Math.random() * relationships.length)];
+    const confidence = Math.floor(Math.random() * 40) + 60;
+    const commonTransactions = Math.floor(Math.random() * 50) + 5;
+    const sharedProtocolsCount = Math.floor(Math.random() * 5) + 1;
+    const sharedProtocols = protocols
+      .sort(() => Math.random() - 0.5)
+      .slice(0, sharedProtocolsCount);
+
+    return {
+      address: `0x${Math.random().toString(16).slice(2, 42)}`,
+      relationship,
+      confidence,
+      commonTransactions,
+      sharedProtocols,
+      firstInteraction: new Date(
+        Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000
+      ).toISOString(),
+      lastInteraction: new Date(
+        Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
+      ).toISOString(),
+      totalValue: Math.floor(Math.random() * 100000) + 1000,
+    };
+  });
+
+  // Generate clusters
+  const riskLevels: ('low' | 'medium' | 'high')[] = ['low', 'medium', 'high'];
+  const clusterBehaviors = [
+    'Airdrop farming',
+    'Arbitrage trading',
+    'Liquidity provision',
+    'NFT trading',
+    'Yield farming',
+    'Bridge usage',
+    'Governance participation',
+  ];
+
+  const clusters = Array.from({ length: 5 }, (_, i) => {
+    const walletCount = Math.floor(Math.random() * 8) + 3;
+    const wallets = Array.from(
+      { length: walletCount },
+      () => `0x${Math.random().toString(16).slice(2, 42)}`
+    );
+
+    const behaviorCount = Math.floor(Math.random() * 3) + 2;
+    const commonBehavior = clusterBehaviors
+      .sort(() => Math.random() - 0.5)
+      .slice(0, behaviorCount);
+
+    return {
+      id: `cluster-${i + 1}`,
+      name: `Cluster ${String.fromCharCode(65 + i)}`,
+      wallets,
+      totalValue: Math.floor(Math.random() * 500000) + 50000,
+      commonBehavior,
+      riskLevel: riskLevels[Math.floor(Math.random() * riskLevels.length)],
+    };
+  });
+
+  // Generate funding tree
+  const fundingTree = Array.from({ length: 15 }, () => ({
+    source: `0x${Math.random().toString(16).slice(2, 42)}`,
+    target: `0x${Math.random().toString(16).slice(2, 42)}`,
+    amount: Math.floor(Math.random() * 50000) + 100,
+    timestamp: new Date(
+      Date.now() - Math.random() * 180 * 24 * 60 * 60 * 1000
+    ).toISOString(),
+  }));
+
+  // Generate patterns
+  const patternDescriptions = [
+    'Regular weekly deposits followed by DeFi interactions',
+    'Batch transactions to multiple protocols within hours',
+    'Consistent bridge usage across Layer 2 networks',
+    'NFT minting followed by immediate listing',
+    'Liquidity provision in new token pairs',
+    'Governance voting patterns across multiple DAOs',
+  ];
+
+  const patterns = patternDescriptions.map((pattern, i) => ({
+    pattern,
+    frequency: Math.floor(Math.random() * 20) + 5,
+    wallets: Array.from(
+      { length: Math.floor(Math.random() * 10) + 3 },
+      () => `0x${Math.random().toString(16).slice(2, 42)}`
+    ),
+  }));
+
+  // Calculate stats
+  const stats = {
+    totalRelated: relatedWallets.length,
+    clustersFound: clusters.length,
+    avgConfidence:
+      relatedWallets.reduce((sum, w) => sum + w.confidence, 0) / relatedWallets.length,
+    suspiciousActivity: Math.floor(Math.random() * 5),
+  };
+
+  return {
+    relatedWallets,
+    clusters,
+    fundingTree,
+    patterns,
+    stats,
+  };
+}
