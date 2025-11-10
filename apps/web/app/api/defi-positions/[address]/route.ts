@@ -1,198 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
-import { isValidAddress } from '@airdrop-finder/shared';
-import { cache } from '@airdrop-finder/shared';
-
-export const dynamic = 'force-dynamic';
-
-interface DeFiPosition {
-  protocol: string;
-  chainId: number;
-  chainName: string;
-  positionType: 'lp' | 'stake' | 'lend' | 'borrow' | 'farm';
-  tokenSymbol: string;
-  tokenAddress: string;
-  balance: string;
-  valueUSD: number;
-  apy?: number;
-  lastUpdated: string;
-}
-
-interface DeFiPositionsData {
-  address: string;
-  totalValue: number;
-  positions: DeFiPosition[];
-  byProtocol: Record<string, {
-    protocol: string;
-    totalValue: number;
-    positionCount: number;
-    chains: number[];
-  }>;
-  byChain: Record<number, {
-    chainId: number;
-    chainName: string;
-    totalValue: number;
-    positionCount: number;
-  }>;
-  timestamp: number;
-}
-
-// Common DeFi protocols to check
-const DEFI_PROTOCOLS = [
-  'uniswap',
-  'sushiswap',
-  'curve',
-  'aave',
-  'compound',
-  'maker',
-  'balancer',
-  'yearn',
-  'convex',
-  'lido',
-  'rocketpool',
-];
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ address: string }> }
+  { params }: { params: { address: string } }
 ) {
   try {
-    const { address } = await params;
+    const { address } = params;
 
-    if (!isValidAddress(address)) {
-      return NextResponse.json(
-        { error: 'Invalid Ethereum address' },
-        { status: 400 }
-      );
+    if (!address) {
+      return NextResponse.json({ error: 'Address is required' }, { status: 400 });
     }
 
-    const normalizedAddress = address.toLowerCase();
-    const cacheKey = `defi-positions:${normalizedAddress}`;
-    const cachedResult = cache.get(cacheKey);
+    // Mock DeFi positions data
+    const positions = generateMockDeFiPositions(address);
 
-    if (cachedResult) {
-      return NextResponse.json({
-        ...cachedResult,
-        cached: true,
-      });
-    }
-
-    const positions: DeFiPosition[] = [];
-    const protocolMap = new Map<string, { totalValue: number; positionCount: number; chains: Set<number> }>();
-    const chainMap = new Map<number, { totalValue: number; positionCount: number }>();
-
-    // Fetch token balances and identify DeFi positions
-    for (const chain of SUPPORTED_CHAINS) {
-      try {
-        const response = await goldrushClient.get(
-          `/${chain.goldrushName}/address/${normalizedAddress}/balances_v2/`
-        );
-
-        if (response.data && response.data.items) {
-          const tokens = response.data.items;
-
-          tokens.forEach((token: any) => {
-            const contractName = (token.contract_name || '').toLowerCase();
-            const contractAddress = token.contract_address?.toLowerCase() || '';
-
-            // Check if token is from a known DeFi protocol
-            const protocolMatch = DEFI_PROTOCOLS.find((protocol) =>
-              contractName.includes(protocol) ||
-              contractAddress.includes(protocol)
-            );
-
-            if (protocolMatch && token.quote > 0) {
-              // Determine position type based on token name/address
-              let positionType: DeFiPosition['positionType'] = 'stake';
-              if (contractName.includes('lp') || contractName.includes('pool')) {
-                positionType = 'lp';
-              } else if (contractName.includes('farm')) {
-                positionType = 'farm';
-              } else if (contractName.includes('lend') || contractName.includes('aave') || contractName.includes('compound')) {
-                positionType = 'lend';
-              }
-
-              const position: DeFiPosition = {
-                protocol: protocolMatch,
-                chainId: chain.id,
-                chainName: chain.name,
-                positionType,
-                tokenSymbol: token.contract_ticker_symbol || 'UNKNOWN',
-                tokenAddress: contractAddress,
-                balance: token.balance,
-                valueUSD: token.quote || 0,
-                lastUpdated: response.data.updated_at || new Date().toISOString(),
-              };
-
-              positions.push(position);
-
-              // Update protocol map
-              if (!protocolMap.has(protocolMatch)) {
-                protocolMap.set(protocolMatch, {
-                  totalValue: 0,
-                  positionCount: 0,
-                  chains: new Set(),
-                });
-              }
-              const protocolData = protocolMap.get(protocolMatch)!;
-              protocolData.totalValue += position.valueUSD;
-              protocolData.positionCount += 1;
-              protocolData.chains.add(chain.id);
-
-              // Update chain map
-              if (!chainMap.has(chain.id)) {
-                chainMap.set(chain.id, { totalValue: 0, positionCount: 0 });
-              }
-              const chainData = chainMap.get(chain.id)!;
-              chainData.totalValue += position.valueUSD;
-              chainData.positionCount += 1;
-            }
-          });
-        }
-      } catch (error) {
-        console.error(`Error fetching DeFi positions for ${chain.name}:`, error);
-      }
-    }
-
-    const totalValue = positions.reduce((sum, pos) => sum + pos.valueUSD, 0);
-
-    const byProtocol: Record<string, any> = {};
-    protocolMap.forEach((data, protocol) => {
-      byProtocol[protocol] = {
-        protocol,
-        totalValue: data.totalValue,
-        positionCount: data.positionCount,
-        chains: Array.from(data.chains),
-      };
-    });
-
-    const byChain: Record<number, any> = {};
-    chainMap.forEach((data, chainId) => {
-      const chain = SUPPORTED_CHAINS.find((c) => c.id === chainId);
-      byChain[chainId] = {
-        chainId,
-        chainName: chain?.name || `Chain ${chainId}`,
-        totalValue: data.totalValue,
-        positionCount: data.positionCount,
-      };
-    });
-
-    const result: DeFiPositionsData = {
-      address: normalizedAddress,
-      totalValue,
-      positions,
-      byProtocol,
-      byChain,
-      timestamp: Date.now(),
-    };
-
-    // Cache for 5 minutes
-    cache.set(cacheKey, result, 5 * 60 * 1000);
-
-    return NextResponse.json(result);
+    return NextResponse.json(positions);
   } catch (error) {
-    console.error('Error fetching DeFi positions:', error);
+    console.error('DeFi positions API error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch DeFi positions' },
       { status: 500 }
@@ -200,3 +24,166 @@ export async function GET(
   }
 }
 
+function generateMockDeFiPositions(address: string) {
+  const lending = [
+    {
+      protocol: 'Aave V3',
+      asset: 'USDC',
+      supplied: 50000,
+      suppliedUSD: 50000,
+      borrowed: 20000,
+      borrowedUSD: 20000,
+      apy: 3.25,
+      healthFactor: 2.5,
+      chain: 'Ethereum',
+    },
+    {
+      protocol: 'Compound',
+      asset: 'ETH',
+      supplied: 10.5,
+      suppliedUSD: 26250,
+      borrowed: 0,
+      borrowedUSD: 0,
+      apy: 2.15,
+      healthFactor: undefined,
+      chain: 'Ethereum',
+    },
+    {
+      protocol: 'Aave V3',
+      asset: 'WBTC',
+      supplied: 0.5,
+      suppliedUSD: 22500,
+      borrowed: 0.1,
+      borrowedUSD: 4500,
+      apy: 1.85,
+      healthFactor: 5.0,
+      chain: 'Arbitrum',
+    },
+  ];
+
+  const staking = [
+    {
+      protocol: 'Lido',
+      asset: 'stETH',
+      staked: 15.2,
+      stakedUSD: 38000,
+      rewards: 0.125,
+      rewardsUSD: 312.5,
+      apy: 4.5,
+      lockupEnd: undefined,
+      chain: 'Ethereum',
+    },
+    {
+      protocol: 'Rocket Pool',
+      asset: 'rETH',
+      staked: 8.5,
+      stakedUSD: 21250,
+      rewards: 0.08,
+      rewardsUSD: 200,
+      apy: 4.2,
+      lockupEnd: undefined,
+      chain: 'Ethereum',
+    },
+    {
+      protocol: 'GMX',
+      asset: 'GMX',
+      staked: 250,
+      stakedUSD: 15000,
+      rewards: 12.5,
+      rewardsUSD: 750,
+      apy: 18.5,
+      lockupEnd: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+      chain: 'Arbitrum',
+    },
+  ];
+
+  const liquidityPools = [
+    {
+      protocol: 'Uniswap V3',
+      pair: 'ETH/USDC',
+      token0: 'ETH',
+      token1: 'USDC',
+      liquidity: 2.5,
+      liquidityUSD: 12500,
+      fees24h: 45.5,
+      apr: 12.8,
+      chain: 'Ethereum',
+    },
+    {
+      protocol: 'Curve',
+      pair: '3pool',
+      token0: 'USDC',
+      token1: 'USDT',
+      liquidity: 25000,
+      liquidityUSD: 25000,
+      fees24h: 15.2,
+      apr: 8.5,
+      chain: 'Ethereum',
+    },
+    {
+      protocol: 'Uniswap V3',
+      pair: 'ARB/ETH',
+      token0: 'ARB',
+      token1: 'ETH',
+      liquidity: 1.8,
+      liquidityUSD: 9000,
+      fees24h: 32.1,
+      apr: 15.3,
+      chain: 'Arbitrum',
+    },
+  ];
+
+  const lendingValue = lending.reduce((sum, pos) => sum + pos.suppliedUSD - pos.borrowedUSD, 0);
+  const stakingValue = staking.reduce((sum, pos) => sum + pos.stakedUSD, 0);
+  const lpValue = liquidityPools.reduce((sum, pos) => sum + pos.liquidityUSD, 0);
+  const totalValue = lendingValue + stakingValue + lpValue;
+  const totalRewards = staking.reduce((sum, pos) => sum + pos.rewardsUSD, 0);
+
+  // Protocol distribution
+  const protocolMap: Record<string, number> = {};
+  
+  lending.forEach((pos) => {
+    protocolMap[pos.protocol] = (protocolMap[pos.protocol] || 0) + pos.suppliedUSD - pos.borrowedUSD;
+  });
+  
+  staking.forEach((pos) => {
+    protocolMap[pos.protocol] = (protocolMap[pos.protocol] || 0) + pos.stakedUSD;
+  });
+  
+  liquidityPools.forEach((pos) => {
+    protocolMap[pos.protocol] = (protocolMap[pos.protocol] || 0) + pos.liquidityUSD;
+  });
+
+  const protocolDistribution = Object.entries(protocolMap).map(([protocol, value]) => ({
+    protocol,
+    value,
+  }));
+
+  // Chain distribution
+  const chainMap: Record<string, number> = {};
+  
+  [...lending, ...staking, ...liquidityPools].forEach((pos: any) => {
+    const value = pos.suppliedUSD 
+      ? pos.suppliedUSD - (pos.borrowedUSD || 0)
+      : pos.stakedUSD || pos.liquidityUSD;
+    chainMap[pos.chain] = (chainMap[pos.chain] || 0) + value;
+  });
+
+  const chainDistribution = Object.entries(chainMap).map(([chain, value]) => ({
+    chain,
+    value,
+  }));
+
+  return {
+    totalValue,
+    lendingValue,
+    stakingValue,
+    lpValue,
+    totalRewards,
+    lending,
+    staking,
+    liquidityPools,
+    protocolDistribution,
+    chainDistribution,
+  };
+}
