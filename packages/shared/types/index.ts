@@ -27,6 +27,35 @@ export interface AirdropProject {
   updatedAt?: Date;
 }
 
+export type TrendingSignalType =
+  | 'status'
+  | 'value'
+  | 'snapshot'
+  | 'activity'
+  | 'claim'
+  | 'chain';
+
+export interface TrendingSignal {
+  type: TrendingSignalType;
+  label: string;
+  weight: number;
+}
+
+export interface TrendingProjectSummary {
+  projectId: string;
+  name: string;
+  status: AirdropStatus;
+  trendingScore: number;
+  signals: TrendingSignal[];
+  chains: string[];
+  estimatedValue?: string;
+  snapshotDate?: string;
+  claimUrl?: string;
+  websiteUrl?: string;
+  logoUrl?: string;
+  updatedAt?: Date;
+}
+
 export interface CheckResult {
   address: string;
   overallScore: number;

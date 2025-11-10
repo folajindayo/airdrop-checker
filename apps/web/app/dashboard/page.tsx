@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { ConnectButton } from '@/components/wallet/connect-button';
 import { ScoreGauge } from '@/components/dashboard/score-gauge';
 import { AirdropCard } from '@/components/dashboard/airdrop-card';
-import { PortfolioTracker } from '@/components/portfolio/portfolio-tracker';
+import { TrendingAirdrops } from '@/components/dashboard/trending-airdrops';
+import { AirdropHighlights } from '@/components/dashboard/airdrop-highlights';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/common/skeleton';
 import { RefreshCw, ArrowLeft } from 'lucide-react';
@@ -144,14 +145,17 @@ export default function DashboardPage() {
             </div>
           </div>
         ) : result ? (
-          <div className="space-y-8">
-            {/* Score and Portfolio Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-card rounded-xl border p-8 shadow-lg">
-                <ScoreGauge score={result.overallScore} />
-              </div>
-              {address && <PortfolioTracker address={address} />}
+          <div className="space-y-10">
+            {/* Score Section */}
+            <div className="bg-card rounded-xl border p-8 shadow-lg">
+              <ScoreGauge score={result.overallScore} />
             </div>
+
+            {/* Highlights */}
+            <AirdropHighlights />
+
+            {/* Trending */}
+            <TrendingAirdrops limit={4} />
 
             {/* Airdrops Grid */}
             <div>
