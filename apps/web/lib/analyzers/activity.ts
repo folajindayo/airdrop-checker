@@ -9,34 +9,7 @@ import type {
   GoldRushNFT,
 } from '@airdrop-finder/shared';
 import { CHAIN_ID_TO_NAME } from '@airdrop-finder/shared';
-
-/**
- * Known protocol contract addresses (lowercase)
- */
-const KNOWN_PROTOCOLS: Record<string, { name: string; type: string }> = {
-  // Zora
-  '0x7777777f279eba3d3ad8f4e708545291a6fdba8b': { name: 'Zora', type: 'nft' },
-  
-  // LayerZero / Stargate
-  '0x8731d54e9d02c286767d56ac03e8037c07e01e98': { name: 'Stargate', type: 'bridge' },
-  '0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675': { name: 'LayerZero', type: 'bridge' },
-  
-  // EigenLayer
-  '0x858646372cc42e1a627fce94aa7a7033e7cf075a': { name: 'EigenLayer', type: 'defi' },
-  
-  // Uniswap
-  '0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45': { name: 'Uniswap', type: 'dex' },
-  '0xe592427a0aece92de3edee1f18e0157c05861564': { name: 'Uniswap', type: 'dex' },
-  
-  // SushiSwap
-  '0xd9e1ce17f2641f24ae83637ab66a2cca9c378b9f': { name: 'SushiSwap', type: 'dex' },
-  
-  // Hop Protocol
-  '0x3666f603cc164936c1b87e207f36beba4ac5f18a': { name: 'Hop', type: 'bridge' },
-  
-  // Across Bridge
-  '0x4d9079bb4165aeb4084c526a32695dcfd2f77381': { name: 'Across', type: 'bridge' },
-};
+import { KNOWN_PROTOCOLS } from './protocols';
 
 /**
  * Analyze chain activity from transactions
@@ -151,7 +124,7 @@ export function detectBridgeActivity(
   protocolInteractions.forEach((interaction) => {
     const protocol = KNOWN_PROTOCOLS[interaction.contractAddress];
     
-    if (protocol && protocol.type === 'bridge') {
+    if (protocol && protocol.category === 'bridge') {
       const key = interaction.protocol;
       
       if (bridgeMap.has(key)) {
@@ -190,7 +163,7 @@ export function detectDEXActivity(
   protocolInteractions.forEach((interaction) => {
     const protocol = KNOWN_PROTOCOLS[interaction.contractAddress];
     
-    if (protocol && protocol.type === 'dex') {
+    if (protocol && protocol.category === 'dex') {
       const key = `${interaction.protocol}-${interaction.chainId}`;
       
       if (dexMap.has(key)) {

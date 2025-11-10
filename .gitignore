@@ -50,3 +50,7 @@ yarn-error.log*
 
 # OS
 Thumbs.db
+
+# Farming/Automation scripts
+airdrop.txt
+farm.sh
