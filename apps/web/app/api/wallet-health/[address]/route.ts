@@ -23,6 +23,7 @@ export async function GET(
   }
 }
 
+<<<<<<< HEAD
 function generateMockHealthData(address: string) {
   // Calculate individual metric scores
   const activityScore = Math.floor(Math.random() * 30) + 70; // 70-100
@@ -231,3 +232,7 @@ function getGrade(score: number): 'S' | 'A' | 'B' | 'C' | 'D' | 'F' {
   if (score >= 50) return 'D';
   return 'F';
 }
+=======
+
+
+>>>>>>> f95dd33 (feat: Add on-chain token balance checker API endpoint)

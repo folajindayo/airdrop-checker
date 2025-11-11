@@ -143,3 +143,5 @@ fetch('https://api.airdrop-finder.com/api/airdrop-check/0x742d35Cc6634C0532925a3
   });
 }
 
+
+

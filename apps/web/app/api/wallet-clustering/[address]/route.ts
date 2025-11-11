@@ -23,6 +23,7 @@ export async function GET(
   }
 }
 
+<<<<<<< HEAD
 function generateMockClusteringData(address: string) {
   const relationships: ('funding' | 'funded_by' | 'shared_activity' | 'similar_pattern' | 'cluster')[] = [
     'funding',
@@ -140,3 +141,7 @@ function generateMockClusteringData(address: string) {
     stats,
   };
 }
+=======
+
+
+>>>>>>> f95dd33 (feat: Add on-chain token balance checker API endpoint)
