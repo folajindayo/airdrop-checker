@@ -21,75 +21,101 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 34. **Social Sharing** - Share results on Twitter/X with Web Share API
 35. **Personalized Recommendations** - AI-driven airdrop suggestions
 
-### 📊 UI Components Library (16-60)
-16. **Alert Component** - Multiple variants with action buttons
-17. **Avatar Component** - Wallet, user, group, status variants
-18. **Badge Component** - Multiple variants and sizes
-19. **Breadcrumb Navigation** - Responsive with custom separators
-20. **Button Component** - Multiple variants and sizes
-21. **Calendar Component** - Date picker, range picker, events
-22. **Card Component** - Flexible container with header/footer
-23. **Checkbox Component** - With groups and indeterminate state
-24. **Collapsible Component** - Icon, card, and group variants
-25. **Command Menu** - Keyboard shortcuts (Cmd+K/Ctrl+K)
-26. **Context Menu** - Right-click menus with shortcuts
-27. **Copy Button** - One-click copy with toast feedback
-28. **Data Table** - Sortable, searchable, paginated tables
-29. **Dialog Component** - Modal dialogs with variants
-30. **Dropdown Menu** - Nested menus with shortcuts
-31. **Empty State** - 10+ preset scenarios with illustrations
-32. **Form Component** - React Hook Form integration
-33. **Hover Card** - Rich tooltips with content
-34. **Input Component** - Multiple variants and validation
-35. **Label Component** - Accessible form labels
-36. **Loading States** - Spinners, skeletons, progress indicators
-37. **Menubar Component** - Application menu with submenus
-38. **Navigation Menu** - Dropdown navigation with mega menu
-39. **Pagination Component** - Full pagination controls
-40. **Popover Component** - Floating content containers
-41. **Progress Component** - Linear and circular progress bars
-42. **Radio Group** - Multiple variants including cards
-43. **Resizable Panels** - Split view layouts with drag handles
-44. **Scroll Area** - Custom scrollbars with variants
-45. **Select Component** - Dropdown selection with search
-46. **Separator Component** - Dividers with multiple styles
-47. **Sheet Component** - Slide-out panels from all sides
-48. **Skeleton Component** - Loading placeholders
-49. **Slider Component** - Range sliders with markers
-50. **Statistics Widget** - Trend indicators and comparisons
-51. **Switch Component** - Toggle with labels
-52. **Table Component** - Data display primitives
-53. **Tabs Component** - Tabbed content containers
-54. **Textarea Component** - Multi-line input with auto-resize
-55. **Toast Provider** - Notification system with presets
-56. **Toggle Component** - Single toggle button
-57. **Toggle Group** - Multi-select toggle groups
-58. **Tooltip Component** - Enhanced tooltips with variants
-59. **Aspect Ratio** - Responsive media containers
-60. **Progress Tracker** - Step-by-step progress visualization
+### 📊 UI Components Library (36-80)
+36. **Alert Component** - Multiple variants with action buttons
+37. **Avatar Component** - Wallet, user, group, status variants
+38. **Badge Component** - Multiple variants and sizes
+39. **Breadcrumb Navigation** - Responsive with custom separators
+40. **Button Component** - Multiple variants and sizes
+41. **Calendar Component** - Date picker, range picker, events
+42. **Card Component** - Flexible container with header/footer
+43. **Checkbox Component** - With groups and indeterminate state
+44. **Collapsible Component** - Icon, card, and group variants
+45. **Command Menu** - Keyboard shortcuts (Cmd+K/Ctrl+K)
+46. **Context Menu** - Right-click menus with shortcuts
+47. **Copy Button** - One-click copy with toast feedback
+48. **Data Table** - Sortable, searchable, paginated tables
+49. **Dialog Component** - Modal dialogs with variants
+50. **Dropdown Menu** - Nested menus with shortcuts
+51. **Empty State** - 10+ preset scenarios with illustrations
+52. **Form Component** - React Hook Form integration
+53. **Hover Card** - Rich tooltips with content
+54. **Input Component** - Multiple variants and validation
+55. **Label Component** - Accessible form labels
+56. **Loading States** - Spinners, skeletons, progress indicators
+57. **Menubar Component** - Application menu with submenus
+58. **Navigation Menu** - Dropdown navigation with mega menu
+59. **Pagination Component** - Full pagination controls
+60. **Popover Component** - Floating content containers
+61. **Progress Component** - Linear and circular progress bars
+62. **Radio Group** - Multiple variants including cards
+63. **Resizable Panels** - Split view layouts with drag handles
+64. **Scroll Area** - Custom scrollbars with variants
+65. **Select Component** - Dropdown selection with search
+66. **Separator Component** - Dividers with multiple styles
+67. **Sheet Component** - Slide-out panels from all sides
+68. **Skeleton Component** - Loading placeholders
+69. **Slider Component** - Range sliders with markers
+70. **Statistics Widget** - Trend indicators and comparisons
+71. **Switch Component** - Toggle with labels
+72. **Table Component** - Data display primitives
+73. **Tabs Component** - Tabbed content containers
+74. **Textarea Component** - Multi-line input with auto-resize
+75. **Toast Provider** - Notification system with presets
+76. **Toggle Component** - Single toggle button
+77. **Toggle Group** - Multi-select toggle groups
+78. **Tooltip Component** - Enhanced tooltips with variants
+79. **Aspect Ratio** - Responsive media containers
+80. **Progress Tracker** - Step-by-step progress visualization
 
-### 🚀 Advanced Features (61-81)
-61. **Score History** - Track historical scores with charts
-62. **Watchlist** - Monitor up to 10 wallets
-63. **Mobile Navigation** - Responsive slide-out menu
-64. **Theme Toggle** - Dark/light/system themes
-65. **Rate Limiting** - API protection middleware
-66. **Notification Center** - Real-time alerts system
-67. **Error Boundary** - Graceful error handling
-68. **Help/FAQ Page** - 15+ questions with accordion UI
-69. **Settings Page** - 5-tab settings interface
-70. **Scroll to Top** - Multiple variants with progress
-71. **Transaction Details** - Full tx info display
-72. **Chain Selector** - Dropdown and grid variants
-73. **Confirmation Dialog** - Preset confirmations
-74. **Advanced Search** - Filters sheet with active badges
-75. **Rich Text Editor** - Formatting toolbar with markdown
-76. **File Upload** - Drag-and-drop with preview
-77. **Analytics Widget** - User and airdrop analytics
-78. **Multi-Step Form** - Progress tracking with validation
-79. **Kanban Board** - Drag-and-drop project tracking
-80. **QR Code Generator** - With scanner and share variants
-81. **File Manager** - Grid/list view with file operations
+### 🚀 Advanced Features (81-127)
+81. **Score History** - Track historical scores with charts
+82. **Watchlist** - Monitor up to 10 wallets
+83. **Mobile Navigation** - Responsive slide-out menu
+84. **Theme Toggle** - Dark/light/system themes
+85. **Rate Limiting** - API protection middleware
+86. **Notification Center** - Real-time alerts system
+87. **Error Boundary** - Graceful error handling
+88. **Help/FAQ Page** - 15+ questions with accordion UI
+89. **Settings Page** - 5-tab settings interface
+90. **Scroll to Top** - Multiple variants with progress
+91. **Transaction Details** - Full tx info display
+92. **Chain Selector** - Dropdown and grid variants
+93. **Confirmation Dialog** - Preset confirmations
+94. **Advanced Search** - Filters sheet with active badges
+95. **Rich Text Editor** - Formatting toolbar with markdown
+96. **File Upload** - Drag-and-drop with preview
+97. **Analytics Widget** - User and airdrop analytics
+98. **Multi-Step Form** - Progress tracking with validation
+99. **Kanban Board** - Drag-and-drop project tracking
+100. **QR Code Generator** - With scanner and share variants
+101. **File Manager** - Grid/list view with file operations
+102. **Portfolio Tracker** - Track wallet portfolio value over time
+103. **Gas Tracker** - Monitor gas spending by chain
+104. **ROI Calculator** - Calculate potential return on investments
+105. **Airdrop Claim Tracker** - Track claimed airdrops
+106. **Multi-Wallet Portfolio** - Aggregate view of multiple wallets
+107. **DeFi Positions Tracker** - Track LP positions and staking
+108. **Protocol Interaction Heatmap** - Visualize protocol interactions
+109. **Farming Strategy Builder** - Generate personalized farming plans
+110. **Wallet Health Dashboard** - Comprehensive health analysis
+111. **Smart Contract Analyzer** - Analyze contract interactions
+112. **Gas Optimizer** - Find best chains and times for gas
+113. **Data Exporter** - Export data in multiple formats
+114. **Airdrop Leaderboard** - Compare scores with other users
+115. **Portfolio Performance Tracker** - Track value changes over time
+116. **Batch Wallet Checker** - Check multiple wallets simultaneously
+117. **Snapshot Tracker** - Track upcoming snapshots
+118. **Airdrop News Feed** - Latest airdrop news and announcements
+119. **Airdrop Probability Predictor** - ML-powered predictions
+120. **Wallet Clustering Detection** - Detect related wallets
+121. **Calendar Export** - Export to iCal format
+122. **Portfolio Rebalancer** - Optimize portfolio allocation
+123. **Gas Price History** - Historical gas price trends
+124. **Chain Distribution Analysis** - Visual breakdown by chain
+125. **Top Holdings View** - See most valuable positions
+126. **Monthly Gas Breakdown** - Historical gas spending
+127. **Protocol-by-Protocol Breakdown** - Detailed DeFi analysis
 
 ### 💬 Communication & Social (82-85)
 82. **Chat Component** - Real-time messaging with sidebar
