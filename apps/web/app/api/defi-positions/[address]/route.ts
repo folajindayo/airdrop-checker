@@ -24,6 +24,7 @@ export async function GET(
   }
 }
 
+<<<<<<< HEAD
 function generateMockDeFiPositions(address: string) {
   const lending = [
     {
@@ -187,3 +188,7 @@ function generateMockDeFiPositions(address: string) {
     chainDistribution,
   };
 }
+=======
+
+
+>>>>>>> f95dd33 (feat: Add on-chain token balance checker API endpoint)
