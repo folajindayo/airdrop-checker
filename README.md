@@ -497,3 +497,30 @@ For issues and questions, please open an issue on GitHub.
 ---
 
 Built with ❤️ using Next.js, TailwindCSS, and GoldRush API
+
+### 🔗 On-Chain Features (Powered by Reown Wallet)
+All on-chain features require wallet connection via Reown Wallet (formerly WalletConnect) for secure, decentralized access.
+
+371. **Token Balance Checker** - Check token balances across all chains with real-time USD values
+372. **NFT Collection Tracker** - Track NFT holdings and collections across multiple chains
+373. **Transaction History Analyzer** - Deep dive into transaction patterns, activity by day/hour, and top contracts
+374. **Smart Contract Interaction Tracker** - Track all contract calls, function invocations, and interaction counts
+375. **Token Transfer History** - Track incoming and outgoing token transfers with detailed breakdowns
+376. **Cross-Chain Bridge Tracker** - Track bridge transactions across protocols (Stargate, Hop, Across, etc.)
+377. **Token Approval Manager** - Track and manage token approvals with risk scoring for unlimited approvals
+378. **ENS/Domain Resolver** - Resolve ENS names, avatars, and reverse records for wallet addresses
+379. **Wallet Age Calculator** - Calculate wallet age, activity metrics, and first/last transaction dates
+380. **Transaction Signature Analyzer** - Analyze transaction signatures, function calls, and success rates
+381. **Contract Verification Checker** - Check if contracts are verified, track verified vs unverified interactions
+382. **Token Price Tracker** - Track token prices across chains with 24h changes and market data
+383. **Liquidity Pool Position Tracker** - Track LP positions across DEXs (Uniswap, PancakeSwap, SushiSwap, etc.)
+384. **Staking Position Tracker** - Track staking positions, rewards, and APY across protocols
+385. **Governance Participation Tracker** - Track governance votes, proposals, and participation scores
+386. **Airdrop Claim Status Checker** - Check claim status for airdrops, track claimed amounts and transactions
+387. **Wallet Risk Score Calculator** - Calculate comprehensive wallet risk score with factor analysis
+388. **Token Swap History** - Track swap transactions across DEXs with token pairs and values
+389. **Wallet Activity Timeline** - Detailed activity timeline with event types, dates, and summaries
+390. **On-Chain Analytics Dashboard** - Comprehensive on-chain analytics combining all features above
+
+**Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
+
