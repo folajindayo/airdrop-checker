@@ -427,6 +427,30 @@ A read-only onchain dashboard that helps users check whether their wallet might 
 - **Radar Highlights Panel** - Upcoming snapshots, high-value drops, and fresh updates refreshed every 2 minutes
 - **Protocol Insights Engine** - Focus areas, timeline feed, and monthly trend generator per wallet
 
+### ⛓️ Onchain Transaction Features (371-390)
+All onchain features use **Reown Wallet (formerly WalletConnect)** for secure wallet connections and transaction signing.
+
+371. **Token Transfer** - Send native tokens or ERC20 tokens between wallets across all supported chains
+372. **Token Approval** - Approve tokens for DEX/protocol interactions with unlimited or specific amount options
+373. **NFT Minting** - Mint NFTs on supported platforms with configurable quantity and pricing
+374. **Staking** - Stake tokens or native assets on DeFi protocols (supports ERC20 and native staking)
+375. **Unstaking** - Unstake tokens from DeFi protocols (supports partial or full unstaking)
+376. **Bridge Tokens** - Bridge tokens across chains using supported bridge protocols
+377. **Swap Tokens** - Swap tokens via DEX routers (Uniswap V2/V3 compatible) with slippage protection
+378. **Add Liquidity** - Add liquidity to LP pools with automatic token pair management
+379. **Remove Liquidity** - Remove liquidity from LP pools with minimum amount protection
+380. **Claim Rewards** - Claim staking rewards, farming rewards, and protocol incentives
+381. **Vote on Proposals** - Cast governance votes (For/Against/Abstain) on DAO proposals
+382. **Delegate Voting Power** - Delegate governance token voting power to other addresses
+383. **Wrap/Unwrap Tokens** - Wrap native ETH to WETH or unwrap WETH back to ETH
+384. **Set ENS Name** - Set ENS reverse records to link your address to an ENS name
+385. **Batch Transactions** - Execute multiple transactions in a single batch using Multicall3
+386. **Cancel Pending Transaction** - Cancel pending transactions by replacing with zero-value transaction
+387. **Speed Up Transaction** - Speed up pending transactions by resending with higher gas price
+388. **Sign Message** - Sign arbitrary messages for authentication and verification purposes
+389. **Sign Typed Data** - Sign EIP-712 typed data for structured message signing
+390. **Multi-Sig Operations** - Prepare and execute transactions from Gnosis Safe multisig wallets
+
 ## Tech Stack
 
 ### Monorepo Structure
