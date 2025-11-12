@@ -2,28 +2,60 @@
  * Core types for the Airdrop Finder application
  */
 
+// Re-export all types
+export * from './api';
+export * from './goldrush';
+export * from './guards';
+
+/**
+ * Airdrop project status
+ * @typedef {('confirmed'|'rumored'|'expired'|'speculative')} AirdropStatus
+ */
 export type AirdropStatus = 'confirmed' | 'rumored' | 'expired' | 'speculative';
 
+/**
+ * Criteria for airdrop eligibility
+ */
 export interface EligibilityCriteria {
+  /** Human-readable description of the criterion */
   description: string;
+  /** Programmatic check string for evaluation */
   check: string;
+  /** Whether the criterion was met (optional, set during evaluation) */
   met?: boolean;
 }
 
+/**
+ * Represents an airdrop project with eligibility criteria
+ */
 export interface AirdropProject {
+  /** Unique identifier for the project */
   id: string;
+  /** Display name of the project */
   name: string;
+  /** Optional description of the project */
   description?: string;
+  /** Current status of the airdrop */
   status: AirdropStatus;
+  /** URL to project logo */
   logoUrl?: string;
+  /** Official website URL */
   websiteUrl?: string;
+  /** Twitter/X profile URL */
   twitterUrl?: string;
+  /** URL to claim the airdrop */
   claimUrl?: string;
+  /** Array of eligibility criteria */
   criteria: EligibilityCriteria[];
+  /** Supported blockchain networks */
   chains?: string[];
+  /** Estimated value (e.g., "$100-$500") */
   estimatedValue?: string;
+  /** Date of snapshot (if applicable) */
   snapshotDate?: string;
+  /** Project creation timestamp */
   createdAt?: Date;
+  /** Last update timestamp */
   updatedAt?: Date;
 }
 
