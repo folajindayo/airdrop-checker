@@ -1,16 +1,18 @@
 'use client';
 
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useSendTransaction } from 'wagmi';
 import { useAppKit } from '@reown/appkit/react';
 import { useState } from 'react';
 
 /**
  * Hook for executing onchain transactions using Reown wallet
+ * All transactions require Reown Wallet connection via @reown/appkit
  */
 export function useOnchainTransaction() {
   const { address, isConnected, chain } = useAccount();
   const { open } = useAppKit();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
+  const { sendTransaction } = useSendTransaction();
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash,
   });
@@ -21,8 +23,8 @@ export function useOnchainTransaction() {
     params: Record<string, any>
   ): Promise<{ hash?: string; error?: string }> => {
     if (!isConnected) {
-      open();
-      return { error: 'Please connect your wallet' };
+      open(); // Open Reown Wallet connection modal
+      return { error: 'Please connect your Reown wallet' };
     }
 
     try {
@@ -44,19 +46,28 @@ export function useOnchainTransaction() {
       }
 
       // Execute transaction using Reown wallet via wagmi
-      writeContract({
-        address: data.transaction.to,
-        abi: [], // ABI not needed for raw transactions
-        functionName: '', // Not used for raw transactions
-        args: [],
-        value: data.transaction.value,
-        data: data.transaction.data,
-        gas: data.transaction.gas,
-        gasPrice: data.transaction.gasPrice,
-        maxFeePerGas: data.transaction.maxFeePerGas,
-        maxPriorityFeePerGas: data.transaction.maxPriorityFeePerGas,
-        nonce: data.transaction.nonce,
-      });
+      if (data.transaction.data) {
+        // Contract call
+        writeContract({
+          address: data.transaction.to,
+          abi: [], // ABI not needed for raw transactions
+          functionName: '', // Not used for raw transactions
+          args: [],
+          value: data.transaction.value ? BigInt(data.transaction.value) : undefined,
+          data: data.transaction.data as `0x${string}`,
+          gas: data.transaction.gas ? BigInt(data.transaction.gas) : undefined,
+          gasPrice: data.transaction.gasPrice ? BigInt(data.transaction.gasPrice) : undefined,
+          maxFeePerGas: data.transaction.maxFeePerGas ? BigInt(data.transaction.maxFeePerGas) : undefined,
+          maxPriorityFeePerGas: data.transaction.maxPriorityFeePerGas ? BigInt(data.transaction.maxPriorityFeePerGas) : undefined,
+          nonce: data.transaction.nonce ? Number(data.transaction.nonce) : undefined,
+        });
+      } else {
+        // Simple transfer
+        sendTransaction({
+          to: data.transaction.to,
+          value: data.transaction.value ? BigInt(data.transaction.value) : BigInt(0),
+        });
+      }
 
       return { hash: hash };
     } catch (err: any) {
@@ -76,7 +87,7 @@ export function useOnchainTransaction() {
     isConnected,
     address,
     chain,
-    connect: () => open(),
+    connect: () => open(), // Open Reown Wallet modal
   };
 }
 
