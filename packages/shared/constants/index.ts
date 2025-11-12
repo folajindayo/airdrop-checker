@@ -1,4 +1,6 @@
+// Re-export all constants
 export * from './chains';
+export * from './values';
 
 export const CACHE_TTL = {
   AIRDROP_CHECK: 60 * 60 * 1000, // 1 hour
