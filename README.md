@@ -546,3 +546,53 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
+## Onchain API Endpoints
+
+All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wallet connection for transaction execution.
+
+### Query Endpoints (GET)
+- `GET /api/onchain/token-balance` - Check token balances
+- `GET /api/onchain/transaction-history` - Get transaction history
+- `GET /api/onchain/token-metadata` - Fetch token metadata
+- `GET /api/onchain/nft-balance` - Check NFT balances
+- `GET /api/onchain/lp-position` - Check LP positions
+- `GET /api/onchain/staking-position` - Check staking positions
+- `GET /api/onchain/token-price` - Get token prices
+- `GET /api/onchain/token-allowance` - Check token allowances
+- `GET /api/onchain/nonce` - Get nonce information
+- `GET /api/onchain/gas-price` - Get gas prices
+- `GET /api/onchain/block-number` - Get block information
+- `GET /api/onchain/transaction-status` - Check transaction status
+- `GET /api/onchain/contract-verification` - Verify contracts
+- `GET /api/onchain/token-list` - Get token lists
+- `GET /api/onchain/chain-state` - Get chain state
+
+### Transaction Endpoints (POST)
+- `POST /api/onchain/token-transfer` - Transfer tokens
+- `POST /api/onchain/token-approval` - Approve tokens
+- `POST /api/onchain/nft-mint` - Mint NFTs
+- `POST /api/onchain/stake` - Stake tokens
+- `POST /api/onchain/unstake` - Unstake tokens
+- `POST /api/onchain/bridge` - Bridge tokens
+- `POST /api/onchain/swap` - Swap tokens
+- `POST /api/onchain/add-liquidity` - Add liquidity
+- `POST /api/onchain/remove-liquidity` - Remove liquidity
+- `POST /api/onchain/claim-rewards` - Claim rewards
+- `POST /api/onchain/vote` - Vote on proposals
+- `POST /api/onchain/delegate` - Delegate voting power
+- `POST /api/onchain/wrap-unwrap` - Wrap/unwrap tokens
+- `POST /api/onchain/set-ens` - Set ENS name
+- `POST /api/onchain/batch-transaction` - Batch transactions
+- `POST /api/onchain/cancel-transaction` - Cancel transactions
+- `POST /api/onchain/speed-up-transaction` - Speed up transactions
+- `POST /api/onchain/sign-message` - Sign messages
+- `POST /api/onchain/sign-typed-data` - Sign typed data
+- `POST /api/onchain/multisig` - Multisig operations
+- `POST /api/onchain/gas-estimation` - Estimate gas
+- `POST /api/onchain/contract-read` - Read contracts
+- `POST /api/onchain/event-listening` - Listen to events
+- `POST /api/onchain/nft-transfer` - Transfer NFTs
+- `POST /api/onchain/nft-approval` - Approve NFTs
+
+All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
+
