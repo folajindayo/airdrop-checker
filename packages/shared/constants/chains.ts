@@ -141,3 +141,109 @@ export const CHAIN_NAME_TO_ID: Record<string, number> = SUPPORTED_CHAINS.reduce(
 
 export const GOLDRUSH_CHAIN_NAMES = SUPPORTED_CHAINS.map((chain) => chain.goldrushName);
 
+/**
+ * Get chain by ID
+ */
+export function getChainById(chainId: number): Chain | undefined {
+  return SUPPORTED_CHAINS.find((chain) => chain.id === chainId);
+}
+
+/**
+ * Get chain by name
+ */
+export function getChainByName(name: string): Chain | undefined {
+  return SUPPORTED_CHAINS.find(
+    (chain) => chain.name.toLowerCase() === name.toLowerCase()
+  );
+}
+
+/**
+ * Get chain by GoldRush name
+ */
+export function getChainByGoldrushName(goldrushName: string): Chain | undefined {
+  return SUPPORTED_CHAINS.find((chain) => chain.goldrushName === goldrushName);
+}
+
+/**
+ * Check if chain ID is supported
+ */
+export function isChainSupported(chainId: number): boolean {
+  return SUPPORTED_CHAINS.some((chain) => chain.id === chainId);
+}
+
+/**
+ * Get supported chain IDs
+ */
+export function getSupportedChainIds(): number[] {
+  return SUPPORTED_CHAINS.map((chain) => chain.id);
+}
+
+/**
+ * Get chain name by ID
+ */
+export function getChainName(chainId: number): string {
+  return CHAIN_ID_TO_NAME[chainId] || `Unknown Chain (${chainId})`;
+}
+
+/**
+ * Get chain explorer URL for address
+ */
+export function getExplorerAddressUrl(chainId: number, address: string): string | undefined {
+  const chain = getChainById(chainId);
+  if (!chain?.blockExplorers?.[0]) return undefined;
+  return `${chain.blockExplorers[0].url}/address/${address}`;
+}
+
+/**
+ * Get chain explorer URL for transaction
+ */
+export function getExplorerTxUrl(chainId: number, txHash: string): string | undefined {
+  const chain = getChainById(chainId);
+  if (!chain?.blockExplorers?.[0]) return undefined;
+  return `${chain.blockExplorers[0].url}/tx/${txHash}`;
+}
+
+/**
+ * Get chain native currency symbol
+ */
+export function getNativeCurrencySymbol(chainId: number): string {
+  const chain = getChainById(chainId);
+  return chain?.nativeCurrency.symbol || 'ETH';
+}
+
+/**
+ * Map of chain IDs to their colors (for UI)
+ */
+export const CHAIN_COLORS: Record<number, string> = {
+  1: '#627EEA', // Ethereum
+  8453: '#0052FF', // Base
+  42161: '#28A0F0', // Arbitrum
+  10: '#FF0420', // Optimism
+  324: '#8C8DFC', // zkSync
+  137: '#8247E5', // Polygon
+};
+
+/**
+ * Get chain color
+ */
+export function getChainColor(chainId: number): string {
+  return CHAIN_COLORS[chainId] || '#666666';
+}
+
+/**
+ * Chain categories for grouping
+ */
+export const CHAIN_CATEGORIES = {
+  LAYER_1: [1],
+  LAYER_2: [8453, 42161, 10, 324, 137],
+} as const;
+
+/**
+ * Get chain category
+ */
+export function getChainCategory(chainId: number): 'LAYER_1' | 'LAYER_2' | 'UNKNOWN' {
+  if (CHAIN_CATEGORIES.LAYER_1.includes(chainId)) return 'LAYER_1';
+  if (CHAIN_CATEGORIES.LAYER_2.includes(chainId)) return 'LAYER_2';
+  return 'UNKNOWN';
+}
+
