@@ -1,5 +1,11 @@
+// Re-export all utilities
 export * from './cache';
 export * from './scoring';
+export * from './validation';
+export * from './datetime';
+export * from './formatting';
+export * from './errors';
+export * from './retry';
 
 /**
  * Truncate Ethereum address for display
