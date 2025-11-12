@@ -1,0 +1,9 @@
+/**
+ * Onchain features module
+ * All features integrate with Reown Wallet for secure wallet connections
+ */
+
+export * from './constants';
+export * from './types';
+export * from './utils';
+
