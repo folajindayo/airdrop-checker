@@ -522,5 +522,27 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 389. **Wallet Activity Timeline** - Detailed activity timeline with event types, dates, and summaries
 390. **On-Chain Analytics Dashboard** - Comprehensive on-chain analytics combining all features above
 
+#### Additional Onchain Query & Read Features (391-410)
+391. **Token Balance Check** - Check native token or ERC20 token balances for any address using Reown Wallet
+392. **Transaction History** - Get transaction history and recent activity for wallet addresses
+393. **Gas Estimation** - Estimate gas costs for transactions before execution via Reown Wallet
+394. **Token Metadata** - Fetch token metadata including name, symbol, decimals, and total supply
+395. **NFT Balance Check** - Check NFT balances for specific collections or all NFTs
+396. **NFT Transfer** - Transfer NFTs between addresses with safe transfer support using Reown Wallet
+397. **NFT Approval** - Approve NFTs for marketplaces (single token or operator approval) via Reown Wallet
+398. **LP Position Check** - Check liquidity pool positions and estimated token amounts
+399. **Staking Position Check** - Check staking positions and earned rewards
+400. **Token Price Fetch** - Get token prices from DEX reserves and price oracles
+401. **Contract Read** - Read any contract function with custom ABI and parameters
+402. **Event Listening** - Listen to and filter contract events by name and parameters
+403. **Token Allowance Check** - Check token allowances between owner and spender
+404. **Nonce Management** - Get current and pending nonces for transaction management
+405. **Gas Price Fetch** - Get current gas prices and fee estimates across chains
+406. **Block Number** - Get latest block number and block information
+407. **Transaction Status** - Check transaction status (pending, success, failed, not found)
+408. **Contract Verification** - Verify contract existence and fetch basic contract info
+409. **Token List** - Get curated token lists for major chains with metadata
+410. **Chain State** - Get comprehensive chain state including block number, gas prices, and network info
+
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
