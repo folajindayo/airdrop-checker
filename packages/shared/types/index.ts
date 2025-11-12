@@ -59,6 +59,9 @@ export interface AirdropProject {
   updatedAt?: Date;
 }
 
+/**
+ * Types of signals for trending calculation
+ */
 export type TrendingSignalType =
   | 'status'
   | 'value'
@@ -67,47 +70,91 @@ export type TrendingSignalType =
   | 'claim'
   | 'chain';
 
+/**
+ * A signal that contributes to trending score
+ */
 export interface TrendingSignal {
+  /** Type of the signal */
   type: TrendingSignalType;
+  /** Human-readable label */
   label: string;
+  /** Weight in trending calculation (0-1) */
   weight: number;
 }
 
+/**
+ * Summary of a trending project
+ */
 export interface TrendingProjectSummary {
+  /** Project identifier */
   projectId: string;
+  /** Project name */
   name: string;
+  /** Current status */
   status: AirdropStatus;
+  /** Calculated trending score (0-100) */
   trendingScore: number;
+  /** Signals contributing to trending score */
   signals: TrendingSignal[];
+  /** Supported chains */
   chains: string[];
+  /** Estimated airdrop value */
   estimatedValue?: string;
+  /** Snapshot date if applicable */
   snapshotDate?: string;
+  /** Claim URL if available */
   claimUrl?: string;
+  /** Official website */
   websiteUrl?: string;
+  /** Logo URL */
   logoUrl?: string;
+  /** Last update time */
   updatedAt?: Date;
 }
 
+/**
+ * Result of an eligibility check for an address
+ */
 export interface CheckResult {
+  /** Wallet address checked */
   address: string;
+  /** Overall eligibility score (0-100) */
   overallScore: number;
+  /** Individual airdrop results */
   airdrops: AirdropCheckResult[];
+  /** Unix timestamp of check */
   timestamp: number;
 }
 
+/**
+ * Eligibility result for a single airdrop
+ */
 export interface AirdropCheckResult {
+  /** Project name */
   project: string;
+  /** Project identifier */
   projectId: string;
+  /** Airdrop status */
   status: AirdropStatus;
+  /** Eligibility score (0-100) */
   score: number;
+  /** Evaluated criteria */
   criteria: CriteriaResult[];
+  /** Project logo URL */
   logoUrl?: string;
+  /** Project website URL */
   websiteUrl?: string;
+  /** Claim URL if available */
   claimUrl?: string;
 }
 
+/**
+ * Result of a single criterion evaluation
+ */
 export interface CriteriaResult {
+  /** Criterion description */
   desc: string;
+  /** Whether criterion was met */
   met: boolean;
 }
 
