@@ -1,31 +1,32 @@
 /**
  * Reminders Service
  * Business logic for managing airdrop reminders
+ * 
+ * @module RemindersService
  */
 
-export interface Reminder {
-  id: string;
-  address: string;
-  projectId?: string;
-  projectName?: string;
-  type: 'snapshot' | 'claim' | 'announcement' | 'custom';
-  reminderTime: string; // ISO 8601 timestamp
-  message: string;
-  enabled: boolean;
-  createdAt: string;
-  sent: boolean;
-  sentAt?: string;
-}
+import type { Reminder, ReminderType } from '@airdrop-finder/shared';
 
-export type ReminderType = Reminder['type'];
-
-// In-memory storage (in production, use database)
-const remindersStore = new Map<string, Reminder>();
-
+/**
+ * Create a new reminder
+ * 
+ * @param data - Reminder data
+ * @returns Created reminder
+ * @throws {Error} If validation fails or creation fails
+ * 
+ * @example
+ * ```typescript
+ * const reminder = await RemindersService.createReminder({
+ *   address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
+ *   type: 'claim',
+ *   reminderTime: new Date(Date.now() + 86400000).toISOString(),
+ *   message: 'Claim your airdrop',
+ * });
+ * ```
+ */
 export class RemindersService {
-  /**
-   * Create a new reminder
-   */
+  private static reminders = new Map<string, Reminder>();
+
   static async createReminder(data: {
     address: string;
     projectId?: string;
@@ -34,134 +35,140 @@ export class RemindersService {
     reminderTime: string;
     message: string;
   }): Promise<Reminder> {
-    const normalizedAddress = data.address.toLowerCase();
-    const reminderDate = new Date(data.reminderTime);
-
-    const id = `reminder-${normalizedAddress}-${Date.now()}`;
     const reminder: Reminder = {
-      id,
-      address: normalizedAddress,
+      id: `reminder-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      address: data.address.toLowerCase(),
       projectId: data.projectId,
       projectName: data.projectName,
       type: data.type,
-      reminderTime: reminderDate.toISOString(),
+      reminderTime: data.reminderTime,
       message: data.message,
       enabled: true,
       createdAt: new Date().toISOString(),
       sent: false,
     };
 
-    remindersStore.set(id, reminder);
+    const userReminders = this.reminders.get(reminder.address) || [];
+    userReminders.push(reminder);
+    this.reminders.set(reminder.address, userReminders);
+
     return reminder;
   }
 
   /**
    * Get reminders for an address
+   * 
+   * @param address - Ethereum address
+   * @param filters - Optional filters
+   * @returns Array of reminders
    */
-  static async getReminders(address: string, filters?: {
-    type?: string;
-    enabled?: boolean;
-    upcoming?: boolean;
-  }): Promise<Reminder[]> {
-    const normalizedAddress = address.toLowerCase();
-    let results: Reminder[] = [];
-
-    for (const reminder of remindersStore.values()) {
-      if (reminder.address === normalizedAddress) {
-        results.push(reminder);
-      }
+  static async getReminders(
+    address: string,
+    filters?: {
+      type?: ReminderType;
+      enabled?: boolean;
+      upcoming?: boolean;
     }
+  ): Promise<Reminder[]> {
+    const reminders = this.reminders.get(address.toLowerCase()) || [];
 
-    // Apply filters
+    let filtered = reminders;
+
     if (filters?.type) {
-      results = results.filter((r) => r.type === filters.type);
+      filtered = filtered.filter((r) => r.type === filters.type);
     }
 
     if (filters?.enabled !== undefined) {
-      results = results.filter((r) => r.enabled === filters.enabled);
+      filtered = filtered.filter((r) => r.enabled === filters.enabled);
     }
 
     if (filters?.upcoming) {
       const now = new Date();
-      results = results.filter((r) => !r.sent && new Date(r.reminderTime) > now);
+      filtered = filtered.filter((r) => new Date(r.reminderTime) > now);
     }
 
-    // Sort by reminder time (soonest first)
-    results.sort((a, b) => 
-      new Date(a.reminderTime).getTime() - new Date(b.reminderTime).getTime()
-    );
-
-    return results;
+    return filtered;
   }
 
   /**
    * Get a single reminder by ID
+   * 
+   * @param id - Reminder ID
+   * @returns Reminder or null if not found
    */
   static async getReminder(id: string): Promise<Reminder | null> {
-    return remindersStore.get(id) || null;
+    for (const reminders of this.reminders.values()) {
+      const reminder = reminders.find((r) => r.id === id);
+      if (reminder) {
+        return reminder;
+      }
+    }
+    return null;
   }
 
   /**
    * Update a reminder
+   * 
+   * @param id - Reminder ID
+   * @param updates - Update data
+   * @returns Updated reminder or null if not found
    */
   static async updateReminder(
     id: string,
     updates: Partial<Omit<Reminder, 'id' | 'address' | 'createdAt'>>
   ): Promise<Reminder | null> {
-    const reminder = remindersStore.get(id);
-
-    if (!reminder) {
-      return null;
+    for (const reminders of this.reminders.values()) {
+      const index = reminders.findIndex((r) => r.id === id);
+      if (index !== -1) {
+        reminders[index] = { ...reminders[index], ...updates };
+        return reminders[index];
+      }
     }
-
-    const updated: Reminder = {
-      ...reminder,
-      ...updates,
-    };
-
-    remindersStore.set(id, updated);
-    return updated;
+    return null;
   }
 
   /**
    * Delete a reminder
+   * 
+   * @param id - Reminder ID
+   * @returns True if deleted, false if not found
    */
   static async deleteReminder(id: string): Promise<boolean> {
-    return remindersStore.delete(id);
+    for (const reminders of this.reminders.values()) {
+      const index = reminders.findIndex((r) => r.id === id);
+      if (index !== -1) {
+        reminders.splice(index, 1);
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
    * Mark reminder as sent
+   * 
+   * @param id - Reminder ID
+   * @returns Updated reminder or null if not found
    */
   static async markAsSent(id: string): Promise<Reminder | null> {
-    const reminder = remindersStore.get(id);
-
-    if (!reminder) {
-      return null;
-    }
-
-    reminder.sent = true;
-    reminder.sentAt = new Date().toISOString();
-    remindersStore.set(id, reminder);
-
-    return reminder;
+    return this.updateReminder(id, { sent: true });
   }
 
   /**
-   * Get due reminders (for background job)
+   * Get reminders that are due
+   * 
+   * @returns Array of due reminders
    */
   static async getDueReminders(): Promise<Reminder[]> {
     const now = new Date();
     const due: Reminder[] = [];
 
-    for (const reminder of remindersStore.values()) {
-      if (
-        reminder.enabled &&
-        !reminder.sent &&
-        new Date(reminder.reminderTime) <= now
-      ) {
-        due.push(reminder);
-      }
+    for (const reminders of this.reminders.values()) {
+      reminders.forEach((reminder) => {
+        if (reminder.enabled && !reminder.sent && new Date(reminder.reminderTime) <= now) {
+          due.push(reminder);
+        }
+      });
     }
 
     return due;
@@ -169,24 +176,34 @@ export class RemindersService {
 
   /**
    * Get reminder statistics for an address
+   * 
+   * @param address - Ethereum address
+   * @returns Statistics object
    */
   static async getStatistics(address: string): Promise<{
     total: number;
-    upcoming: number;
-    sent: number;
+    byType: Record<ReminderType, number>;
     enabled: number;
-    disabled: number;
+    sent: number;
   }> {
-    const reminders = await this.getReminders(address);
-    const now = new Date();
+    const reminders = await this.getReminders(address.toLowerCase());
+
+    const byType: Record<ReminderType, number> = {
+      snapshot: 0,
+      claim: 0,
+      announcement: 0,
+      custom: 0,
+    };
+
+    reminders.forEach((reminder) => {
+      byType[reminder.type] = (byType[reminder.type] || 0) + 1;
+    });
 
     return {
       total: reminders.length,
-      upcoming: reminders.filter((r) => !r.sent && new Date(r.reminderTime) > now).length,
-      sent: reminders.filter((r) => r.sent).length,
+      byType,
       enabled: reminders.filter((r) => r.enabled).length,
-      disabled: reminders.filter((r) => !r.enabled).length,
+      sent: reminders.filter((r) => r.sent).length,
     };
   }
 }
-
