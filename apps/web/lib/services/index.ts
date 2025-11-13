@@ -10,4 +10,5 @@ export * from './risk-analysis.service';
 export * from './trending.service';
 export * from './highlights.service';
 export * from './wallet-health.service';
+export * from './claim-tracker.service';
 
