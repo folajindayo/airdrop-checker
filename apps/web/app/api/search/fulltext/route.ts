@@ -189,3 +189,5 @@ function generateSnippet(project: any, query: string): string {
   return project.description || project.name;
 }
 
+
+

@@ -5,6 +5,7 @@ import {
   createSuccessResponse,
   createErrorResponse,
   createValidationErrorResponse,
+  createNotFoundResponse,
 } from '@/lib/utils/response-handlers';
 
 export const dynamic = 'force-dynamic';
@@ -108,7 +109,7 @@ export async function PATCH(request: NextRequest) {
     const claim = await ClaimTrackerService.updateClaim(address, id, updates);
 
     if (!claim) {
-      return createValidationErrorResponse('Claim not found', 404);
+      return createNotFoundResponse('Claim');
     }
 
     return createSuccessResponse({
@@ -142,7 +143,7 @@ export async function DELETE(request: NextRequest) {
     const deleted = await ClaimTrackerService.deleteClaim(address, id);
 
     if (!deleted) {
-      return createValidationErrorResponse('Claim not found', 404);
+      return createNotFoundResponse('Claim');
     }
 
     return createSuccessResponse({
@@ -153,3 +154,6 @@ export async function DELETE(request: NextRequest) {
     return createErrorResponse(error as Error);
   }
 }
+
+
+

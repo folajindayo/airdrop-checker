@@ -5,6 +5,7 @@ import {
   createSuccessResponse,
   createErrorResponse,
   createValidationErrorResponse,
+  createNotFoundResponse,
 } from '@/lib/utils/response-handlers';
 
 export const dynamic = 'force-dynamic';
@@ -114,7 +115,7 @@ export async function PATCH(request: NextRequest) {
     const reminder = await RemindersService.updateReminder(id, updates);
 
     if (!reminder) {
-      return createValidationErrorResponse('Reminder not found', 404);
+      return createNotFoundResponse('Reminder');
     }
 
     return createSuccessResponse({
@@ -143,7 +144,7 @@ export async function DELETE(request: NextRequest) {
     const deleted = await RemindersService.deleteReminder(id);
 
     if (!deleted) {
-      return createValidationErrorResponse('Reminder not found', 404);
+      return createNotFoundResponse('Reminder');
     }
 
     return createSuccessResponse({

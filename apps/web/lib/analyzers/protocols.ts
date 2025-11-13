@@ -99,3 +99,5 @@ export function getCategoryLabel(category: ProtocolCategory): string {
   return CATEGORY_LABELS[category] ?? CATEGORY_LABELS.other;
 }
 
+
+
