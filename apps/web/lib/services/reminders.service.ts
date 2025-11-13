@@ -7,6 +7,9 @@
 
 import type { Reminder, ReminderType } from '@airdrop-finder/shared';
 
+// Re-export ReminderType for use in other modules
+export type { ReminderType };
+
 /**
  * Create a new reminder
  * 
