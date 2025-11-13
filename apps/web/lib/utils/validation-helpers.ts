@@ -58,10 +58,18 @@ export function validateRequiredOrThrow<T>(
  * Validate enum value or throw error
  */
 export function validateEnumOrThrow<T>(
-  value: T,
+  value: T | null | undefined,
   allowedValues: T[],
   fieldName: string
 ): T {
+  if (value === null || value === undefined) {
+    throw new AppError(
+      `${fieldName} is required`,
+      ErrorCode.VALIDATION_ERROR,
+      400
+    );
+  }
+
   if (!allowedValues.includes(value)) {
     throw new AppError(
       `${fieldName} must be one of: ${allowedValues.join(', ')}`,

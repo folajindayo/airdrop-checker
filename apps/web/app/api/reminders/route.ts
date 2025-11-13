@@ -7,7 +7,7 @@ import {
   createValidationErrorResponse,
   createNotFoundResponse,
 } from '@/lib/utils/response-handlers';
-import { withErrorHandling } from '@/lib/utils/error-handler';
+import { withErrorHandling, AppError, ErrorCode } from '@/lib/utils/error-handler';
 import { validateAddressOrThrow, validateRequiredOrThrow, validateEnumOrThrow } from '@/lib/utils/validation-helpers';
 
 export const dynamic = 'force-dynamic';
