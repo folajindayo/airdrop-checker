@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { isValidAddress } from '@airdrop-finder/shared';
-import { fetchAllChainTokenBalances, calculateTotalValue } from '@/lib/goldrush/tokens';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
-import { cache } from '@airdrop-finder/shared';
+import { NextRequest } from 'next/server';
+import { isValidAddress, cache, CACHE_TTL } from '@airdrop-finder/shared';
+import { getPortfolioData } from '@/lib/services';
+import { createSuccessResponse, createErrorResponse, createValidationErrorResponse } from '@/lib/utils/response-handlers';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,10 +17,7 @@ export async function GET(
     const { address } = await params;
 
     if (!isValidAddress(address)) {
-      return NextResponse.json(
-        { error: 'Invalid Ethereum address' },
-        { status: 400 }
-      );
+      return createValidationErrorResponse('Invalid Ethereum address');
     }
 
     const normalizedAddress = address.toLowerCase();
@@ -29,67 +25,18 @@ export async function GET(
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
-      return NextResponse.json({
-        ...cachedResult,
-        cached: true,
-      });
+      return createSuccessResponse({ ...cachedResult, cached: true });
     }
 
-    // Fetch token balances across all chains
-    const chainTokens = await fetchAllChainTokenBalances(normalizedAddress);
-    const totalValue = calculateTotalValue(chainTokens);
-
-    // Calculate breakdown by chain
-    const chainBreakdown = SUPPORTED_CHAINS.map((chain) => {
-      const tokens = chainTokens[chain.id] || [];
-      const chainValue = tokens.reduce((sum, token) => sum + (token.quote || 0), 0);
-      return {
-        chainId: chain.id,
-        chainName: chain.name,
-        value: chainValue,
-        tokenCount: tokens.length,
-        percentage: totalValue > 0 ? (chainValue / totalValue) * 100 : 0,
-      };
-    });
-
-    // Get top tokens by value
-    const allTokens = Object.values(chainTokens).flat();
-    const topTokens = allTokens
-      .filter((token) => token.quote > 0)
-      .sort((a, b) => b.quote - a.quote)
-      .slice(0, 20)
-      .map((token) => ({
-        address: token.contract_address,
-        name: token.contract_name,
-        symbol: token.contract_ticker_symbol,
-        balance: token.balance,
-        value: token.quote,
-        logo: token.logo_url,
-        decimals: token.contract_decimals,
-        isNative: token.native_token,
-      }));
-
-    const result = {
-      address: normalizedAddress,
-      totalValue,
-      chainBreakdown,
-      topTokens,
-      totalTokens: allTokens.length,
-      timestamp: Date.now(),
-    };
+    // Get portfolio data using service
+    const result = await getPortfolioData(normalizedAddress);
 
     // Cache for 5 minutes
-    cache.set(cacheKey, result, 5 * 60 * 1000);
+    cache.set(cacheKey, result, CACHE_TTL.PORTFOLIO);
 
-    return NextResponse.json(result);
+    return createSuccessResponse(result);
   } catch (error) {
     console.error('Portfolio API error:', error);
-    return NextResponse.json(
-      {
-        error: 'Failed to fetch portfolio data',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    );
+    return createErrorResponse(error as Error);
   }
 }
