@@ -2,10 +2,14 @@
  * Tests for address validator
  */
 
-import { validateAddress, normalizeAddress } from '@/lib/validators/address.validator';
+import {
+  validateEthereumAddress,
+  validateTransactionHash,
+  validateMultipleAddresses,
+} from '@/lib/validators/address.validator';
 
 describe('Address Validator', () => {
-  describe('validateAddress', () => {
+  describe('validateEthereumAddress', () => {
     it('should validate correct Ethereum addresses', () => {
       const validAddresses = [
         '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
@@ -13,7 +17,9 @@ describe('Address Validator', () => {
       ];
 
       validAddresses.forEach((address) => {
-        expect(validateAddress(address)).toBe(true);
+        const result = validateEthereumAddress(address);
+        expect(result.isValid).toBe(true);
+        expect(result.normalized).toBe(address.toLowerCase());
       });
     });
 
@@ -26,24 +32,50 @@ describe('Address Validator', () => {
       ];
 
       invalidAddresses.forEach((address) => {
-        expect(validateAddress(address)).toBe(false);
+        const result = validateEthereumAddress(address);
+        expect(result.isValid).toBe(false);
+        expect(result.error).toBeDefined();
       });
+    });
+
+    it('should return error for empty address', () => {
+      const result = validateEthereumAddress('');
+      expect(result.isValid).toBe(false);
+      expect(result.error).toBe('Address is required');
     });
   });
 
-  describe('normalizeAddress', () => {
-    it('should normalize address to lowercase', () => {
-      const address = '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb';
-      const normalized = normalizeAddress(address);
+  describe('validateTransactionHash', () => {
+    it('should validate correct transaction hashes', () => {
+      const validHash = '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef';
+      const result = validateTransactionHash(validHash);
 
-      expect(normalized).toBe(address.toLowerCase());
+      expect(result.isValid).toBe(true);
+      expect(result.normalized).toBe(validHash.toLowerCase());
     });
 
-    it('should handle already lowercase addresses', () => {
-      const address = '0x742d35cc6634c0532925a3b844bc9e7595f0beb';
-      const normalized = normalizeAddress(address);
+    it('should reject invalid transaction hashes', () => {
+      const invalidHash = '0x123';
+      const result = validateTransactionHash(invalidHash);
 
-      expect(normalized).toBe(address);
+      expect(result.isValid).toBe(false);
+      expect(result.error).toBeDefined();
+    });
+  });
+
+  describe('validateMultipleAddresses', () => {
+    it('should validate multiple addresses', () => {
+      const addresses = [
+        '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
+        '0x0000000000000000000000000000000000000000',
+        'invalid',
+      ];
+
+      const result = validateMultipleAddresses(addresses);
+
+      expect(result.valid.length).toBe(2);
+      expect(result.invalid.length).toBe(1);
+      expect(result.errors).toHaveProperty('invalid');
     });
   });
 });
