@@ -66,8 +66,9 @@ describe('Error Handler', () => {
     });
 
     it('should pass through successful responses', async () => {
+      const { NextResponse } = await import('next/server');
       const handler = async () => {
-        return new Response(JSON.stringify({ success: true }), { status: 200 });
+        return NextResponse.json({ success: true }, { status: 200 });
       };
 
       const wrapped = withErrorHandling(handler);
