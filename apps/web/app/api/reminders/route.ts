@@ -45,11 +45,19 @@ async function postHandler(request: NextRequest) {
   // Validate reminder time
   const reminderDate = new Date(reminderTime);
   if (isNaN(reminderDate.getTime())) {
-    throw new Error('Invalid reminderTime format. Use ISO 8601 format.');
+    throw new AppError(
+      'Invalid reminderTime format. Use ISO 8601 format.',
+      ErrorCode.VALIDATION_ERROR,
+      400
+    );
   }
 
   if (reminderDate < new Date()) {
-    throw new Error('Reminder time must be in the future');
+    throw new AppError(
+      'Reminder time must be in the future',
+      ErrorCode.VALIDATION_ERROR,
+      400
+    );
   }
 
   // Validate type
