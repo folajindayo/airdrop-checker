@@ -1,11 +1,16 @@
 /**
  * Portfolio service
  * Business logic for portfolio tracking and analytics
+ * 
+ * @module PortfolioService
  */
 
 import { getTokenBalances } from '../goldrush/tokens';
 import type { GoldRushTokenBalance } from '@airdrop-finder/shared';
 
+/**
+ * Portfolio data structure
+ */
 export interface PortfolioData {
   address: string;
   totalValue: number;
@@ -15,6 +20,9 @@ export interface PortfolioData {
   timestamp: number;
 }
 
+/**
+ * Chain portfolio breakdown
+ */
 export interface ChainPortfolio {
   chainId: number;
   chainName: string;
@@ -23,6 +31,9 @@ export interface ChainPortfolio {
   percentage: number;
 }
 
+/**
+ * Token holding information
+ */
 export interface TokenHolding {
   symbol: string;
   name: string;
@@ -35,6 +46,17 @@ export interface TokenHolding {
 
 /**
  * Get portfolio data for an address
+ * 
+ * @param address - Ethereum address to get portfolio for
+ * @param chainIds - Array of chain IDs to query (default: [1, 8453, 42161, 10, 137])
+ * @returns Portfolio data including total value, chain breakdown, and top tokens
+ * @throws {Error} If address is invalid or data fetch fails
+ * 
+ * @example
+ * ```typescript
+ * const portfolio = await getPortfolioData('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb');
+ * console.log(portfolio.totalValue); // Total portfolio value in USD
+ * ```
  */
 export async function getPortfolioData(
   address: string,
@@ -113,6 +135,19 @@ export async function getPortfolioData(
 
 /**
  * Compare portfolios across multiple addresses
+ * 
+ * @param addresses - Array of Ethereum addresses to compare
+ * @returns Comparison data including individual portfolios and aggregate statistics
+ * @throws {Error} If any address is invalid or data fetch fails
+ * 
+ * @example
+ * ```typescript
+ * const comparison = await comparePortfolios([
+ *   '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
+ *   '0x0000000000000000000000000000000000000000'
+ * ]);
+ * console.log(comparison.aggregate.totalValue); // Combined portfolio value
+ * ```
  */
 export async function comparePortfolios(
   addresses: string[]
@@ -148,4 +183,3 @@ export async function comparePortfolios(
     },
   };
 }
-
