@@ -6,6 +6,12 @@ export * from './datetime';
 export * from './formatting';
 export * from './errors';
 export * from './retry';
+export * from './array';
+export * from './object';
+export * from './string';
+export * from './number';
+export * from './url';
+export * from './hash';
 
 /**
  * Truncate Ethereum address for display
