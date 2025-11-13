@@ -2,61 +2,85 @@
  * Tests for query builder utility
  */
 
-import { buildQuery, buildPagination, buildFilters } from '@/lib/utils/query-builder';
+import {
+  buildWhereClause,
+  buildOrderByClause,
+  buildLimitClause,
+  escapeSqlString,
+  buildSearchQuery,
+} from '@/lib/utils/query-builder';
 
 describe('Query Builder', () => {
-  describe('buildQuery', () => {
-    it('should build query string from object', () => {
-      const params = { address: '0x123', chainId: 1 };
-      const query = buildQuery(params);
+  describe('buildWhereClause', () => {
+    it('should build WHERE clause from filters', () => {
+      const filters = { status: 'confirmed', chainId: 1 };
+      const clause = buildWhereClause(filters);
 
-      expect(query).toContain('address=0x123');
-      expect(query).toContain('chainId=1');
+      expect(clause).toContain('WHERE');
+      expect(clause).toContain('status');
+      expect(clause).toContain('chainId');
     });
 
-    it('should handle empty object', () => {
-      const query = buildQuery({});
-      expect(query).toBe('');
+    it('should handle empty filters', () => {
+      const clause = buildWhereClause({});
+      expect(clause).toBe('');
     });
 
-    it('should encode special characters', () => {
-      const params = { search: 'test query' };
-      const query = buildQuery(params);
-      expect(query).toContain('test%20query');
-    });
-  });
+    it('should handle array values', () => {
+      const filters = { chainIds: [1, 8453] };
+      const clause = buildWhereClause(filters);
 
-  describe('buildPagination', () => {
-    it('should build pagination object', () => {
-      const pagination = buildPagination(1, 10);
-
-      expect(pagination).toHaveProperty('page', 1);
-      expect(pagination).toHaveProperty('limit', 10);
-      expect(pagination).toHaveProperty('skip', 10);
-    });
-
-    it('should calculate skip correctly', () => {
-      const pagination = buildPagination(0, 10);
-      expect(pagination.skip).toBe(0);
-
-      const pagination2 = buildPagination(2, 10);
-      expect(pagination2.skip).toBe(20);
+      expect(clause).toContain('IN');
+      expect(clause).toContain('1');
+      expect(clause).toContain('8453');
     });
   });
 
-  describe('buildFilters', () => {
-    it('should build filter object', () => {
-      const filters = buildFilters({ status: 'confirmed', chainId: 1 });
+  describe('buildOrderByClause', () => {
+    it('should build ORDER BY clause', () => {
+      const clause = buildOrderByClause('createdAt', 'desc');
 
-      expect(filters).toHaveProperty('status', 'confirmed');
-      expect(filters).toHaveProperty('chainId', 1);
+      expect(clause).toContain('ORDER BY');
+      expect(clause).toContain('createdAt');
+      expect(clause).toContain('DESC');
     });
 
-    it('should exclude undefined values', () => {
-      const filters = buildFilters({ status: 'confirmed', chainId: undefined });
+    it('should default to DESC order', () => {
+      const clause = buildOrderByClause('createdAt');
 
-      expect(filters).toHaveProperty('status');
-      expect(filters).not.toHaveProperty('chainId');
+      expect(clause).toContain('DESC');
+    });
+  });
+
+  describe('buildLimitClause', () => {
+    it('should build LIMIT clause', () => {
+      const clause = buildLimitClause(10);
+
+      expect(clause).toContain('LIMIT 10');
+    });
+
+    it('should include OFFSET when provided', () => {
+      const clause = buildLimitClause(10, 20);
+
+      expect(clause).toContain('LIMIT 10');
+      expect(clause).toContain('OFFSET 20');
+    });
+  });
+
+  describe('escapeSqlString', () => {
+    it('should escape single quotes', () => {
+      const escaped = escapeSqlString("test'value");
+      expect(escaped).toBe("test''value");
+    });
+  });
+
+  describe('buildSearchQuery', () => {
+    it('should build search query for multiple fields', () => {
+      const query = buildSearchQuery(['name', 'description'], 'test');
+
+      expect(query).toContain('name');
+      expect(query).toContain('description');
+      expect(query).toContain('test');
     });
   });
 });
