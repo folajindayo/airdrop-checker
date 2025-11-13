@@ -3,12 +3,13 @@
  */
 
 import { GET } from '@/app/api/wallet-health/[address]/route';
-import { createAddressRequest, MOCK_ADDRESS } from '../helpers';
+import { createMockRequest, MOCK_ADDRESS } from '../helpers';
 
 describe('/api/wallet-health/[address]', () => {
   describe('GET', () => {
     it('should get wallet health data for address', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/wallet-health/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -19,7 +20,8 @@ describe('/api/wallet-health/[address]', () => {
     });
 
     it('should return validation error for invalid address', async () => {
-      const { request, params } = createAddressRequest('invalid-address');
+      const request = createMockRequest('/api/wallet-health/invalid-address');
+      const params = { address: 'invalid-address' };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -29,7 +31,8 @@ describe('/api/wallet-health/[address]', () => {
     });
 
     it('should include health score with overall score', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/wallet-health/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -40,7 +43,8 @@ describe('/api/wallet-health/[address]', () => {
     });
 
     it('should include metrics', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/wallet-health/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -50,7 +54,8 @@ describe('/api/wallet-health/[address]', () => {
     });
 
     it('should include recommendations', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/wallet-health/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();

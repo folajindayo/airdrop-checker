@@ -3,12 +3,13 @@
  */
 
 import { GET } from '@/app/api/wallet-clustering/[address]/route';
-import { createAddressRequest, MOCK_ADDRESS } from '../helpers';
+import { createMockRequest, MOCK_ADDRESS } from '../helpers';
 
 describe('/api/wallet-clustering/[address]', () => {
   describe('GET', () => {
     it('should get wallet clustering data for address', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/wallet-clustering/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -19,7 +20,8 @@ describe('/api/wallet-clustering/[address]', () => {
     });
 
     it('should return validation error for invalid address', async () => {
-      const { request, params } = createAddressRequest('invalid-address');
+      const request = createMockRequest('/api/wallet-clustering/invalid-address');
+      const params = { address: 'invalid-address' };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -29,7 +31,8 @@ describe('/api/wallet-clustering/[address]', () => {
     });
 
     it('should include related wallets', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/wallet-clustering/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -38,7 +41,8 @@ describe('/api/wallet-clustering/[address]', () => {
     });
 
     it('should include clusters', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/wallet-clustering/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -48,7 +52,8 @@ describe('/api/wallet-clustering/[address]', () => {
     });
 
     it('should include funding tree', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/wallet-clustering/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();

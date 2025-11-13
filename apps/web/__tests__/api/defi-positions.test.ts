@@ -3,12 +3,13 @@
  */
 
 import { GET } from '@/app/api/defi-positions/[address]/route';
-import { createAddressRequest, MOCK_ADDRESS } from '../helpers';
+import { createMockRequest, MOCK_ADDRESS } from '../helpers';
 
 describe('/api/defi-positions/[address]', () => {
   describe('GET', () => {
     it('should get DeFi positions for address', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/defi-positions/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -19,7 +20,8 @@ describe('/api/defi-positions/[address]', () => {
     });
 
     it('should return validation error for invalid address', async () => {
-      const { request, params } = createAddressRequest('invalid-address');
+      const request = createMockRequest('/api/defi-positions/invalid-address');
+      const params = { address: 'invalid-address' };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -29,7 +31,8 @@ describe('/api/defi-positions/[address]', () => {
     });
 
     it('should include lending positions', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/defi-positions/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -39,7 +42,8 @@ describe('/api/defi-positions/[address]', () => {
     });
 
     it('should include staking positions', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/defi-positions/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();
@@ -49,7 +53,8 @@ describe('/api/defi-positions/[address]', () => {
     });
 
     it('should include liquidity pool positions', async () => {
-      const { request, params } = createAddressRequest(MOCK_ADDRESS);
+      const request = createMockRequest(`/api/defi-positions/${MOCK_ADDRESS}`);
+      const params = { address: MOCK_ADDRESS };
 
       const response = await GET(request, params);
       const json = await response.json();
