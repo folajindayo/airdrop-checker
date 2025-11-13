@@ -2,13 +2,13 @@
  * Tests for storage utility
  */
 
-import { Storage } from '@/lib/utils/storage';
+import { createLocalStorage, createSessionStorage } from '@/lib/utils/storage';
 
 describe('Storage', () => {
-  let storage: Storage;
+  let storage: ReturnType<typeof createLocalStorage>;
 
   beforeEach(() => {
-    storage = new Storage('test-prefix');
+    storage = createLocalStorage('test-prefix');
     // Clear storage before each test
     if (typeof window !== 'undefined') {
       localStorage.clear();
@@ -55,6 +55,21 @@ describe('Storage', () => {
 
       expect(storage.get('key1')).toBeNull();
       expect(storage.get('key2')).toBeNull();
+    });
+  });
+
+  describe('has', () => {
+    it('should check if key exists', () => {
+      storage.set('key', 'value');
+      expect(storage.has('key')).toBe(true);
+      expect(storage.has('non-existent')).toBe(false);
+    });
+  });
+
+  describe('sessionStorage', () => {
+    it('should create sessionStorage wrapper', () => {
+      const sessionStorage = createSessionStorage('test');
+      expect(sessionStorage).toBeDefined();
     });
   });
 });
