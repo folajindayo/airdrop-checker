@@ -1,6 +1,8 @@
 /**
  * Claim Tracker Service
  * Business logic for tracking airdrop claims
+ * 
+ * @module ClaimTrackerService
  */
 
 export interface ClaimEntry {
@@ -14,24 +16,46 @@ export interface ClaimEntry {
   txHash?: string;
   claimedAt?: string;
   notes?: string;
+  createdAt: string;
 }
 
 export interface ClaimStatistics {
-  totalClaims: number;
+  total: number;
+  byStatus: {
+    claimed: number;
+    pending: number;
+    failed: number;
+  };
   totalValueUSD: number;
-  claimedCount: number;
-  pendingCount: number;
-  failedCount: number;
   claimedValueUSD: number;
-  pendingValueUSD: number;
 }
 
 // In-memory storage (in production, use database)
 const claimsStore = new Map<string, ClaimEntry[]>();
 
+/**
+ * Claim Tracker Service class
+ * Provides methods for managing airdrop claim entries
+ */
 export class ClaimTrackerService {
   /**
    * Add a new claim entry
+   * 
+   * @param data - Claim entry data
+   * @returns Created claim entry
+   * @throws {Error} If validation fails or creation fails
+   * 
+   * @example
+   * ```typescript
+   * const claim = await ClaimTrackerService.addClaim({
+   *   address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
+   *   projectId: 'zora',
+   *   projectName: 'Zora',
+   *   status: 'claimed',
+   *   amount: '1000',
+   *   valueUSD: 1000,
+   * });
+   * ```
    */
   static async addClaim(data: {
     address: string;
@@ -57,6 +81,7 @@ export class ClaimTrackerService {
       txHash: data.txHash,
       claimedAt: data.status === 'claimed' ? new Date().toISOString() : undefined,
       notes: data.notes,
+      createdAt: new Date().toISOString(),
     };
 
     const claims = claimsStore.get(normalizedAddress) || [];
@@ -68,6 +93,10 @@ export class ClaimTrackerService {
 
   /**
    * Get all claims for an address
+   * 
+   * @param address - Ethereum address
+   * @param filters - Optional filters
+   * @returns Array of claim entries
    */
   static async getClaims(address: string, filters?: {
     status?: string;
@@ -84,105 +113,106 @@ export class ClaimTrackerService {
       claims = claims.filter((c) => c.projectId === filters.projectId);
     }
 
-    return claims.sort((a, b) => {
-      const timeA = a.claimedAt ? new Date(a.claimedAt).getTime() : 0;
-      const timeB = b.claimedAt ? new Date(b.claimedAt).getTime() : 0;
-      return timeB - timeA;
-    });
+    // Sort by creation date (newest first)
+    claims.sort((a, b) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    return claims;
+  }
+
+  /**
+   * Get a single claim by ID
+   * 
+   * @param address - Ethereum address
+   * @param id - Claim ID
+   * @returns Claim entry or null if not found
+   */
+  static async getClaim(address: string, id: string): Promise<ClaimEntry | null> {
+    const claims = claimsStore.get(address.toLowerCase()) || [];
+    return claims.find((c) => c.id === id) || null;
   }
 
   /**
    * Update a claim entry
+   * 
+   * @param address - Ethereum address
+   * @param id - Claim ID
+   * @param updates - Update data
+   * @returns Updated claim entry or null if not found
    */
   static async updateClaim(
     address: string,
-    claimId: string,
-    updates: Partial<Omit<ClaimEntry, 'id' | 'address'>>
+    id: string,
+    updates: Partial<Omit<ClaimEntry, 'id' | 'address' | 'createdAt'>>
   ): Promise<ClaimEntry | null> {
-    const normalizedAddress = address.toLowerCase();
-    const claims = claimsStore.get(normalizedAddress);
+    const claims = claimsStore.get(address.toLowerCase()) || [];
+    const index = claims.findIndex((c) => c.id === id);
 
-    if (!claims) {
+    if (index === -1) {
       return null;
     }
 
-    const claimIndex = claims.findIndex((c) => c.id === claimId);
-    if (claimIndex === -1) {
-      return null;
+    claims[index] = { ...claims[index], ...updates };
+    
+    // Update claimedAt if status changed to claimed
+    if (updates.status === 'claimed' && !claims[index].claimedAt) {
+      claims[index].claimedAt = new Date().toISOString();
     }
 
-    const updatedClaim = {
-      ...claims[claimIndex],
-      ...updates,
-      claimedAt:
-        updates.status === 'claimed' && !claims[claimIndex].claimedAt
-          ? new Date().toISOString()
-          : claims[claimIndex].claimedAt,
-    };
-
-    claims[claimIndex] = updatedClaim;
-    claimsStore.set(normalizedAddress, claims);
-
-    return updatedClaim;
+    return claims[index];
   }
 
   /**
    * Delete a claim entry
+   * 
+   * @param address - Ethereum address
+   * @param id - Claim ID
+   * @returns True if deleted, false if not found
    */
-  static async deleteClaim(address: string, claimId: string): Promise<boolean> {
-    const normalizedAddress = address.toLowerCase();
-    const claims = claimsStore.get(normalizedAddress);
+  static async deleteClaim(address: string, id: string): Promise<boolean> {
+    const claims = claimsStore.get(address.toLowerCase()) || [];
+    const index = claims.findIndex((c) => c.id === id);
 
-    if (!claims) {
+    if (index === -1) {
       return false;
     }
 
-    const filteredClaims = claims.filter((c) => c.id !== claimId);
-    
-    if (filteredClaims.length === claims.length) {
-      return false; // Claim not found
-    }
-
-    claimsStore.set(normalizedAddress, filteredClaims);
+    claims.splice(index, 1);
     return true;
   }
 
   /**
    * Get claim statistics for an address
+   * 
+   * @param address - Ethereum address
+   * @returns Statistics object
    */
   static async getStatistics(address: string): Promise<ClaimStatistics> {
-    const normalizedAddress = address.toLowerCase();
-    const claims = claimsStore.get(normalizedAddress) || [];
+    const claims = await this.getClaims(address.toLowerCase());
 
-    const stats: ClaimStatistics = {
-      totalClaims: claims.length,
-      totalValueUSD: 0,
-      claimedCount: 0,
-      pendingCount: 0,
-      failedCount: 0,
-      claimedValueUSD: 0,
-      pendingValueUSD: 0,
+    const byStatus = {
+      claimed: 0,
+      pending: 0,
+      failed: 0,
     };
 
-    claims.forEach((claim) => {
-      stats.totalValueUSD += claim.valueUSD;
+    let totalValueUSD = 0;
+    let claimedValueUSD = 0;
 
-      switch (claim.status) {
-        case 'claimed':
-          stats.claimedCount++;
-          stats.claimedValueUSD += claim.valueUSD;
-          break;
-        case 'pending':
-          stats.pendingCount++;
-          stats.pendingValueUSD += claim.valueUSD;
-          break;
-        case 'failed':
-          stats.failedCount++;
-          break;
+    claims.forEach((claim) => {
+      byStatus[claim.status] = (byStatus[claim.status] || 0) + 1;
+      totalValueUSD += claim.valueUSD || 0;
+      if (claim.status === 'claimed') {
+        claimedValueUSD += claim.valueUSD || 0;
       }
     });
 
-    return stats;
+    return {
+      total: claims.length,
+      byStatus,
+      totalValueUSD,
+      claimedValueUSD,
+    };
   }
 }
-
