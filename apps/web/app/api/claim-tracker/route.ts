@@ -1,23 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+import { ClaimTrackerService } from '@/lib/services';
+import {
+  createSuccessResponse,
+  createErrorResponse,
+  createValidationErrorResponse,
+} from '@/lib/utils/response-handlers';
 
 export const dynamic = 'force-dynamic';
-
-interface ClaimEntry {
-  id: string;
-  address: string;
-  projectId: string;
-  projectName: string;
-  status: 'claimed' | 'pending' | 'failed';
-  amount: string;
-  valueUSD: number;
-  txHash?: string;
-  claimedAt?: string;
-  notes?: string;
-}
-
-// In-memory storage (in production, use database)
-const claimsStore = new Map<string, ClaimEntry[]>();
 
 /**
  * POST /api/claim-tracker
@@ -26,7 +16,24 @@ const claimsStore = new Map<string, ClaimEntry[]>();
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const {
+    const { address, projectId, projectName, status, amount, valueUSD, txHash, notes } = body;
+
+    // Validate required fields
+    if (!address || !projectId || !projectName) {
+      return createValidationErrorResponse('Address, projectId, and projectName are required');
+    }
+
+    if (!isValidAddress(address)) {
+      return createValidationErrorResponse('Invalid Ethereum address');
+    }
+
+    const validStatuses = ['claimed', 'pending', 'failed'];
+    if (!validStatuses.includes(status)) {
+      return createValidationErrorResponse(`Status must be one of: ${validStatuses.join(', ')}`);
+    }
+
+    // Add claim using service
+    const claim = await ClaimTrackerService.addClaim({
       address,
       projectId,
       projectName,
@@ -35,139 +42,49 @@ export async function POST(request: NextRequest) {
       valueUSD,
       txHash,
       notes,
-    } = body;
+    });
 
-    if (!address || !projectId || !projectName) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Address, projectId, and projectName are required',
-        },
-        { status: 400 }
-      );
-    }
-
-    if (!isValidAddress(address)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid Ethereum address' },
-        { status: 400 }
-      );
-    }
-
-    const normalizedAddress = address.toLowerCase();
-    const validStatuses = ['claimed', 'pending', 'failed'];
-    if (!validStatuses.includes(status)) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Status must be one of: ${validStatuses.join(', ')}`,
-        },
-        { status: 400 }
-      );
-    }
-
-    const id = `claim-${normalizedAddress}-${Date.now()}`;
-    const claim: ClaimEntry = {
-      id,
-      address: normalizedAddress,
-      projectId,
-      projectName,
-      status: status as 'claimed' | 'pending' | 'failed',
-      amount: amount || '0',
-      valueUSD: valueUSD || 0,
-      txHash,
-      claimedAt: status === 'claimed' ? new Date().toISOString() : undefined,
-      notes,
-    };
-
-    const claims = claimsStore.get(normalizedAddress) || [];
-    claims.push(claim);
-    claimsStore.set(normalizedAddress, claims);
-
-    return NextResponse.json({
-      success: true,
+    return createSuccessResponse({
       claim,
       message: 'Claim entry added successfully',
     });
   } catch (error) {
     console.error('Claim tracker API error:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to add claim entry',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    );
+    return createErrorResponse(error as Error);
   }
 }
 
 /**
- * GET /api/claim-tracker
+ * GET /api/claim-tracker?address=0x...&status=claimed
  * Get all claims for an address
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const address = searchParams.get('address');
-    const status = searchParams.get('status');
+    const status = searchParams.get('status') || undefined;
+    const projectId = searchParams.get('projectId') || undefined;
 
     if (!address) {
-      return NextResponse.json(
-        { success: false, error: 'Address is required' },
-        { status: 400 }
-      );
+      return createValidationErrorResponse('Address is required');
     }
 
     if (!isValidAddress(address)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid Ethereum address' },
-        { status: 400 }
-      );
+      return createValidationErrorResponse('Invalid Ethereum address');
     }
 
-    const normalizedAddress = address.toLowerCase();
-    let claims = claimsStore.get(normalizedAddress) || [];
+    // Get claims and statistics
+    const claims = await ClaimTrackerService.getClaims(address, { status, projectId });
+    const stats = await ClaimTrackerService.getStatistics(address);
 
-    // Filter by status if provided
-    if (status) {
-      claims = claims.filter((c) => c.status === status);
-    }
-
-    // Sort by claimedAt (most recent first)
-    claims.sort((a, b) => {
-      const dateA = a.claimedAt ? new Date(a.claimedAt).getTime() : 0;
-      const dateB = b.claimedAt ? new Date(b.claimedAt).getTime() : 0;
-      return dateB - dateA;
-    });
-
-    // Calculate statistics
-    const stats = {
-      total: claims.length,
-      claimed: claims.filter((c) => c.status === 'claimed').length,
-      pending: claims.filter((c) => c.status === 'pending').length,
-      failed: claims.filter((c) => c.status === 'failed').length,
-      totalValueUSD: claims
-        .filter((c) => c.status === 'claimed')
-        .reduce((sum, c) => sum + c.valueUSD, 0),
-    };
-
-    return NextResponse.json({
-      success: true,
+    return createSuccessResponse({
       claims,
       stats,
       count: claims.length,
     });
   } catch (error) {
     console.error('Claim tracker API error:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to fetch claims',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    );
+    return createErrorResponse(error as Error);
   }
 }
 
@@ -178,69 +95,34 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, address, status, txHash, notes, valueUSD } = body;
+    const { id, address, ...updates } = body;
 
     if (!id || !address) {
-      return NextResponse.json(
-        { success: false, error: 'ID and address are required' },
-        { status: 400 }
-      );
+      return createValidationErrorResponse('ID and address are required');
     }
 
     if (!isValidAddress(address)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid Ethereum address' },
-        { status: 400 }
-      );
+      return createValidationErrorResponse('Invalid Ethereum address');
     }
 
-    const normalizedAddress = address.toLowerCase();
-    const claims = claimsStore.get(normalizedAddress) || [];
-    const claimIndex = claims.findIndex((c) => c.id === id);
+    const claim = await ClaimTrackerService.updateClaim(address, id, updates);
 
-    if (claimIndex === -1) {
-      return NextResponse.json(
-        { success: false, error: 'Claim not found' },
-        { status: 404 }
-      );
+    if (!claim) {
+      return createValidationErrorResponse('Claim not found', 404);
     }
 
-    const claim = claims[claimIndex];
-
-    // Update fields
-    if (status) {
-      claim.status = status as 'claimed' | 'pending' | 'failed';
-      if (status === 'claimed' && !claim.claimedAt) {
-        claim.claimedAt = new Date().toISOString();
-      }
-    }
-    if (txHash !== undefined) claim.txHash = txHash;
-    if (notes !== undefined) claim.notes = notes;
-    if (valueUSD !== undefined) claim.valueUSD = valueUSD;
-
-    claims[claimIndex] = claim;
-    claimsStore.set(normalizedAddress, claims);
-
-    return NextResponse.json({
-      success: true,
+    return createSuccessResponse({
       claim,
       message: 'Claim updated successfully',
     });
   } catch (error) {
     console.error('Claim tracker API error:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to update claim',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    );
+    return createErrorResponse(error as Error);
   }
 }
 
 /**
- * DELETE /api/claim-tracker
+ * DELETE /api/claim-tracker?id=...&address=0x...
  * Delete a claim entry
  */
 export async function DELETE(request: NextRequest) {
@@ -250,46 +132,24 @@ export async function DELETE(request: NextRequest) {
     const address = searchParams.get('address');
 
     if (!id || !address) {
-      return NextResponse.json(
-        { success: false, error: 'ID and address are required' },
-        { status: 400 }
-      );
+      return createValidationErrorResponse('ID and address are required');
     }
 
     if (!isValidAddress(address)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid Ethereum address' },
-        { status: 400 }
-      );
+      return createValidationErrorResponse('Invalid Ethereum address');
     }
 
-    const normalizedAddress = address.toLowerCase();
-    const claims = claimsStore.get(normalizedAddress) || [];
-    const filteredClaims = claims.filter((c) => c.id !== id);
+    const deleted = await ClaimTrackerService.deleteClaim(address, id);
 
-    if (filteredClaims.length === claims.length) {
-      return NextResponse.json(
-        { success: false, error: 'Claim not found' },
-        { status: 404 }
-      );
+    if (!deleted) {
+      return createValidationErrorResponse('Claim not found', 404);
     }
 
-    claimsStore.set(normalizedAddress, filteredClaims);
-
-    return NextResponse.json({
-      success: true,
+    return createSuccessResponse({
       message: 'Claim deleted successfully',
     });
   } catch (error) {
     console.error('Claim tracker API error:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to delete claim',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    );
+    return createErrorResponse(error as Error);
   }
 }
-
