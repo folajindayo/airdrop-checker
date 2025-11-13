@@ -7,153 +7,171 @@ import {
   createValidationErrorResponse,
   createNotFoundResponse,
 } from '@/lib/utils/response-handlers';
+import { withErrorHandling } from '@/lib/utils/error-handler';
+import {
+  validateAddressOrThrow,
+  validateRequiredOrThrow,
+  validateEnumOrThrow,
+} from '@/lib/utils/validation-helpers';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * POST /api/claim-tracker
  * Add a new airdrop claim entry
+ * 
+ * @param request - Next.js request object with claim data in body
+ * @returns Created claim entry
+ * 
+ * @example
+ * ```bash
+ * POST /api/claim-tracker
+ * {
+ *   "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+ *   "projectId": "zora",
+ *   "projectName": "Zora",
+ *   "status": "claimed"
+ * }
+ * ```
  */
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { address, projectId, projectName, status, amount, valueUSD, txHash, notes } = body;
+async function postHandler(request: NextRequest) {
+  const body = await request.json();
+  const { address, projectId, projectName, status, amount, valueUSD, txHash, notes } = body;
 
-    // Validate required fields
-    if (!address || !projectId || !projectName) {
-      return createValidationErrorResponse('Address, projectId, and projectName are required');
-    }
+  // Validate required fields
+  validateRequiredOrThrow(address, 'address');
+  validateRequiredOrThrow(projectId, 'projectId');
+  validateRequiredOrThrow(projectName, 'projectName');
 
-    if (!isValidAddress(address)) {
-      return createValidationErrorResponse('Invalid Ethereum address');
-    }
+  // Validate address
+  const normalizedAddress = validateAddressOrThrow(address);
 
-    const validStatuses = ['claimed', 'pending', 'failed'];
-    if (!validStatuses.includes(status)) {
-      return createValidationErrorResponse(`Status must be one of: ${validStatuses.join(', ')}`);
-    }
+  // Validate status
+  const validStatuses = ['claimed', 'pending', 'failed'];
+  validateEnumOrThrow(status, validStatuses, 'status');
 
-    // Add claim using service
-    const claim = await ClaimTrackerService.addClaim({
-      address,
-      projectId,
-      projectName,
-      status,
-      amount,
-      valueUSD,
-      txHash,
-      notes,
-    });
+  // Add claim using service
+  const claim = await ClaimTrackerService.addClaim({
+    address: normalizedAddress,
+    projectId,
+    projectName,
+    status,
+    amount,
+    valueUSD,
+    txHash,
+    notes,
+  });
 
-    return createSuccessResponse({
-      claim,
-      message: 'Claim entry added successfully',
-    });
-  } catch (error) {
-    console.error('Claim tracker API error:', error);
-    return createErrorResponse(error as Error);
-  }
+  return createSuccessResponse({
+    claim,
+    message: 'Claim entry added successfully',
+  });
 }
 
 /**
  * GET /api/claim-tracker?address=0x...&status=claimed
  * Get all claims for an address
+ * 
+ * @param request - Next.js request object with query parameters
+ * @returns Array of claims and statistics
+ * 
+ * @example
+ * ```bash
+ * GET /api/claim-tracker?address=0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb&status=claimed
+ * ```
  */
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const address = searchParams.get('address');
-    const status = searchParams.get('status') || undefined;
-    const projectId = searchParams.get('projectId') || undefined;
+async function getHandler(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const address = searchParams.get('address');
+  const status = searchParams.get('status') || undefined;
+  const projectId = searchParams.get('projectId') || undefined;
 
-    if (!address) {
-      return createValidationErrorResponse('Address is required');
-    }
+  // Validate address
+  validateRequiredOrThrow(address, 'address');
+  const normalizedAddress = validateAddressOrThrow(address!);
 
-    if (!isValidAddress(address)) {
-      return createValidationErrorResponse('Invalid Ethereum address');
-    }
+  // Get claims and statistics
+  const claims = await ClaimTrackerService.getClaims(normalizedAddress, { status, projectId });
+  const stats = await ClaimTrackerService.getStatistics(normalizedAddress);
 
-    // Get claims and statistics
-    const claims = await ClaimTrackerService.getClaims(address, { status, projectId });
-    const stats = await ClaimTrackerService.getStatistics(address);
-
-    return createSuccessResponse({
-      claims,
-      stats,
-      count: claims.length,
-    });
-  } catch (error) {
-    console.error('Claim tracker API error:', error);
-    return createErrorResponse(error as Error);
-  }
+  return createSuccessResponse({
+    claims,
+    stats,
+    count: claims.length,
+  });
 }
 
 /**
  * PATCH /api/claim-tracker
  * Update a claim entry
+ * 
+ * @param request - Next.js request object with update data in body
+ * @returns Updated claim entry
+ * 
+ * @example
+ * ```bash
+ * PATCH /api/claim-tracker
+ * {
+ *   "id": "claim-123",
+ *   "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+ *   "status": "claimed"
+ * }
+ * ```
  */
-export async function PATCH(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { id, address, ...updates } = body;
+async function patchHandler(request: NextRequest) {
+  const body = await request.json();
+  const { id, address, ...updates } = body;
 
-    if (!id || !address) {
-      return createValidationErrorResponse('ID and address are required');
-    }
+  validateRequiredOrThrow(id, 'id');
+  validateRequiredOrThrow(address, 'address');
+  const normalizedAddress = validateAddressOrThrow(address);
 
-    if (!isValidAddress(address)) {
-      return createValidationErrorResponse('Invalid Ethereum address');
-    }
+  const claim = await ClaimTrackerService.updateClaim(normalizedAddress, id, updates);
 
-    const claim = await ClaimTrackerService.updateClaim(address, id, updates);
-
-    if (!claim) {
-      return createNotFoundResponse('Claim');
-    }
-
-    return createSuccessResponse({
-      claim,
-      message: 'Claim updated successfully',
-    });
-  } catch (error) {
-    console.error('Claim tracker API error:', error);
-    return createErrorResponse(error as Error);
+  if (!claim) {
+    return createNotFoundResponse('Claim');
   }
+
+  return createSuccessResponse({
+    claim,
+    message: 'Claim updated successfully',
+  });
 }
 
 /**
  * DELETE /api/claim-tracker?id=...&address=0x...
  * Delete a claim entry
+ * 
+ * @param request - Next.js request object with id and address in query parameters
+ * @returns Success message
+ * 
+ * @example
+ * ```bash
+ * DELETE /api/claim-tracker?id=claim-123&address=0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb
+ * ```
  */
-export async function DELETE(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
-    const address = searchParams.get('address');
+async function deleteHandler(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  const address = searchParams.get('address');
 
-    if (!id || !address) {
-      return createValidationErrorResponse('ID and address are required');
-    }
+  validateRequiredOrThrow(id, 'id');
+  validateRequiredOrThrow(address, 'address');
+  const normalizedAddress = validateAddressOrThrow(address!);
 
-    if (!isValidAddress(address)) {
-      return createValidationErrorResponse('Invalid Ethereum address');
-    }
+  const deleted = await ClaimTrackerService.deleteClaim(normalizedAddress, id!);
 
-    const deleted = await ClaimTrackerService.deleteClaim(address, id);
-
-    if (!deleted) {
-      return createNotFoundResponse('Claim');
-    }
-
-    return createSuccessResponse({
-      message: 'Claim deleted successfully',
-    });
-  } catch (error) {
-    console.error('Claim tracker API error:', error);
-    return createErrorResponse(error as Error);
+  if (!deleted) {
+    return createNotFoundResponse('Claim');
   }
+
+  return createSuccessResponse({
+    message: 'Claim deleted successfully',
+  });
 }
 
-
-
+// Export with error handling wrappers
+export const POST = withErrorHandling(postHandler);
+export const GET = withErrorHandling(getHandler);
+export const PATCH = withErrorHandling(patchHandler);
+export const DELETE = withErrorHandling(deleteHandler);
