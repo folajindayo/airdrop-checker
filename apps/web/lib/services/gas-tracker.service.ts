@@ -1,11 +1,16 @@
 /**
  * Gas tracker service
  * Business logic for gas spending analytics
+ * 
+ * @module GasTrackerService
  */
 
 import { getTransactions } from '../goldrush/transactions';
 import type { GoldRushTransaction } from '@airdrop-finder/shared';
 
+/**
+ * Gas tracker data structure
+ */
 export interface GasTrackerData {
   address: string;
   totalGasSpent: string;
@@ -15,6 +20,9 @@ export interface GasTrackerData {
   timestamp: number;
 }
 
+/**
+ * Chain gas data breakdown
+ */
 export interface ChainGasData {
   chainId: number;
   chainName: string;
@@ -24,6 +32,9 @@ export interface ChainGasData {
   percentage: number;
 }
 
+/**
+ * Monthly gas data
+ */
 export interface MonthlyGasData {
   month: string;
   gasSpent: string;
@@ -33,6 +44,17 @@ export interface MonthlyGasData {
 
 /**
  * Get gas spending data for an address
+ * 
+ * @param address - Ethereum address to get gas data for
+ * @param chainIds - Array of chain IDs to query (default: [1, 8453, 42161, 10, 137])
+ * @returns Gas tracker data including total spent, chain breakdown, and monthly breakdown
+ * @throws {Error} If address is invalid or data fetch fails
+ * 
+ * @example
+ * ```typescript
+ * const gasData = await getGasTrackerData('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb');
+ * console.log(gasData.totalGasSpentUSD); // Total gas spent in USD
+ * ```
  */
 export async function getGasTrackerData(
   address: string,
@@ -120,4 +142,3 @@ export async function getGasTrackerData(
     timestamp: Date.now(),
   };
 }
-
