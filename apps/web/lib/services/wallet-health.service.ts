@@ -1,10 +1,16 @@
 /**
  * Wallet health service
+ * Business logic for wallet health assessment
+ * 
+ * @module WalletHealthService
  */
 
 import { getTokenBalances } from '../goldrush/tokens';
 import { getTransactions } from '../goldrush/transactions';
 
+/**
+ * Wallet health data structure
+ */
 export interface WalletHealthData {
   address: string;
   healthScore: number;
@@ -20,6 +26,21 @@ export interface WalletHealthData {
   };
 }
 
+/**
+ * Assess wallet health for an address
+ * 
+ * @param address - Ethereum address to assess
+ * @param chainIds - Array of chain IDs to query (default: [1, 8453, 42161, 10, 137])
+ * @returns Wallet health data including scores and recommendations
+ * @throws {Error} If address is invalid or data fetch fails
+ * 
+ * @example
+ * ```typescript
+ * const health = await assessWalletHealth('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb');
+ * console.log(health.healthScore); // Overall health score (0-100)
+ * console.log(health.recommendations); // Array of recommendations
+ * ```
+ */
 export async function assessWalletHealth(
   address: string,
   chainIds: number[] = [1, 8453, 42161, 10, 137]
@@ -75,4 +96,3 @@ export async function assessWalletHealth(
     },
   };
 }
-
