@@ -1,8 +1,13 @@
 /**
  * Risk analysis service  
  * Business logic for security and risk assessment
+ * 
+ * @module RiskAnalysisService
  */
 
+/**
+ * Risk analysis data structure
+ */
 export interface RiskAnalysisData {
   riskScore: RiskScores;
   approvals: TokenApproval[];
@@ -12,6 +17,9 @@ export interface RiskAnalysisData {
   recommendations: string[];
 }
 
+/**
+ * Risk scores breakdown
+ */
 export interface RiskScores {
   overall: number;
   approvals: number;
@@ -19,6 +27,9 @@ export interface RiskScores {
   exposure: number;
 }
 
+/**
+ * Token approval information
+ */
 export interface TokenApproval {
   spender: string;
   spenderName: string;
@@ -31,6 +42,9 @@ export interface TokenApproval {
   chainId: number;
 }
 
+/**
+ * Security check result
+ */
 export interface SecurityCheck {
   name: string;
   status: 'pass' | 'warning' | 'fail';
@@ -40,6 +54,17 @@ export interface SecurityCheck {
 
 /**
  * Analyze risk for an address
+ * 
+ * @param address - Ethereum address to analyze
+ * @returns Risk analysis data including scores, approvals, and recommendations
+ * @throws {Error} If analysis fails
+ * 
+ * @example
+ * ```typescript
+ * const analysis = await analyzeRisk('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb');
+ * console.log(analysis.riskScore.overall); // Overall risk score (0-100)
+ * console.log(analysis.criticalApprovals); // Number of critical approvals
+ * ```
  */
 export async function analyzeRisk(address: string): Promise<RiskAnalysisData> {
   // Mock data - in production, fetch from blockchain events
@@ -59,6 +84,10 @@ export async function analyzeRisk(address: string): Promise<RiskAnalysisData> {
   };
 }
 
+/**
+ * Get mock approvals data
+ * @internal
+ */
 function getMockApprovals(): TokenApproval[] {
   return [
     {
@@ -75,6 +104,10 @@ function getMockApprovals(): TokenApproval[] {
   ];
 }
 
+/**
+ * Calculate risk scores
+ * @internal
+ */
 function calculateRiskScores(approvals: TokenApproval[], activityScore: number): RiskScores {
   const criticalCount = approvals.filter((a) => a.riskLevel === 'critical').length;
   const highCount = approvals.filter((a) => a.riskLevel === 'high').length;
@@ -92,6 +125,10 @@ function calculateRiskScores(approvals: TokenApproval[], activityScore: number):
   return { overall, approvals: approvalsScore, activity: activityScore, exposure: exposureScore };
 }
 
+/**
+ * Perform security checks
+ * @internal
+ */
 function performSecurityChecks(
   approvals: TokenApproval[],
   activityScore: number
@@ -106,6 +143,10 @@ function performSecurityChecks(
   ];
 }
 
+/**
+ * Generate security recommendations
+ * @internal
+ */
 function generateRecommendations(
   approvals: TokenApproval[],
   securityChecks: SecurityCheck[]
@@ -125,4 +166,3 @@ function generateRecommendations(
   
   return recommendations;
 }
-
