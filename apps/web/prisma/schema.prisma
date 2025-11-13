@@ -13,6 +13,7 @@ datasource db {
 model Project {
   id             String   @id
   name           String
+  slug           String   @unique
   description    String?
   status         String   // confirmed, rumored, expired, speculative
   logoUrl        String?
@@ -20,13 +21,66 @@ model Project {
   twitterUrl     String?
   criteria       Json     // Array of eligibility criteria
   chains         String[] // Array of chain names
+  tags           String[] // Array of tags for filtering
   estimatedValue String?
   snapshotDate   String?
   claimUrl       String?
+  trendingScore  Int      @default(0)
+  viewCount      Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
+  // Indexes for common queries
   @@index([status])
+  @@index([slug])
+  @@index([createdAt])
+  @@index([updatedAt])
+  @@index([trendingScore])
+  @@index([status, trendingScore])
   @@map("projects")
+}
+
+model UserPreference {
+  id                String   @id @default(cuid())
+  address           String   @unique
+  email             String?
+  discordWebhook    String?
+  telegramChatId    String?
+  notifyNewAirdrops Boolean  @default(true)
+  notifySnapshots   Boolean  @default(true)
+  notifyClai ms      Boolean  @default(true)
+  notifyPriceAlerts Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([address])
+  @@map("user_preferences")
+}
+
+model CacheEntry {
+  key       String   @id
+  value     Json
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
+  @@map("cache_entries")
+}
+
+model ApiUsage {
+  id        String   @id @default(cuid())
+  endpoint  String
+  address   String?
+  ipAddress String
+  userAgent String?
+  statusCode Int
+  duration  Int      // Duration in milliseconds
+  timestamp DateTime @default(now())
+
+  @@index([endpoint])
+  @@index([address])
+  @@index([timestamp])
+  @@index([endpoint, timestamp])
+  @@map("api_usage")
 }
 
