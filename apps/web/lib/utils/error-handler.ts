@@ -41,9 +41,16 @@ export class AppError extends Error {
  */
 export function handleApiError(error: unknown): NextResponse {
   if (error instanceof AppError) {
-    return createErrorResponse(
-      new Error(error.message),
-      error.statusCode
+    return NextResponse.json(
+      {
+        success: false,
+        error: {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+        },
+      },
+      { status: error.statusCode }
     );
   }
 
@@ -67,7 +74,7 @@ export function handleApiError(error: unknown): NextResponse {
  */
 export function withErrorHandling<T extends any[]>(
   handler: (...args: T) => Promise<NextResponse>
-) {
+): (...args: T) => Promise<NextResponse> {
   return async (...args: T): Promise<NextResponse> => {
     try {
       return await handler(...args);
