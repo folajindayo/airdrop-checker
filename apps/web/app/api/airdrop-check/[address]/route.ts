@@ -21,19 +21,19 @@ async function getHandler(
   // Validate address (throws AppError if invalid)
   const normalizedAddress = validateAddressOrThrow(address);
 
-    // Check cache first
-    const cacheKey = `airdrop-check:${normalizedAddress}`;
-    const cachedResult = cache.get<CheckResult>(cacheKey);
+  // Check cache first
+  const cacheKey = `airdrop-check:${normalizedAddress}`;
+  const cachedResult = cache.get<CheckResult>(cacheKey);
 
-    if (cachedResult) {
-      return createSuccessResponse({
-        ...cachedResult,
-        cached: true,
-      });
-    }
+  if (cachedResult) {
+    return createSuccessResponse({
+      ...cachedResult,
+      cached: true,
+    });
+  }
 
-    // Check eligibility using service
-    const result = await checkAirdropEligibility(normalizedAddress);
+  // Check eligibility using service
+  const result = await checkAirdropEligibility(normalizedAddress);
 
   // Cache the result
   cache.set(cacheKey, result, CACHE_TTL.AIRDROP_CHECK);
