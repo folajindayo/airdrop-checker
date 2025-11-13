@@ -1,7 +1,6 @@
 import { NextRequest } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
-import { RemindersService } from '@/lib/services';
-import type { ReminderType } from '@/lib/services/reminders.service';
+import { RemindersService, type ReminderType } from '@/lib/services';
 import {
   createSuccessResponse,
   createErrorResponse,
