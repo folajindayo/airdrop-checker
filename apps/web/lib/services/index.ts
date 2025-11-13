@@ -11,4 +11,5 @@ export * from './trending.service';
 export * from './highlights.service';
 export * from './wallet-health.service';
 export * from './claim-tracker.service';
+export * from './reminders.service';
 
