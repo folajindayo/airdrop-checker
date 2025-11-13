@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { isValidAddress } from '@airdrop-finder/shared';
-import { fetchAllChainTransactions } from '@/lib/goldrush';
+import { NextRequest } from 'next/server';
+import { isValidAddress, cache, CACHE_TTL } from '@airdrop-finder/shared';
+import { getGasTrackerData } from '@/lib/services';
+import { createSuccessResponse, createErrorResponse, createValidationErrorResponse } from '@/lib/utils/response-handlers';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,13 +17,26 @@ export async function GET(
     const { address } = await params;
 
     if (!isValidAddress(address)) {
-      return NextResponse.json(
-        { error: 'Invalid Ethereum address' },
-        { status: 400 }
-      );
+      return createValidationErrorResponse('Invalid Ethereum address');
     }
 
     const normalizedAddress = address.toLowerCase();
+    const cacheKey = `gas-tracker:${normalizedAddress}`;
+    const cached = cache.get(cacheKey);
+    
+    if (cached) {
+      return createSuccessResponse({ ...cached, cached: true });
+    }
+    
+    const result = await getGasTrackerData(normalizedAddress);
+    cache.set(cacheKey, result, CACHE_TTL.GAS_TRACKER);
+    
+    return createSuccessResponse(result);
+  } catch (error) {
+    console.error('Gas tracker API error:', error);
+    return createErrorResponse(error as Error);
+  }
+}
 
     // Fetch all transactions
     const chainTransactions = await fetchAllChainTransactions(normalizedAddress);
