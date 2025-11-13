@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isValidAddress, cache, CACHE_TTL } from '@airdrop-finder/shared';
+import { cache, CACHE_TTL } from '@airdrop-finder/shared';
 import type { CheckResult } from '@airdrop-finder/shared';
 import { checkAirdropEligibility } from '@/lib/services';
-import { createSuccessResponse, createErrorResponse, createValidationErrorResponse } from '@/lib/utils/response-handlers';
+import { createSuccessResponse } from '@/lib/utils/response-handlers';
+import { withErrorHandling } from '@/lib/utils/error-handler';
+import { validateAddressOrThrow } from '@/lib/utils/validation-helpers';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,19 +12,14 @@ export const dynamic = 'force-dynamic';
  * GET /api/airdrop-check/[address]
  * Check airdrop eligibility for a wallet address
  */
-export async function GET(
+async function getHandler(
   request: NextRequest,
   { params }: { params: Promise<{ address: string }> }
 ) {
-  try {
-    const { address } = await params;
+  const { address } = await params;
 
-    // Validate address
-    if (!isValidAddress(address)) {
-      return createValidationErrorResponse('Invalid Ethereum address');
-    }
-
-    const normalizedAddress = address.toLowerCase();
+  // Validate address (throws AppError if invalid)
+  const normalizedAddress = validateAddressOrThrow(address);
 
     // Check cache first
     const cacheKey = `airdrop-check:${normalizedAddress}`;
@@ -38,13 +35,12 @@ export async function GET(
     // Check eligibility using service
     const result = await checkAirdropEligibility(normalizedAddress);
 
-    // Cache the result
-    cache.set(cacheKey, result, CACHE_TTL.AIRDROP_CHECK);
+  // Cache the result
+  cache.set(cacheKey, result, CACHE_TTL.AIRDROP_CHECK);
 
-    return createSuccessResponse(result);
-  } catch (error) {
-    console.error('Error checking airdrop eligibility:', error);
-    return createErrorResponse(error as Error);
-  }
+  return createSuccessResponse(result);
 }
+
+// Export with error handling wrapper
+export const GET = withErrorHandling(getHandler);
 
