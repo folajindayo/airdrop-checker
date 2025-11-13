@@ -7,151 +7,173 @@ import {
   createValidationErrorResponse,
   createNotFoundResponse,
 } from '@/lib/utils/response-handlers';
+import { withErrorHandling } from '@/lib/utils/error-handler';
+import { validateAddressOrThrow, validateRequiredOrThrow, validateEnumOrThrow } from '@/lib/utils/validation-helpers';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * POST /api/reminders
  * Create a new reminder
+ * 
+ * @param request - Next.js request object with reminder data in body
+ * @returns Created reminder
+ * 
+ * @example
+ * ```bash
+ * POST /api/reminders
+ * {
+ *   "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+ *   "type": "claim",
+ *   "reminderTime": "2024-02-01T00:00:00Z",
+ *   "message": "Claim your airdrop"
+ * }
+ * ```
  */
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { address, projectId, projectName, type, reminderTime, message } = body;
+async function postHandler(request: NextRequest) {
+  const body = await request.json();
+  const { address, projectId, projectName, type, reminderTime, message } = body;
 
-    if (!address || !reminderTime || !message) {
-      return createValidationErrorResponse('Address, reminderTime, and message are required');
-    }
+  // Validate required fields
+  validateRequiredOrThrow(address, 'address');
+  validateRequiredOrThrow(reminderTime, 'reminderTime');
+  validateRequiredOrThrow(message, 'message');
 
-    if (!isValidAddress(address)) {
-      return createValidationErrorResponse('Invalid Ethereum address');
-    }
+  // Validate address
+  const normalizedAddress = validateAddressOrThrow(address);
 
-    const reminderDate = new Date(reminderTime);
-    if (isNaN(reminderDate.getTime())) {
-      return createValidationErrorResponse('Invalid reminderTime format. Use ISO 8601 format.');
-    }
-
-    if (reminderDate < new Date()) {
-      return createValidationErrorResponse('Reminder time must be in the future');
-    }
-
-    const validTypes: ReminderType[] = ['snapshot', 'claim', 'announcement', 'custom'];
-    if (!validTypes.includes(type)) {
-      return createValidationErrorResponse(`Type must be one of: ${validTypes.join(', ')}`);
-    }
-
-    const reminder = await RemindersService.createReminder({
-      address,
-      projectId,
-      projectName,
-      type,
-      reminderTime,
-      message,
-    });
-
-    return createSuccessResponse({
-      reminder,
-      message: 'Reminder created successfully',
-    });
-  } catch (error) {
-    console.error('Reminders API error:', error);
-    return createErrorResponse(error as Error);
+  // Validate reminder time
+  const reminderDate = new Date(reminderTime);
+  if (isNaN(reminderDate.getTime())) {
+    throw new Error('Invalid reminderTime format. Use ISO 8601 format.');
   }
+
+  if (reminderDate < new Date()) {
+    throw new Error('Reminder time must be in the future');
+  }
+
+  // Validate type
+  const validTypes: ReminderType[] = ['snapshot', 'claim', 'announcement', 'custom'];
+  validateEnumOrThrow(type, validTypes, 'type');
+
+  const reminder = await RemindersService.createReminder({
+    address: normalizedAddress,
+    projectId,
+    projectName,
+    type,
+    reminderTime,
+    message,
+  });
+
+  return createSuccessResponse({
+    reminder,
+    message: 'Reminder created successfully',
+  });
 }
 
 /**
  * GET /api/reminders?address=0x...&type=claim&upcoming=true
  * Get reminders for an address
+ * 
+ * @param request - Next.js request object with query parameters
+ * @returns Array of reminders and statistics
+ * 
+ * @example
+ * ```bash
+ * GET /api/reminders?address=0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb&type=claim
+ * ```
  */
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const address = searchParams.get('address');
-    const type = searchParams.get('type') || undefined;
-    const enabled = searchParams.get('enabled');
-    const upcoming = searchParams.get('upcoming') === 'true';
+async function getHandler(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const address = searchParams.get('address');
+  const type = searchParams.get('type') || undefined;
+  const enabled = searchParams.get('enabled');
+  const upcoming = searchParams.get('upcoming') === 'true';
 
-    if (!address) {
-      return createValidationErrorResponse('Address is required');
-    }
+  // Validate address
+  validateRequiredOrThrow(address, 'address');
+  const normalizedAddress = validateAddressOrThrow(address!);
 
-    if (!isValidAddress(address)) {
-      return createValidationErrorResponse('Invalid Ethereum address');
-    }
+  const reminders = await RemindersService.getReminders(normalizedAddress, {
+    type: type as ReminderType | undefined,
+    enabled: enabled ? enabled === 'true' : undefined,
+    upcoming,
+  });
 
-    const reminders = await RemindersService.getReminders(address, {
-      type,
-      enabled: enabled ? enabled === 'true' : undefined,
-      upcoming,
-    });
+  const stats = await RemindersService.getStatistics(normalizedAddress);
 
-    const stats = await RemindersService.getStatistics(address);
-
-    return createSuccessResponse({
-      reminders,
-      stats,
-      count: reminders.length,
-    });
-  } catch (error) {
-    console.error('Reminders API error:', error);
-    return createErrorResponse(error as Error);
-  }
+  return createSuccessResponse({
+    reminders,
+    stats,
+    count: reminders.length,
+  });
 }
 
 /**
  * PATCH /api/reminders
  * Update a reminder
+ * 
+ * @param request - Next.js request object with update data in body
+ * @returns Updated reminder
+ * 
+ * @example
+ * ```bash
+ * PATCH /api/reminders
+ * {
+ *   "id": "reminder-123",
+ *   "enabled": false
+ * }
+ * ```
  */
-export async function PATCH(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { id, ...updates } = body;
+async function patchHandler(request: NextRequest) {
+  const body = await request.json();
+  const { id, ...updates } = body;
 
-    if (!id) {
-      return createValidationErrorResponse('Reminder ID is required');
-    }
+  validateRequiredOrThrow(id, 'id');
 
-    const reminder = await RemindersService.updateReminder(id, updates);
+  const reminder = await RemindersService.updateReminder(id, updates);
 
-    if (!reminder) {
-      return createNotFoundResponse('Reminder');
-    }
-
-    return createSuccessResponse({
-      reminder,
-      message: 'Reminder updated successfully',
-    });
-  } catch (error) {
-    console.error('Reminders API error:', error);
-    return createErrorResponse(error as Error);
+  if (!reminder) {
+    return createNotFoundResponse('Reminder');
   }
+
+  return createSuccessResponse({
+    reminder,
+    message: 'Reminder updated successfully',
+  });
 }
 
 /**
  * DELETE /api/reminders?id=...
  * Delete a reminder
+ * 
+ * @param request - Next.js request object with id in query parameters
+ * @returns Success message
+ * 
+ * @example
+ * ```bash
+ * DELETE /api/reminders?id=reminder-123
+ * ```
  */
-export async function DELETE(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+async function deleteHandler(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
 
-    if (!id) {
-      return createValidationErrorResponse('Reminder ID is required');
-    }
+  validateRequiredOrThrow(id, 'id');
 
-    const deleted = await RemindersService.deleteReminder(id);
+  const deleted = await RemindersService.deleteReminder(id!);
 
-    if (!deleted) {
-      return createNotFoundResponse('Reminder');
-    }
-
-    return createSuccessResponse({
-      message: 'Reminder deleted successfully',
-    });
-  } catch (error) {
-    console.error('Reminders API error:', error);
-    return createErrorResponse(error as Error);
+  if (!deleted) {
+    return createNotFoundResponse('Reminder');
   }
+
+  return createSuccessResponse({
+    message: 'Reminder deleted successfully',
+  });
 }
+
+// Export with error handling wrappers
+export const POST = withErrorHandling(postHandler);
+export const GET = withErrorHandling(getHandler);
+export const PATCH = withErrorHandling(patchHandler);
+export const DELETE = withErrorHandling(deleteHandler);
