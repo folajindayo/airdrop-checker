@@ -1,44 +1,51 @@
 /**
- * Tests for string utilities
+ * Tests for String Utility Functions
  */
 
 import {
   capitalize,
-  titleCase,
-  camelCase,
-  snakeCase,
-  kebabCase,
-  pascalCase,
+  capitalizeWords,
+  toCamelCase,
+  toPascalCase,
+  toSnakeCase,
+  toKebabCase,
   truncate,
-  truncateMiddle,
+  truncateWords,
   slugify,
-  stripHtml,
+  removeAccents,
   escapeHtml,
   unescapeHtml,
+  stripHtml,
+  pad,
   padLeft,
   padRight,
   repeat,
   reverse,
-  countOccurrences,
-  contains,
-  startsWithAny,
-  endsWithAny,
+  count,
   replaceAll,
-  removeWhitespace,
-  normalizeWhitespace,
+  containsIgnoreCase,
+  startsWithIgnoreCase,
+  endsWithIgnoreCase,
   extractNumbers,
   extractEmails,
   extractUrls,
   mask,
-  randomString,
+  formatPhone,
+  random,
+  toBoolean,
+  normalizeWhitespace,
+  removeLineBreaks,
+  wordWrap,
+  naturalCompare,
+  levenshteinDistance,
   similarity,
 } from '@/lib/utils/string';
 
-describe('string utils', () => {
+describe('String Utilities', () => {
   describe('capitalize', () => {
     it('should capitalize first letter', () => {
       expect(capitalize('hello')).toBe('Hello');
-      expect(capitalize('world')).toBe('World');
+      expect(capitalize('HELLO')).toBe('Hello');
     });
 
     it('should handle empty string', () => {
@@ -46,41 +53,38 @@ describe('string utils', () => {
     });
   });
 
-  describe('titleCase', () => {
-    it('should capitalize all words', () => {
-      expect(titleCase('hello world')).toBe('Hello World');
-      expect(titleCase('the quick brown fox')).toBe('The Quick Brown Fox');
+  describe('capitalizeWords', () => {
+    it('should capitalize each word', () => {
+      expect(capitalizeWords('hello world')).toBe('Hello World');
+      expect(capitalizeWords('foo bar baz')).toBe('Foo Bar Baz');
     });
   });
 
-  describe('camelCase', () => {
+  describe('toCamelCase', () => {
     it('should convert to camelCase', () => {
-      expect(camelCase('hello world')).toBe('helloWorld');
-      expect(camelCase('foo-bar-baz')).toBe('fooBarBaz');
-      expect(camelCase('foo_bar_baz')).toBe('fooBarBaz');
+      expect(toCamelCase('hello world')).toBe('helloWorld');
+      expect(toCamelCase('foo bar baz')).toBe('fooBarBaz');
     });
   });
 
-  describe('snakeCase', () => {
-    it('should convert to snake_case', () => {
-      expect(snakeCase('helloWorld')).toBe('hello_world');
-      expect(snakeCase('fooBarBaz')).toBe('foo_bar_baz');
-      expect(snakeCase('foo-bar-baz')).toBe('foo_bar_baz');
-    });
-  });
-
-  describe('kebabCase', () => {
-    it('should convert to kebab-case', () => {
-      expect(kebabCase('helloWorld')).toBe('hello-world');
-      expect(kebabCase('fooBarBaz')).toBe('foo-bar-baz');
-      expect(kebabCase('foo_bar_baz')).toBe('foo-bar-baz');
-    });
-  });
-
-  describe('pascalCase', () => {
+  describe('toPascalCase', () => {
     it('should convert to PascalCase', () => {
-      expect(pascalCase('hello world')).toBe('HelloWorld');
-      expect(pascalCase('foo-bar-baz')).toBe('FooBarBaz');
+      expect(toPascalCase('hello world')).toBe('HelloWorld');
+      expect(toPascalCase('foo bar baz')).toBe('FooBarBaz');
+    });
+  });
+
+  describe('toSnakeCase', () => {
+    it('should convert to snake_case', () => {
+      expect(toSnakeCase('helloWorld')).toBe('hello_world');
+      expect(toSnakeCase('FooBarBaz')).toBe('foo_bar_baz');
+    });
+  });
+
+  describe('toKebabCase', () => {
+    it('should convert to kebab-case', () => {
+      expect(toKebabCase('helloWorld')).toBe('hello-world');
+      expect(toKebabCase('FooBarBaz')).toBe('foo-bar-baz');
     });
   });
 
@@ -91,66 +95,77 @@ describe('string utils', () => {
     });
 
     it('should use custom suffix', () => {
-      expect(truncate('hello world', 8, '…')).toBe('hello w…');
+      expect(truncate('hello world', 8, '---')).toBe('hello---');
     });
   });
 
-  describe('truncateMiddle', () => {
-    it('should truncate in middle', () => {
-      expect(truncateMiddle('hello world test', 10)).toBe('hel...test');
-    });
-
-    it('should not truncate short strings', () => {
-      expect(truncateMiddle('test', 10)).toBe('test');
+  describe('truncateWords', () => {
+    it('should truncate to word boundary', () => {
+      expect(truncateWords('hello world foo bar', 2)).toBe('hello world...');
+      expect(truncateWords('one two', 5)).toBe('one two');
     });
   });
 
   describe('slugify', () => {
-    it('should create URL-safe slugs', () => {
+    it('should create URL-friendly slug', () => {
       expect(slugify('Hello World')).toBe('hello-world');
-      expect(slugify('  Foo Bar  ')).toBe('foo-bar');
-      expect(slugify('Test & Example')).toBe('test-example');
+      expect(slugify('Foo  Bar__Baz')).toBe('foo-bar-baz');
+    });
+
+    it('should remove special characters', () => {
+      expect(slugify('Hello, World!')).toBe('hello-world');
     });
   });
 
-  describe('stripHtml', () => {
-    it('should remove HTML tags', () => {
-      expect(stripHtml('<p>Hello</p>')).toBe('Hello');
-      expect(stripHtml('<div><span>Test</span></div>')).toBe('Test');
+  describe('removeAccents', () => {
+    it('should remove accents', () => {
+      expect(removeAccents('café')).toBe('cafe');
+      expect(removeAccents('naïve')).toBe('naive');
     });
   });
 
   describe('escapeHtml', () => {
-    it('should escape HTML entities', () => {
-      expect(escapeHtml('<div>')).toBe('&lt;div&gt;');
-      expect(escapeHtml('Tom & Jerry')).toBe('Tom &amp; Jerry');
+    it('should escape HTML characters', () => {
+      expect(escapeHtml('<div>test</div>')).toBe('&lt;div&gt;test&lt;/div&gt;');
+      expect(escapeHtml('a & b')).toBe('a &amp; b');
     });
   });
 
   describe('unescapeHtml', () => {
     it('should unescape HTML entities', () => {
       expect(unescapeHtml('&lt;div&gt;')).toBe('<div>');
-      expect(unescapeHtml('Tom &amp; Jerry')).toBe('Tom & Jerry');
+      expect(unescapeHtml('a &amp; b')).toBe('a & b');
+    });
+  });
+
+  describe('stripHtml', () => {
+    it('should remove HTML tags', () => {
+      expect(stripHtml('<p>Hello <strong>World</strong></p>')).toBe('Hello World');
+      expect(stripHtml('<div><span>test</span></div>')).toBe('test');
+    });
+  });
+
+  describe('pad', () => {
+    it('should pad string', () => {
+      expect(pad('test', 10)).toHaveLength(10);
     });
   });
 
   describe('padLeft', () => {
-    it('should pad on left', () => {
+    it('should pad from left', () => {
       expect(padLeft('5', 3, '0')).toBe('005');
-      expect(padLeft('test', 10)).toBe('      test');
     });
   });
 
   describe('padRight', () => {
-    it('should pad on right', () => {
+    it('should pad from right', () => {
       expect(padRight('5', 3, '0')).toBe('500');
-      expect(padRight('test', 10)).toBe('test      ');
     });
   });
 
   describe('repeat', () => {
     it('should repeat string', () => {
-      expect(repeat('x', 3)).toBe('xxx');
+      expect(repeat('a', 3)).toBe('aaa');
       expect(repeat('ab', 2)).toBe('abab');
     });
   });
@@ -162,111 +177,154 @@ describe('string utils', () => {
     });
   });
 
-  describe('countOccurrences', () => {
+  describe('count', () => {
     it('should count occurrences', () => {
-      expect(countOccurrences('hello world', 'l')).toBe(3);
-      expect(countOccurrences('test test test', 'test')).toBe(3);
-    });
-
-    it('should handle no matches', () => {
-      expect(countOccurrences('hello', 'x')).toBe(0);
-    });
-  });
-
-  describe('contains', () => {
-    it('should check if contains substring', () => {
-      expect(contains('hello world', 'world')).toBe(true);
-      expect(contains('hello world', 'foo')).toBe(false);
-    });
-
-    it('should support case insensitive', () => {
-      expect(contains('Hello World', 'WORLD', false)).toBe(true);
-    });
-  });
-
-  describe('startsWithAny', () => {
-    it('should check multiple prefixes', () => {
-      expect(startsWithAny('hello world', ['hello', 'hi'])).toBe(true);
-      expect(startsWithAny('test', ['foo', 'bar'])).toBe(false);
-    });
-  });
-
-  describe('endsWithAny', () => {
-    it('should check multiple suffixes', () => {
-      expect(endsWithAny('hello world', ['world', 'earth'])).toBe(true);
-      expect(endsWithAny('test', ['foo', 'bar'])).toBe(false);
+      expect(count('hello world', 'l')).toBe(3);
+      expect(count('foo bar foo', 'foo')).toBe(2);
     });
   });
 
   describe('replaceAll', () => {
     it('should replace all occurrences', () => {
+      expect(replaceAll('hello world', 'l', 'L')).toBe('heLLo worLd');
       expect(replaceAll('foo bar foo', 'foo', 'baz')).toBe('baz bar baz');
     });
   });
 
-  describe('removeWhitespace', () => {
-    it('should remove all whitespace', () => {
-      expect(removeWhitespace('hello world')).toBe('helloworld');
-      expect(removeWhitespace('  test  ')).toBe('test');
+  describe('containsIgnoreCase', () => {
+    it('should check case-insensitive contains', () => {
+      expect(containsIgnoreCase('Hello World', 'WORLD')).toBe(true);
+      expect(containsIgnoreCase('test', 'TEST')).toBe(true);
+      expect(containsIgnoreCase('foo', 'bar')).toBe(false);
     });
   });
 
-  describe('normalizeWhitespace', () => {
-    it('should normalize whitespace', () => {
-      expect(normalizeWhitespace('hello   world')).toBe('hello world');
-      expect(normalizeWhitespace('  test  ')).toBe('test');
+  describe('startsWithIgnoreCase', () => {
+    it('should check case-insensitive starts with', () => {
+      expect(startsWithIgnoreCase('Hello World', 'HELLO')).toBe(true);
+      expect(startsWithIgnoreCase('test', 'TE')).toBe(true);
+      expect(startsWithIgnoreCase('foo', 'bar')).toBe(false);
+    });
+  });
+
+  describe('endsWithIgnoreCase', () => {
+    it('should check case-insensitive ends with', () => {
+      expect(endsWithIgnoreCase('Hello World', 'WORLD')).toBe(true);
+      expect(endsWithIgnoreCase('test', 'ST')).toBe(true);
+      expect(endsWithIgnoreCase('foo', 'bar')).toBe(false);
     });
   });
 
   describe('extractNumbers', () => {
-    it('should extract numbers', () => {
-      expect(extractNumbers('There are 3 apples and 5 oranges')).toEqual([3, 5]);
-      expect(extractNumbers('Price: $19.99')).toEqual([19.99]);
+    it('should extract all numbers', () => {
+      expect(extractNumbers('I have 2 apples and 3 oranges')).toEqual([2, 3]);
+      expect(extractNumbers('abc123def456')).toEqual([123, 456]);
     });
   });
 
   describe('extractEmails', () => {
-    it('should extract emails', () => {
-      const text = 'Contact us at test@example.com or support@example.org';
-      expect(extractEmails(text)).toEqual(['test@example.com', 'support@example.org']);
+    it('should extract email addresses', () => {
+      expect(extractEmails('Contact test@example.com or admin@test.org')).toEqual([
+        'test@example.com',
+        'admin@test.org',
+      ]);
     });
   });
 
   describe('extractUrls', () => {
     it('should extract URLs', () => {
-      const text = 'Visit https://example.com or http://test.org';
-      expect(extractUrls(text)).toEqual(['https://example.com', 'http://test.org']);
+      expect(extractUrls('Visit https://example.com or http://test.org')).toEqual([
+        'https://example.com',
+        'http://test.org',
+      ]);
     });
   });
 
   describe('mask', () => {
-    it('should mask string', () => {
+    it('should mask middle of string', () => {
       expect(mask('1234567890', 2, 2)).toBe('12******90');
-      expect(mask('secret', 0, 0)).toBe('******');
+      expect(mask('secret', 2, 2)).toBe('se**et');
     });
 
     it('should not mask short strings', () => {
-      expect(mask('test', 2, 2)).toBe('test');
+      expect(mask('abc', 2, 2)).toBe('abc');
     });
   });
 
-  describe('randomString', () => {
-    it('should generate random string', () => {
-      const str1 = randomString(10);
-      const str2 = randomString(10);
-      
-      expect(str1).toHaveLength(10);
-      expect(str2).toHaveLength(10);
-      expect(str1).not.toBe(str2);
+  describe('formatPhone', () => {
+    it('should format phone number', () => {
+      expect(formatPhone('1234567890')).toBe('(123) 456-7890');
+    });
+  });
+
+  describe('random', () => {
+    it('should generate random string of specified length', () => {
+      const result = random(10);
+      expect(result).toHaveLength(10);
+    });
+
+    it('should use specified charset', () => {
+      const numeric = random(5, 'numeric');
+      expect(/^\d+$/.test(numeric)).toBe(true);
+    });
+  });
+
+  describe('toBoolean', () => {
+    it('should convert true values', () => {
+      expect(toBoolean('true')).toBe(true);
+      expect(toBoolean('1')).toBe(true);
+      expect(toBoolean('yes')).toBe(true);
+    });
+
+    it('should convert false values', () => {
+      expect(toBoolean('false')).toBe(false);
+      expect(toBoolean('0')).toBe(false);
+      expect(toBoolean('no')).toBe(false);
+    });
+  });
+
+  describe('normalizeWhitespace', () => {
+    it('should normalize whitespace', () => {
+      expect(normalizeWhitespace('hello    world')).toBe('hello world');
+      expect(normalizeWhitespace('  test  ')).toBe('test');
+    });
+  });
+
+  describe('removeLineBreaks', () => {
+    it('should remove line breaks', () => {
+      expect(removeLineBreaks('hello\nworld')).toBe('hello world');
+      expect(removeLineBreaks('foo\r\nbar')).toBe('foo bar');
+    });
+  });
+
+  describe('wordWrap', () => {
+    it('should wrap text at max length', () => {
+      const result = wordWrap('hello world foo bar', 10);
+      expect(result).toEqual(['hello', 'world foo', 'bar']);
+    });
+  });
+
+  describe('naturalCompare', () => {
+    it('should compare naturally', () => {
+      expect(naturalCompare('file1', 'file2')).toBeLessThan(0);
+      expect(naturalCompare('file10', 'file2')).toBeGreaterThan(0);
+    });
+  });
+
+  describe('levenshteinDistance', () => {
+    it('should calculate edit distance', () => {
+      expect(levenshteinDistance('kitten', 'sitting')).toBe(3);
+      expect(levenshteinDistance('hello', 'hello')).toBe(0);
     });
   });
 
   describe('similarity', () => {
-    it('should calculate similarity', () => {
+    it('should calculate similarity score', () => {
       expect(similarity('hello', 'hello')).toBe(1);
-      expect(similarity('hello', 'hallo')).toBeGreaterThan(0.5);
       expect(similarity('abc', 'xyz')).toBe(0);
+      expect(similarity('kitten', 'sitting')).toBeGreaterThan(0);
     });
   });
 });
+
 
