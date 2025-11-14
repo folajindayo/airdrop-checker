@@ -1,178 +1,347 @@
+/**
+ * @fileoverview Tooltip component
+ * 
+ * Accessible tooltip component with keyboard support and ARIA attributes
+ */
+
 'use client';
 
-import * as React from 'react';
-import * as TooltipPrimitive from '@radix-ui/react-tooltip';
+import React, { useState, useRef, useEffect, useId } from 'react';
+import { createPortal } from 'react-dom';
 import { cn } from '@/lib/utils';
 
-const TooltipProvider = TooltipPrimitive.Provider;
+/**
+ * Tooltip placement
+ */
+export type TooltipPlacement =
+  | 'top'
+  | 'bottom'
+  | 'left'
+  | 'right'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'left-start'
+  | 'left-end'
+  | 'right-start'
+  | 'right-end';
 
-const Tooltip = TooltipPrimitive.Root;
-
-const TooltipTrigger = TooltipPrimitive.Trigger;
-
-const TooltipContent = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
-  <TooltipPrimitive.Content
-    ref={ref}
-    sideOffset={sideOffset}
-    className={cn(
-      'z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-      className
-    )}
-    {...props}
-  />
-));
-TooltipContent.displayName = TooltipPrimitive.Content.displayName;
-
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
-
-// Simple tooltip wrapper for convenience
-export function SimpleTooltip({
-  children,
-  content,
-  side = 'top',
-  delayDuration = 200,
-  className,
-}: {
-  children: React.ReactNode;
+/**
+ * Tooltip props
+ */
+export interface TooltipProps {
+  /** Tooltip content */
   content: React.ReactNode;
-  side?: 'top' | 'right' | 'bottom' | 'left';
-  delayDuration?: number;
+  /** Placement of tooltip */
+  placement?: TooltipPlacement;
+  /** Delay before showing (ms) */
+  showDelay?: number;
+  /** Delay before hiding (ms) */
+  hideDelay?: number;
+  /** Children (trigger element) */
+  children: React.ReactElement;
+  /** Whether tooltip is disabled */
+  disabled?: boolean;
+  /** Custom class for tooltip */
   className?: string;
-}) {
-  return (
-    <TooltipProvider delayDuration={delayDuration}>
-      <Tooltip>
-        <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent side={side} className={className}>
-          {content}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
+  /** Custom class for arrow */
+  arrowClassName?: string;
+  /** Show arrow */
+  showArrow?: boolean;
+  /** Whether to use portal */
+  usePortal?: boolean;
 }
 
-// Info tooltip with icon
-export function InfoTooltip({
+/**
+ * Tooltip component
+ */
+export function Tooltip({
   content,
-  side = 'top',
-  className,
-}: {
-  content: React.ReactNode;
-  side?: 'top' | 'right' | 'bottom' | 'left';
-  className?: string;
-}) {
-  return (
-    <SimpleTooltip content={content} side={side}>
-      <button
-        type="button"
-        className={cn(
-          'inline-flex items-center justify-center rounded-full w-4 h-4 text-xs text-muted-foreground hover:text-foreground transition-colors',
-          className
-        )}
-        aria-label="More information"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="w-4 h-4"
-        >
-          <path
-            fillRule="evenodd"
-            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </button>
-    </SimpleTooltip>
-  );
-}
-
-// Truncated text with full content on hover
-export function TruncatedTooltip({
-  text,
-  maxLength = 50,
-  className,
-}: {
-  text: string;
-  maxLength?: number;
-  className?: string;
-}) {
-  const shouldTruncate = text.length > maxLength;
-  const truncated = shouldTruncate
-    ? `${text.substring(0, maxLength)}...`
-    : text;
-
-  if (!shouldTruncate) {
-    return <span className={className}>{text}</span>;
-  }
-
-  return (
-    <SimpleTooltip content={<div className="max-w-xs">{text}</div>}>
-      <span className={cn('cursor-help', className)}>{truncated}</span>
-    </SimpleTooltip>
-  );
-}
-
-// Action tooltip with keyboard shortcut
-export function ActionTooltip({
+  placement = 'top',
+  showDelay = 200,
+  hideDelay = 0,
   children,
-  action,
-  shortcut,
-  side = 'bottom',
-}: {
-  children: React.ReactNode;
-  action: string;
-  shortcut?: string;
-  side?: 'top' | 'right' | 'bottom' | 'left';
-}) {
-  return (
-    <SimpleTooltip
-      content={
-        <div className="flex items-center gap-2">
-          <span>{action}</span>
-          {shortcut && (
-            <kbd className="px-1.5 py-0.5 text-xs font-mono bg-muted border rounded">
-              {shortcut}
-            </kbd>
+  disabled = false,
+  className,
+  arrowClassName,
+  showArrow = true,
+  usePortal = true,
+}: TooltipProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const triggerRef = useRef<HTMLElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const showTimeoutRef = useRef<NodeJS.Timeout>();
+  const hideTimeoutRef = useRef<NodeJS.Timeout>();
+  const tooltipId = useId();
+
+  // Calculate tooltip position
+  const calculatePosition = () => {
+    if (!triggerRef.current || !tooltipRef.current) return;
+
+    const triggerRect = triggerRef.current.getBoundingClientRect();
+    const tooltipRect = tooltipRef.current.getBoundingClientRect();
+    const spacing = 8;
+
+    let top = 0;
+    let left = 0;
+
+    switch (placement) {
+      case 'top':
+        top = triggerRect.top - tooltipRect.height - spacing;
+        left = triggerRect.left + (triggerRect.width - tooltipRect.width) / 2;
+        break;
+
+      case 'top-start':
+        top = triggerRect.top - tooltipRect.height - spacing;
+        left = triggerRect.left;
+        break;
+
+      case 'top-end':
+        top = triggerRect.top - tooltipRect.height - spacing;
+        left = triggerRect.right - tooltipRect.width;
+        break;
+
+      case 'bottom':
+        top = triggerRect.bottom + spacing;
+        left = triggerRect.left + (triggerRect.width - tooltipRect.width) / 2;
+        break;
+
+      case 'bottom-start':
+        top = triggerRect.bottom + spacing;
+        left = triggerRect.left;
+        break;
+
+      case 'bottom-end':
+        top = triggerRect.bottom + spacing;
+        left = triggerRect.right - tooltipRect.width;
+        break;
+
+      case 'left':
+        top = triggerRect.top + (triggerRect.height - tooltipRect.height) / 2;
+        left = triggerRect.left - tooltipRect.width - spacing;
+        break;
+
+      case 'left-start':
+        top = triggerRect.top;
+        left = triggerRect.left - tooltipRect.width - spacing;
+        break;
+
+      case 'left-end':
+        top = triggerRect.bottom - tooltipRect.height;
+        left = triggerRect.left - tooltipRect.width - spacing;
+        break;
+
+      case 'right':
+        top = triggerRect.top + (triggerRect.height - tooltipRect.height) / 2;
+        left = triggerRect.right + spacing;
+        break;
+
+      case 'right-start':
+        top = triggerRect.top;
+        left = triggerRect.right + spacing;
+        break;
+
+      case 'right-end':
+        top = triggerRect.bottom - tooltipRect.height;
+        left = triggerRect.right + spacing;
+        break;
+    }
+
+    // Keep within viewport
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    if (left < 0) left = spacing;
+    if (left + tooltipRect.width > viewportWidth) {
+      left = viewportWidth - tooltipRect.width - spacing;
+    }
+    if (top < 0) top = spacing;
+    if (top + tooltipRect.height > viewportHeight) {
+      top = viewportHeight - tooltipRect.height - spacing;
+    }
+
+    setPosition({ top, left });
+  };
+
+  // Show tooltip
+  const show = () => {
+    if (disabled) return;
+
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+    }
+
+    showTimeoutRef.current = setTimeout(() => {
+      setIsVisible(true);
+    }, showDelay);
+  };
+
+  // Hide tooltip
+  const hide = () => {
+    if (showTimeoutRef.current) {
+      clearTimeout(showTimeoutRef.current);
+    }
+
+    hideTimeoutRef.current = setTimeout(() => {
+      setIsVisible(false);
+    }, hideDelay);
+  };
+
+  // Update position when visible
+  useEffect(() => {
+    if (isVisible) {
+      calculatePosition();
+    }
+  }, [isVisible]);
+
+  // Cleanup timers
+  useEffect(() => {
+    return () => {
+      if (showTimeoutRef.current) clearTimeout(showTimeoutRef.current);
+      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+    };
+  }, []);
+
+  // Clone child with ref and event handlers
+  const trigger = React.cloneElement(children, {
+    ref: triggerRef,
+    onMouseEnter: (e: React.MouseEvent) => {
+      children.props.onMouseEnter?.(e);
+      show();
+    },
+    onMouseLeave: (e: React.MouseEvent) => {
+      children.props.onMouseLeave?.(e);
+      hide();
+    },
+    onFocus: (e: React.FocusEvent) => {
+      children.props.onFocus?.(e);
+      show();
+    },
+    onBlur: (e: React.FocusEvent) => {
+      children.props.onBlur?.(e);
+      hide();
+    },
+    'aria-describedby': isVisible ? tooltipId : undefined,
+  });
+
+  // Tooltip element
+  const tooltipElement = isVisible && (
+    <div
+      ref={tooltipRef}
+      id={tooltipId}
+      role="tooltip"
+      className={cn(
+        'absolute z-50 px-3 py-2 text-sm rounded-md shadow-md',
+        'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900',
+        'animate-in fade-in-0 zoom-in-95',
+        'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
+        className
+      )}
+      style={{
+        top: position.top,
+        left: position.left,
+      }}
+      data-state={isVisible ? 'open' : 'closed'}
+    >
+      {content}
+      {showArrow && (
+        <div
+          className={cn(
+            'absolute w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45',
+            placement.startsWith('top') && 'bottom-[-4px] left-1/2 -translate-x-1/2',
+            placement.startsWith('bottom') && 'top-[-4px] left-1/2 -translate-x-1/2',
+            placement.startsWith('left') && 'right-[-4px] top-1/2 -translate-y-1/2',
+            placement.startsWith('right') && 'left-[-4px] top-1/2 -translate-y-1/2',
+            arrowClassName
           )}
-        </div>
-      }
-      side={side}
-    >
-      {children}
-    </SimpleTooltip>
+        />
+      )}
+    </div>
   );
-}
 
-// Rich tooltip with title and description
-export function RichTooltip({
-  children,
-  title,
-  description,
-  side = 'top',
-}: {
-  children: React.ReactNode;
-  title: string;
-  description: string;
-  side?: 'top' | 'right' | 'bottom' | 'left';
-}) {
   return (
-    <SimpleTooltip
-      content={
-        <div className="space-y-1 max-w-xs">
-          <p className="font-semibold text-sm">{title}</p>
-          <p className="text-xs text-muted-foreground">{description}</p>
-        </div>
-      }
-      side={side}
-      delayDuration={300}
-    >
-      {children}
-    </SimpleTooltip>
+    <>
+      {trigger}
+      {usePortal && typeof document !== 'undefined'
+        ? createPortal(tooltipElement, document.body)
+        : tooltipElement}
+    </>
   );
 }
 
+/**
+ * Simple tooltip variant without positioning logic
+ */
+export interface SimpleTooltipProps {
+  /** Tooltip text */
+  text: string;
+  /** Children (trigger element) */
+  children: React.ReactElement;
+  /** Custom class */
+  className?: string;
+}
+
+export function SimpleTooltip({
+  text,
+  children,
+  className,
+}: SimpleTooltipProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const tooltipId = useId();
+
+  const trigger = React.cloneElement(children, {
+    onMouseEnter: (e: React.MouseEvent) => {
+      children.props.onMouseEnter?.(e);
+      setIsVisible(true);
+    },
+    onMouseLeave: (e: React.MouseEvent) => {
+      children.props.onMouseLeave?.(e);
+      setIsVisible(false);
+    },
+    onFocus: (e: React.FocusEvent) => {
+      children.props.onFocus?.(e);
+      setIsVisible(true);
+    },
+    onBlur: (e: React.FocusEvent) => {
+      children.props.onBlur?.(e);
+      setIsVisible(false);
+    },
+    'aria-label': text,
+    title: text,
+  });
+
+  return (
+    <div className="relative inline-block">
+      {trigger}
+      {isVisible && (
+        <div
+          id={tooltipId}
+          role="tooltip"
+          className={cn(
+            'absolute bottom-full left-1/2 -translate-x-1/2 mb-2',
+            'px-3 py-2 text-sm rounded-md shadow-md whitespace-nowrap',
+            'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900',
+            'animate-in fade-in-0 zoom-in-95',
+            className
+          )}
+        >
+          {text}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Example usage:
+ * 
+ * <Tooltip content="This is a helpful tooltip">
+ *   <button>Hover me</button>
+ * </Tooltip>
+ * 
+ * <Tooltip content="Bottom tooltip" placement="bottom" showArrow={false}>
+ *   <span>Another element</span>
+ * </Tooltip>
+ */
