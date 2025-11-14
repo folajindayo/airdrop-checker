@@ -1,37 +1,67 @@
 /**
- * Tests for array utilities
+ * Tests for Array Utility Functions
  */
 
 import {
+  chunk,
+  compact,
   unique,
   uniqueBy,
   groupBy,
-  chunk,
-  shuffle,
-  randomItem,
-  randomItems,
   sortBy,
-  difference,
-  intersection,
+  shuffle,
+  sample,
   flatten,
+  intersection,
+  difference,
+  union,
   partition,
+  pluck,
   sum,
-  sumBy,
   average,
-  averageBy,
   min,
   max,
-  minMaxBy,
-  areArraysEqual,
-  moveItem,
   range,
+  zip,
+  unzip,
 } from '@/lib/utils/array';
 
-describe('array utils', () => {
+describe('Array Utilities', () => {
+  describe('chunk', () => {
+    it('should split array into chunks', () => {
+      expect(chunk([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
+    });
+
+    it('should handle empty array', () => {
+      expect(chunk([], 2)).toEqual([]);
+    });
+
+    it('should handle chunk size larger than array', () => {
+      expect(chunk([1, 2, 3], 5)).toEqual([[1, 2, 3]]);
+    });
+  });
+
+  describe('compact', () => {
+    it('should remove falsy values', () => {
+      expect(compact([0, 1, false, 2, '', 3, null, undefined])).toEqual([1, 2, 3]);
+    });
+
+    it('should handle empty array', () => {
+      expect(compact([])).toEqual([]);
+    });
+
+    it('should keep all truthy values', () => {
+      expect(compact([1, 'a', true, {}])).toEqual([1, 'a', true, {}]);
+    });
+  });
+
   describe('unique', () => {
     it('should remove duplicates', () => {
-      expect(unique([1, 2, 2, 3, 3, 3])).toEqual([1, 2, 3]);
-      expect(unique(['a', 'b', 'a', 'c'])).toEqual(['a', 'b', 'c']);
+      expect(unique([1, 2, 2, 3, 3, 3, 4])).toEqual([1, 2, 3, 4]);
+    });
+
+    it('should handle strings', () => {
+      expect(unique(['a', 'b', 'a', 'c', 'b'])).toEqual(['a', 'b', 'c']);
     });
 
     it('should handle empty array', () => {
@@ -42,14 +72,25 @@ describe('array utils', () => {
   describe('uniqueBy', () => {
     it('should remove duplicates by key', () => {
       const arr = [
-        { id: 1, name: 'A' },
-        { id: 2, name: 'B' },
-        { id: 1, name: 'C' },
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' },
+        { id: 1, name: 'Alice2' },
       ];
-      
       expect(uniqueBy(arr, 'id')).toEqual([
-        { id: 1, name: 'A' },
-        { id: 2, name: 'B' },
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' },
+      ]);
+    });
+
+    it('should work with function', () => {
+      const arr = [
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' },
+        { id: 1, name: 'Alice2' },
+      ];
+      expect(uniqueBy(arr, (item) => item.id)).toEqual([
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' },
       ]);
     });
   });
@@ -57,34 +98,48 @@ describe('array utils', () => {
   describe('groupBy', () => {
     it('should group by key', () => {
       const arr = [
-        { category: 'A', value: 1 },
-        { category: 'B', value: 2 },
-        { category: 'A', value: 3 },
+        { category: 'fruit', name: 'apple' },
+        { category: 'vegetable', name: 'carrot' },
+        { category: 'fruit', name: 'banana' },
       ];
-      
-      const grouped = groupBy(arr, 'category');
-      
-      expect(grouped.A).toHaveLength(2);
-      expect(grouped.B).toHaveLength(1);
+      expect(groupBy(arr, 'category')).toEqual({
+        fruit: [
+          { category: 'fruit', name: 'apple' },
+          { category: 'fruit', name: 'banana' },
+        ],
+        vegetable: [{ category: 'vegetable', name: 'carrot' }],
+      });
     });
 
-    it('should group by function', () => {
-      const arr = [1, 2, 3, 4, 5, 6];
-      const grouped = groupBy(arr, (n) => (n % 2 === 0 ? 'even' : 'odd'));
-      
-      expect(grouped.odd).toEqual([1, 3, 5]);
-      expect(grouped.even).toEqual([2, 4, 6]);
+    it('should work with function', () => {
+      const arr = [{ age: 10 }, { age: 20 }, { age: 15 }];
+      const grouped = groupBy(arr, (item) => (item.age < 18 ? 'minor' : 'adult'));
+      expect(grouped.minor).toHaveLength(2);
+      expect(grouped.adult).toHaveLength(1);
     });
   });
 
-  describe('chunk', () => {
-    it('should split array into chunks', () => {
-      expect(chunk([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
-      expect(chunk([1, 2, 3, 4, 5, 6], 3)).toEqual([[1, 2, 3], [4, 5, 6]]);
+  describe('sortBy', () => {
+    it('should sort by key', () => {
+      const arr = [
+        { name: 'Charlie', age: 30 },
+        { name: 'Alice', age: 25 },
+        { name: 'Bob', age: 35 },
+      ];
+      expect(sortBy(arr, 'age')).toEqual([
+        { name: 'Alice', age: 25 },
+        { name: 'Charlie', age: 30 },
+        { name: 'Bob', age: 35 },
+      ]);
     });
 
-    it('should handle empty array', () => {
-      expect(chunk([], 2)).toEqual([]);
+    it('should work with function', () => {
+      const arr = [{ name: 'Charlie' }, { name: 'Alice' }, { name: 'Bob' }];
+      expect(sortBy(arr, (item) => item.name)).toEqual([
+        { name: 'Alice' },
+        { name: 'Bob' },
+        { name: 'Charlie' },
+      ]);
     });
   });
 
@@ -95,202 +150,219 @@ describe('array utils', () => {
       
       expect(shuffled).toHaveLength(arr.length);
       expect(shuffled).toEqual(expect.arrayContaining(arr));
-      expect(arr).toEqual([1, 2, 3, 4, 5]); // Original unchanged
-    });
-  });
-
-  describe('randomItem', () => {
-    it('should return random item', () => {
-      const arr = [1, 2, 3, 4, 5];
-      const item = randomItem(arr);
-      
-      expect(arr).toContain(item);
     });
 
-    it('should handle empty array', () => {
-      expect(randomItem([])).toBeUndefined();
-    });
-  });
-
-  describe('randomItems', () => {
-    it('should return random items', () => {
-      const arr = [1, 2, 3, 4, 5];
-      const items = randomItems(arr, 3);
-      
-      expect(items).toHaveLength(3);
-      items.forEach(item => expect(arr).toContain(item));
-    });
-
-    it('should not exceed array length', () => {
+    it('should not modify original array', () => {
       const arr = [1, 2, 3];
-      const items = randomItems(arr, 10);
-      
-      expect(items).toHaveLength(3);
+      const shuffled = shuffle(arr);
+      expect(arr).toEqual([1, 2, 3]);
     });
   });
 
-  describe('sortBy', () => {
-    it('should sort by key ascending', () => {
-      const arr = [
-        { age: 30 },
-        { age: 20 },
-        { age: 40 },
-      ];
-      
-      const sorted = sortBy(arr, 'age');
-      
-      expect(sorted.map(x => x.age)).toEqual([20, 30, 40]);
+  describe('sample', () => {
+    it('should return random element', () => {
+      const arr = [1, 2, 3, 4, 5];
+      const sampled = sample(arr);
+      expect(arr).toContain(sampled);
     });
 
-    it('should sort by key descending', () => {
-      const arr = [
-        { age: 30 },
-        { age: 20 },
-        { age: 40 },
-      ];
-      
-      const sorted = sortBy(arr, 'age', 'desc');
-      
-      expect(sorted.map(x => x.age)).toEqual([40, 30, 20]);
-    });
-
-    it('should sort by function', () => {
-      const arr = ['aaa', 'bb', 'c'];
-      const sorted = sortBy(arr, (x) => x.length);
-      
-      expect(sorted).toEqual(['c', 'bb', 'aaa']);
-    });
-  });
-
-  describe('difference', () => {
-    it('should find difference', () => {
-      expect(difference([1, 2, 3, 4], [2, 4])).toEqual([1, 3]);
-      expect(difference([1, 2, 3], [4, 5])).toEqual([1, 2, 3]);
-    });
-  });
-
-  describe('intersection', () => {
-    it('should find intersection', () => {
-      expect(intersection([1, 2, 3, 4], [2, 3, 5])).toEqual([2, 3]);
-      expect(intersection([1, 2], [3, 4])).toEqual([]);
+    it('should return undefined for empty array', () => {
+      expect(sample([])).toBeUndefined();
     });
   });
 
   describe('flatten', () => {
-    it('should flatten one level', () => {
-      expect(flatten([[1, 2], [3, 4]])).toEqual([1, 2, 3, 4]);
+    it('should flatten nested arrays', () => {
+      expect(flatten([1, [2, [3, [4]], 5]])).toEqual([1, 2, 3, 4, 5]);
     });
 
-    it('should flatten multiple levels', () => {
-      expect(flatten([[1, [2]], [3, [4]]], 2)).toEqual([1, 2, 3, 4]);
+    it('should handle empty arrays', () => {
+      expect(flatten([[], [1], []])).toEqual([1]);
+    });
+
+    it('should handle already flat array', () => {
+      expect(flatten([1, 2, 3])).toEqual([1, 2, 3]);
+    });
+  });
+
+  describe('intersection', () => {
+    it('should find common elements', () => {
+      expect(intersection([1, 2, 3], [2, 3, 4])).toEqual([2, 3]);
+    });
+
+    it('should handle no intersection', () => {
+      expect(intersection([1, 2], [3, 4])).toEqual([]);
+    });
+
+    it('should handle empty arrays', () => {
+      expect(intersection([], [1, 2])).toEqual([]);
+    });
+  });
+
+  describe('difference', () => {
+    it('should find different elements', () => {
+      expect(difference([1, 2, 3], [2, 3, 4])).toEqual([1]);
+    });
+
+    it('should handle no difference', () => {
+      expect(difference([1, 2], [1, 2])).toEqual([]);
+    });
+
+    it('should handle empty arrays', () => {
+      expect(difference([], [1, 2])).toEqual([]);
+    });
+  });
+
+  describe('union', () => {
+    it('should combine arrays without duplicates', () => {
+      expect(union([1, 2], [2, 3])).toEqual([1, 2, 3]);
+    });
+
+    it('should handle empty arrays', () => {
+      expect(union([], [1, 2])).toEqual([1, 2]);
+    });
+
+    it('should handle identical arrays', () => {
+      expect(union([1, 2], [1, 2])).toEqual([1, 2]);
     });
   });
 
   describe('partition', () => {
-    it('should partition array', () => {
+    it('should partition by predicate', () => {
       const [evens, odds] = partition([1, 2, 3, 4, 5], (n) => n % 2 === 0);
-      
       expect(evens).toEqual([2, 4]);
       expect(odds).toEqual([1, 3, 5]);
+    });
+
+    it('should handle empty array', () => {
+      const [trues, falses] = partition([], () => true);
+      expect(trues).toEqual([]);
+      expect(falses).toEqual([]);
+    });
+  });
+
+  describe('pluck', () => {
+    it('should extract values by key', () => {
+      const arr = [
+        { name: 'Alice', age: 25 },
+        { name: 'Bob', age: 30 },
+      ];
+      expect(pluck(arr, 'name')).toEqual(['Alice', 'Bob']);
+    });
+
+    it('should handle empty array', () => {
+      expect(pluck([], 'key')).toEqual([]);
     });
   });
 
   describe('sum', () => {
-    it('should sum numbers', () => {
+    it('should calculate sum', () => {
       expect(sum([1, 2, 3, 4, 5])).toBe(15);
+    });
+
+    it('should handle empty array', () => {
       expect(sum([])).toBe(0);
     });
-  });
 
-  describe('sumBy', () => {
-    it('should sum by key', () => {
-      const arr = [
-        { value: 10 },
-        { value: 20 },
-        { value: 30 },
-      ];
-      
-      expect(sumBy(arr, 'value')).toBe(60);
+    it('should handle negative numbers', () => {
+      expect(sum([-1, -2, 3])).toBe(0);
     });
   });
 
   describe('average', () => {
     it('should calculate average', () => {
       expect(average([1, 2, 3, 4, 5])).toBe(3);
-      expect(average([10, 20, 30])).toBe(20);
+    });
+
+    it('should handle empty array', () => {
       expect(average([])).toBe(0);
     });
-  });
 
-  describe('averageBy', () => {
-    it('should calculate average by key', () => {
-      const arr = [
-        { score: 80 },
-        { score: 90 },
-        { score: 70 },
-      ];
-      
-      expect(averageBy(arr, 'score')).toBe(80);
+    it('should handle decimals', () => {
+      expect(average([1, 2, 3])).toBeCloseTo(2);
     });
   });
 
   describe('min', () => {
     it('should find minimum', () => {
-      expect(min([5, 2, 8, 1, 9])).toBe(1);
-      expect(min([10])).toBe(10);
+      expect(min([3, 1, 4, 1, 5])).toBe(1);
+    });
+
+    it('should handle negative numbers', () => {
+      expect(min([3, -1, 4])).toBe(-1);
+    });
+
+    it('should return undefined for empty array', () => {
       expect(min([])).toBeUndefined();
     });
   });
 
   describe('max', () => {
     it('should find maximum', () => {
-      expect(max([5, 2, 8, 1, 9])).toBe(9);
-      expect(max([10])).toBe(10);
+      expect(max([3, 1, 4, 1, 5])).toBe(5);
+    });
+
+    it('should handle negative numbers', () => {
+      expect(max([-3, -1, -4])).toBe(-1);
+    });
+
+    it('should return undefined for empty array', () => {
       expect(max([])).toBeUndefined();
     });
   });
 
-  describe('minMaxBy', () => {
-    it('should find min and max by key', () => {
-      const arr = [
-        { age: 30 },
-        { age: 20 },
-        { age: 40 },
-      ];
-      
-      const { min, max } = minMaxBy(arr, 'age');
-      
-      expect(min?.age).toBe(20);
-      expect(max?.age).toBe(40);
+  describe('range', () => {
+    it('should create range from 0', () => {
+      expect(range(5)).toEqual([0, 1, 2, 3, 4]);
+    });
+
+    it('should create range with start and end', () => {
+      expect(range(1, 5)).toEqual([1, 2, 3, 4]);
+    });
+
+    it('should create range with step', () => {
+      expect(range(0, 10, 2)).toEqual([0, 2, 4, 6, 8]);
+    });
+
+    it('should handle negative step', () => {
+      expect(range(5, 0, -1)).toEqual([5, 4, 3, 2, 1]);
+    });
+  });
+
+  describe('zip', () => {
+    it('should zip arrays', () => {
+      expect(zip([1, 2, 3], ['a', 'b', 'c'])).toEqual([
+        [1, 'a'],
+        [2, 'b'],
+        [3, 'c'],
+      ]);
+    });
+
+    it('should handle different lengths', () => {
+      expect(zip([1, 2], ['a', 'b', 'c'])).toEqual([
+        [1, 'a'],
+        [2, 'b'],
+      ]);
+    });
+
+    it('should handle empty arrays', () => {
+      expect(zip([], [])).toEqual([]);
+    });
+  });
+
+  describe('unzip', () => {
+    it('should unzip arrays', () => {
+      const [numbers, letters] = unzip([
+        [1, 'a'],
+        [2, 'b'],
+        [3, 'c'],
+      ]);
+      expect(numbers).toEqual([1, 2, 3]);
+      expect(letters).toEqual(['a', 'b', 'c']);
     });
 
     it('should handle empty array', () => {
-      const { min, max } = minMaxBy([], 'value');
-      
-      expect(min).toBeUndefined();
-      expect(max).toBeUndefined();
-    });
-  });
-
-  describe('areArraysEqual', () => {
-    it('should check equality', () => {
-      expect(areArraysEqual([1, 2, 3], [1, 2, 3])).toBe(true);
-      expect(areArraysEqual([1, 2, 3], [1, 2, 4])).toBe(false);
-      expect(areArraysEqual([1, 2], [1, 2, 3])).toBe(false);
-    });
-  });
-
-  describe('moveItem', () => {
-    it('should move item in array', () => {
-      expect(moveItem([1, 2, 3, 4, 5], 0, 2)).toEqual([2, 3, 1, 4, 5]);
-      expect(moveItem([1, 2, 3, 4, 5], 4, 0)).toEqual([5, 1, 2, 3, 4]);
-    });
-  });
-
-  describe('range', () => {
-    it('should create range', () => {
-      expect(range(1, 5)).toEqual([1, 2, 3, 4, 5]);
-      expect(range(0, 10, 2)).toEqual([0, 2, 4, 6, 8, 10]);
+      expect(unzip([])).toEqual([]);
     });
   });
 });
