@@ -1,26 +1,21 @@
 /**
- * String utility functions
- * Helper functions for string operations
+ * String Utility Functions
+ * Comprehensive utilities for string manipulation
  */
 
 /**
- * Capitalize first letter
- * 
- * @param str - String to capitalize
- * @returns Capitalized string
+ * Capitalize first letter of a string
  */
 export function capitalize(str: string): string {
-  if (!str) return str;
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
 /**
- * Capitalize all words
- * 
- * @param str - String to capitalize
- * @returns Title cased string
+ * Capitalize first letter of each word
  */
-export function titleCase(str: string): string {
+export function capitalizeWords(str: string): string {
+  if (!str) return '';
   return str
     .split(' ')
     .map((word) => capitalize(word))
@@ -28,94 +23,66 @@ export function titleCase(str: string): string {
 }
 
 /**
- * Convert to camelCase
- * 
- * @param str - String to convert
- * @returns camelCase string
+ * Convert string to camelCase
  */
-export function camelCase(str: string): string {
+export function toCamelCase(str: string): string {
   return str
-    .replace(/[^a-zA-Z0-9]+(.)/g, (_, chr) => chr.toUpperCase())
-    .replace(/^[A-Z]/, (chr) => chr.toLowerCase());
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) =>
+      index === 0 ? word.toLowerCase() : word.toUpperCase()
+    )
+    .replace(/\s+/g, '');
 }
 
 /**
- * Convert to snake_case
- * 
- * @param str - String to convert
- * @returns snake_case string
+ * Convert string to PascalCase
  */
-export function snakeCase(str: string): string {
+export function toPascalCase(str: string): string {
   return str
-    .replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, (word) => word.toUpperCase())
+    .replace(/\s+/g, '');
+}
+
+/**
+ * Convert string to snake_case
+ */
+export function toSnakeCase(str: string): string {
+  return str
+    .replace(/([A-Z])/g, '_$1')
+    .toLowerCase()
     .replace(/^_/, '')
-    .replace(/[\s-]+/g, '_');
+    .replace(/\s+/g, '_');
 }
 
 /**
- * Convert to kebab-case
- * 
- * @param str - String to convert
- * @returns kebab-case string
+ * Convert string to kebab-case
  */
-export function kebabCase(str: string): string {
+export function toKebabCase(str: string): string {
   return str
-    .replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+    .replace(/([A-Z])/g, '-$1')
+    .toLowerCase()
     .replace(/^-/, '')
-    .replace(/[\s_]+/g, '-');
+    .replace(/\s+/g, '-');
 }
 
 /**
- * Convert to PascalCase
- * 
- * @param str - String to convert
- * @returns PascalCase string
+ * Truncate string to specified length
  */
-export function pascalCase(str: string): string {
-  const camel = camelCase(str);
-  return capitalize(camel);
-}
-
-/**
- * Truncate string
- * 
- * @param str - String to truncate
- * @param length - Maximum length
- * @param suffix - Suffix to add (default: '...')
- * @returns Truncated string
- */
-export function truncate(str: string, length: number, suffix = '...'): string {
+export function truncate(str: string, length: number, suffix: string = '...'): string {
   if (str.length <= length) return str;
   return str.slice(0, length - suffix.length) + suffix;
 }
 
 /**
- * Truncate in middle
- * 
- * @param str - String to truncate
- * @param maxLength - Maximum length
- * @param separator - Separator (default: '...')
- * @returns Truncated string
+ * Truncate string to words boundary
  */
-export function truncateMiddle(
-  str: string,
-  maxLength: number,
-  separator = '...'
-): string {
-  if (str.length <= maxLength) return str;
-  
-  const charsToShow = maxLength - separator.length;
-  const frontChars = Math.ceil(charsToShow / 2);
-  const backChars = Math.floor(charsToShow / 2);
-  
-  return str.slice(0, frontChars) + separator + str.slice(-backChars);
+export function truncateWords(str: string, wordCount: number, suffix: string = '...'): string {
+  const words = str.split(' ');
+  if (words.length <= wordCount) return str;
+  return words.slice(0, wordCount).join(' ') + suffix;
 }
 
 /**
- * Slugify string
- * 
- * @param str - String to slugify
- * @returns URL-safe slug
+ * Slugify string for URLs
  */
 export function slugify(str: string): string {
   return str
@@ -127,20 +94,14 @@ export function slugify(str: string): string {
 }
 
 /**
- * Remove HTML tags
- * 
- * @param str - HTML string
- * @returns Plain text
+ * Remove accents from string
  */
-export function stripHtml(str: string): string {
-  return str.replace(/<[^>]*>/g, '');
+export function removeAccents(str: string): string {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 /**
- * Escape HTML
- * 
- * @param str - String to escape
- * @returns Escaped string
+ * Escape HTML special characters
  */
 export function escapeHtml(str: string): string {
   const htmlEscapes: Record<string, string> = {
@@ -148,18 +109,14 @@ export function escapeHtml(str: string): string {
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
-    "'": '&#x27;',
-    '/': '&#x2F;',
+    "'": '&#39;',
   };
   
-  return str.replace(/[&<>"'\/]/g, (char) => htmlEscapes[char] || char);
+  return str.replace(/[&<>"']/g, (char) => htmlEscapes[char] || char);
 }
 
 /**
- * Unescape HTML
- * 
- * @param str - Escaped string
- * @returns Unescaped string
+ * Unescape HTML entities
  */
 export function unescapeHtml(str: string): string {
   const htmlUnescapes: Record<string, string> = {
@@ -167,170 +124,116 @@ export function unescapeHtml(str: string): string {
     '&lt;': '<',
     '&gt;': '>',
     '&quot;': '"',
-    '&#x27;': "'",
-    '&#x2F;': '/',
+    '&#39;': "'",
   };
   
-  return str.replace(/&(?:amp|lt|gt|quot|#x27|#x2F);/g, (entity) => htmlUnescapes[entity] || entity);
+  return str.replace(/&(?:amp|lt|gt|quot|#39);/g, (entity) => htmlUnescapes[entity] || entity);
 }
 
 /**
- * Pad string on left
- * 
- * @param str - String to pad
- * @param length - Target length
- * @param char - Padding character
- * @returns Padded string
+ * Strip HTML tags
  */
-export function padLeft(str: string, length: number, char = ' '): string {
+export function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '');
+}
+
+/**
+ * Pad string to specified length
+ */
+export function pad(str: string, length: number, char: string = ' '): string {
+  const padLength = Math.max(0, length - str.length);
+  return char.repeat(padLength / 2) + str + char.repeat(padLength / 2);
+}
+
+/**
+ * Pad string from left
+ */
+export function padLeft(str: string, length: number, char: string = ' '): string {
   return str.padStart(length, char);
 }
 
 /**
- * Pad string on right
- * 
- * @param str - String to pad
- * @param length - Target length
- * @param char - Padding character
- * @returns Padded string
+ * Pad string from right
  */
-export function padRight(str: string, length: number, char = ' '): string {
+export function padRight(str: string, length: number, char: string = ' '): string {
   return str.padEnd(length, char);
 }
 
 /**
- * Repeat string
- * 
- * @param str - String to repeat
- * @param count - Number of times
- * @returns Repeated string
+ * Repeat string n times
  */
 export function repeat(str: string, count: number): string {
-  return str.repeat(count);
+  return str.repeat(Math.max(0, count));
 }
 
 /**
  * Reverse string
- * 
- * @param str - String to reverse
- * @returns Reversed string
  */
 export function reverse(str: string): string {
   return str.split('').reverse().join('');
 }
 
 /**
- * Count occurrences
- * 
- * @param str - String to search in
- * @param substr - Substring to count
- * @returns Number of occurrences
+ * Count occurrences of substring
  */
-export function countOccurrences(str: string, substr: string): number {
-  if (!substr) return 0;
-  return (str.match(new RegExp(substr, 'g')) || []).length;
-}
-
-/**
- * Check if string contains substring
- * 
- * @param str - String to search in
- * @param substr - Substring to find
- * @param caseSensitive - Case sensitive search
- * @returns True if contains
- */
-export function contains(
-  str: string,
-  substr: string,
-  caseSensitive = true
-): boolean {
-  if (!caseSensitive) {
-    return str.toLowerCase().includes(substr.toLowerCase());
-  }
-  return str.includes(substr);
-}
-
-/**
- * Check if string starts with any of the prefixes
- * 
- * @param str - String to check
- * @param prefixes - Array of prefixes
- * @returns True if starts with any prefix
- */
-export function startsWithAny(str: string, prefixes: string[]): boolean {
-  return prefixes.some((prefix) => str.startsWith(prefix));
-}
-
-/**
- * Check if string ends with any of the suffixes
- * 
- * @param str - String to check
- * @param suffixes - Array of suffixes
- * @returns True if ends with any suffix
- */
-export function endsWithAny(str: string, suffixes: string[]): boolean {
-  return suffixes.some((suffix) => str.endsWith(suffix));
+export function count(str: string, search: string): number {
+  if (!search) return 0;
+  return (str.match(new RegExp(search, 'g')) || []).length;
 }
 
 /**
  * Replace all occurrences
- * 
- * @param str - String to search in
- * @param search - String to search for
- * @param replace - Replacement string
- * @returns String with replacements
  */
-export function replaceAll(str: string, search: string, replace: string): string {
-  return str.split(search).join(replace);
+export function replaceAll(
+  str: string,
+  search: string | RegExp,
+  replace: string
+): string {
+  if (typeof search === 'string') {
+    return str.split(search).join(replace);
+  }
+  return str.replace(new RegExp(search, 'g'), replace);
 }
 
 /**
- * Remove whitespace
- * 
- * @param str - String to trim
- * @returns Trimmed string
+ * Check if string contains substring (case-insensitive)
  */
-export function removeWhitespace(str: string): string {
-  return str.replace(/\s+/g, '');
+export function containsIgnoreCase(str: string, search: string): boolean {
+  return str.toLowerCase().includes(search.toLowerCase());
 }
 
 /**
- * Normalize whitespace
- * 
- * @param str - String to normalize
- * @returns Normalized string
+ * Check if string starts with prefix (case-insensitive)
  */
-export function normalizeWhitespace(str: string): string {
-  return str.replace(/\s+/g, ' ').trim();
+export function startsWithIgnoreCase(str: string, prefix: string): boolean {
+  return str.toLowerCase().startsWith(prefix.toLowerCase());
+}
+
+/**
+ * Check if string ends with suffix (case-insensitive)
+ */
+export function endsWithIgnoreCase(str: string, suffix: string): boolean {
+  return str.toLowerCase().endsWith(suffix.toLowerCase());
 }
 
 /**
  * Extract numbers from string
- * 
- * @param str - String to extract from
- * @returns Array of numbers
  */
 export function extractNumbers(str: string): number[] {
-  const matches = str.match(/\d+(\.\d+)?/g);
+  const matches = str.match(/\d+/g);
   return matches ? matches.map(Number) : [];
 }
 
 /**
  * Extract emails from string
- * 
- * @param str - String to extract from
- * @returns Array of emails
  */
 export function extractEmails(str: string): string[] {
-  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+  const emailRegex = /[\w.-]+@[\w.-]+\.\w+/g;
   return str.match(emailRegex) || [];
 }
 
 /**
  * Extract URLs from string
- * 
- * @param str - String to extract from
- * @returns Array of URLs
  */
 export function extractUrls(str: string): string[] {
   const urlRegex = /https?:\/\/[^\s]+/g;
@@ -338,21 +241,17 @@ export function extractUrls(str: string): string[] {
 }
 
 /**
- * Mask string
- * 
- * @param str - String to mask
- * @param visibleStart - Visible characters at start
- * @param visibleEnd - Visible characters at end
- * @param maskChar - Mask character
- * @returns Masked string
+ * Mask string (e.g., for sensitive data)
  */
 export function mask(
   str: string,
-  visibleStart = 4,
-  visibleEnd = 4,
-  maskChar = '*'
+  visibleStart: number = 4,
+  visibleEnd: number = 4,
+  maskChar: string = '*'
 ): string {
-  if (str.length <= visibleStart + visibleEnd) return str;
+  if (str.length <= visibleStart + visibleEnd) {
+    return str;
+  }
   
   const start = str.slice(0, visibleStart);
   const end = str.slice(-visibleEnd);
@@ -362,48 +261,94 @@ export function mask(
 }
 
 /**
- * Generate random string
- * 
- * @param length - String length
- * @param chars - Character set
- * @returns Random string
+ * Format phone number
  */
-export function randomString(
-  length: number,
-  chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-): string {
+export function formatPhone(phone: string, format: string = '(###) ###-####'): string {
+  const numbers = phone.replace(/\D/g, '');
+  let result = format;
+  
+  for (let i = 0; i < numbers.length; i++) {
+    result = result.replace('#', numbers[i]);
+  }
+  
+  return result.replace(/#/g, '');
+}
+
+/**
+ * Generate random string
+ */
+export function random(length: number, charset: string = 'alphanumeric'): string {
+  const charsets: Record<string, string> = {
+    numeric: '0123456789',
+    alpha: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    alphanumeric: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    hex: '0123456789abcdef',
+  };
+  
+  const chars = charsets[charset] || charset;
   let result = '';
+  
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
+  
   return result;
 }
 
 /**
- * Calculate string similarity (Levenshtein distance)
- * 
- * @param str1 - First string
- * @param str2 - Second string
- * @returns Similarity score (0-1)
+ * Convert string to boolean
  */
-export function similarity(str1: string, str2: string): number {
-  const longer = str1.length > str2.length ? str1 : str2;
-  const shorter = str1.length > str2.length ? str2 : str1;
-  
-  if (longer.length === 0) return 1.0;
-  
-  const editDistance = levenshteinDistance(longer, shorter);
-  return (longer.length - editDistance) / longer.length;
+export function toBoolean(str: string): boolean {
+  const trueValues = ['true', '1', 'yes', 'on', 'y'];
+  return trueValues.includes(str.toLowerCase());
 }
 
 /**
- * Levenshtein distance
- * 
- * @param str1 - First string
- * @param str2 - Second string
- * @returns Edit distance
+ * Normalize whitespace
  */
-function levenshteinDistance(str1: string, str2: string): number {
+export function normalizeWhitespace(str: string): string {
+  return str.replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Remove line breaks
+ */
+export function removeLineBreaks(str: string): string {
+  return str.replace(/[\r\n]+/g, ' ').trim();
+}
+
+/**
+ * Word wrap text
+ */
+export function wordWrap(str: string, maxLength: number): string[] {
+  const words = str.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+  
+  for (const word of words) {
+    if ((currentLine + ' ' + word).trim().length <= maxLength) {
+      currentLine = (currentLine + ' ' + word).trim();
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  
+  if (currentLine) lines.push(currentLine);
+  return lines;
+}
+
+/**
+ * Compare strings (natural sort)
+ */
+export function naturalCompare(a: string, b: string): number {
+  return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+}
+
+/**
+ * Calculate Levenshtein distance between strings
+ */
+export function levenshteinDistance(str1: string, str2: string): number {
   const matrix: number[][] = [];
   
   for (let i = 0; i <= str2.length; i++) {
@@ -411,23 +356,35 @@ function levenshteinDistance(str1: string, str2: string): number {
   }
   
   for (let j = 0; j <= str1.length; j++) {
-    matrix[0]![j] = j;
+    matrix[0][j] = j;
   }
   
   for (let i = 1; i <= str2.length; i++) {
     for (let j = 1; j <= str1.length; j++) {
       if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-        matrix[i]![j] = matrix[i - 1]![j - 1]!;
+        matrix[i][j] = matrix[i - 1][j - 1];
       } else {
-        matrix[i]![j] = Math.min(
-          matrix[i - 1]![j - 1]! + 1,
-          matrix[i]![j - 1]! + 1,
-          matrix[i - 1]![j]! + 1
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
         );
       }
     }
   }
   
-  return matrix[str2.length]![str1.length]!;
+  return matrix[str2.length][str1.length];
 }
 
+/**
+ * Calculate string similarity (0-1)
+ */
+export function similarity(str1: string, str2: string): number {
+  const longer = str1.length > str2.length ? str1 : str2;
+  const shorter = str1.length > str2.length ? str2 : str1;
+  
+  if (longer.length === 0) return 1.0;
+  
+  const distance = levenshteinDistance(longer, shorter);
+  return (longer.length - distance) / longer.length;
+}
