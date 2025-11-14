@@ -577,6 +577,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 438. **Gas Usage Analyzer** - Analyze on-chain gas usage and transaction costs for blockchain gas monitoring
 439. **Contract Events Tracker** - Track on-chain contract events and logs for blockchain event monitoring
 440. **Token Price History Tracker** - Track on-chain token price history over time for blockchain price monitoring
+441. **Wallet Activity Score Calculator** - Calculate on-chain wallet activity scores for blockchain activity analysis
+442. **Token Holder Count Estimator** - Estimate on-chain token holder counts for blockchain holder analysis
+443. **Contract Interaction Counter** - Count on-chain contract interactions for blockchain interaction tracking
+444. **Token Capitalization Calculator** - Calculate on-chain token market capitalization for blockchain market analysis
+445. **Block Transaction Counter** - Count on-chain block transactions for blockchain block analysis
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
