@@ -582,6 +582,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 443. **Contract Interaction Counter** - Count on-chain contract interactions for blockchain interaction tracking
 444. **Token Capitalization Calculator** - Calculate on-chain token market capitalization for blockchain market analysis
 445. **Block Transaction Counter** - Count on-chain block transactions for blockchain block analysis
+446. **Token Age Calculator** - Calculate on-chain token age and deployment data for blockchain token analysis
+447. **Contract Storage Reader** - Read on-chain contract storage slots for blockchain storage analysis
+448. **Token Whale Tracker** - Track on-chain token whale holdings for blockchain whale monitoring
+449. **Transaction Fee Calculator** - Calculate on-chain transaction fees and costs for blockchain fee analysis
+450. **Contract Creation Transaction Finder** - Find on-chain contract creation transactions for blockchain deployment tracking
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
