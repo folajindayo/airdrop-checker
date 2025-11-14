@@ -1,240 +1,287 @@
 /**
- * Environment variable validation and configuration
- * Ensures all required environment variables are present and valid
+ * Environment Configuration
+ * 
+ * Centralized environment variable access with type safety and validation.
  */
 
+import { z } from 'zod';
+
 /**
- * Environment variable schema
+ * Environment Variable Schema
  */
-interface EnvSchema {
-  // Required variables
-  GOLDRUSH_API_KEY: string;
-  NEXT_PUBLIC_REOWN_PROJECT_ID: string;
-  DATABASE_URL: string;
+const envSchema = z.object({
+  // Node Environment
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   
-  // Optional variables
-  NODE_ENV?: 'development' | 'production' | 'test';
-  NEXT_PUBLIC_APP_URL?: string;
-  NEXT_PUBLIC_GOLDRUSH_API_KEY?: string;
-  ENABLE_ANALYTICS?: string;
-  LOG_LEVEL?: 'debug' | 'info' | 'warn' | 'error';
+  // Application
+  NEXT_PUBLIC_APP_URL: z.string().url().optional(),
+  NEXT_PUBLIC_APP_NAME: z.string().default('Airdrop Checker'),
+  
+  // API
+  NEXT_PUBLIC_API_URL: z.string().optional(),
+  API_TIMEOUT: z.string().optional().transform((val) => (val ? parseInt(val, 10) : 30000)),
+  
+  // Database
+  DATABASE_URL: z.string().optional(),
+  DIRECT_URL: z.string().optional(),
+  
+  // Redis
+  REDIS_URL: z.string().optional(),
+  REDIS_TOKEN: z.string().optional(),
+  
+  // GoldRush API (blockchain data)
+  GOLDRUSH_API_KEY: z.string().optional(),
+  GOLDRUSH_API_URL: z.string().url().optional(),
+  
+  // WalletConnect
+  NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z.string().optional(),
+  
+  // Analytics
+  NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
+  
+  // Sentry
+  SENTRY_DSN: z.string().optional(),
+  SENTRY_AUTH_TOKEN: z.string().optional(),
+  NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
+  
+  // Rate Limiting
+  RATE_LIMIT_MAX_REQUESTS: z.string().optional().transform((val) => (val ? parseInt(val, 10) : 60)),
+  RATE_LIMIT_WINDOW: z.string().optional().transform((val) => (val ? parseInt(val, 10) : 60000)),
+  
+  // Feature Flags
+  NEXT_PUBLIC_ENABLE_ANALYTICS: z.string().optional().transform((val) => val === 'true'),
+  NEXT_PUBLIC_ENABLE_WEB3: z.string().optional().transform((val) => val !== 'false'),
+  
+  // Email
+  EMAIL_SERVER: z.string().optional(),
+  EMAIL_FROM: z.string().email().optional(),
+  
+  // AWS
+  AWS_ACCESS_KEY_ID: z.string().optional(),
+  AWS_SECRET_ACCESS_KEY: z.string().optional(),
+  AWS_REGION: z.string().optional(),
+  AWS_S3_BUCKET: z.string().optional(),
+  
+  // Vercel
+  VERCEL: z.string().optional(),
+  VERCEL_URL: z.string().optional(),
+  VERCEL_ENV: z.string().optional(),
+  
+  // Security
+  NEXTAUTH_SECRET: z.string().optional(),
+  NEXTAUTH_URL: z.string().url().optional(),
+  JWT_SECRET: z.string().optional(),
+  
+  // Logging
+  LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug', 'verbose']).default('info'),
+  
+  // Monitoring
+  UPSTASH_REDIS_REST_URL: z.string().optional(),
+  UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+});
+
+/**
+ * Parsed and validated environment variables
+ */
+let parsedEnv: z.infer<typeof envSchema>;
+
+try {
+  parsedEnv = envSchema.parse(process.env);
+} catch (error) {
+  console.error('❌ Invalid environment variables:', error);
+  throw new Error('Invalid environment variables');
 }
 
 /**
- * Validated environment variables
+ * Type-safe environment variables
  */
-export interface ValidatedEnv {
-  goldrushApiKey: string;
-  reownProjectId: string;
-  databaseUrl: string;
-  nodeEnv: 'development' | 'production' | 'test';
-  appUrl: string;
-  enableAnalytics: boolean;
-  logLevel: 'debug' | 'info' | 'warn' | 'error';
-  isProduction: boolean;
-  isDevelopment: boolean;
-  isTest: boolean;
-}
-
-/**
- * Get environment variable with fallback
- */
-function getEnvVar(key: string, defaultValue?: string): string {
-  const value = process.env[key];
-  
-  if (value === undefined || value === '') {
-    if (defaultValue !== undefined) {
-      return defaultValue;
-    }
-    throw new Error(`Missing required environment variable: ${key}`);
-  }
-  
-  return value;
-}
-
-/**
- * Get optional environment variable
- */
-function getOptionalEnvVar(key: string, defaultValue: string = ''): string {
-  return process.env[key] || defaultValue;
-}
-
-/**
- * Parse boolean environment variable
- */
-function parseBooleanEnv(value: string | undefined): boolean {
-  if (!value) return false;
-  return value.toLowerCase() === 'true' || value === '1';
-}
-
-/**
- * Validate environment variables
- */
-export function validateEnv(): ValidatedEnv {
-  // Get required variables
-  const goldrushApiKey =
-    getOptionalEnvVar('GOLDRUSH_API_KEY') ||
-    getOptionalEnvVar('NEXT_PUBLIC_GOLDRUSH_API_KEY');
-  
-  if (!goldrushApiKey) {
-    console.warn('Warning: GOLDRUSH_API_KEY is not set. GoldRush API calls will fail.');
-  }
-  
-  const reownProjectId = getOptionalEnvVar('NEXT_PUBLIC_REOWN_PROJECT_ID');
-  if (!reownProjectId) {
-    console.warn('Warning: NEXT_PUBLIC_REOWN_PROJECT_ID is not set. WalletConnect will not work.');
-  }
-  
-  const databaseUrl = getOptionalEnvVar('DATABASE_URL');
-  if (!databaseUrl) {
-    console.warn('Warning: DATABASE_URL is not set. Database operations will fail.');
-  }
-  
-  // Get optional variables
-  const nodeEnv = (getOptionalEnvVar('NODE_ENV', 'development') as any) || 'development';
-  const appUrl = getOptionalEnvVar(
-    'NEXT_PUBLIC_APP_URL',
-    typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'
-  );
-  const enableAnalytics = parseBooleanEnv(getOptionalEnvVar('ENABLE_ANALYTICS'));
-  const logLevel = (getOptionalEnvVar('LOG_LEVEL', 'info') as any) || 'info';
-  
-  // Validate node environment
-  const validNodeEnvs = ['development', 'production', 'test'];
-  if (!validNodeEnvs.includes(nodeEnv)) {
-    throw new Error(`Invalid NODE_ENV: ${nodeEnv}. Must be one of: ${validNodeEnvs.join(', ')}`);
-  }
-  
-  // Validate log level
-  const validLogLevels = ['debug', 'info', 'warn', 'error'];
-  if (!validLogLevels.includes(logLevel)) {
-    throw new Error(`Invalid LOG_LEVEL: ${logLevel}. Must be one of: ${validLogLevels.join(', ')}`);
-  }
-  
-  return {
-    goldrushApiKey,
-    reownProjectId,
-    databaseUrl,
-    nodeEnv,
-    appUrl,
-    enableAnalytics,
-    logLevel,
-    isProduction: nodeEnv === 'production',
-    isDevelopment: nodeEnv === 'development',
-    isTest: nodeEnv === 'test',
-  };
-}
-
-/**
- * Validated environment configuration (singleton)
- */
-let cachedEnv: ValidatedEnv | null = null;
-
-/**
- * Get validated environment configuration
- */
-export function getEnv(): ValidatedEnv {
-  if (!cachedEnv) {
-    cachedEnv = validateEnv();
-  }
-  return cachedEnv;
-}
-
-/**
- * Check if running in production
- */
-export function isProduction(): boolean {
-  return getEnv().isProduction;
-}
+export const env = parsedEnv;
 
 /**
  * Check if running in development
  */
-export function isDevelopment(): boolean {
-  return getEnv().isDevelopment;
-}
+export const isDevelopment = env.NODE_ENV === 'development';
+
+/**
+ * Check if running in production
+ */
+export const isProduction = env.NODE_ENV === 'production';
 
 /**
  * Check if running in test
  */
-export function isTest(): boolean {
-  return getEnv().isTest;
-}
+export const isTest = env.NODE_ENV === 'test';
 
 /**
- * Get API key for GoldRush
+ * Check if running on Vercel
  */
-export function getGoldrushApiKey(): string {
-  return getEnv().goldrushApiKey;
-}
-
-/**
- * Get Reown project ID
- */
-export function getReownProjectId(): string {
-  return getEnv().reownProjectId;
-}
-
-/**
- * Get database URL
- */
-export function getDatabaseUrl(): string {
-  return getEnv().databaseUrl;
-}
+export const isVercel = !!env.VERCEL;
 
 /**
  * Get app URL
  */
-export function getAppUrl(): string {
-  return getEnv().appUrl;
-}
-
-/**
- * Check if analytics are enabled
- */
-export function isAnalyticsEnabled(): boolean {
-  return getEnv().enableAnalytics;
-}
-
-/**
- * Get log level
- */
-export function getLogLevel(): 'debug' | 'info' | 'warn' | 'error' {
-  return getEnv().logLevel;
-}
-
-/**
- * Validate required environment variables at startup
- */
-export function validateRequiredEnv(): void {
-  try {
-    validateEnv();
-    console.log('✓ Environment variables validated successfully');
-  } catch (error) {
-    console.error('✗ Environment variable validation failed:', error);
-    if (isProduction()) {
-      throw error;
-    }
+export const getAppUrl = (): string => {
+  // Vercel URL
+  if (env.VERCEL_URL) {
+    return `https://${env.VERCEL_URL}`;
   }
-}
+  
+  // Configured URL
+  if (env.NEXT_PUBLIC_APP_URL) {
+    return env.NEXT_PUBLIC_APP_URL;
+  }
+  
+  // Default
+  return 'http://localhost:3000';
+};
 
 /**
- * Get environment info for debugging
+ * Get API URL
  */
-export function getEnvInfo(): Record<string, any> {
-  const env = getEnv();
+export const getApiUrl = (): string => {
+  if (env.NEXT_PUBLIC_API_URL) {
+    return env.NEXT_PUBLIC_API_URL;
+  }
   
-  return {
-    nodeEnv: env.nodeEnv,
-    isProduction: env.isProduction,
-    isDevelopment: env.isDevelopment,
-    isTest: env.isTest,
-    hasGoldrushKey: !!env.goldrushApiKey,
-    hasReownProjectId: !!env.reownProjectId,
-    hasDatabaseUrl: !!env.databaseUrl,
-    enableAnalytics: env.enableAnalytics,
-    logLevel: env.logLevel,
-    appUrl: env.appUrl,
-  };
-}
+  return `${getAppUrl()}/api`;
+};
 
+/**
+ * Get database URL
+ */
+export const getDatabaseUrl = (): string | undefined => {
+  return env.DATABASE_URL;
+};
+
+/**
+ * Get Redis URL
+ */
+export const getRedisUrl = (): string | undefined => {
+  return env.REDIS_URL || env.UPSTASH_REDIS_REST_URL;
+};
+
+/**
+ * Check if feature is enabled
+ */
+export const isFeatureEnabled = (feature: string): boolean => {
+  const featureMap: Record<string, boolean | undefined> = {
+    analytics: env.NEXT_PUBLIC_ENABLE_ANALYTICS,
+    web3: env.NEXT_PUBLIC_ENABLE_WEB3,
+  };
+  
+  return featureMap[feature] ?? false;
+};
+
+/**
+ * Get GoldRush API configuration
+ */
+export const getGoldRushConfig = () => ({
+  apiKey: env.GOLDRUSH_API_KEY,
+  apiUrl: env.GOLDRUSH_API_URL || 'https://api.covalenthq.com',
+});
+
+/**
+ * Get rate limit configuration
+ */
+export const getRateLimitConfig = () => ({
+  maxRequests: env.RATE_LIMIT_MAX_REQUESTS,
+  windowMs: env.RATE_LIMIT_WINDOW,
+});
+
+/**
+ * Get email configuration
+ */
+export const getEmailConfig = () => ({
+  server: env.EMAIL_SERVER,
+  from: env.EMAIL_FROM,
+});
+
+/**
+ * Get AWS configuration
+ */
+export const getAWSConfig = () => ({
+  accessKeyId: env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+  region: env.AWS_REGION,
+  s3Bucket: env.AWS_S3_BUCKET,
+});
+
+/**
+ * Get logging configuration
+ */
+export const getLoggingConfig = () => ({
+  level: env.LOG_LEVEL,
+  pretty: isDevelopment,
+});
+
+/**
+ * Validate required environment variables for specific features
+ */
+export const validateFeatureEnv = (feature: string): boolean => {
+  switch (feature) {
+    case 'database':
+      return !!env.DATABASE_URL;
+    
+    case 'redis':
+      return !!(env.REDIS_URL || env.UPSTASH_REDIS_REST_URL);
+    
+    case 'goldrush':
+      return !!env.GOLDRUSH_API_KEY;
+    
+    case 'walletconnect':
+      return !!env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+    
+    case 'email':
+      return !!(env.EMAIL_SERVER && env.EMAIL_FROM);
+    
+    case 'aws':
+      return !!(
+        env.AWS_ACCESS_KEY_ID &&
+        env.AWS_SECRET_ACCESS_KEY &&
+        env.AWS_REGION
+      );
+    
+    case 'auth':
+      return !!(env.NEXTAUTH_SECRET && env.NEXTAUTH_URL);
+    
+    default:
+      return false;
+  }
+};
+
+/**
+ * Get all missing required environment variables
+ */
+export const getMissingEnvVars = (): string[] => {
+  const missing: string[] = [];
+  
+  if (isProduction) {
+    if (!env.DATABASE_URL) missing.push('DATABASE_URL');
+    if (!env.NEXTAUTH_SECRET) missing.push('NEXTAUTH_SECRET');
+    if (!env.GOLDRUSH_API_KEY) missing.push('GOLDRUSH_API_KEY');
+  }
+  
+  return missing;
+};
+
+/**
+ * Log environment information (safe for logging)
+ */
+export const logEnvInfo = (): void => {
+  console.log('🌍 Environment Information:');
+  console.log(`  NODE_ENV: ${env.NODE_ENV}`);
+  console.log(`  App URL: ${getAppUrl()}`);
+  console.log(`  API URL: ${getApiUrl()}`);
+  console.log(`  Database: ${env.DATABASE_URL ? '✓ Connected' : '✗ Not configured'}`);
+  console.log(`  Redis: ${getRedisUrl() ? '✓ Connected' : '✗ Not configured'}`);
+  console.log(`  GoldRush API: ${env.GOLDRUSH_API_KEY ? '✓ Configured' : '✗ Not configured'}`);
+  console.log(`  Log Level: ${env.LOG_LEVEL}`);
+  
+  const missing = getMissingEnvVars();
+  if (missing.length > 0) {
+    console.warn(`⚠️  Missing environment variables: ${missing.join(', ')}`);
+  }
+};
+
+// Export type for TypeScript
+export type Env = typeof env;
