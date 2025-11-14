@@ -2,7 +2,7 @@
 
 A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 40+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
-## 🎉 410+ Production-Ready Features!
+## 🎉 430+ Production-Ready Features!
 
 ### 🎯 Core Features (1-15)
 21. **WalletConnect Integration** - Connect securely using WalletConnect v2 (Reown SDK)
@@ -544,6 +544,45 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 409. **Token List** - Get curated token lists for major chains with metadata
 410. **Chain State** - Get comprehensive chain state including block number, gas prices, and network info
 
+#### Advanced Onchain Analytics Features (411-430)
+411. **Token Vesting Schedule Checker** - Check on-chain token vesting schedules and unlock timelines for blockchain vesting analysis
+412. **Airdrop Claim Eligibility Verifier** - Verify on-chain airdrop claim eligibility and claimable amounts for blockchain claim status
+413. **Token Unlock Schedule Tracker** - Track on-chain token unlock schedules and linear/cliff unlock mechanisms for blockchain token releases
+414. **Smart Contract Code Analyzer** - Analyze on-chain smart contract bytecode and code patterns for blockchain bytecode inspection
+415. **Token Holder Distribution Analyzer** - Analyze on-chain token holder distribution and concentration metrics for blockchain concentration analysis
+416. **Flash Loan Detection** - Detect on-chain flash loan usage and transaction patterns for blockchain transaction analysis
+417. **Token Burn Tracker** - Track on-chain token burn events and supply reduction for blockchain supply reduction monitoring
+418. **Token Minting Tracker** - Track on-chain token minting events and supply increases for blockchain supply increase monitoring
+419. **Contract Upgrade Detector** - Detect on-chain contract upgrade mechanisms and proxy patterns for blockchain proxy pattern analysis
+420. **Token Liquidity Lock Checker** - Check on-chain token liquidity lock status and unlock schedules for blockchain lock monitoring
+421. **Token Vesting Contract Reader** - Read comprehensive on-chain token vesting contract data for blockchain vesting analysis
+422. **Token Distribution Analyzer** - Analyze on-chain token distribution patterns and concentration metrics for blockchain concentration analysis
+423. **Contract Proxy Detector** - Detect on-chain contract proxy patterns and implementation addresses for blockchain proxy analysis
+424. **Token Supply Tracker** - Track on-chain token supply metrics including circulating and total supply for blockchain supply monitoring
+425. **Token Holder Snapshot Generator** - Generate on-chain token holder snapshots at specific blocks for blockchain snapshot creation
+426. **Smart Contract Security Scanner** - Scan on-chain smart contracts for security patterns and vulnerabilities for blockchain vulnerability detection
+427. **Token Metadata Updater** - Get on-chain token metadata and check for update capabilities for blockchain metadata tracking
+428. **Token Vesting Unlock Calculator** - Calculate on-chain token vesting unlock amounts and schedules for blockchain vesting calculations
+429. **Token Airdrop Claim Status Checker** - Get on-chain airdrop claim status and eligibility information for blockchain claim tracking
+430. **Onchain Feature Suite Complete** - Comprehensive on-chain analytics combining all advanced features above
+
+#### Additional Onchain Blockchain Features (431-450)
+431. **Token Vesting Schedule Analyzer** - Analyze on-chain token vesting schedules for blockchain vesting tracking
+432. **Airdrop Eligibility Checker** - Verify on-chain airdrop claim eligibility for blockchain claim verification
+433. **Token Lock Analyzer** - Analyze on-chain token locks and unlock schedules for blockchain lock monitoring
+434. **Contract Deployment Tracker** - Track on-chain contract deployments and creation data for blockchain deployment analysis
+435. **Token Transfer Analyzer** - Analyze on-chain token transfer patterns for blockchain transfer monitoring
+436. **Token Approval Analyzer** - Analyze on-chain token approvals and risk levels for blockchain approval monitoring
+437. **NFT Ownership Tracker** - Track on-chain NFT ownership and balances for blockchain NFT monitoring
+438. **Gas Usage Analyzer** - Analyze on-chain gas usage and transaction costs for blockchain gas monitoring
+439. **Contract Events Tracker** - Track on-chain contract events and logs for blockchain event monitoring
+440. **Token Price History Tracker** - Track on-chain token price history over time for blockchain price monitoring
+441. **Wallet Activity Score Calculator** - Calculate on-chain wallet activity scores for blockchain activity analysis
+442. **Token Holder Count Estimator** - Estimate on-chain token holder counts for blockchain holder analysis
+443. **Contract Interaction Counter** - Count on-chain contract interactions for blockchain interaction tracking
+444. **Token Capitalization Calculator** - Calculate on-chain token market capitalization for blockchain market analysis
+445. **Block Transaction Counter** - Count on-chain block transactions for blockchain block analysis
+
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
 ## Onchain API Endpoints
@@ -566,6 +605,25 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/contract-verification` - Verify contracts
 - `GET /api/onchain/token-list` - Get token lists
 - `GET /api/onchain/chain-state` - Get chain state
+- `GET /api/onchain/token-vesting-schedule/[address]` - Check token vesting schedules
+- `GET /api/onchain/airdrop-claim-eligibility/[address]` - Verify airdrop claim eligibility
+- `GET /api/onchain/token-unlock-schedule/[address]` - Track token unlock schedules
+- `GET /api/onchain/contract-code-analyzer/[address]` - Analyze contract bytecode
+- `GET /api/onchain/token-holder-distribution/[address]` - Analyze holder distribution
+- `GET /api/onchain/flash-loan-detection/[address]` - Detect flash loan usage
+- `GET /api/onchain/token-burn-tracker/[address]` - Track token burn events
+- `GET /api/onchain/token-minting-tracker/[address]` - Track token minting events
+- `GET /api/onchain/contract-upgrade-detector/[address]` - Detect contract upgrades
+- `GET /api/onchain/token-liquidity-lock/[address]` - Check liquidity locks
+- `GET /api/onchain/token-vesting-reader/[address]` - Read vesting contract data
+- `GET /api/onchain/token-distribution-analyzer/[address]` - Analyze token distribution
+- `GET /api/onchain/contract-proxy-detector/[address]` - Detect proxy patterns
+- `GET /api/onchain/token-supply-tracker/[address]` - Track token supply metrics
+- `GET /api/onchain/token-holder-snapshot/[address]` - Generate holder snapshots
+- `GET /api/onchain/contract-security-scanner/[address]` - Scan contract security
+- `GET /api/onchain/token-metadata-updater/[address]` - Get token metadata
+- `GET /api/onchain/vesting-unlock-calculator/[address]` - Calculate vesting unlocks
+- `GET /api/onchain/airdrop-claim-status/[address]` - Get claim status
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
