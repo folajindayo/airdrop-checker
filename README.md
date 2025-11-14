@@ -566,6 +566,14 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 429. **Token Airdrop Claim Status Checker** - Get on-chain airdrop claim status and eligibility information for blockchain claim tracking
 430. **Onchain Feature Suite Complete** - Comprehensive on-chain analytics combining all advanced features above
 
+#### Additional Onchain Blockchain Features (431-450)
+431. **Token Vesting Schedule Analyzer** - Analyze on-chain token vesting schedules for blockchain vesting tracking
+432. **Airdrop Eligibility Checker** - Verify on-chain airdrop claim eligibility for blockchain claim verification
+433. **Token Lock Analyzer** - Analyze on-chain token locks and unlock schedules for blockchain lock monitoring
+434. **Contract Deployment Tracker** - Track on-chain contract deployments and creation data for blockchain deployment analysis
+435. **Token Transfer Analyzer** - Analyze on-chain token transfer patterns for blockchain transfer monitoring
+436. **Token Approval Analyzer** - Analyze on-chain token approvals and risk levels for blockchain approval monitoring
+
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
 ## Onchain API Endpoints
