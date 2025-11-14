@@ -629,6 +629,26 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-metadata-updater/[address]` - Get token metadata
 - `GET /api/onchain/vesting-unlock-calculator/[address]` - Calculate vesting unlocks
 - `GET /api/onchain/airdrop-claim-status/[address]` - Get claim status
+- `GET /api/onchain/token-vesting-schedule/[address]` - Check vesting schedules
+- `GET /api/onchain/airdrop-claim-eligibility/[address]` - Verify claim eligibility
+- `GET /api/onchain/token-lock-analyzer/[address]` - Analyze token locks
+- `GET /api/onchain/contract-deployment-tracker/[address]` - Track deployments
+- `GET /api/onchain/token-transfer-analyzer/[address]` - Analyze transfers
+- `GET /api/onchain/token-approval-analyzer/[address]` - Analyze approvals
+- `GET /api/onchain/nft-ownership-tracker/[address]` - Track NFT ownership
+- `GET /api/onchain/gas-usage-analyzer/[address]` - Analyze gas usage
+- `GET /api/onchain/contract-events-tracker/[address]` - Track events
+- `GET /api/onchain/token-price-history/[address]` - Get price history
+- `GET /api/onchain/wallet-activity-score/[address]` - Calculate activity score
+- `GET /api/onchain/token-holder-count/[address]` - Estimate holder count
+- `GET /api/onchain/contract-interaction-count/[address]` - Count interactions
+- `GET /api/onchain/token-capitalization/[address]` - Calculate market cap
+- `GET /api/onchain/block-transaction-count` - Count block transactions
+- `GET /api/onchain/token-age-calculator/[address]` - Calculate token age
+- `GET /api/onchain/contract-storage-reader/[address]` - Read storage
+- `GET /api/onchain/token-whale-tracker/[address]` - Track whales
+- `GET /api/onchain/transaction-fee-calculator` - Calculate fees
+- `GET /api/onchain/contract-creation-tx/[address]` - Find creation tx
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
