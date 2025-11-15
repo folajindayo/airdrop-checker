@@ -48,6 +48,15 @@
       "@/*": [
         "./*"
       ],
+      "@/features/*": [
+        "./features/*"
+      ],
+      "@/common/*": [
+        "./common/*"
+      ],
+      "@/infrastructure/*": [
+        "./infrastructure/*"
+      ],
       "@airdrop-finder/shared": [
         "../../packages/shared/index.ts"
       ],
