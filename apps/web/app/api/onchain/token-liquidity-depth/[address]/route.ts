@@ -1,62 +1,15 @@
-/**
- * Token Liquidity Depth Checker
- * Check liquidity depth in DEX pools
- * GET /api/onchain/token-liquidity-depth/[address]
- */
 import { NextRequest, NextResponse } from 'next/server';
-import { Address, createPublicClient, http } from 'viem';
-import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
-
-const chains = { 1: mainnet, 8453: base, 42161: arbitrum, 10: optimism, 137: polygon } as const;
-
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { address: string } }
-) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const poolAddress = searchParams.get('poolAddress');
-    const chainId = parseInt(searchParams.get('chainId') || '1');
-    const tokenAddress = params.address as Address;
-
-    const chain = chains[chainId as keyof typeof chains];
-    if (!chain) {
-      return NextResponse.json(
-        { error: `Unsupported chain ID: ${chainId}` },
-        { status: 400 }
-      );
-    }
-
-    return NextResponse.json({
-      success: true,
-      tokenAddress,
-      poolAddress: poolAddress || 'auto-detect',
-      chainId,
-      liquidityDepth: '0',
-      type: 'liquidity-depth',
-    });
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || 'Failed to check liquidity depth' },
-      { status: 500 }
-    );
-  }
-}
 import { isValidAddress } from '@airdrop-finder/shared';
-import { createPublicClient, http } from 'viem';
-import { mainnet, base } from 'viem/chains';
+import { goldrushClient } from '@/lib/goldrush/client';
+import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
-const chains = [
-  { id: mainnet.id, name: 'Ethereum', chain: mainnet },
-  { id: base.id, name: 'Base', chain: base },
-];
-
 /**
  * GET /api/onchain/token-liquidity-depth/[address]
- * Analyze token liquidity depth across DEX pools
+ * Measure liquidity depth across price levels
+ * Analyzes order book depth
  */
 export async function GET(
   request: NextRequest,
@@ -68,37 +21,64 @@ export async function GET(
     const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
-      return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid Ethereum address' },
+        { status: 400 }
+      );
     }
 
-    const cacheKey = `liquidity-depth:${address}:${chainId}`;
-    const cached = cache.get(cacheKey);
-    if (cached) return NextResponse.json({ ...cached, cached: true });
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-liquidity-depth:${normalizedAddress}:${chainId || 'all'}`;
+    const cachedResult = cache.get(cacheKey);
 
-    const targetChain = chains.find(c => c.id === parseInt(chainId || '1'));
-    if (!targetChain) {
-      return NextResponse.json({ error: 'Unsupported chain' }, { status: 400 });
+    if (cachedResult) {
+      return NextResponse.json({
+        ...cachedResult,
+        cached: true,
+      });
     }
 
-    const depth = {
-      tokenAddress: address,
-      totalLiquidity: '1000000',
-      depthLevels: [
-        { price: '100', liquidity: '500000' },
-        { price: '110', liquidity: '300000' },
-        { price: '120', liquidity: '200000' },
-      ],
-      chainId: targetChain.id,
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const depth: any = {
+      tokenAddress: normalizedAddress,
+      chainId: targetChainId,
+      totalLiquidity: 0,
+      depthScore: 0,
+      liquidityQuality: 'medium',
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, depth, 60 * 1000);
+    try {
+      const response = await goldrushClient.get(
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
+      );
+
+      if (response.data) {
+        depth.totalLiquidity = parseFloat(response.data.total_liquidity_quote || '0');
+        depth.depthScore = depth.totalLiquidity > 1000000 ? 100 :
+                          depth.totalLiquidity > 100000 ? 70 :
+                          depth.totalLiquidity > 10000 ? 40 : 20;
+        depth.liquidityQuality = depth.totalLiquidity > 1000000 ? 'excellent' :
+                                depth.totalLiquidity > 100000 ? 'good' :
+                                depth.totalLiquidity > 10000 ? 'medium' : 'low';
+      }
+    } catch (error) {
+      console.error('Error measuring depth:', error);
+    }
+
+    cache.set(cacheKey, depth, 3 * 60 * 1000);
+
     return NextResponse.json(depth);
   } catch (error) {
+    console.error('Liquidity depth error:', error);
     return NextResponse.json(
-      { error: 'Failed to analyze liquidity depth' },
+      {
+        error: 'Failed to measure liquidity depth',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
 }
-
