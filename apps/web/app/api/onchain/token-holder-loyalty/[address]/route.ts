@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
 import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-holder-loyalty/[address]
- * Calculate holder loyalty metrics
- * Measures long-term commitment
+ * Measure holder loyalty and retention
  */
 export async function GET(
   request: NextRequest,
@@ -44,8 +42,8 @@ export async function GET(
       tokenAddress: normalizedAddress,
       chainId: targetChainId,
       loyaltyScore: 0,
-      averageHoldTime: 0,
-      loyalHolders: 0,
+      longTermHolders: 0,
+      retentionRate: 0,
       timestamp: Date.now(),
     };
 
@@ -57,18 +55,19 @@ export async function GET(
 
       if (response.data?.items) {
         const holders = response.data.items;
-        const loyal = holders.filter((h: any) => {
+        const longTerm = holders.filter((h: any) => {
           const lastTransfer = new Date(h.last_transferred_at || 0);
           const daysAgo = (Date.now() - lastTransfer.getTime()) / (1000 * 60 * 60 * 24);
-          return daysAgo > 180;
+          return daysAgo > 90;
         });
 
-        loyalty.loyalHolders = loyal.length;
-        loyalty.loyaltyScore = holders.length > 0 ? 
-          (loyal.length / holders.length) * 100 : 0;
+        loyalty.longTermHolders = longTerm.length;
+        loyalty.retentionRate = holders.length > 0 ? 
+          (longTerm.length / holders.length) * 100 : 0;
+        loyalty.loyaltyScore = loyalty.retentionRate;
       }
     } catch (error) {
-      console.error('Error calculating loyalty:', error);
+      console.error('Error measuring loyalty:', error);
     }
 
     cache.set(cacheKey, loyalty, 5 * 60 * 1000);
@@ -78,11 +77,10 @@ export async function GET(
     console.error('Holder loyalty error:', error);
     return NextResponse.json(
       {
-        error: 'Failed to calculate holder loyalty',
+        error: 'Failed to measure holder loyalty',
         details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );
   }
 }
-
