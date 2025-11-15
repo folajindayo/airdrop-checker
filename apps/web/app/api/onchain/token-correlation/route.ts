@@ -20,3 +20,10 @@ export async function GET(request: NextRequest) {
     const token1 = searchParams.get('token1');
     const token2 = searchParams.get('token2');
 
+    if (!token1 || !token2) {
+      return NextResponse.json(
+        { error: 'Both token1 and token2 addresses required' },
+        { status: 400 }
+      );
+    }
+
