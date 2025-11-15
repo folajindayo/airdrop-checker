@@ -3,6 +3,8 @@ import { createPublicClient, http } from 'viem';
 import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
 
 // DEX Router Configuration
+const MAX_SLIPPAGE = 0.5; // 0.5%
+const MIN_LIQUIDITY = 10000; // $10k minimum
 
 const chains = {
   1: mainnet,
