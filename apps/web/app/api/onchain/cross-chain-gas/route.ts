@@ -37,4 +37,23 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    const sortedByGas = [...gasData].sort((a, b) => 
+      parseFloat(a.gasPriceGwei) - parseFloat(b.gasPriceGwei)
+    );
+
+    return NextResponse.json({
+      success: true,
+      chains: gasData,
+      cheapest: sortedByGas[0],
+      mostExpensive: sortedByGas[sortedByGas.length - 1],
+      timestamp: Date.now(),
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || 'Failed to fetch gas prices' },
+      { status: 500 }
+    );
+  }
+}
+
 
