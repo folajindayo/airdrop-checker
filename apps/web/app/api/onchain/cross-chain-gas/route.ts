@@ -22,4 +22,8 @@ export async function GET(request: NextRequest) {
         transport: http(),
       });
 
+      try {
+        const gasPrice = await client.getGasPrice();
+        const gasPriceGwei = Number(gasPrice) / 1e9;
+
 
