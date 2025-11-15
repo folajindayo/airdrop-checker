@@ -602,12 +602,24 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 459. **Token Price Alerts System** - Create and manage price alerts for tokens with Reown wallet integration
 460. **Token Holder Analytics** - Comprehensive analytics for token holders with distribution and concentration metrics
 
-#### Additional Onchain Analytics (461-465)
+#### Additional Onchain Analytics (461-470)
 461. **Token Transfer Flow Analyzer** - Analyze token transfer flows and patterns tracking incoming and outgoing transfers
 462. **Advanced Holder Distribution Analysis** - Calculate Gini coefficient and Herfindahl index for token distribution metrics
 463. **Smart Contract Event Monitor** - Monitor and track smart contract events in real-time with Reown integration
 464. **Enhanced Token Unlock Tracker** - Advanced tracking of token unlock schedules and vesting mechanisms
-465. **Complete Onchain Analytics Suite** - Comprehensive on-chain analytics combining all advanced features above
+465. **Token Liquidity Analyzer** - Analyze token liquidity across DEX pools with comprehensive metrics
+466. **Wallet Reputation System** - Calculate wallet reputation score based on on-chain activity patterns
+467. **Token Volatility Calculator** - Calculate token price volatility metrics for risk assessment
+468. **Smart Money Tracker** - Track smart money wallets and identify profitable trading patterns
+469. **Token Momentum Indicator** - Calculate token price momentum with RSI and trend analysis
+470. **Contract Audit Status Checker** - Check contract audit status and security verification
+
+#### Advanced Onchain Tools (471-475)
+471. **Token Holder Growth Tracker** - Track token holder growth over time with adoption trends
+472. **Transaction Cost Analyzer** - Analyze transaction costs and gas spending patterns
+473. **Gas Optimization Advisor** - Get recommendations for optimizing gas usage
+474. **Portfolio Risk Assessor** - Comprehensive portfolio risk assessment across chains
+475. **Complete Onchain Analytics Suite** - Comprehensive on-chain analytics combining all advanced features above
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
