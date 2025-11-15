@@ -17,27 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-holder-diversity:${address.toLowerCase()}`;
+    const cacheKey = `contract-gas-profile:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const diversity = {
+    const profile = {
       address: address.toLowerCase(),
-      diversityIndex: 0,
-      shannonIndex: 0,
-      holderDistribution: {},
-      diversityScore: 0,
+      averageGasUsed: '0',
+      gasByFunction: {},
+      optimizationScore: 0,
+      recommendations: [],
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, diversity, 300000);
-    return NextResponse.json(diversity);
+    cache.set(cacheKey, profile, 300000);
+    return NextResponse.json(profile);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to calculate holder diversity' },
+      { error: 'Failed to generate gas profile' },
       { status: 500 }
     );
   }
 }
+

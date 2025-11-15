@@ -17,27 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-holder-diversity:${address.toLowerCase()}`;
+    const cacheKey = `wallet-pnl-calculator:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const diversity = {
+    const pnl = {
       address: address.toLowerCase(),
-      diversityIndex: 0,
-      shannonIndex: 0,
-      holderDistribution: {},
-      diversityScore: 0,
+      totalPnL: '0',
+      realizedPnL: '0',
+      unrealizedPnL: '0',
+      roi: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, diversity, 300000);
-    return NextResponse.json(diversity);
+    cache.set(cacheKey, pnl, 300000);
+    return NextResponse.json(pnl);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to calculate holder diversity' },
+      { error: 'Failed to calculate PnL' },
       { status: 500 }
     );
   }
 }
+
