@@ -5,8 +5,8 @@ import { cache } from '@airdrop-finder/shared';
 export const dynamic = 'force-dynamic';
 
 /**
- * GET /api/onchain/token-voting-power/[address]
- * Calculate voting power for wallet
+ * GET /api/onchain/token-proposal-creator/[address]
+ * Get proposals created by wallet
  */
 export async function GET(
   request: NextRequest,
@@ -18,24 +18,25 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `voting-power:${address}`;
+    const cacheKey = `proposal-creator:${address}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
-    const voting = {
-      walletAddress: address,
-      votingPower: '0',
-      totalSupply: '0',
-      powerPercent: '0',
+    const proposals = {
+      creatorAddress: address,
+      totalProposals: 0,
+      activeProposals: 0,
+      proposals: [],
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, voting, 60 * 1000);
-    return NextResponse.json(voting);
+    cache.set(cacheKey, proposals, 60 * 1000);
+    return NextResponse.json(proposals);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to calculate voting power' },
+      { error: 'Failed to get proposals' },
       { status: 500 }
     );
   }
 }
+
