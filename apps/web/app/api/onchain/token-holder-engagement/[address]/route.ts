@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
 import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-holder-engagement/[address]
- * Measure holder engagement levels
- * Tracks interaction frequency
+ * Measure holder engagement metrics
  */
 export async function GET(
   request: NextRequest,
@@ -45,28 +43,26 @@ export async function GET(
       chainId: targetChainId,
       engagementScore: 0,
       activeHolders: 0,
-      passiveHolders: 0,
+      transactionPerHolder: 0,
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/token_holders/`,
-        { 'quote-currency': 'USD', 'page-size': 100 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const holders = response.data.items;
-        const active = holders.filter((h: any) => {
-          const lastTransfer = new Date(h.last_transferred_at || 0);
-          const daysAgo = (Date.now() - lastTransfer.getTime()) / (1000 * 60 * 60 * 24);
-          return daysAgo < 7;
-        });
-
-        engagement.activeHolders = active.length;
-        engagement.passiveHolders = holders.length - active.length;
-        engagement.engagementScore = holders.length > 0 ? 
-          (active.length / holders.length) * 100 : 0;
+      if (response.data) {
+        const txCount = parseFloat(response.data.transactions_24h || '0');
+        const holders = await goldrushClient.get(
+          `/v2/${targetChainId}/tokens/${normalizedAddress}/token_holders/`,
+          { 'quote-currency': 'USD', 'page-size': 1 }
+        ).then(r => r.data?.items?.length || 1).catch(() => 1);
+        
+        engagement.activeHolders = holders;
+        engagement.transactionPerHolder = holders > 0 ? txCount / holders : 0;
+        engagement.engagementScore = Math.min(engagement.transactionPerHolder * 10, 100);
       }
     } catch (error) {
       console.error('Error measuring engagement:', error);
@@ -86,4 +82,3 @@ export async function GET(
     );
   }
 }
-
