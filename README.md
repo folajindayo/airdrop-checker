@@ -1,8 +1,8 @@
 # Airdrop Finder
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 40+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 465+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
-## 🎉 450+ Production-Ready Features!
+## 🎉 465+ Production-Ready Features!
 
 ### 🎯 Core Features (1-15)
 21. **WalletConnect Integration** - Connect securely using WalletConnect v2 (Reown SDK)
@@ -602,10 +602,10 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 
 #### Additional Onchain Analytics (461-465)
 461. **Token Transfer Flow Analyzer** - Analyze token transfer flows and patterns tracking incoming and outgoing transfers
-462. **Token Holder Analytics** - Advanced holder distribution analysis with Gini coefficient and Herfindahl index
-463. **Smart Contract Event Monitor** - Monitor and track smart contract events in real-time
-464. **Token Unlock Schedule Tracker** - Enhanced tracking of token unlock schedules and vesting mechanisms
-465. **Onchain Feature Suite Complete** - Comprehensive on-chain analytics combining all advanced features above
+462. **Advanced Holder Distribution Analysis** - Calculate Gini coefficient and Herfindahl index for token distribution metrics
+463. **Smart Contract Event Monitor** - Monitor and track smart contract events in real-time with Reown integration
+464. **Enhanced Token Unlock Tracker** - Advanced tracking of token unlock schedules and vesting mechanisms
+465. **Complete Onchain Analytics Suite** - Comprehensive on-chain analytics combining all advanced features above
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
