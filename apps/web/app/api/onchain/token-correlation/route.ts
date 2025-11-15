@@ -13,3 +13,10 @@ const erc20Abi = [
     type: 'function',
   },
 ] as const;
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const token1 = searchParams.get('token1');
+    const token2 = searchParams.get('token2');
+
