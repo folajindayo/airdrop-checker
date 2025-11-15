@@ -1,4 +1,5 @@
 # Multi-stage Dockerfile for Next.js Application
+# Optimized for production deployment with minimal image size
 
 # Stage 1: Dependencies
 FROM node:18-alpine AS deps
