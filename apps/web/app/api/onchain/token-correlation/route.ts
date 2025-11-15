@@ -4,6 +4,9 @@ import { mainnet } from 'viem/chains';
 
 export const dynamic = 'force-dynamic';
 
+// Correlation analysis configuration
+const CORRELATION_WINDOW = 30; // days
+
 const erc20Abi = [
   {
     inputs: [],
