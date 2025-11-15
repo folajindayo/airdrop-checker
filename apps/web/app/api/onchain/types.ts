@@ -9,3 +9,9 @@ export interface GasPrice {
   price: string;
 }
 
+export interface TokenInfo {
+  address: string;
+  symbol: string;
+  decimals: number;
+}
+
