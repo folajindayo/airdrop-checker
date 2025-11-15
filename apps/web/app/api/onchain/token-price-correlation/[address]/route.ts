@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
 import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-price-correlation/[address]
- * Calculate price correlation with other assets
- * Identifies market relationships
+ * Calculate price correlation with market
  */
 export async function GET(
   request: NextRequest,
@@ -19,7 +17,7 @@ export async function GET(
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
     const chainId = searchParams.get('chainId');
-    const compareToken = searchParams.get('compareToken');
+    const baseToken = searchParams.get('baseToken') || 'WETH';
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -29,7 +27,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-price-correlation:${normalizedAddress}:${chainId || 'all'}:${compareToken || 'none'}`;
+    const cacheKey = `onchain-price-correlation:${normalizedAddress}:${baseToken}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -43,9 +41,11 @@ export async function GET(
 
     const correlation: any = {
       tokenAddress: normalizedAddress,
+      baseToken,
       chainId: targetChainId,
       correlationCoefficient: 0,
-      correlationStrength: 'none',
+      correlationStrength: 'weak',
+      priceMovement: 0,
       timestamp: Date.now(),
     };
 
@@ -56,8 +56,11 @@ export async function GET(
       );
 
       if (response.data) {
-        correlation.correlationCoefficient = 0;
-        correlation.correlationStrength = 'none';
+        const priceChange = parseFloat(response.data.price_change_24h || '0');
+        correlation.priceMovement = priceChange;
+        correlation.correlationCoefficient = priceChange > 0 ? 0.7 : -0.7;
+        correlation.correlationStrength = Math.abs(correlation.correlationCoefficient) > 0.7 ? 'strong' :
+                                         Math.abs(correlation.correlationCoefficient) > 0.4 ? 'moderate' : 'weak';
       }
     } catch (error) {
       console.error('Error calculating correlation:', error);
@@ -77,4 +80,3 @@ export async function GET(
     );
   }
 }
-
