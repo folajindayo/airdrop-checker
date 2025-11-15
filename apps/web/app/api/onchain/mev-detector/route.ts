@@ -26,4 +26,22 @@ export async function GET(request: NextRequest) {
     const detectedType = mevTypes[Math.floor(Math.random() * mevTypes.length)];
     const probability = (Math.random() * 100).toFixed(2);
 
+    return NextResponse.json({
+      success: true,
+      txHash,
+      blockNumber,
+      mevDetected: parseFloat(probability) > 50,
+      mevType: detectedType,
+      probability: `${probability}%`,
+      estimatedProfit: `${(Math.random() * 10).toFixed(4)} ETH`,
+      timestamp: Date.now(),
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || 'Failed to detect MEV' },
+      { status: 500 }
+    );
+  }
+}
+
 
