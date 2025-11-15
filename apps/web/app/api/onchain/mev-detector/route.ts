@@ -4,6 +4,9 @@ import { mainnet } from 'viem/chains';
 
 export const dynamic = 'force-dynamic';
 
+// MEV detection confidence threshold
+const MEV_CONFIDENCE_THRESHOLD = 0.6;
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
