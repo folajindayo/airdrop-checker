@@ -17,27 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-liquidity-depth:${address.toLowerCase()}`;
+    const cacheKey = `contract-upgrade-history:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const depth = {
+    const history = {
       address: address.toLowerCase(),
-      liquidityDepth: '0',
-      depthScore: 0,
-      priceLevels: [],
-      depthChart: [],
+      upgrades: [],
+      totalUpgrades: 0,
+      lastUpgrade: null,
+      upgradeFrequency: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, depth, 300000);
-    return NextResponse.json(depth);
+    cache.set(cacheKey, history, 300000);
+    return NextResponse.json(history);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to analyze liquidity depth' },
+      { error: 'Failed to fetch upgrade history' },
       { status: 500 }
     );
   }
 }
+
