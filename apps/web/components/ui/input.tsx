@@ -1,23 +1,53 @@
 /**
  * Input Component System
  * 
- * Provides accessible input components with support for:
+ * Unified input components with comprehensive features:
  * - Text, email, password, number, tel, url, search types
- * - Icons and actions (prefix/suffix)
+ * - Icons and actions (prefix/suffix) using CVA
  * - Validation states
  * - Loading states
  * - Character count
  * - Clear button
- * - Keyboard shortcuts
+ * - Password toggle
+ * - Specialized variants (Search, Password, Number)
  */
 
 'use client';
 
 import React, { forwardRef, useState } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
+const inputVariants = cva(
+  'w-full rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 placeholder:text-gray-400 dark:placeholder:text-gray-500',
+  {
+    variants: {
+      variant: {
+        default: 'border-gray-300 focus:ring-blue-500 dark:border-gray-700',
+        error: 'border-red-500 focus:ring-red-500',
+        success: 'border-green-500 focus:ring-green-500',
+      },
+      inputSize: {
+        sm: 'h-8 text-sm px-3',
+        md: 'h-10 text-base px-4',
+        lg: 'h-12 text-lg px-5',
+      },
+      state: {
+        default: 'bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100',
+        disabled: 'cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-gray-800',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      inputSize: 'md',
+      state: 'default',
+    },
+  }
+);
+
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
+    Omit<VariantProps<typeof inputVariants>, 'state'> {
   label?: string;
   error?: string;
   helperText?: string;
@@ -30,7 +60,6 @@ export interface InputProps
   showPasswordToggle?: boolean;
   showCharacterCount?: boolean;
   fullWidth?: boolean;
-  inputSize?: 'sm' | 'md' | 'lg';
 }
 
 /**
@@ -93,11 +122,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const characterCount =
       typeof currentValue === 'string' ? currentValue.length : 0;
 
-    const sizeClasses = {
-      sm: 'h-8 text-sm px-3',
-      md: 'h-10 text-base px-4',
-      lg: 'h-12 text-lg px-5',
-    };
+    const inputVariantValue = error ? 'error' : variant;
+    const inputStateValue = disabled || loading ? 'disabled' : 'default';
 
     return (
       <div className={cn('flex flex-col', fullWidth && 'w-full', className)}>
@@ -133,7 +159,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
 
           {/* Input Field */}
-      <input
+          <input
             ref={ref}
             id={inputId}
             type={inputType}
@@ -146,23 +172,18 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               error ? errorId : helperText ? helperId : undefined
             }
             className={cn(
-              'w-full rounded-lg border transition-colors',
-              'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              'placeholder:text-gray-400 dark:placeholder:text-gray-500',
-              sizeClasses[inputSize],
+              inputVariants({ 
+                variant: inputVariantValue, 
+                inputSize, 
+                state: inputStateValue 
+              }),
               prefixIcon && 'pl-10',
               (suffixIcon ||
                 clearable ||
                 showPasswordToggle ||
                 loading ||
                 showCharacterCount) &&
-                'pr-10',
-              error
-                ? 'border-red-500 focus:ring-red-500'
-                : 'border-gray-300 dark:border-gray-700',
-              disabled || loading
-                ? 'cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-gray-800'
-                : 'bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100'
+                'pr-10'
             )}
             {...props}
           />
