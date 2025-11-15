@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+import { goldrushClient } from '@/lib/goldrush/client';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
@@ -14,29 +15,46 @@ export async function GET(
 ) {
   try {
     const { address } = await params;
+    const searchParams = request.nextUrl.searchParams;
+    const chainId = searchParams.get('chainId');
+
     if (!isValidAddress(address)) {
-      return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid Ethereum address' },
+        { status: 400 }
+      );
     }
 
-    const cacheKey = `utilization-rate:${address}`;
-    const cached = cache.get(cacheKey);
-    if (cached) return NextResponse.json({ ...cached, cached: true });
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-utilization-rate:${normalizedAddress}:${chainId || 'all'}`;
+    const cachedResult = cache.get(cacheKey);
 
-    const utilization = {
-      tokenAddress: address,
-      utilizationRate: '65',
-      totalSupplied: '10000000',
-      totalBorrowed: '6500000',
+    if (cachedResult) {
+      return NextResponse.json({ ...cachedResult, cached: true });
+    }
+
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const utilization: any = {
+      tokenAddress: normalizedAddress,
+      chainId: targetChainId,
+      utilizationRate: 0,
+      totalSupplied: '0',
+      totalBorrowed: '0',
+      availableLiquidity: '0',
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, utilization, 60 * 1000);
+    cache.set(cacheKey, utilization, 2 * 60 * 1000);
     return NextResponse.json(utilization);
   } catch (error) {
+    console.error('Utilization rate error:', error);
     return NextResponse.json(
-      { error: 'Failed to calculate utilization rate' },
+      {
+        error: 'Failed to calculate utilization rate',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
 }
-
