@@ -501,6 +501,8 @@ Built with ❤️ using Next.js, TailwindCSS, and GoldRush API
 ### 🔗 On-Chain Features (Powered by Reown Wallet)
 All on-chain features require wallet connection via Reown Wallet (formerly WalletConnect) for secure, decentralized access.
 
+**Latest Additions:** Yield farming tracking, MEV protection analysis, gas price prediction, rug pull detection, DeFi risk analysis, activity pattern detection, batch transaction optimization, cross-chain portfolio aggregation, price alerts, and comprehensive token analytics.
+
 371. **Token Balance Checker** - Check token balances across all chains with real-time USD values
 372. **NFT Collection Tracker** - Track NFT holdings and collections across multiple chains
 373. **Transaction History Analyzer** - Deep dive into transaction patterns, activity by day/hour, and top contracts
