@@ -590,6 +590,36 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 590. **Token Interface Detector** - Detect ERC interfaces implemented by contract
 591. **Token Standard Detector** - Detect token standard (ERC20, ERC721, ERC1155)
 592. **Token Compatibility** - Check token compatibility with protocols
+593. **Token Transfer Rate Calculator** - Calculate token transfer rate and velocity
+594. **Token Concentration Analyzer** - Analyze token concentration and distribution with Reown
+595. **Token Volatility Tracker** - Track token price volatility over time
+596. **Token Liquidity Router** - Find optimal liquidity routing paths with Reown wallet support
+597. **Token Holding Period Analyzer** - Analyze average holding periods
+598. **Token Flow Analyzer** - Analyze token flow patterns
+599. **Token Market Share Calculator** - Calculate token market share in category with Reown
+600. **Token Whale Alert** - Monitor whale wallet movements
+601. **Token Adoption Rate Tracker** - Track token adoption rate with Reown wallet
+602. **Token Turnover Rate Calculator** - Calculate token turnover rate
+603. **Token Burn Rate Tracker** - Track token burn rate and deflation
+604. **Token Mint Rate Tracker** - Track token minting rate and inflation with Reown support
+605. **Token Trading Intensity Analyzer** - Measure trading intensity and frequency
+606. **Token Liquidity Quality Assessor** - Assess liquidity quality metrics with Reown wallet
+607. **Token Sentiment Score Calculator** - Calculate token sentiment based on onchain metrics
+608. **Token Price Efficiency Analyzer** - Measure price discovery efficiency
+609. **Token Holder Loyalty Analyzer** - Measure holder loyalty and retention with Reown wallet
+610. **Token Volume Profile Analyzer** - Analyze volume distribution patterns
+611. **Token Transaction Pattern Analyzer** - Analyze transaction patterns and behaviors with Reown support
+612. **Token Holder Growth Rate Tracker** - Track holder growth rate over time
+613. **Token Price Stability Analyzer** - Measure price stability and consistency with Reown wallet
+614. **Token Utility Score Calculator** - Calculate token utility and usage score
+615. **Token Holder Distribution Quality Assessor** - Assess quality of holder distribution with Reown
+616. **Token Trading Velocity Tracker** - Measure trading velocity and circulation speed
+617. **Token Market Depth Analyzer** - Analyze market depth across price levels with Reown wallet support
+618. **Token Holder Diversity Index Calculator** - Calculate holder diversity index
+619. **Token Trend Analyzer** - Analyze token price and volume trends with Reown wallet
+620. **Token Liquidity Efficiency Analyzer** - Measure liquidity efficiency metrics
+621. **Token Price Correlation Calculator** - Calculate price correlation with market with Reown support
+622. **Token Market Health Assessor** - Assess overall market health score
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
