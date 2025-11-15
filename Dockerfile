@@ -2,7 +2,7 @@
 # Optimized for production deployment with minimal image size
 
 # Stage 1: Dependencies
-FROM node:18-alpine AS deps
+FROM node:25-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
@@ -20,7 +20,7 @@ RUN \
   fi
 
 # Stage 2: Builder
-FROM node:18-alpine AS builder
+FROM node:25-alpine AS builder
 WORKDIR /app
 
 # Copy dependencies from deps stage
@@ -41,7 +41,7 @@ RUN npx prisma generate --schema=./apps/web/prisma/schema.prisma
 RUN npm run build
 
 # Stage 3: Runner (Production)
-FROM node:18-alpine AS production
+FROM node:25-alpine AS production
 WORKDIR /app
 
 # Add non-root user
@@ -82,7 +82,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 CMD ["node", "apps/web/server.js"]
 
 # Stage 4: Development
-FROM node:18-alpine AS development
+FROM node:25-alpine AS development
 WORKDIR /app
 
 # Install dependencies
