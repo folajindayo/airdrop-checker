@@ -17,27 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-holder-network:${address.toLowerCase()}`;
+    const cacheKey = `contract-complexity-score:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const network = {
+    const complexity = {
       address: address.toLowerCase(),
-      nodes: [],
-      edges: [],
-      clusters: [],
-      networkScore: 0,
+      complexityScore: 0,
+      functionCount: 0,
+      bytecodeSize: 0,
+      riskLevel: 'low',
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, network, 300000);
-    return NextResponse.json(network);
+    cache.set(cacheKey, complexity, 300000);
+    return NextResponse.json(complexity);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to build holder network graph' },
+      { error: 'Failed to calculate complexity score' },
       { status: 500 }
     );
   }
 }
+

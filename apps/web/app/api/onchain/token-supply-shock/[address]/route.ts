@@ -17,27 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-holder-network:${address.toLowerCase()}`;
+    const cacheKey = `token-supply-shock:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const network = {
+    const shock = {
       address: address.toLowerCase(),
-      nodes: [],
-      edges: [],
-      clusters: [],
-      networkScore: 0,
+      shockDetected: false,
+      shockMagnitude: 0,
+      shockType: null,
+      impactScore: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, network, 300000);
-    return NextResponse.json(network);
+    cache.set(cacheKey, shock, 300000);
+    return NextResponse.json(shock);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to build holder network graph' },
+      { error: 'Failed to detect supply shock' },
       { status: 500 }
     );
   }
 }
+
