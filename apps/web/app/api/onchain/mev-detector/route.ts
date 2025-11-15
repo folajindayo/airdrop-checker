@@ -10,4 +10,11 @@ export async function GET(request: NextRequest) {
     const txHash = searchParams.get('txHash');
     const blockNumber = searchParams.get('blockNumber');
 
+    if (!txHash && !blockNumber) {
+      return NextResponse.json(
+        { error: 'Transaction hash or block number required' },
+        { status: 400 }
+      );
+    }
+
 
