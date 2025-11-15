@@ -698,6 +698,33 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-apr-apy/[address]` - Calculate APR and APY
 - `GET /api/onchain/token-reward-tracker/[address]` - Track staking rewards
 - `GET /api/onchain/token-governance-proposal/[address]` - Track governance proposals
+- `GET /api/onchain/token-treasury-tracker/[address]` - Track treasury balances
+- `GET /api/onchain/token-reserve-tracker/[address]` - Track reserves and backing
+- `GET /api/onchain/token-backing-calculator/[address]` - Calculate backing value
+- `GET /api/onchain/token-collateral-ratio/[address]` - Calculate collateral ratio
+- `GET /api/onchain/token-liquidation-threshold/[address]` - Calculate liquidation threshold
+- `GET /api/onchain/token-health-factor/[address]` - Calculate health factor
+- `GET /api/onchain/token-borrow-rate/[address]` - Get borrow rates
+- `GET /api/onchain/token-supply-rate/[address]` - Get supply rates
+- `GET /api/onchain/token-utilization-rate/[address]` - Calculate utilization rate
+- `GET /api/onchain/token-protocol-revenue/[address]` - Track protocol revenue
+- `GET /api/onchain/token-protocol-fees/[address]` - Track protocol fees
+- `GET /api/onchain/token-governance-treasury/[address]` - Track governance treasury
+- `GET /api/onchain/token-proposal-voting/[address]` - Track proposal voting
+- `GET /api/onchain/token-quorum-tracker/[address]` - Track quorum requirements
+- `GET /api/onchain/token-voting-period/[address]` - Track voting period
+- `GET /api/onchain/token-execution-tracker/[address]` - Track execution status
+- `GET /api/onchain/token-timelock-tracker/[address]` - Track timelock delays
+- `GET /api/onchain/token-multisig-tracker/[address]` - Track multisig status
+- `GET /api/onchain/token-proxy-admin/[address]` - Track proxy admin
+- `GET /api/onchain/token-implementation/[address]` - Track implementation address
+- `GET /api/onchain/token-storage-slot/[address]` - Read storage slots
+- `GET /api/onchain/token-event-parser/[address]` - Parse contract events
+- `GET /api/onchain/token-tx-decoder/[address]` - Decode transactions
+- `GET /api/onchain/token-abi-generator/[address]` - Generate ABI
+- `GET /api/onchain/token-interface-detector/[address]` - Detect interfaces
+- `GET /api/onchain/token-standard-detector/[address]` - Detect token standard
+- `GET /api/onchain/token-compatibility/[address]` - Check compatibility
 - `GET /api/onchain/token-burn-rate/[address]` - Calculate token burn rate
 - `GET /api/onchain/token-mint-rate/[address]` - Track token minting rate
 - `GET /api/onchain/contract-function-frequency/[address]` - Analyze function call frequency
