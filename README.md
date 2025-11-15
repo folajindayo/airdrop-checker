@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 565+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 592+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 565+ Production-Ready Features!
+## 🎉 592+ Production-Ready Features!
 
 ## ✨ Features
 
@@ -561,6 +561,35 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 563. **Wallet Fingerprint Generator** - Generate unique wallet behavioral fingerprints
 564. **Token Burn Rate Calculator** - Calculate token burn rate over time
 565. **Token Mint Rate Tracker** - Track token minting rate and patterns
+
+#### DeFi & Governance Analytics Features (566-591)
+566. **Token Treasury Tracker** - Track token treasury balances and movements
+567. **Token Reserve Tracker** - Track token reserves and backing assets
+568. **Token Backing Calculator** - Calculate token backing value and collateralization
+569. **Token Collateral Ratio** - Calculate collateral ratio for lending protocols
+570. **Token Liquidation Threshold** - Calculate liquidation threshold for positions
+571. **Token Health Factor** - Calculate health factor for lending positions
+572. **Token Borrow Rate** - Get current borrow rates for lending protocols
+573. **Token Supply Rate** - Get supply rates for lending protocols
+574. **Token Utilization Rate** - Calculate pool utilization rate
+575. **Token Protocol Revenue** - Track protocol revenue over time
+576. **Token Protocol Fees** - Track protocol fees collected
+577. **Token Governance Treasury** - Track governance treasury balances
+578. **Token Proposal Voting** - Track voting activity on proposals
+579. **Token Quorum Tracker** - Track quorum requirements for proposals
+580. **Token Voting Period** - Track voting period status for proposals
+581. **Token Execution Tracker** - Track proposal execution status
+582. **Token Timelock Tracker** - Track timelock delays for proposals
+583. **Token Multisig Tracker** - Track multisig wallet status and signatures
+584. **Token Proxy Admin** - Track proxy admin addresses for upgradeable contracts
+585. **Token Implementation** - Track implementation addresses for proxy contracts
+586. **Token Storage Slot** - Read contract storage slots
+587. **Token Event Parser** - Parse and decode contract events
+588. **Token Transaction Decoder** - Decode transaction data and function calls
+589. **Token ABI Generator** - Generate ABI from contract bytecode
+590. **Token Interface Detector** - Detect ERC interfaces implemented by contract
+591. **Token Standard Detector** - Detect token standard (ERC20, ERC721, ERC1155)
+592. **Token Compatibility** - Check token compatibility with protocols
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
