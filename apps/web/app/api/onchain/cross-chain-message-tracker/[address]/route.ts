@@ -17,26 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-holder-value-distribution:${address.toLowerCase()}`;
+    const cacheKey = `cross-chain-message-tracker:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const distribution = {
+    const messages = {
       address: address.toLowerCase(),
-      valueDistribution: {},
-      percentileBreakdown: {},
-      equalityIndex: 0,
+      messages: [],
+      totalMessages: 0,
+      chains: [],
+      successRate: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, distribution, 300000);
-    return NextResponse.json(distribution);
+    cache.set(cacheKey, messages, 300000);
+    return NextResponse.json(messages);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to analyze value distribution' },
+      { error: 'Failed to track cross-chain messages' },
       { status: 500 }
     );
   }
 }
+

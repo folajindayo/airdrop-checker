@@ -17,26 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-holder-value-distribution:${address.toLowerCase()}`;
+    const cacheKey = `token-holder-activity-heatmap:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const distribution = {
+    const heatmap = {
       address: address.toLowerCase(),
-      valueDistribution: {},
-      percentileBreakdown: {},
-      equalityIndex: 0,
+      activityData: [],
+      peakHours: [],
+      peakDays: [],
+      activityScore: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, distribution, 300000);
-    return NextResponse.json(distribution);
+    cache.set(cacheKey, heatmap, 300000);
+    return NextResponse.json(heatmap);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to analyze value distribution' },
+      { error: 'Failed to generate activity heatmap' },
       { status: 500 }
     );
   }
 }
+
