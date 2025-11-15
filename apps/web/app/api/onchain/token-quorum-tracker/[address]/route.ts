@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+import { goldrushClient } from '@/lib/goldrush/client';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
@@ -14,30 +15,46 @@ export async function GET(
 ) {
   try {
     const { address } = await params;
+    const searchParams = request.nextUrl.searchParams;
+    const chainId = searchParams.get('chainId');
+
     if (!isValidAddress(address)) {
-      return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid Ethereum address' },
+        { status: 400 }
+      );
     }
 
-    const cacheKey = `quorum-tracker:${address}`;
-    const cached = cache.get(cacheKey);
-    if (cached) return NextResponse.json({ ...cached, cached: true });
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-quorum-tracker:${normalizedAddress}:${chainId || 'all'}`;
+    const cachedResult = cache.get(cacheKey);
 
-    const quorum = {
-      proposalAddress: address,
-      requiredQuorum: '4',
-      currentVotes: '3',
+    if (cachedResult) {
+      return NextResponse.json({ ...cachedResult, cached: true });
+    }
+
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const quorum: any = {
+      proposalAddress: normalizedAddress,
+      chainId: targetChainId,
+      requiredQuorum: '0',
+      currentVotes: '0',
       quorumMet: false,
-      remainingVotes: '1',
+      progress: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, quorum, 60 * 1000);
+    cache.set(cacheKey, quorum, 2 * 60 * 1000);
     return NextResponse.json(quorum);
   } catch (error) {
+    console.error('Quorum tracker error:', error);
     return NextResponse.json(
-      { error: 'Failed to track quorum' },
+      {
+        error: 'Failed to track quorum',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
 }
-
