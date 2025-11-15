@@ -24,7 +24,15 @@ export async function GET(request: NextRequest) {
 
     if (!tokenAddress) {
       return NextResponse.json(
-        { error: 'Token address required' },
+        { error: 'Token address required', code: 'MISSING_TOKEN_ADDRESS' },
+        { status: 400 }
+      );
+    }
+
+    // Validate token address format
+    if (!/^0x[a-fA-F0-9]{40}$/.test(tokenAddress)) {
+      return NextResponse.json(
+        { error: 'Invalid token address format', code: 'INVALID_ADDRESS' },
         { status: 400 }
       );
     }
