@@ -12,10 +12,19 @@ export * from './card';
 export * from './input';
 export * from './checkbox';
 export * from './select';
+export * from './dialog';
 export * from './modal';
 export * from './alert';
 export * from './skeleton';
 export * from './form';
+
+// Advanced UI Components
+export * from './infinite-scroll';
+export * from './virtual-list';
+export * from './sortable-list';
+export * from './tree-view';
+export * from './stepper';
+export * from './timeline';
 
 // Export commonly used types
 export type { ButtonProps, IconButtonProps, ButtonGroupProps } from './button';
