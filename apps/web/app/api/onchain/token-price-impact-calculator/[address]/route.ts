@@ -12,32 +12,35 @@ export async function GET(
 ) {
   try {
     const { address } = await params;
+    const searchParams = request.nextUrl.searchParams;
+    const amount = searchParams.get('amount');
     
     if (!isValidAddress(address)) {
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-holder-migration:${address.toLowerCase()}`;
+    const cacheKey = `token-price-impact:${address.toLowerCase()}:${amount || 'default'}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const migration = {
+    const impact = {
       address: address.toLowerCase(),
-      migrationRate: 0,
-      incomingHolders: 0,
-      outgoingHolders: 0,
-      netMigration: 0,
+      amount: amount || '0',
+      priceImpact: 0,
+      slippage: 0,
+      estimatedOutput: '0',
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, migration, 300000);
-    return NextResponse.json(migration);
+    cache.set(cacheKey, impact, 60000);
+    return NextResponse.json(impact);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to track holder migration' },
+      { error: 'Failed to calculate price impact' },
       { status: 500 }
     );
   }
 }
+

@@ -17,27 +17,27 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-holder-migration:${address.toLowerCase()}`;
+    const cacheKey = `contract-event-frequency:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const migration = {
+    const frequency = {
       address: address.toLowerCase(),
-      migrationRate: 0,
-      incomingHolders: 0,
-      outgoingHolders: 0,
-      netMigration: 0,
+      eventsPerDay: 0,
+      topEvents: [],
+      eventDistribution: {},
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, migration, 300000);
-    return NextResponse.json(migration);
+    cache.set(cacheKey, frequency, 300000);
+    return NextResponse.json(frequency);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to track holder migration' },
+      { error: 'Failed to analyze event frequency' },
       { status: 500 }
     );
   }
 }
+
