@@ -17,27 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-transfer-velocity:${address.toLowerCase()}`;
+    const cacheKey = `wallet-batch-analyzer:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const velocity = {
+    const analysis = {
       address: address.toLowerCase(),
-      transfersPerDay: 0,
-      transfersPerWeek: 0,
-      averageTransferSize: '0',
-      velocityScore: 0,
+      batchTransactions: [],
+      averageBatchSize: 0,
+      gasSavings: '0',
+      optimizationScore: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, velocity, 300000);
-    return NextResponse.json(velocity);
+    cache.set(cacheKey, analysis, 300000);
+    return NextResponse.json(analysis);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to calculate transfer velocity' },
+      { error: 'Failed to analyze batch transactions' },
       { status: 500 }
     );
   }
 }
+
