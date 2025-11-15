@@ -25,3 +25,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const chain = chains[chainId as keyof typeof chains];
+    if (!chain) {
+      return NextResponse.json(
+        { error: 'Unsupported chain' },
+        { status: 400 }
+      );
+    }
+
