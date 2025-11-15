@@ -1,75 +1,105 @@
 /**
  * Card Component System
  * 
- * Provides accessible card components with support for:
- * - Multiple variants (elevated, outlined, filled)
- * - Size options
+ * Unified card components with comprehensive features:
+ * - Multiple variants using CVA (elevated, outlined, filled, ghost)
+ * - Flexible padding options
  * - Header, body, and footer sections
- * - Hover effects
- * - Clickable cards
+ * - Hover and interactive effects
  * - Loading states
  * - Image support
+ * - Specialized card types (Stats, Feature, Profile, Image)
+ * - Grid layout support
  */
 
 'use client';
 
 import React, { forwardRef } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'elevated' | 'outlined' | 'filled';
-  padding?: 'none' | 'sm' | 'md' | 'lg';
-  hoverable?: boolean;
+const cardVariants = cva(
+  'rounded-lg transition-all duration-200',
+  {
+    variants: {
+      variant: {
+        default: 'bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700',
+        elevated: 'bg-white shadow-md hover:shadow-lg dark:bg-gray-800',
+        outlined: 'bg-white border-2 border-gray-300 dark:bg-gray-800 dark:border-gray-600',
+        filled: 'bg-gray-50 dark:bg-gray-900',
+        ghost: 'bg-transparent border-transparent',
+      },
+      padding: {
+        none: 'p-0',
+        sm: 'p-3',
+        md: 'p-6',
+        lg: 'p-8',
+      },
+      interactive: {
+        true: 'cursor-pointer hover:border-blue-300 hover:shadow-md hover:scale-[1.01]',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      padding: 'md',
+      interactive: false,
+    },
+  }
+);
+
+export interface CardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardVariants> {
   loading?: boolean;
   as?: 'div' | 'article' | 'section';
+  hoverable?: boolean;
 }
 
 /**
  * Card Component
  * 
- * A flexible container for grouping related content.
+ * A flexible container for grouping related content with CVA variants.
  */
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   (
     {
-      variant = 'elevated',
-      padding = 'md',
+      variant,
+      padding,
+      interactive,
       hoverable = false,
       loading = false,
       as: Component = 'div',
       children,
       className,
+      onClick,
       ...props
     },
     ref
   ) => {
-    const variantClasses = {
-      elevated:
-        'bg-white shadow-md dark:bg-gray-800',
-      outlined:
-        'bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700',
-      filled:
-        'bg-gray-50 dark:bg-gray-900',
-    };
-
-    const paddingClasses = {
-      none: '',
-      sm: 'p-3',
-      md: 'p-6',
-      lg: 'p-8',
-    };
+    const isInteractive = interactive || hoverable || !!onClick;
 
     return (
       <Component
         ref={ref}
         className={cn(
-          'rounded-lg transition-all duration-200',
-          variantClasses[variant],
-          paddingClasses[padding],
-          hoverable && 'cursor-pointer hover:shadow-lg hover:scale-[1.02]',
+          cardVariants({ variant, padding, interactive: isInteractive }),
           loading && 'pointer-events-none opacity-60',
           className
         )}
+        role={isInteractive ? 'button' : undefined}
+        tabIndex={isInteractive ? 0 : undefined}
+        onClick={onClick}
+        onKeyDown={
+          isInteractive && onClick
+            ? (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onClick(e as any);
+                }
+              }
+            : undefined
+        }
         {...props}
       >
         {loading ? (
@@ -157,6 +187,14 @@ export const CardBody = forwardRef<HTMLDivElement, CardBodyProps>(
 );
 
 CardBody.displayName = 'CardBody';
+
+/**
+ * Card Content Component  
+ * 
+ * Alternative name for CardBody for consistency with other frameworks.
+ */
+export type CardContentProps = CardBodyProps;
+export const CardContent = CardBody;
 
 /**
  * Card Footer Component
@@ -464,3 +502,92 @@ export const FeatureCard = forwardRef<HTMLDivElement, FeatureCardProps>(
 );
 
 FeatureCard.displayName = 'FeatureCard';
+
+/**
+ * Profile Card Component
+ * 
+ * Card optimized for displaying user profile information.
+ */
+export interface ProfileCardProps extends Omit<CardProps, 'children'> {
+  avatar?: string;
+  name: string;
+  role?: string;
+  bio?: string;
+  actions?: React.ReactNode;
+}
+
+export const ProfileCard = forwardRef<HTMLDivElement, ProfileCardProps>(
+  ({ avatar, name, role, bio, actions, ...props }, ref) => {
+    return (
+      <Card ref={ref} {...props}>
+        <div className="flex flex-col items-center text-center">
+          {avatar ? (
+            <img
+              src={avatar}
+              alt={name}
+              className="h-20 w-20 rounded-full object-cover"
+            />
+          ) : (
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-200 text-2xl font-bold text-gray-600 dark:bg-gray-700">
+              {name.charAt(0).toUpperCase()}
+            </div>
+          )}
+          <h3 className="mt-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+            {name}
+          </h3>
+          {role && <p className="text-sm text-gray-600 dark:text-gray-400">{role}</p>}
+          {bio && <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">{bio}</p>}
+          {actions && <div className="mt-4 flex gap-2">{actions}</div>}
+        </div>
+      </Card>
+    );
+  }
+);
+
+ProfileCard.displayName = 'ProfileCard';
+
+/**
+ * Image Card Component
+ * 
+ * Card with an image header.
+ */
+export interface ImageCardProps extends Omit<CardProps, 'children'> {
+  image: string;
+  imageAlt?: string;
+  title: string;
+  description?: string;
+  actions?: React.ReactNode;
+}
+
+export const ImageCard = forwardRef<HTMLDivElement, ImageCardProps>(
+  (
+    {
+      image,
+      imageAlt = '',
+      title,
+      description,
+      actions,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <Card ref={ref} padding="none" {...props}>
+        <img
+          src={image}
+          alt={imageAlt}
+          className="h-48 w-full rounded-t-lg object-cover"
+        />
+        <div className="p-6">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{title}</h3>
+          {description && (
+            <p className="mt-2 text-gray-600 dark:text-gray-400">{description}</p>
+          )}
+          {actions && <div className="mt-4">{actions}</div>}
+        </div>
+      </Card>
+    );
+  }
+);
+
+ImageCard.displayName = 'ImageCard';
