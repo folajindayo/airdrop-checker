@@ -73,6 +73,8 @@ export async function GET(request: NextRequest) {
       chainId,
       routes: routes.sort((a, b) => a.estimatedGas - b.estimatedGas),
       bestRoute: routes[0],
+      timestamp: Date.now(),
+      version: '1.0.0',
     });
   } catch (error: any) {
     return NextResponse.json(
