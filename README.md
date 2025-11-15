@@ -1,8 +1,8 @@
 # Airdrop Finder
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 465+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 475+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
-## 🎉 465+ Production-Ready Features!
+## 🎉 475+ Production-Ready Features!
 
 ### 🎯 Core Features (1-15)
 21. **WalletConnect Integration** - Connect securely using WalletConnect v2 (Reown SDK)
@@ -692,6 +692,14 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-holder-analytics/[address]` - Comprehensive holder analytics
 - `GET /api/onchain/token-transfer-flow/[address]` - Analyze transfer flows
 - `GET /api/onchain/price-alerts` - Get active price alerts
+- `GET /api/onchain/token-liquidity-analyzer/[address]` - Analyze token liquidity
+- `GET /api/onchain/wallet-reputation/[address]` - Calculate wallet reputation
+- `GET /api/onchain/token-volatility/[address]` - Calculate token volatility
+- `GET /api/onchain/smart-money-tracker/[address]` - Track smart money wallets
+- `GET /api/onchain/token-momentum/[address]` - Calculate token momentum
+- `GET /api/onchain/contract-audit-status/[address]` - Check audit status
+- `GET /api/onchain/token-holder-growth/[address]` - Track holder growth
+- `GET /api/onchain/transaction-cost-analyzer/[address]` - Analyze transaction costs
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
