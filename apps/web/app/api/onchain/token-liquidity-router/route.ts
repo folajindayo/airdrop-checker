@@ -12,3 +12,9 @@ const chains = {
 
 export const dynamic = 'force-dynamic';
 
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const tokenAddress = searchParams.get('tokenAddress');
+    const chainId = parseInt(searchParams.get('chainId') || '1');
+
