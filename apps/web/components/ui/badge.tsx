@@ -1,34 +1,52 @@
 /**
- * Badge Component
- * Small labels for status, counts, and categories
+ * Badge Component System
+ * 
+ * Unified badge component for labels, status indicators, and tags with:
+ * - Multiple variants using CVA
+ * - Size options (sm, md, lg)
+ * - Pill or rounded styling
+ * - Icon support
+ * - Removable badges
+ * - Status and count specialized variants
  */
+
+'use client';
 
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2',
+  'inline-flex items-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2',
   {
     variants: {
       variant: {
-        default: 'bg-gray-100 text-gray-800 hover:bg-gray-200',
-        primary: 'bg-blue-100 text-blue-800 hover:bg-blue-200',
-        success: 'bg-green-100 text-green-800 hover:bg-green-200',
-        warning: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
-        error: 'bg-red-100 text-red-800 hover:bg-red-200',
-        info: 'bg-cyan-100 text-cyan-800 hover:bg-cyan-200',
-        purple: 'bg-purple-100 text-purple-800 hover:bg-purple-200',
-        outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50',
+        default: 'bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100',
+        primary: 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-100',
+        secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
+        success: 'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900 dark:text-green-100',
+        warning: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-100',
+        danger: 'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900 dark:text-red-100',
+        error: 'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900 dark:text-red-100',
+        info: 'bg-cyan-100 text-cyan-800 hover:bg-cyan-200 dark:bg-cyan-900 dark:text-cyan-100',
+        purple: 'bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-900 dark:text-purple-100',
+        outline: 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300',
+        ghost: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800',
       },
       size: {
         sm: 'px-2 py-0.5 text-xs',
         md: 'px-2.5 py-0.5 text-sm',
         lg: 'px-3 py-1 text-base',
       },
+      pill: {
+        true: 'rounded-full',
+        false: 'rounded-md',
+      },
     },
     defaultVariants: {
       variant: 'default',
       size: 'md',
+      pill: false,
     },
   }
 );
@@ -40,6 +58,11 @@ export interface BadgeProps
    * Icon to display before text
    */
   icon?: React.ReactNode;
+  
+  /**
+   * Icon to display after text
+   */
+  suffixIcon?: React.ReactNode;
   
   /**
    * Whether the badge can be removed
@@ -59,6 +82,7 @@ export interface BadgeProps
  * ```tsx
  * <Badge variant="success">Active</Badge>
  * <Badge variant="error" removable onRemove={() => {}}>Error</Badge>
+ * <Badge pill icon={<Icon />}>With Icon</Badge>
  * ```
  */
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
@@ -67,26 +91,48 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       className,
       variant,
       size,
+      pill,
       icon,
+      suffixIcon,
       removable,
       onRemove,
       children,
+      onClick,
       ...props
     },
     ref
   ) => {
+    const handleRemove = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onRemove?.();
+    };
+
     return (
       <span
         ref={ref}
-        className={badgeVariants({ variant, size, className })}
+        className={cn(badgeVariants({ variant, size, pill }), className)}
+        onClick={onClick}
+        role={onClick ? 'button' : undefined}
+        tabIndex={onClick ? 0 : undefined}
+        onKeyDown={
+          onClick
+            ? (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onClick();
+                }
+              }
+            : undefined
+        }
         {...props}
       >
         {icon && <span className="mr-1">{icon}</span>}
         {children}
+        {suffixIcon && <span className="ml-1">{suffixIcon}</span>}
         {removable && (
           <button
             type="button"
-            onClick={onRemove}
+            onClick={handleRemove}
             className="ml-1 inline-flex items-center justify-center rounded-full hover:bg-black/10 focus:outline-none focus:ring-1 focus:ring-offset-1"
             aria-label="Remove badge"
           >
@@ -116,49 +162,43 @@ Badge.displayName = 'Badge';
  * Status Badge - For status indicators
  */
 export interface StatusBadgeProps extends Omit<BadgeProps, 'variant'> {
-  status: 'active' | 'inactive' | 'pending' | 'error' | 'success';
+  status: 'confirmed' | 'rumored' | 'speculative' | 'expired' | 'active' | 'inactive' | 'pending' | 'error' | 'success';
 }
 
-export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, ...props }) => {
-  const variantMap = {
-    active: 'success' as const,
-    inactive: 'default' as const,
-    pending: 'warning' as const,
-    error: 'error' as const,
-    success: 'success' as const,
-  };
+const statusVariantMap = {
+  confirmed: 'success' as const,
+  rumored: 'warning' as const,
+  speculative: 'secondary' as const,
+  expired: 'danger' as const,
+  active: 'success' as const,
+  inactive: 'default' as const,
+  pending: 'warning' as const,
+  error: 'error' as const,
+  success: 'success' as const,
+};
 
-  const iconMap = {
-    active: (
-      <svg className="h-2 w-2 fill-current" viewBox="0 0 8 8">
-        <circle cx="4" cy="4" r="3" />
-      </svg>
-    ),
-    inactive: (
-      <svg className="h-2 w-2 fill-current" viewBox="0 0 8 8">
-        <circle cx="4" cy="4" r="3" />
-      </svg>
-    ),
-    pending: (
-      <svg className="h-2 w-2 fill-current" viewBox="0 0 8 8">
-        <circle cx="4" cy="4" r="3" />
-      </svg>
-    ),
-    error: (
-      <svg className="h-2 w-2 fill-current" viewBox="0 0 8 8">
-        <circle cx="4" cy="4" r="3" />
-      </svg>
-    ),
-    success: (
-      <svg className="h-2 w-2 fill-current" viewBox="0 0 8 8">
-        <circle cx="4" cy="4" r="3" />
-      </svg>
-    ),
-  };
+const statusLabelMap = {
+  confirmed: 'Confirmed',
+  rumored: 'Rumored',
+  speculative: 'Speculative',
+  expired: 'Expired',
+  active: 'Active',
+  inactive: 'Inactive',
+  pending: 'Pending',
+  error: 'Error',
+  success: 'Success',
+};
+
+export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, children, ...props }) => {
+  const statusIcon = (
+    <svg className="h-2 w-2 fill-current" viewBox="0 0 8 8">
+      <circle cx="4" cy="4" r="3" />
+    </svg>
+  );
 
   return (
-    <Badge variant={variantMap[status]} icon={iconMap[status]} {...props}>
-      {status.charAt(0).toUpperCase() + status.slice(1)}
+    <Badge variant={statusVariantMap[status]} icon={statusIcon} pill {...props}>
+      {children || statusLabelMap[status]}
     </Badge>
   );
 };
@@ -169,17 +209,23 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, ...props }) =>
 export interface CountBadgeProps extends Omit<BadgeProps, 'children'> {
   count: number;
   max?: number;
+  showZero?: boolean;
 }
 
 export const CountBadge: React.FC<CountBadgeProps> = ({
   count,
   max = 99,
+  showZero = false,
   ...props
 }) => {
+  if (count === 0 && !showZero) {
+    return null;
+  }
+
   const displayCount = count > max ? `${max}+` : count.toString();
   
   return (
-    <Badge {...props} aria-label={`${count} items`}>
+    <Badge variant="primary" pill size="sm" {...props} aria-label={`${count} items`}>
       {displayCount}
     </Badge>
   );
@@ -192,12 +238,15 @@ export interface DotBadgeProps extends Omit<BadgeProps, 'children' | 'size'> {
   pulse?: boolean;
 }
 
-export const DotBadge: React.FC<DotBadgeProps> = ({ pulse, className, ...props }) => {
+export const DotBadge: React.FC<DotBadgeProps> = ({ pulse, className, variant = 'primary', ...props }) => {
   return (
     <span className="relative inline-flex">
       <Badge
         {...props}
-        className={`h-2 w-2 rounded-full p-0 ${className || ''}`}
+        variant={variant}
+        pill
+        size="sm"
+        className={cn('h-2 w-2 p-0', className)}
       >
         <span className="sr-only">Status indicator</span>
       </Badge>
