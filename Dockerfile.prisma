@@ -1,0 +1,18 @@
+# Dockerfile for Prisma Studio
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install Prisma CLI
+RUN npm install -g prisma
+
+# Copy Prisma schema
+COPY apps/web/prisma ./prisma
+
+# Expose Prisma Studio port
+EXPOSE 5555
+
+# Start Prisma Studio
+CMD ["prisma", "studio", "--port", "5555", "--browser", "none"]
+

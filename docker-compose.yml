@@ -1,0 +1,126 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: airdrop_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-airdrop}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-airdrop_password}
+      POSTGRES_DB: ${POSTGRES_DB:-airdrop_checker}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-airdrop}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - airdrop_network
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: airdrop_redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_password}
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - airdrop_network
+    restart: unless-stopped
+
+  # Next.js Application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${BUILD_TARGET:-production}
+    container_name: airdrop_web
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-airdrop}:${POSTGRES_PASSWORD:-airdrop_password}@postgres:5432/${POSTGRES_DB:-airdrop_checker}
+      REDIS_URL: redis://redis:6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_password}
+      GOLDRUSH_API_KEY: ${GOLDRUSH_API_KEY}
+      NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID}
+      JWT_SECRET: ${JWT_SECRET}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./apps/web:/app/apps/web
+      - /app/node_modules
+      - /app/apps/web/node_modules
+    networks:
+      - airdrop_network
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Nginx Reverse Proxy (Optional)
+  nginx:
+    image: nginx:alpine
+    container_name: airdrop_nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - web
+    networks:
+      - airdrop_network
+    restart: unless-stopped
+    profiles:
+      - production
+
+  # Prisma Studio (Development)
+  prisma-studio:
+    build:
+      context: .
+      dockerfile: Dockerfile.prisma
+    container_name: airdrop_prisma_studio
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-airdrop}:${POSTGRES_PASSWORD:-airdrop_password}@postgres:5432/${POSTGRES_DB:-airdrop_checker}
+    ports:
+      - '5555:5555'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - airdrop_network
+    profiles:
+      - development
+
+networks:
+  airdrop_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
