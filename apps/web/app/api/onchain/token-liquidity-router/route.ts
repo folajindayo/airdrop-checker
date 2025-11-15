@@ -44,3 +44,10 @@ export async function GET(request: NextRequest) {
       { name: 'SushiSwap', factoryAddress: '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac' },
     ];
 
+    const routes = dexes.map(dex => ({
+      dex: dex.name,
+      factory: dex.factoryAddress,
+      estimatedGas: Math.floor(Math.random() * 200000) + 100000,
+      priceImpact: (Math.random() * 2).toFixed(2),
+    }));
+
