@@ -17,27 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-liquidity-depth:${address.toLowerCase()}`;
+    const cacheKey = `cross-chain-bridge-volume:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const depth = {
+    const volume = {
       address: address.toLowerCase(),
-      liquidityDepth: '0',
-      depthScore: 0,
-      priceLevels: [],
-      depthChart: [],
+      totalVolume: '0',
+      dailyVolume: '0',
+      bridgeCount: 0,
+      bridges: [],
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, depth, 300000);
-    return NextResponse.json(depth);
+    cache.set(cacheKey, volume, 300000);
+    return NextResponse.json(volume);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to analyze liquidity depth' },
+      { error: 'Failed to calculate bridge volume' },
       { status: 500 }
     );
   }
 }
+
