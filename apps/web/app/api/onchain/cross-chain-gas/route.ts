@@ -16,4 +16,10 @@ export async function GET(request: NextRequest) {
   try {
     const gasData = [];
 
+    for (const chainInfo of supportedChains) {
+      const client = createPublicClient({
+        chain: chainInfo.chain,
+        transport: http(),
+      });
+
 
