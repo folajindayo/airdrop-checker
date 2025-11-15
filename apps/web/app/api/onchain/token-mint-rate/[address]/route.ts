@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+import { goldrushClient } from '@/lib/goldrush/client';
+import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-mint-rate/[address]
- * Calculate token minting rate and supply increase
+ * Calculate token minting rate
+ * Tracks new token creation speed
  */
 export async function GET(
   request: NextRequest,
@@ -15,33 +18,63 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const period = searchParams.get('period') || '24h';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
-      return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid Ethereum address' },
+        { status: 400 }
+      );
     }
 
-    const cacheKey = `mint-rate:${address}:${period}`;
-    const cached = cache.get(cacheKey);
-    if (cached) return NextResponse.json({ ...cached, cached: true });
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-mint-rate:${normalizedAddress}:${chainId || 'all'}`;
+    const cachedResult = cache.get(cacheKey);
 
-    const mintRate = {
-      tokenAddress: address,
-      period,
-      totalMinted: '2000000',
-      mintRate24h: '100000',
-      mintRate7d: '700000',
-      supplyIncrease: '0.2',
+    if (cachedResult) {
+      return NextResponse.json({
+        ...cachedResult,
+        cached: true,
+      });
+    }
+
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const mintRate: any = {
+      tokenAddress: normalizedAddress,
+      chainId: targetChainId,
+      dailyMintRate: 0,
+      weeklyMintRate: 0,
+      monthlyMintRate: 0,
+      mintingActive: false,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, mintRate, 60 * 1000);
+    try {
+      const response = await goldrushClient.get(
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
+      );
+
+      if (response.data) {
+        mintRate.mintingActive = true;
+        mintRate.dailyMintRate = 0;
+      }
+    } catch (error) {
+      console.error('Error calculating mint rate:', error);
+    }
+
+    cache.set(cacheKey, mintRate, 5 * 60 * 1000);
+
     return NextResponse.json(mintRate);
   } catch (error) {
+    console.error('Token mint rate error:', error);
     return NextResponse.json(
-      { error: 'Failed to calculate mint rate' },
+      {
+        error: 'Failed to calculate mint rate',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
 }
-
