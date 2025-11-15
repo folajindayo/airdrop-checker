@@ -1,19 +1,35 @@
 /**
- * Service layer exports
- * Centralize all business logic services
+ * Services Layer Export
+ * 
+ * Consolidated service classes and functions
  */
 
+// Airdrop services
 export * from './airdrop-check.service';
-export * from './portfolio.service';
-export * from './gas-tracker.service';
-export * from './risk-analysis.service';
-export * from './trending.service';
-export * from './highlights.service';
-export * from './wallet-health.service';
-export * from './claim-tracker.service';
-export * from './reminders.service';
-export type { ReminderType } from './reminders.service';
-export * from './transaction-simulator.service';
-export * from './scheduler.service';
-export * from './notifications.service';
+export * from './airdrop-farming.service';
 
+// Portfolio services
+export * from './portfolio.service';
+
+// Analytics services
+export * from './analytics.service';
+export * from './event-tracker.service';
+
+// Gas tracking services
+export * from './gas-tracker.service';
+
+// Blockchain services
+export * from './blockchain.service';
+export * from './transaction.service';
+
+// Wallet health services
+export * from './wallet-health.service';
+
+// API client services
+export * from './api-client.service';
+
+// Cache services
+export * from './cache.service';
+
+// Error handling services
+export * from './error.service';
