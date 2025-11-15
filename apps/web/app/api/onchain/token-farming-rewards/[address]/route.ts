@@ -5,8 +5,8 @@ import { cache } from '@airdrop-finder/shared';
 export const dynamic = 'force-dynamic';
 
 /**
- * GET /api/onchain/token-vesting-schedule/[address]
- * Get vesting schedule for wallet
+ * GET /api/onchain/token-farming-rewards/[address]
+ * Track farming rewards for wallet
  */
 export async function GET(
   request: NextRequest,
@@ -18,23 +18,24 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `vesting-schedule:${address}`;
+    const cacheKey = `farming-rewards:${address}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
-    const vesting = {
+    const rewards = {
       walletAddress: address,
-      schedules: [],
-      totalVested: '0',
+      activeFarms: [],
+      totalRewards: '0',
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, vesting, 300 * 1000);
-    return NextResponse.json(vesting);
+    cache.set(cacheKey, rewards, 60 * 1000);
+    return NextResponse.json(rewards);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to get vesting schedule' },
+      { error: 'Failed to track farming rewards' },
       { status: 500 }
     );
   }
 }
+
