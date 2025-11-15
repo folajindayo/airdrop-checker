@@ -649,6 +649,34 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 620. **Token Liquidity Efficiency Analyzer** - Measure liquidity efficiency metrics
 621. **Token Price Correlation Calculator** - Calculate price correlation with market with Reown support
 622. **Token Market Health Assessor** - Assess overall market health score
+623. **Token Liquidity Score Calculator** - Calculate comprehensive liquidity score
+624. **Token Holder Migration Tracker** - Track holder migration patterns with Reown
+625. **Token Spread Analyzer** - Analyze bid-ask spread metrics
+626. **Token Market Cap Efficiency Analyzer** - Measure market cap efficiency metrics
+627. **Token Holder Retention Analyzer** - Measure holder retention metrics with Reown
+628. **Token Trade Size Distribution Analyzer** - Analyze trade size distribution patterns
+629. **Token Price Anomaly Detector** - Detect price anomalies and manipulation with Reown wallet
+630. **Token Liquidity Risk Assessor** - Assess liquidity risk factors
+631. **Token Holder Balance Distribution Analyzer** - Analyze holder balance distribution with Reown
+632. **Token Trading Activity Score Calculator** - Calculate comprehensive trading activity score
+633. **Token Market Maker Activity Detector** - Detect market maker activity patterns with Reown wallet
+634. **Token Liquidity Pool Analyzer** - Analyze liquidity pools across DEXes
+635. **Token Price Impact Calculator** - Calculate price impact for different trade sizes with Reown support
+636. **Token Holder Engagement Analyzer** - Measure holder engagement metrics
+637. **Token Market Cap Dominance Calculator** - Calculate market cap dominance in category with Reown
+638. **Token Holder Churn Rate Tracker** - Measure holder churn rate
+639. **Token Liquidity Stability Analyzer** - Measure liquidity stability over time with Reown wallet
+640. **Token Trading Volume Trend Analyzer** - Analyze trading volume trends
+641. **Token Holder Value Score Calculator** - Calculate holder value distribution score with Reown
+642. **Token Market Momentum Analyzer** - Measure market momentum indicators
+643. **Token Liquidity Depth Analyzer** - Analyze liquidity depth at different price levels with Reown wallet
+644. **Token Exchange Distribution Analyzer** - Analyze token distribution across exchanges
+645. **Token Price Discovery Quality Assessor** - Assess price discovery quality metrics with Reown
+646. **Token Holder Lifecycle Analyzer** - Analyze holder lifecycle stages
+647. **Token Holder Engagement Analyzer** - Measure holder engagement and interaction patterns
+648. **Token Market Cap Efficiency Calculator** - Calculate market capitalization efficiency with Reown support
+649. **Token Trading Intensity Score Calculator** - Measure trading intensity scores
+650. **Token Liquidity Quality Score Calculator** - Calculate comprehensive liquidity quality score
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
@@ -898,6 +926,34 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-liquidity-efficiency/[address]` - Measure liquidity efficiency
 - `GET /api/onchain/token-price-correlation/[address]` - Calculate price correlation
 - `GET /api/onchain/token-market-health/[address]` - Assess market health
+- `GET /api/onchain/token-liquidity-score/[address]` - Calculate liquidity score
+- `GET /api/onchain/token-holder-migration/[address]` - Track holder migration
+- `GET /api/onchain/token-spread-analyzer/[address]` - Analyze spread
+- `GET /api/onchain/token-market-cap-efficiency/[address]` - Measure market cap efficiency
+- `GET /api/onchain/token-holder-retention/[address]` - Measure holder retention
+- `GET /api/onchain/token-trade-size-distribution/[address]` - Analyze trade size distribution
+- `GET /api/onchain/token-price-anomaly-detector/[address]` - Detect price anomalies
+- `GET /api/onchain/token-liquidity-risk/[address]` - Assess liquidity risk
+- `GET /api/onchain/token-holder-balance-distribution/[address]` - Analyze balance distribution
+- `GET /api/onchain/token-trading-activity-score/[address]` - Calculate trading activity score
+- `GET /api/onchain/token-market-maker-activity/[address]` - Detect market maker activity
+- `GET /api/onchain/token-liquidity-pool-analyzer/[address]` - Analyze liquidity pools
+- `GET /api/onchain/token-price-impact-calculator/[address]` - Calculate price impact
+- `GET /api/onchain/token-holder-engagement/[address]` - Measure holder engagement
+- `GET /api/onchain/token-market-cap-dominance/[address]` - Calculate market cap dominance
+- `GET /api/onchain/token-holder-churn/[address]` - Measure holder churn
+- `GET /api/onchain/token-liquidity-stability/[address]` - Measure liquidity stability
+- `GET /api/onchain/token-trading-volume-trend/[address]` - Analyze volume trend
+- `GET /api/onchain/token-holder-value-score/[address]` - Calculate holder value score
+- `GET /api/onchain/token-market-momentum/[address]` - Measure market momentum
+- `GET /api/onchain/token-liquidity-depth-analyzer/[address]` - Analyze liquidity depth
+- `GET /api/onchain/token-exchange-distribution/[address]` - Analyze exchange distribution
+- `GET /api/onchain/token-price-discovery-quality/[address]` - Assess price discovery quality
+- `GET /api/onchain/token-holder-lifecycle/[address]` - Analyze holder lifecycle
+- `GET /api/onchain/token-holder-engagement/[address]` - Measure holder engagement
+- `GET /api/onchain/token-market-cap-efficiency/[address]` - Calculate market cap efficiency
+- `GET /api/onchain/token-trading-intensity-score/[address]` - Measure trading intensity score
+- `GET /api/onchain/token-liquidity-quality-score/[address]` - Calculate liquidity quality score
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
