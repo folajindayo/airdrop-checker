@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 505+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 535+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 505+ Production-Ready Features!
+## 🎉 535+ Production-Ready Features!
 
 ## ✨ Features
 
@@ -497,6 +497,38 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 503. **Token APR/APY Calculator** - Calculate APR and APY for staking and yield farming
 504. **Token Reward Tracker** - Track staking and farming rewards for wallet
 505. **Token Governance Proposal Tracker** - Track governance proposals and voting power for tokens
+
+#### Latest Onchain Features (506-535)
+506. **Token Liquidity Router** - Intelligent DEX routing for optimal liquidity and gas efficiency
+507. **Cross-Chain Gas Comparison** - Real-time gas price comparison across multiple blockchains
+508. **Token Correlation Analyzer** - Advanced correlation analysis between token pairs
+509. **MEV Opportunity Detector** - Detect MEV opportunities and sandwich attacks
+510. **Impermanent Loss Calculator** - Calculate IL for liquidity provider positions
+511. **Token Value-at-Risk** - VaR calculation for token holdings
+512. **Smart Contract Gas Profiler** - Function-level gas usage profiling
+513. **Token Supply Verifier** - Verify circulating supply and token distribution
+514. **Wallet Diversity Score** - Portfolio diversification metrics using Reown Wallet
+515. **Token Momentum Indicator** - RSI and MACD momentum indicators
+516. **Lending Rate Aggregator** - Best lending rates across DeFi protocols
+517. **Pool Health Monitor** - Real-time liquidity pool health metrics
+518. **Supply Shock Detector** - Detect sudden supply changes and anomalies
+519. **Cross-Chain Arbitrage Finder** - Multi-DEX arbitrage opportunities
+520. **Transaction Privacy Scorer** - Privacy analysis for transactions
+521. **Token Unlock Calendar** - Comprehensive vesting unlock schedules
+522. **Wallet Transaction Optimizer** - Gas optimization recommendations
+523. **Token Social Metrics** - Social media sentiment and engagement
+524. **Contract Complexity Analyzer** - Code complexity and risk assessment
+525. **Token Economics Validator** - Tokenomics sustainability analysis
+526. **Wallet Behavioral Fingerprint** - Unique wallet behavior identification
+527. **Market Maker Detection** - Identify MM activity and manipulation
+528. **Cross-Chain Message Tracker** - Track messages across chains
+529. **Vesting Cliff Detector** - Identify vesting cliff periods
+530. **Wallet PnL Calculator** - Comprehensive P&L tracking
+531. **Order Flow Analyzer** - Real-time order book flow analysis
+532. **Gas Optimization Engine** - Batch transaction optimization
+533. **Token Pair Correlation Matrix** - Multi-token correlation heatmap
+534. **Wallet Interaction Network** - Graph-based interaction mapping
+535. **Smart Routing Engine** - AI-powered swap route optimization
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
