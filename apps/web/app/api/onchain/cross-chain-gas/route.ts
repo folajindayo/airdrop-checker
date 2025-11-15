@@ -12,4 +12,8 @@ const supportedChains = [
   { id: 137, chain: polygon, name: 'Polygon' },
 ];
 
+export async function GET(request: NextRequest) {
+  try {
+    const gasData = [];
+
 

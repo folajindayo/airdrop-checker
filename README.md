@@ -436,6 +436,38 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 474. **Portfolio Risk Assessor** - Comprehensive portfolio risk assessment across chains
 475. **Complete Onchain Analytics Suite** - Comprehensive on-chain analytics combining all advanced features above
 
+#### Advanced Token Analytics Features (476-505)
+476. **Token Slippage Calculator** - Calculate token slippage for swaps using Reown Wallet integration
+477. **Token Liquidity Depth Analyzer** - Analyze token liquidity depth across DEX pools
+478. **Token Trading Volume Tracker** - Track token trading volume over time periods
+479. **Token Holder Activity Tracker** - Track activity patterns of token holders
+480. **Token Burn Rate Calculator** - Calculate token burn rate and supply reduction
+481. **Token Mint Rate Calculator** - Calculate token minting rate and supply increase
+482. **Token Inflation Calculator** - Calculate token inflation rate over time
+483. **Token Deflation Calculator** - Calculate token deflation rate from burns
+484. **Token Holder Retention Analyzer** - Analyze token holder retention rates
+485. **Token Transfer Velocity Tracker** - Track token transfer velocity and circulation speed
+486. **Token Concentration Risk Analyzer** - Analyze token concentration risk and whale holdings
+487. **Token Market Depth Analyzer** - Analyze market depth for token trading pairs
+488. **Token Order Book** - Get order book data for token trading pairs
+489. **Token Swap Aggregator** - Find best swap routes across multiple DEXs using Reown Wallet
+490. **Token Yield Optimizer** - Find optimal yield farming strategies for tokens
+491. **Token Rebalancer** - Calculate optimal rebalancing strategy for token portfolio
+492. **Token Portfolio Optimizer** - Optimize token portfolio allocation for maximum returns
+493. **Token Risk Calculator** - Calculate comprehensive risk metrics for tokens
+494. **Token Correlation Analyzer** - Calculate correlation between multiple tokens
+495. **Token Performance Tracker** - Track token performance metrics over time
+496. **Token Trend Analyzer** - Analyze token price and volume trends
+497. **Token Support/Resistance Finder** - Identify support and resistance levels for tokens
+498. **Token Volume Profile Analyzer** - Analyze volume profile at different price levels
+499. **Token Market Maker Tracker** - Track market maker activity and liquidity provision
+500. **Token Arbitrage Finder** - Find arbitrage opportunities across DEXs
+501. **Token Flash Swap Detector** - Detect and analyze flash swap opportunities
+502. **Token Impermanent Loss Calculator** - Calculate impermanent loss for LP positions
+503. **Token APR/APY Calculator** - Calculate APR and APY for staking and yield farming
+504. **Token Reward Tracker** - Track staking and farming rewards for wallet
+505. **Token Governance Proposal Tracker** - Track governance proposals and voting power for tokens
+
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
 ## Onchain API Endpoints
