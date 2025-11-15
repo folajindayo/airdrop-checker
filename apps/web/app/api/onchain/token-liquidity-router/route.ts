@@ -51,3 +51,18 @@ export async function GET(request: NextRequest) {
       priceImpact: (Math.random() * 2).toFixed(2),
     }));
 
+    return NextResponse.json({
+      success: true,
+      tokenAddress,
+      chainId,
+      routes: routes.sort((a, b) => a.estimatedGas - b.estimatedGas),
+      bestRoute: routes[0],
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || 'Failed to calculate routes' },
+      { status: 500 }
+    );
+  }
+}
+
