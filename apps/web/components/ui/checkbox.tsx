@@ -1,27 +1,48 @@
 /**
  * Checkbox Component System
  * 
- * Provides accessible checkbox components with support for:
- * - Checked, unchecked, and indeterminate states
- * - Disabled states
- * - Error states
+ * Unified checkbox components with comprehensive features:
+ * - Checked, unchecked, and indeterminate states using CVA
+ * - Disabled and error states
  * - Label and description
  * - Checkbox groups
- * - Custom styling
+ * - Custom styling with variants
  */
 
 'use client';
 
 import React, { forwardRef } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
+const checkboxVariants = cva(
+  'rounded border-2 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer',
+  {
+    variants: {
+      variant: {
+        default: 'border-gray-300 checked:bg-blue-600 checked:border-blue-600 focus:ring-blue-500',
+        error: 'border-red-500 checked:bg-red-600 checked:border-red-600 focus:ring-red-500',
+      },
+      checkboxSize: {
+        sm: 'h-4 w-4',
+        md: 'h-5 w-5',
+        lg: 'h-6 w-6',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      checkboxSize: 'md',
+    },
+  }
+);
+
 export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'>,
+    VariantProps<typeof checkboxVariants> {
   label?: string;
   description?: string;
   error?: string;
   indeterminate?: boolean;
-  checkboxSize?: 'sm' | 'md' | 'lg';
 }
 
 /**
@@ -39,7 +60,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       indeterminate = false,
       disabled = false,
       checked,
-      checkboxSize = 'md',
+      variant,
+      checkboxSize,
       className,
       id,
       ...props
@@ -59,11 +81,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       }
     }, [indeterminate, ref]);
 
-    const sizeClasses = {
-      sm: 'h-4 w-4',
-      md: 'h-5 w-5',
-      lg: 'h-6 w-6',
-    };
+    const checkboxVariant = error ? 'error' : variant;
 
     return (
       <div className={cn('flex items-start', className)}>
@@ -90,12 +108,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                 : undefined
             }
             className={cn(
-              'rounded border-gray-300 text-blue-600 transition-colors',
-              'focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+              checkboxVariants({ variant: checkboxVariant, checkboxSize }),
               'disabled:cursor-not-allowed disabled:opacity-50',
-              'dark:border-gray-700 dark:bg-gray-900 dark:focus:ring-offset-gray-800',
-              error && 'border-red-500 focus:ring-red-500',
-              sizeClasses[checkboxSize]
+              'dark:bg-gray-900 dark:focus:ring-offset-gray-800'
             )}
             {...props}
           />
