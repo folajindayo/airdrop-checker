@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 535+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 565+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 535+ Production-Ready Features!
+## 🎉 565+ Production-Ready Features!
 
 ## ✨ Features
 
@@ -530,6 +530,38 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 534. **Wallet Interaction Network** - Graph-based interaction mapping
 535. **Smart Routing Engine** - AI-powered swap route optimization
 
+#### Advanced Analytics Features (536-565)
+536. **Contract Function Frequency Analyzer** - Track function call frequency and patterns
+537. **Token Transfer Velocity Calculator** - Calculate token transfer velocity and circulation speed
+538. **Wallet Batch Transaction Analyzer** - Analyze batch transaction patterns and gas optimization
+539. **Token Concentration Risk Scorer** - Calculate concentration risk and whale impact
+540. **Contract Upgrade History Tracker** - Track contract upgrade history and frequency
+541. **Token Liquidity Depth Analyzer** - Analyze liquidity depth across price levels
+542. **Cross-Chain Bridge Volume Tracker** - Track bridge transaction volumes
+543. **Token Holder Migration Tracker** - Monitor holder migration patterns
+544. **Contract Event Frequency Analyzer** - Analyze contract event emission patterns
+545. **Token Price Impact Calculator** - Calculate price impact for large trades
+546. **Wallet Gas Spending Pattern Analyzer** - Analyze gas spending patterns and optimization
+547. **Token Holder Retention Calculator** - Calculate holder retention rates and loyalty
+548. **Contract Storage Slot Reader** - Read and decode contract storage slots
+549. **Token Volume Profile Generator** - Generate volume profiles by price level
+550. **Wallet Interaction Frequency Tracker** - Track wallet interaction frequency
+551. **Token Holder Geographic Distribution** - Analyze geographic distribution of holders
+552. **Contract Complexity Score Calculator** - Calculate contract complexity metrics
+553. **Token Holder Network Builder** - Build network graphs of holder relationships
+554. **Token Supply Shock Detector** - Detect sudden supply changes and anomalies
+555. **Wallet PnL Calculator** - Calculate profit and loss for wallet positions
+556. **Token Holder Diversity Index** - Calculate holder diversity and distribution metrics
+557. **Contract Gas Profile Analyzer** - Profile gas usage by function
+558. **Token Holder Value Distribution Analyzer** - Analyze value distribution among holders
+559. **Cross-Chain Message Tracker** - Track cross-chain message transactions
+560. **Token Holder Activity Heatmap Generator** - Generate activity heatmaps by time
+561. **Contract Interaction Graph Builder** - Build interaction graphs between contracts
+562. **Token Holder Turnover Rate Calculator** - Calculate holder turnover and churn rates
+563. **Wallet Fingerprint Generator** - Generate unique wallet behavioral fingerprints
+564. **Token Burn Rate Calculator** - Calculate token burn rate over time
+565. **Token Mint Rate Tracker** - Track token minting rate and patterns
+
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
 ## Onchain API Endpoints
@@ -666,6 +698,36 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-apr-apy/[address]` - Calculate APR and APY
 - `GET /api/onchain/token-reward-tracker/[address]` - Track staking rewards
 - `GET /api/onchain/token-governance-proposal/[address]` - Track governance proposals
+- `GET /api/onchain/token-burn-rate/[address]` - Calculate token burn rate
+- `GET /api/onchain/token-mint-rate/[address]` - Track token minting rate
+- `GET /api/onchain/contract-function-frequency/[address]` - Analyze function call frequency
+- `GET /api/onchain/token-transfer-velocity/[address]` - Calculate transfer velocity
+- `GET /api/onchain/wallet-batch-analyzer/[address]` - Analyze batch transactions
+- `GET /api/onchain/token-concentration-risk/[address]` - Assess concentration risk
+- `GET /api/onchain/contract-upgrade-history/[address]` - Track upgrade history
+- `GET /api/onchain/token-liquidity-depth/[address]` - Analyze liquidity depth
+- `GET /api/onchain/cross-chain-bridge-volume/[address]` - Track bridge volume
+- `GET /api/onchain/token-holder-migration/[address]` - Monitor holder migration
+- `GET /api/onchain/contract-event-frequency/[address]` - Analyze event frequency
+- `GET /api/onchain/token-price-impact-calculator/[address]` - Calculate price impact
+- `GET /api/onchain/wallet-gas-spending-pattern/[address]` - Analyze gas spending
+- `GET /api/onchain/token-holder-retention/[address]` - Calculate retention rate
+- `GET /api/onchain/contract-storage-slot/[address]` - Read storage slots
+- `GET /api/onchain/token-volume-profile/[address]` - Generate volume profile
+- `GET /api/onchain/wallet-interaction-frequency/[address]` - Track interaction frequency
+- `GET /api/onchain/token-holder-geographic/[address]` - Analyze geographic distribution
+- `GET /api/onchain/contract-complexity-score/[address]` - Calculate complexity score
+- `GET /api/onchain/token-holder-network/[address]` - Build holder network graph
+- `GET /api/onchain/token-supply-shock/[address]` - Detect supply shocks
+- `GET /api/onchain/wallet-pnl-calculator/[address]` - Calculate PnL
+- `GET /api/onchain/token-holder-diversity/[address]` - Calculate diversity index
+- `GET /api/onchain/contract-gas-profile/[address]` - Profile gas usage
+- `GET /api/onchain/token-holder-value-distribution/[address]` - Analyze value distribution
+- `GET /api/onchain/cross-chain-message-tracker/[address]` - Track cross-chain messages
+- `GET /api/onchain/token-holder-activity-heatmap/[address]` - Generate activity heatmap
+- `GET /api/onchain/contract-interaction-graph/[address]` - Build interaction graph
+- `GET /api/onchain/token-holder-turnover-rate/[address]` - Calculate turnover rate
+- `GET /api/onchain/wallet-fingerprint/[address]` - Generate wallet fingerprint
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
