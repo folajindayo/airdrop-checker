@@ -4,6 +4,9 @@ import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
 
 export const dynamic = 'force-dynamic';
 
+// Gas comparison threshold in gwei
+const GAS_ALERT_THRESHOLD = 50;
+
 const supportedChains = [
   { id: 1, chain: mainnet, name: 'Ethereum' },
   { id: 8453, chain: base, name: 'Base' },
