@@ -547,40 +547,33 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/contract-audit-status/[address]` - Check audit status
 - `GET /api/onchain/token-holder-growth/[address]` - Track holder growth
 - `GET /api/onchain/transaction-cost-analyzer/[address]` - Analyze transaction costs
-- `GET /api/onchain/token-voting-power/[address]` - Calculate voting power
-- `GET /api/onchain/contract-function-decoder/[address]` - Decode function calls
-- `GET /api/onchain/token-distribution-snapshot/[address]` - Generate holder snapshot
-- `GET /api/onchain/multisig-threshold/[address]` - Analyze multisig threshold
-- `GET /api/onchain/token-yield-aggregator/[address]` - Aggregate yield opportunities
-- `GET /api/onchain/contract-event-indexer/[address]` - Index contract events
-- `GET /api/onchain/token-liquidity-depth/[address]` - Check liquidity depth
-- `GET /api/onchain/wallet-balance-aggregator/[address]` - Aggregate wallet balances
-- `GET /api/onchain/token-price-impact/[address]` - Calculate price impact
-- `GET /api/onchain/contract-function-selector/[address]` - Find function selector
-- `GET /api/onchain/token-holder-change/[address]` - Track holder changes
-- `GET /api/onchain/contract-deployment-cost/[address]` - Calculate deployment cost
-- `GET /api/onchain/token-pair-finder/[address]` - Find DEX pairs
-- `GET /api/onchain/wallet-transaction-graph/[address]` - Analyze transaction graph
-- `GET /api/onchain/token-slippage/[address]` - Calculate slippage
-- `POST /api/onchain/contract-abi-validator` - Validate ABI
-- `GET /api/onchain/token-price-oracle-aggregator/[address]` - Aggregate oracle prices
-- `GET /api/onchain/wallet-interaction-frequency/[address]` - Analyze interaction frequency
-- `GET /api/onchain/token-metadata-updater-check/[address]` - Check metadata updater
-- `GET /api/onchain/contract-bytecode-diff/[address]` - Analyze bytecode diff
-- `GET /api/onchain/token-vesting-claim/[address]` - Calculate vesting claims
-- `GET /api/onchain/multi-chain-token-balance/[address]` - Aggregate multi-chain balance
-- `POST /api/onchain/contract-event-listener-setup` - Setup event listener
-- `GET /api/onchain/token-price-feed-validator/[address]` - Validate price feed
-- `GET /api/onchain/wallet-gas-spending/[address]` - Track gas spending
-- `POST /api/onchain/contract-function-call-simulator` - Simulate function calls
-- `GET /api/onchain/token-holder-activity/[address]` - Track holder activity
-- `GET /api/onchain/contract-state-change/[address]` - Detect state changes
-- `GET /api/onchain/token-supply-change-notifier/[address]` - Monitor supply changes
-- `GET /api/onchain/token-lock-monitor/[address]` - Monitor token locks
-- `GET /api/onchain/dex-liquidity-scanner/[address]` - Scan DEX liquidity
-- `GET /api/onchain/token-holder-network/[address]` - Analyze holder network
-- `GET /api/onchain/smart-contract-analyzer/[address]` - Analyze smart contract
-- `GET /api/onchain/token-holder-diversity/[address]` - Analyze holder diversity
+- `GET /api/onchain/token-slippage/[address]` - Calculate token slippage for swaps
+- `GET /api/onchain/token-liquidity-depth/[address]` - Analyze token liquidity depth
+- `GET /api/onchain/token-trading-volume/[address]` - Track token trading volume
+- `GET /api/onchain/token-holder-activity/[address]` - Track holder activity patterns
+- `GET /api/onchain/token-burn-rate/[address]` - Calculate token burn rate
+- `GET /api/onchain/token-mint-rate/[address]` - Calculate token mint rate
+- `GET /api/onchain/token-inflation/[address]` - Calculate token inflation rate
+- `GET /api/onchain/token-deflation/[address]` - Calculate token deflation rate
+- `GET /api/onchain/token-holder-retention/[address]` - Analyze holder retention
+- `GET /api/onchain/token-transfer-velocity/[address]` - Track transfer velocity
+- `GET /api/onchain/token-concentration-risk/[address]` - Analyze concentration risk
+- `GET /api/onchain/token-market-depth/[address]` - Analyze market depth
+- `GET /api/onchain/token-order-book/[address]` - Get order book data
+- `GET /api/onchain/token-yield-optimizer/[address]` - Find optimal yield strategies
+- `GET /api/onchain/token-portfolio-optimizer/[address]` - Optimize portfolio allocation
+- `GET /api/onchain/token-risk-calculator/[address]` - Calculate risk metrics
+- `GET /api/onchain/token-performance/[address]` - Track performance metrics
+- `GET /api/onchain/token-trend-analyzer/[address]` - Analyze price trends
+- `GET /api/onchain/token-support-resistance/[address]` - Find support/resistance levels
+- `GET /api/onchain/token-volume-profile/[address]` - Analyze volume profile
+- `GET /api/onchain/token-market-maker/[address]` - Track market maker activity
+- `GET /api/onchain/token-arbitrage/[address]` - Find arbitrage opportunities
+- `GET /api/onchain/token-flash-swap/[address]` - Detect flash swap opportunities
+- `GET /api/onchain/token-impermanent-loss/[address]` - Calculate impermanent loss
+- `GET /api/onchain/token-apr-apy/[address]` - Calculate APR and APY
+- `GET /api/onchain/token-reward-tracker/[address]` - Track staking rewards
+- `GET /api/onchain/token-governance-proposal/[address]` - Track governance proposals
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
@@ -610,6 +603,9 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `POST /api/onchain/nft-approval` - Approve NFTs
 - `POST /api/onchain/batch-optimizer` - Optimize batch transactions
 - `POST /api/onchain/price-alerts` - Create price alerts
+- `POST /api/onchain/token-swap-aggregator` - Find best swap routes
+- `POST /api/onchain/token-rebalancer` - Calculate rebalancing strategy
+- `POST /api/onchain/token-correlation` - Calculate token correlations
 
 All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
 
