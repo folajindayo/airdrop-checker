@@ -26,4 +26,15 @@ export async function GET(request: NextRequest) {
         const gasPrice = await client.getGasPrice();
         const gasPriceGwei = Number(gasPrice) / 1e9;
 
+        gasData.push({
+          chainId: chainInfo.id,
+          chainName: chainInfo.name,
+          gasPrice: gasPrice.toString(),
+          gasPriceGwei: gasPriceGwei.toFixed(4),
+        });
+      } catch (error) {
+        console.error(`Error fetching gas for ${chainInfo.name}:`, error);
+      }
+    }
+
 
