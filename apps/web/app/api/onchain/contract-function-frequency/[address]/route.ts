@@ -17,27 +17,27 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-mint-rate:${address.toLowerCase()}`;
+    const cacheKey = `contract-function-frequency:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const mintRate = {
+    const frequency = {
       address: address.toLowerCase(),
-      dailyMintRate: '0',
-      weeklyMintRate: '0',
-      monthlyMintRate: '0',
-      totalMinted: '0',
+      functionCalls: [],
+      topFunctions: [],
+      totalCalls: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, mintRate, 300000);
-    return NextResponse.json(mintRate);
+    cache.set(cacheKey, frequency, 300000);
+    return NextResponse.json(frequency);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to calculate mint rate' },
+      { error: 'Failed to analyze function frequency' },
       { status: 500 }
     );
   }
 }
+

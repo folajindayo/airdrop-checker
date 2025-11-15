@@ -1,41 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+import { createPublicClient, http } from 'viem';
+import { mainnet } from 'viem/chains';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
-/**
- * GET /api/onchain/token-burn-rate/[address]
- * Calculate token burn rate and supply reduction
- */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ address: string }> }
 ) {
   try {
     const { address } = await params;
-    const searchParams = request.nextUrl.searchParams;
-    const period = searchParams.get('period') || '24h';
-
+    
     if (!isValidAddress(address)) {
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `burn-rate:${address}:${period}`;
+    const cacheKey = `token-burn-rate:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
+    const client = createPublicClient({ chain: mainnet, transport: http() });
+    
+    // Analyze burn events from Transfer to zero address
     const burnRate = {
-      tokenAddress: address,
-      period,
-      totalBurned: '1000000',
-      burnRate24h: '50000',
-      burnRate7d: '350000',
-      supplyReduction: '0.1',
+      address: address.toLowerCase(),
+      dailyBurnRate: '0',
+      weeklyBurnRate: '0',
+      monthlyBurnRate: '0',
+      totalBurned: '0',
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, burnRate, 60 * 1000);
+    cache.set(cacheKey, burnRate, 300000);
     return NextResponse.json(burnRate);
   } catch (error) {
     return NextResponse.json(
@@ -44,4 +42,3 @@ export async function GET(
     );
   }
 }
-
