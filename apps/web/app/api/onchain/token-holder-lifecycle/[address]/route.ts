@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
 import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-holder-lifecycle/[address]
- * Track holder lifecycle stages
- * Analyzes holder journey from new to veteran
+ * Analyze holder lifecycle stages
  */
 export async function GET(
   request: NextRequest,
@@ -43,13 +41,10 @@ export async function GET(
     const lifecycle: any = {
       tokenAddress: normalizedAddress,
       chainId: targetChainId,
-      stages: {
-        new: 0,
-        active: 0,
-        established: 0,
-        veteran: 0,
-      },
-      averageAge: 0,
+      newHolders: 0,
+      activeHolders: 0,
+      dormantHolders: 0,
+      lifecycleDistribution: {},
       timestamp: Date.now(),
     };
 
@@ -61,20 +56,29 @@ export async function GET(
 
       if (response.data?.items) {
         const holders = response.data.items;
-        let totalAge = 0;
-
-        holders.forEach((holder: any) => {
-          const lastTransfer = new Date(holder.last_transferred_at || 0);
-          const daysAgo = (Date.now() - lastTransfer.getTime()) / (1000 * 60 * 60 * 24);
-          totalAge += daysAgo;
-
-          if (daysAgo < 7) lifecycle.stages.new++;
-          else if (daysAgo < 30) lifecycle.stages.active++;
-          else if (daysAgo < 180) lifecycle.stages.established++;
-          else lifecycle.stages.veteran++;
+        const newH = holders.filter((h: any) => {
+          const firstTransfer = new Date(h.first_transferred_at || 0);
+          const daysAgo = (Date.now() - firstTransfer.getTime()) / (1000 * 60 * 60 * 24);
+          return daysAgo < 30;
         });
-
-        lifecycle.averageAge = holders.length > 0 ? totalAge / holders.length : 0;
+        const active = holders.filter((h: any) => {
+          const lastTransfer = new Date(h.last_transferred_at || 0);
+          const daysAgo = (Date.now() - lastTransfer.getTime()) / (1000 * 60 * 60 * 24);
+          return daysAgo < 90 && daysAgo >= 30;
+        });
+        const dormant = holders.filter((h: any) => {
+          const lastTransfer = new Date(h.last_transferred_at || 0);
+          const daysAgo = (Date.now() - lastTransfer.getTime()) / (1000 * 60 * 60 * 24);
+          return daysAgo >= 90;
+        });
+        lifecycle.newHolders = newH.length;
+        lifecycle.activeHolders = active.length;
+        lifecycle.dormantHolders = dormant.length;
+        lifecycle.lifecycleDistribution = {
+          new: (newH.length / holders.length) * 100,
+          active: (active.length / holders.length) * 100,
+          dormant: (dormant.length / holders.length) * 100,
+        };
       }
     } catch (error) {
       console.error('Error analyzing lifecycle:', error);
@@ -94,4 +98,3 @@ export async function GET(
     );
   }
 }
-
