@@ -1,44 +1,42 @@
-/**
- * Wallet Interaction Frequency Analyzer
- * Analyze frequency of wallet interactions
- * GET /api/onchain/wallet-interaction-frequency/[address]
- */
 import { NextRequest, NextResponse } from 'next/server';
-import { Address, createPublicClient, http } from 'viem';
-import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
+import { isValidAddress } from '@airdrop-finder/shared';
+import { createPublicClient, http } from 'viem';
+import { mainnet } from 'viem/chains';
+import { cache } from '@airdrop-finder/shared';
 
-const chains = { 1: mainnet, 8453: base, 42161: arbitrum, 10: optimism, 137: polygon } as const;
+export const dynamic = 'force-dynamic';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { address: string } }
+  { params }: { params: Promise<{ address: string }> }
 ) {
   try {
-    const { searchParams } = new URL(request.url);
-    const days = parseInt(searchParams.get('days') || '30');
-    const chainId = parseInt(searchParams.get('chainId') || '1');
-    const walletAddress = params.address as Address;
-
-    const chain = chains[chainId as keyof typeof chains];
-    if (!chain) {
-      return NextResponse.json(
-        { error: `Unsupported chain ID: ${chainId}` },
-        { status: 400 }
-      );
+    const { address } = await params;
+    
+    if (!isValidAddress(address)) {
+      return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    return NextResponse.json({
-      success: true,
-      walletAddress,
-      chainId,
-      days,
-      dailyAverage: 0,
-      frequency: 'low',
-      type: 'interaction-frequency',
-    });
-  } catch (error: any) {
+    const cacheKey = `wallet-interaction-frequency:${address.toLowerCase()}`;
+    const cached = cache.get(cacheKey);
+    if (cached) return NextResponse.json({ ...cached, cached: true });
+
+    const client = createPublicClient({ chain: mainnet, transport: http() });
+    
+    const frequency = {
+      address: address.toLowerCase(),
+      interactionsPerDay: 0,
+      activeDays: 0,
+      mostActiveProtocol: null,
+      interactionScore: 0,
+      timestamp: Date.now(),
+    };
+
+    cache.set(cacheKey, frequency, 300000);
+    return NextResponse.json(frequency);
+  } catch (error) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze interaction frequency' },
+      { error: 'Failed to analyze interaction frequency' },
       { status: 500 }
     );
   }

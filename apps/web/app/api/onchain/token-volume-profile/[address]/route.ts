@@ -1,50 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+import { createPublicClient, http } from 'viem';
+import { mainnet } from 'viem/chains';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
-/**
- * GET /api/onchain/token-volume-profile/[address]
- * Analyze volume profile at different price levels
- */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ address: string }> }
 ) {
   try {
     const { address } = await params;
-    const searchParams = request.nextUrl.searchParams;
-    const period = searchParams.get('period') || '30d';
-
+    
     if (!isValidAddress(address)) {
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `volume-profile:${address}:${period}`;
+    const cacheKey = `token-volume-profile:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
+    const client = createPublicClient({ chain: mainnet, transport: http() });
+    
     const profile = {
-      tokenAddress: address,
-      period,
-      priceLevels: [
-        { price: '95', volume: '500000' },
-        { price: '100', volume: '800000' },
-        { price: '105', volume: '600000' },
-      ],
-      poc: '100',
-      valueArea: { high: '105', low: '95' },
+      address: address.toLowerCase(),
+      volumeByTimeframe: {},
+      peakVolume: '0',
+      averageVolume: '0',
+      volumeTrend: 'stable',
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, profile, 300 * 1000);
+    cache.set(cacheKey, profile, 300000);
     return NextResponse.json(profile);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to analyze volume profile' },
+      { error: 'Failed to generate volume profile' },
       { status: 500 }
     );
   }
 }
-
