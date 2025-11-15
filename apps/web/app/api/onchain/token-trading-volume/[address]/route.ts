@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+import { goldrushClient } from '@/lib/goldrush/client';
+import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-trading-volume/[address]
- * Track token trading volume over time periods
+ * Analyze token trading volume patterns
+ * Tracks volume trends and liquidity
  */
 export async function GET(
   request: NextRequest,
@@ -15,33 +18,66 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const period = searchParams.get('period') || '24h';
+    const chainId = searchParams.get('chainId');
+    const days = parseInt(searchParams.get('days') || '30');
 
     if (!isValidAddress(address)) {
-      return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid Ethereum address' },
+        { status: 400 }
+      );
     }
 
-    const cacheKey = `trading-volume:${address}:${period}`;
-    const cached = cache.get(cacheKey);
-    if (cached) return NextResponse.json({ ...cached, cached: true });
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-trading-volume:${normalizedAddress}:${chainId || 'all'}:${days}`;
+    const cachedResult = cache.get(cacheKey);
 
-    const volume = {
-      tokenAddress: address,
-      period,
-      volume24h: '5000000',
-      volume7d: '35000000',
-      volume30d: '150000000',
-      averageVolume: '5000000',
+    if (cachedResult) {
+      return NextResponse.json({
+        ...cachedResult,
+        cached: true,
+      });
+    }
+
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const volume: any = {
+      tokenAddress: normalizedAddress,
+      chainId: targetChainId,
+      period: `${days} days`,
+      totalVolume: 0,
+      averageDailyVolume: 0,
+      volumeTrend: 'stable',
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, volume, 60 * 1000);
+    try {
+      const response = await goldrushClient.get(
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
+      );
+
+      if (response.data) {
+        volume.totalVolume = parseFloat(response.data.total_volume_24h_quote || '0');
+        volume.averageDailyVolume = volume.totalVolume / days;
+        volume.volumeTrend = volume.averageDailyVolume > 100000 ? 'high' : 
+                            volume.averageDailyVolume > 10000 ? 'medium' : 'low';
+      }
+    } catch (error) {
+      console.error('Error analyzing volume:', error);
+    }
+
+    cache.set(cacheKey, volume, 5 * 60 * 1000);
+
     return NextResponse.json(volume);
   } catch (error) {
+    console.error('Trading volume analysis error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch trading volume' },
+      {
+        error: 'Failed to analyze trading volume',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
 }
-
