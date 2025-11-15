@@ -668,6 +668,16 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-whale-tracker/[address]` - Track whales
 - `GET /api/onchain/transaction-fee-calculator` - Calculate fees
 - `GET /api/onchain/contract-creation-tx/[address]` - Find creation tx
+- `GET /api/onchain/yield-farming/[address]` - Track yield farming positions
+- `GET /api/onchain/mev-protection/[address]` - Analyze MEV protection
+- `GET /api/onchain/gas-price-predictor` - Predict future gas prices
+- `GET /api/onchain/rug-pull-detector/[address]` - Detect rug pull risks
+- `GET /api/onchain/defi-risk-analyzer/[address]` - Analyze DeFi protocol risks
+- `GET /api/onchain/activity-patterns/[address]` - Detect wallet activity patterns
+- `GET /api/onchain/cross-chain-portfolio/[address]` - Aggregate cross-chain portfolio
+- `GET /api/onchain/token-holder-analytics/[address]` - Comprehensive holder analytics
+- `GET /api/onchain/token-transfer-flow/[address]` - Analyze transfer flows
+- `GET /api/onchain/price-alerts` - Get active price alerts
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
@@ -695,6 +705,8 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `POST /api/onchain/event-listening` - Listen to events
 - `POST /api/onchain/nft-transfer` - Transfer NFTs
 - `POST /api/onchain/nft-approval` - Approve NFTs
+- `POST /api/onchain/batch-optimizer` - Optimize batch transactions
+- `POST /api/onchain/price-alerts` - Create price alerts
 
 All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
 
