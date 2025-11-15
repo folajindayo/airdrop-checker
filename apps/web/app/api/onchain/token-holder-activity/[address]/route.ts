@@ -1,51 +1,87 @@
-/**
- * Token Holder Activity Tracker
- * Track activity patterns of token holders
- * GET /api/onchain/token-holder-activity/[address]
- */
 import { NextRequest, NextResponse } from 'next/server';
-import { Address, createPublicClient, http } from 'viem';
-import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
+import { isValidAddress } from '@airdrop-finder/shared';
+import { goldrushClient } from '@/lib/goldrush/client';
+import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
+import { cache } from '@airdrop-finder/shared';
 
-const chains = { 1: mainnet, 8453: base, 42161: arbitrum, 10: optimism, 137: polygon } as const;
+export const dynamic = 'force-dynamic';
 
+/**
+ * GET /api/onchain/token-holder-activity/[address]
+ * Analyze holder activity levels
+ * Tracks active vs passive holders
+ */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { address: string } }
+  { params }: { params: Promise<{ address: string }> }
 ) {
   try {
-    const { searchParams } = new URL(request.url);
-    const holderAddress = searchParams.get('holderAddress') as Address;
-    const chainId = parseInt(searchParams.get('chainId') || '1');
-    const tokenAddress = params.address as Address;
+    const { address } = await params;
+    const searchParams = request.nextUrl.searchParams;
+    const chainId = searchParams.get('chainId');
 
-    if (!holderAddress) {
+    if (!isValidAddress(address)) {
       return NextResponse.json(
-        { error: 'Missing required parameter: holderAddress' },
+        { error: 'Invalid Ethereum address' },
         { status: 400 }
       );
     }
 
-    const chain = chains[chainId as keyof typeof chains];
-    if (!chain) {
-      return NextResponse.json(
-        { error: `Unsupported chain ID: ${chainId}` },
-        { status: 400 }
-      );
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-holder-activity:${normalizedAddress}:${chainId || 'all'}`;
+    const cachedResult = cache.get(cacheKey);
+
+    if (cachedResult) {
+      return NextResponse.json({
+        ...cachedResult,
+        cached: true,
+      });
     }
 
-    return NextResponse.json({
-      success: true,
-      tokenAddress,
-      holderAddress,
-      chainId,
-      activityScore: 0,
-      transactions: [],
-      type: 'holder-activity',
-    });
-  } catch (error: any) {
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const activity: any = {
+      tokenAddress: normalizedAddress,
+      chainId: targetChainId,
+      activeHolders: 0,
+      passiveHolders: 0,
+      activityRate: 0,
+      timestamp: Date.now(),
+    };
+
+    try {
+      const response = await goldrushClient.get(
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/token_holders/`,
+        { 'quote-currency': 'USD', 'page-size': 100 }
+      );
+
+      if (response.data?.items) {
+        const holders = response.data.items;
+        const active = holders.filter((h: any) => {
+          const lastTransfer = new Date(h.last_transferred_at || 0);
+          const daysAgo = (Date.now() - lastTransfer.getTime()) / (1000 * 60 * 60 * 24);
+          return daysAgo < 30;
+        });
+
+        activity.activeHolders = active.length;
+        activity.passiveHolders = holders.length - active.length;
+        activity.activityRate = holders.length > 0 ? 
+          (active.length / holders.length) * 100 : 0;
+      }
+    } catch (error) {
+      console.error('Error analyzing activity:', error);
+    }
+
+    cache.set(cacheKey, activity, 5 * 60 * 1000);
+
+    return NextResponse.json(activity);
+  } catch (error) {
+    console.error('Holder activity error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to track holder activity' },
+      {
+        error: 'Failed to analyze holder activity',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
