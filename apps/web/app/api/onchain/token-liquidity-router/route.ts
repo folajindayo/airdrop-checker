@@ -40,7 +40,11 @@ export async function GET(request: NextRequest) {
     const chain = chains[chainId as keyof typeof chains];
     if (!chain) {
       return NextResponse.json(
-        { error: 'Unsupported chain' },
+        { 
+          error: 'Unsupported chain',
+          code: 'UNSUPPORTED_CHAIN',
+          supportedChains: Object.keys(chains).map(Number)
+        },
         { status: 400 }
       );
     }
