@@ -577,6 +577,36 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/contract-audit-status/[address]` - Check audit status
 - `GET /api/onchain/token-holder-growth/[address]` - Track holder growth
 - `GET /api/onchain/transaction-cost-analyzer/[address]` - Analyze transaction costs
+- `GET /api/onchain/token-sentiment/[address]` - Analyze token sentiment
+- `GET /api/onchain/wallet-clustering/[address]` - Detect wallet clusters
+- `GET /api/onchain/token-arbitrage-opportunities/[address]` - Find arbitrage opportunities
+- `GET /api/onchain/token-whale-alerts/[address]` - Monitor whale movements
+- `GET /api/onchain/token-lock-detector/[address]` - Detect token locks
+- `GET /api/onchain/token-tax-analyzer/[address]` - Analyze token taxes
+- `GET /api/onchain/wallet-age-verification/[address]` - Verify wallet age
+- `GET /api/onchain/token-pair-analyzer/[address]` - Analyze trading pairs
+- `GET /api/onchain/contract-interaction-graph/[address]` - Build interaction graph
+- `GET /api/onchain/token-holder-migration/[address]` - Track holder migration
+- `GET /api/onchain/token-ownership-concentration/[address]` - Calculate concentration
+- `GET /api/onchain/token-trading-volume/[address]` - Analyze trading volume
+- `GET /api/onchain/wallet-transaction-pattern/[address]` - Analyze transaction patterns
+- `GET /api/onchain/token-price-impact/[address]` - Calculate price impact
+- `GET /api/onchain/token-concentration-risk/[address]` - Assess concentration risk
+- `GET /api/onchain/token-deflation/[address]` - Track deflation
+- `GET /api/onchain/token-inflation/[address]` - Track inflation
+- `GET /api/onchain/token-mint-rate/[address]` - Calculate mint rate
+- `GET /api/onchain/wallet-balance-history/[address]` - Track balance history
+- `GET /api/onchain/token-dilution-tracker/[address]` - Track dilution
+- `GET /api/onchain/token-market-cap/[address]` - Calculate market cap
+- `GET /api/onchain/token-holder-retention/[address]` - Calculate retention
+- `GET /api/onchain/token-price-correlation/[address]` - Calculate correlation
+- `GET /api/onchain/wallet-gas-optimization/[address]` - Analyze gas usage
+- `GET /api/onchain/token-holder-activity/[address]` - Analyze holder activity
+- `GET /api/onchain/token-liquidity-depth/[address]` - Measure liquidity depth
+- `GET /api/onchain/token-holder-distribution-score/[address]` - Calculate distribution score
+- `GET /api/onchain/token-holder-turnover/[address]` - Calculate turnover rate
+- `GET /api/onchain/token-holder-value-distribution/[address]` - Analyze value distribution
+- `GET /api/onchain/token-holder-geographic/[address]` - Analyze geographic distribution
 - `GET /api/onchain/token-slippage/[address]` - Calculate token slippage for swaps
 - `GET /api/onchain/token-liquidity-depth/[address]` - Analyze token liquidity depth
 - `GET /api/onchain/token-trading-volume/[address]` - Track token trading volume
