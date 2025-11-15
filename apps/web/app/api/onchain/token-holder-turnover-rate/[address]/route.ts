@@ -17,27 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `contract-interaction-graph:${address.toLowerCase()}`;
+    const cacheKey = `token-holder-turnover-rate:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const graph = {
+    const turnover = {
       address: address.toLowerCase(),
-      nodes: [],
-      edges: [],
-      clusters: [],
-      centrality: {},
+      turnoverRate: 0,
+      newHolders: 0,
+      exitedHolders: 0,
+      averageHoldingPeriod: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, graph, 300000);
-    return NextResponse.json(graph);
+    cache.set(cacheKey, turnover, 300000);
+    return NextResponse.json(turnover);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to build interaction graph' },
+      { error: 'Failed to calculate turnover rate' },
       { status: 500 }
     );
   }
 }
+
