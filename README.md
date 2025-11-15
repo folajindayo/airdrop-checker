@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 592+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 622+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 592+ Production-Ready Features!
+## 🎉 622+ Production-Ready Features!
 
 ## ✨ Features
 
@@ -590,7 +590,36 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 590. **Token Interface Detector** - Detect ERC interfaces implemented by contract
 591. **Token Standard Detector** - Detect token standard (ERC20, ERC721, ERC1155)
 592. **Token Compatibility** - Check token compatibility with protocols
-593. **Token Transfer Rate Calculator** - Calculate token transfer rate and velocity
+
+#### Security & Risk Analysis Features (593-622)
+593. **Token Liquidation Price** - Calculate liquidation price for positions
+594. **Token Safety Score** - Calculate comprehensive safety score for tokens
+595. **Token Whitelist Checker** - Check if address is whitelisted for token
+596. **Token Blacklist Checker** - Check if address is blacklisted
+597. **Token Freeze Detector** - Detect if token has freeze functionality
+598. **Token Pause Detector** - Detect if token is paused
+599. **Token Tax Analyzer** - Analyze token tax structure
+600. **Token Reflection Tracker** - Track reflection rewards distribution
+601. **Token Auto LP Tracker** - Track automatic liquidity provision
+602. **Token Honeypot Detector** - Detect honeypot tokens
+603. **Token Sniper Protection** - Check sniper protection mechanisms
+604. **Token Anti-Bot Analyzer** - Analyze anti-bot mechanisms
+605. **Token Max Wallet Checker** - Check max wallet restrictions
+606. **Token Max Transaction Checker** - Check max transaction limits
+607. **Token Cooldown Tracker** - Track cooldown periods for transactions
+608. **Token Reward Distribution** - Track reward distribution mechanisms
+609. **Token Staking Rewards** - Track staking rewards for wallet
+610. **Token Farming Rewards** - Track farming rewards for wallet
+611. **Token Vesting Schedule** - Get vesting schedule for wallet
+612. **Token Lock Schedule** - Get token lock schedule
+613. **Token Claimable Amount** - Get claimable token amount for wallet
+614. **Token Airdrop Eligibility** - Check airdrop eligibility for wallet
+615. **Token Snapshot Generator** - Generate token holder snapshot
+616. **Token Merkle Proof** - Generate merkle proof for airdrop claims
+617. **Token Delegation Tracker** - Track token delegation status
+618. **Token Voting Power** - Calculate voting power for wallet
+619. **Token Proposal Creator** - Get proposals created by wallet
+620. **Token Transfer Rate Calculator** - Calculate token transfer rate and velocity
 594. **Token Concentration Analyzer** - Analyze token concentration and distribution with Reown
 595. **Token Volatility Tracker** - Track token price volatility over time
 596. **Token Liquidity Router** - Find optimal liquidity routing paths with Reown wallet support
@@ -784,6 +813,31 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-interface-detector/[address]` - Detect interfaces
 - `GET /api/onchain/token-standard-detector/[address]` - Detect token standard
 - `GET /api/onchain/token-compatibility/[address]` - Check compatibility
+- `GET /api/onchain/token-liquidation-price/[address]` - Calculate liquidation price
+- `GET /api/onchain/token-safety-score/[address]` - Calculate safety score
+- `GET /api/onchain/token-whitelist-checker/[address]` - Check whitelist status
+- `GET /api/onchain/token-blacklist-checker/[address]` - Check blacklist status
+- `GET /api/onchain/token-freeze-detector/[address]` - Detect freeze functionality
+- `GET /api/onchain/token-pause-detector/[address]` - Detect pause status
+- `GET /api/onchain/token-reflection-tracker/[address]` - Track reflection rewards
+- `GET /api/onchain/token-auto-lp-tracker/[address]` - Track auto LP
+- `GET /api/onchain/token-honeypot-detector/[address]` - Detect honeypot tokens
+- `GET /api/onchain/token-sniper-protection/[address]` - Check sniper protection
+- `GET /api/onchain/token-anti-bot-analyzer/[address]` - Analyze anti-bot mechanisms
+- `GET /api/onchain/token-max-wallet-checker/[address]` - Check max wallet limits
+- `GET /api/onchain/token-max-transaction-checker/[address]` - Check max transaction limits
+- `GET /api/onchain/token-cooldown-tracker/[address]` - Track cooldown periods
+- `GET /api/onchain/token-reward-distribution/[address]` - Track reward distribution
+- `GET /api/onchain/token-staking-rewards/[address]` - Track staking rewards
+- `GET /api/onchain/token-farming-rewards/[address]` - Track farming rewards
+- `GET /api/onchain/token-lock-schedule/[address]` - Get lock schedule
+- `GET /api/onchain/token-claimable-amount/[address]` - Get claimable amount
+- `GET /api/onchain/token-airdrop-eligibility/[address]` - Check airdrop eligibility
+- `GET /api/onchain/token-snapshot-generator/[address]` - Generate holder snapshot
+- `GET /api/onchain/token-merkle-proof/[address]` - Generate merkle proof
+- `GET /api/onchain/token-delegation-tracker/[address]` - Track delegation
+- `GET /api/onchain/token-voting-power/[address]` - Calculate voting power
+- `GET /api/onchain/token-proposal-creator/[address]` - Get created proposals
 - `GET /api/onchain/token-burn-rate/[address]` - Calculate token burn rate
 - `GET /api/onchain/token-mint-rate/[address]` - Track token minting rate
 - `GET /api/onchain/contract-function-frequency/[address]` - Analyze function call frequency
