@@ -5,8 +5,8 @@ import { cache } from '@airdrop-finder/shared';
 export const dynamic = 'force-dynamic';
 
 /**
- * GET /api/onchain/token-tax-analyzer/[address]
- * Analyze token tax structure
+ * GET /api/onchain/token-pause-detector/[address]
+ * Detect if token is paused
  */
 export async function GET(
   request: NextRequest,
@@ -18,25 +18,24 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `tax-analyzer:${address}`;
+    const cacheKey = `pause-detector:${address}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
-    const tax = {
+    const pause = {
       tokenAddress: address,
-      buyTax: '0',
-      sellTax: '0',
-      transferTax: '0',
-      hasTax: false,
+      isPaused: false,
+      canPause: false,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, tax, 300 * 1000);
-    return NextResponse.json(tax);
+    cache.set(cacheKey, pause, 60 * 1000);
+    return NextResponse.json(pause);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to analyze tax' },
+      { error: 'Failed to detect pause' },
       { status: 500 }
     );
   }
 }
+
