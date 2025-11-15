@@ -18,3 +18,10 @@ export async function GET(request: NextRequest) {
     const tokenAddress = searchParams.get('tokenAddress');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
+    if (!tokenAddress) {
+      return NextResponse.json(
+        { error: 'Token address required' },
+        { status: 400 }
+      );
+    }
+
