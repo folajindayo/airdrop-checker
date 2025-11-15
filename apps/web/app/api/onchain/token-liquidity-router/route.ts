@@ -33,3 +33,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const client = createPublicClient({
+      chain,
+      transport: http(),
+    });
+
