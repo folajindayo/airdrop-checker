@@ -814,6 +814,36 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/contract-interaction-graph/[address]` - Build interaction graph
 - `GET /api/onchain/token-holder-turnover-rate/[address]` - Calculate turnover rate
 - `GET /api/onchain/wallet-fingerprint/[address]` - Generate wallet fingerprint
+- `GET /api/onchain/token-transfer-rate/[address]` - Calculate transfer rate
+- `GET /api/onchain/token-concentration/[address]` - Analyze concentration
+- `GET /api/onchain/token-volatility-tracker/[address]` - Track volatility
+- `GET /api/onchain/token-liquidity-router/[address]` - Find liquidity routes
+- `GET /api/onchain/token-holding-period/[address]` - Analyze holding period
+- `GET /api/onchain/token-flow-analyzer/[address]` - Analyze token flow
+- `GET /api/onchain/token-market-share/[address]` - Calculate market share
+- `GET /api/onchain/token-whale-alert/[address]` - Monitor whale movements
+- `GET /api/onchain/token-adoption-rate/[address]` - Track adoption rate
+- `GET /api/onchain/token-turnover-rate/[address]` - Calculate turnover rate
+- `GET /api/onchain/token-burn-rate/[address]` - Track burn rate
+- `GET /api/onchain/token-mint-rate/[address]` - Track mint rate
+- `GET /api/onchain/token-trading-intensity/[address]` - Measure trading intensity
+- `GET /api/onchain/token-liquidity-quality/[address]` - Assess liquidity quality
+- `GET /api/onchain/token-sentiment-score/[address]` - Calculate sentiment score
+- `GET /api/onchain/token-price-efficiency/[address]` - Measure price efficiency
+- `GET /api/onchain/token-holder-loyalty/[address]` - Measure holder loyalty
+- `GET /api/onchain/token-volume-profile/[address]` - Analyze volume profile
+- `GET /api/onchain/token-transaction-pattern/[address]` - Analyze transaction patterns
+- `GET /api/onchain/token-holder-growth-rate/[address]` - Track holder growth
+- `GET /api/onchain/token-price-stability/[address]` - Measure price stability
+- `GET /api/onchain/token-utility-score/[address]` - Calculate utility score
+- `GET /api/onchain/token-holder-distribution-quality/[address]` - Assess distribution quality
+- `GET /api/onchain/token-trading-velocity/[address]` - Measure trading velocity
+- `GET /api/onchain/token-market-depth/[address]` - Analyze market depth
+- `GET /api/onchain/token-holder-diversity-index/[address]` - Calculate diversity index
+- `GET /api/onchain/token-trend-analyzer/[address]` - Analyze trends
+- `GET /api/onchain/token-liquidity-efficiency/[address]` - Measure liquidity efficiency
+- `GET /api/onchain/token-price-correlation/[address]` - Calculate price correlation
+- `GET /api/onchain/token-market-health/[address]` - Assess market health
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
