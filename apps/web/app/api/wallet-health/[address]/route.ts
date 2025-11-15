@@ -231,3 +231,5 @@ function getGrade(score: number): 'S' | 'A' | 'B' | 'C' | 'D' | 'F' {
   if (score >= 50) return 'D';
   return 'F';
 }
+
+
