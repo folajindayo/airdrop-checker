@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+import { goldrushClient } from '@/lib/goldrush/client';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
@@ -14,29 +15,58 @@ export async function GET(
 ) {
   try {
     const { address } = await params;
+    const searchParams = request.nextUrl.searchParams;
+    const chainId = searchParams.get('chainId');
+
     if (!isValidAddress(address)) {
-      return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid Ethereum address' },
+        { status: 400 }
+      );
     }
 
-    const cacheKey = `reserve-tracker:${address}`;
-    const cached = cache.get(cacheKey);
-    if (cached) return NextResponse.json({ ...cached, cached: true });
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-reserve:${normalizedAddress}:${chainId || 'all'}`;
+    const cachedResult = cache.get(cacheKey);
 
-    const reserves = {
-      tokenAddress: address,
-      reserveBalance: '10000000',
+    if (cachedResult) {
+      return NextResponse.json({ ...cachedResult, cached: true });
+    }
+
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const reserve: any = {
+      tokenAddress: normalizedAddress,
+      chainId: targetChainId,
+      reserveBalance: '0',
       backingAssets: [],
-      reserveRatio: '1.0',
+      backingRatio: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, reserves, 300 * 1000);
-    return NextResponse.json(reserves);
+    try {
+      const response = await goldrushClient.get(
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
+      );
+
+      if (response.data) {
+        reserve.reserveBalance = response.data.total_supply || '0';
+      }
+    } catch (error) {
+      console.error('Error tracking reserves:', error);
+    }
+
+    cache.set(cacheKey, reserve, 5 * 60 * 1000);
+    return NextResponse.json(reserve);
   } catch (error) {
+    console.error('Reserve tracker error:', error);
     return NextResponse.json(
-      { error: 'Failed to track reserves' },
+      {
+        error: 'Failed to track reserves',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
 }
-
