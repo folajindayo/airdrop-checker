@@ -562,7 +562,7 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 564. **Token Burn Rate Calculator** - Calculate token burn rate over time
 565. **Token Mint Rate Tracker** - Track token minting rate and patterns
 
-#### DeFi & Governance Analytics Features (566-591)
+#### DeFi & Governance Analytics Features (566-592)
 566. **Token Treasury Tracker** - Track token treasury balances and movements
 567. **Token Reserve Tracker** - Track token reserves and backing assets
 568. **Token Backing Calculator** - Calculate token backing value and collateralization
