@@ -27,3 +27,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Mock correlation calculation
+    const correlation = (Math.random() * 2 - 1).toFixed(3);
+    const strength = Math.abs(parseFloat(correlation)) > 0.7 ? 'strong' : 
+                     Math.abs(parseFloat(correlation)) > 0.4 ? 'moderate' : 'weak';
+
