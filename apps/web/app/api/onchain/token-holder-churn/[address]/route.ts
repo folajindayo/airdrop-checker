@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
 import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-holder-churn/[address]
- * Calculate holder churn rate
- * Tracks how many holders leave
+ * Measure holder churn rate
  */
 export async function GET(
   request: NextRequest,
@@ -44,8 +42,8 @@ export async function GET(
       tokenAddress: normalizedAddress,
       chainId: targetChainId,
       churnRate: 0,
-      lostHolders: 0,
-      riskLevel: 'low',
+      churnedHolders: 0,
+      retentionRate: 0,
       timestamp: Date.now(),
     };
 
@@ -57,20 +55,17 @@ export async function GET(
 
       if (response.data?.items) {
         const holders = response.data.items;
-        const inactive = holders.filter((h: any) => {
+        const churned = holders.filter((h: any) => {
           const lastTransfer = new Date(h.last_transferred_at || 0);
           const daysAgo = (Date.now() - lastTransfer.getTime()) / (1000 * 60 * 60 * 24);
           return daysAgo > 90 && parseFloat(h.balance || '0') === 0;
         });
-
-        churn.lostHolders = inactive.length;
-        churn.churnRate = holders.length > 0 ? 
-          (inactive.length / holders.length) * 100 : 0;
-        churn.riskLevel = churn.churnRate > 30 ? 'high' :
-                         churn.churnRate > 15 ? 'medium' : 'low';
+        churn.churnedHolders = churned.length;
+        churn.churnRate = holders.length > 0 ? (churned.length / holders.length) * 100 : 0;
+        churn.retentionRate = 100 - churn.churnRate;
       }
     } catch (error) {
-      console.error('Error calculating churn:', error);
+      console.error('Error measuring churn:', error);
     }
 
     cache.set(cacheKey, churn, 5 * 60 * 1000);
@@ -80,11 +75,10 @@ export async function GET(
     console.error('Holder churn error:', error);
     return NextResponse.json(
       {
-        error: 'Failed to calculate holder churn',
+        error: 'Failed to measure holder churn',
         details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );
   }
 }
-
