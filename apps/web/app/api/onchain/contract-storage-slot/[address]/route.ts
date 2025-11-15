@@ -12,32 +12,34 @@ export async function GET(
 ) {
   try {
     const { address } = await params;
+    const searchParams = request.nextUrl.searchParams;
+    const slot = searchParams.get('slot');
     
     if (!isValidAddress(address)) {
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-holder-retention:${address.toLowerCase()}`;
+    const cacheKey = `contract-storage-slot:${address.toLowerCase()}:${slot || 'all'}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const retention = {
+    const storage = {
       address: address.toLowerCase(),
-      retentionRate: 0,
-      averageHoldingPeriod: 0,
-      longTermHolders: 0,
-      shortTermHolders: 0,
+      slot: slot || 'all',
+      value: '0x0',
+      decodedValue: null,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, retention, 300000);
-    return NextResponse.json(retention);
+    cache.set(cacheKey, storage, 300000);
+    return NextResponse.json(storage);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to calculate holder retention' },
+      { error: 'Failed to read storage slot' },
       { status: 500 }
     );
   }
 }
+
