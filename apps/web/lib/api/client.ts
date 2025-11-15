@@ -1,64 +1,106 @@
 /**
- * API Client
+ * API Client Base
  * 
- * Centralized API client for making requests to the backend.
- * Provides a consistent interface with error handling, retries, and caching.
+ * Base HTTP client for external API calls
  */
 
-import { retry } from '@/lib/utils/async';
-
-export interface ApiResponse<T = any> {
-  data?: T;
-  error?: string;
-  message?: string;
-}
-
-export interface ApiClientOptions {
-  baseURL?: string;
+export interface ApiClientConfig {
+  baseURL: string;
+  apiKey?: string;
   timeout?: number;
   retries?: number;
   headers?: Record<string, string>;
 }
 
-export interface RequestOptions extends RequestInit {
-  params?: Record<string, string | number | boolean>;
-  retries?: number;
+export interface ApiClientOptions {
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  headers?: Record<string, string>;
+  body?: any;
+  params?: Record<string, string>;
   timeout?: number;
 }
 
-/**
- * API Client Class
- * 
- * Provides methods for making HTTP requests with built-in error handling,
- * retries, and response transformation.
- */
 export class ApiClient {
-  private baseURL: string;
-  private timeout: number;
-  private retries: number;
-  private defaultHeaders: Record<string, string>;
+  private config: ApiClientConfig;
 
-  constructor(options: ApiClientOptions = {}) {
-    this.baseURL = options.baseURL || '';
-    this.timeout = options.timeout || 30000;
-    this.retries = options.retries || 3;
-    this.defaultHeaders = {
-      'Content-Type': 'application/json',
-      ...options.headers,
+  constructor(config: ApiClientConfig) {
+    this.config = {
+      timeout: 30000,
+      retries: 3,
+      ...config,
     };
   }
 
   /**
-   * Build URL with query parameters
+   * Make HTTP request
    */
-  private buildURL(endpoint: string, params?: Record<string, any>): string {
-    const url = new URL(endpoint, this.baseURL || window.location.origin);
-    
+  async request<T>(endpoint: string, options: ApiClientOptions = {}): Promise<T> {
+    const url = this.buildUrl(endpoint, options.params);
+    const headers = this.buildHeaders(options.headers);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+      controller.abort();
+    }, options.timeout || this.config.timeout);
+
+    try {
+      const response = await fetch(url, {
+        method: options.method || 'GET',
+        headers,
+        body: options.body ? JSON.stringify(options.body) : undefined,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      clearTimeout(timeout);
+      throw this.handleError(error);
+    }
+  }
+
+  /**
+   * GET request
+   */
+  async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+    return this.request<T>(endpoint, { method: 'GET', params });
+  }
+
+  /**
+   * POST request
+   */
+  async post<T>(endpoint: string, body: any): Promise<T> {
+    return this.request<T>(endpoint, { method: 'POST', body });
+  }
+
+  /**
+   * PUT request
+   */
+  async put<T>(endpoint: string, body: any): Promise<T> {
+    return this.request<T>(endpoint, { method: 'PUT', body });
+  }
+
+  /**
+   * DELETE request
+   */
+  async delete<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'DELETE' });
+  }
+
+  /**
+   * Build full URL with query parameters
+   */
+  private buildUrl(endpoint: string, params?: Record<string, string>): string {
+    const url = new URL(endpoint, this.config.baseURL);
+
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          url.searchParams.append(key, String(value));
-        }
+        url.searchParams.append(key, value);
       });
     }
 
@@ -66,192 +108,30 @@ export class ApiClient {
   }
 
   /**
-   * Make HTTP request with retries and timeout
+   * Build request headers
    */
-  private async request<T = any>(
-    endpoint: string,
-    options: RequestOptions = {}
-  ): Promise<ApiResponse<T>> {
-    const {
-      params,
-      retries = this.retries,
-      timeout = this.timeout,
-      headers,
-      ...fetchOptions
-    } = options;
-
-    const url = this.buildURL(endpoint, params);
-
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-    const makeRequest = async (): Promise<Response> => {
-      const response = await fetch(url, {
-        ...fetchOptions,
-        headers: {
-          ...this.defaultHeaders,
-          ...headers,
-        },
-        signal: controller.signal,
-      });
-
-      return response;
+  private buildHeaders(customHeaders?: Record<string, string>): HeadersInit {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...this.config.headers,
+      ...customHeaders,
     };
 
-    try {
-      const response = await retry(makeRequest, retries, 1000);
-
-      clearTimeout(timeoutId);
-
-      // Handle non-JSON responses
-      const contentType = response.headers.get('content-type');
-      if (!contentType?.includes('application/json')) {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return { data: await response.text() as any };
-      }
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return {
-          error: data.error || `HTTP error! status: ${response.status}`,
-          message: data.message,
-        };
-      }
-
-      return { data };
-    } catch (error) {
-      clearTimeout(timeoutId);
-
-      if (error instanceof Error) {
-        if (error.name === 'AbortError') {
-          return { error: 'Request timeout' };
-        }
-        return { error: error.message };
-      }
-
-      return { error: 'An unknown error occurred' };
+    if (this.config.apiKey) {
+      headers['Authorization'] = `Bearer ${this.config.apiKey}`;
     }
+
+    return headers;
   }
 
   /**
-   * GET request
+   * Handle request errors
    */
-  async get<T = any>(
-    endpoint: string,
-    options: RequestOptions = {}
-  ): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'GET',
-    });
-  }
+  private handleError(error: any): Error {
+    if (error.name === 'AbortError') {
+      return new Error('Request timeout');
+    }
 
-  /**
-   * POST request
-   */
-  async post<T = any>(
-    endpoint: string,
-    body?: any,
-    options: RequestOptions = {}
-  ): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'POST',
-      body: JSON.stringify(body),
-    });
-  }
-
-  /**
-   * PUT request
-   */
-  async put<T = any>(
-    endpoint: string,
-    body?: any,
-    options: RequestOptions = {}
-  ): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'PUT',
-      body: JSON.stringify(body),
-    });
-  }
-
-  /**
-   * PATCH request
-   */
-  async patch<T = any>(
-    endpoint: string,
-    body?: any,
-    options: RequestOptions = {}
-  ): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'PATCH',
-      body: JSON.stringify(body),
-    });
-  }
-
-  /**
-   * DELETE request
-   */
-  async delete<T = any>(
-    endpoint: string,
-    options: RequestOptions = {}
-  ): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'DELETE',
-    });
+    return error instanceof Error ? error : new Error('Unknown error');
   }
 }
-
-// Default API client instance
-export const apiClient = new ApiClient();
-
-/**
- * Convenience functions using the default client
- */
-export const api = {
-  get: <T = any>(endpoint: string, options?: RequestOptions) =>
-    apiClient.get<T>(endpoint, options),
-  
-  post: <T = any>(endpoint: string, body?: any, options?: RequestOptions) =>
-    apiClient.post<T>(endpoint, body, options),
-  
-  put: <T = any>(endpoint: string, body?: any, options?: RequestOptions) =>
-    apiClient.put<T>(endpoint, body, options),
-  
-  patch: <T = any>(endpoint: string, body?: any, options?: RequestOptions) =>
-    apiClient.patch<T>(endpoint, body, options),
-  
-  delete: <T = any>(endpoint: string, options?: RequestOptions) =>
-    apiClient.delete<T>(endpoint, options),
-};
-
-/**
- * API endpoints
- */
-export const endpoints = {
-  // Airdrop
-  airdropCheck: (address: string) => `/api/airdrop-check/${address}`,
-  airdrops: '/api/airdrops',
-  
-  // Portfolio
-  portfolio: (address: string) => `/api/portfolio/${address}`,
-  
-  // Trending
-  trending: '/api/trending',
-  
-  // Gas tracker
-  gasTracker: (address: string) => `/api/gas-tracker/${address}`,
-  
-  // Health
-  health: '/api/health',
-  
-  // Rate limit
-  rateLimit: '/api/rate-limit',
-} as const;
-
