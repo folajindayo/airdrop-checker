@@ -17,27 +17,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const cacheKey = `token-holder-retention:${address.toLowerCase()}`;
+    const cacheKey = `wallet-gas-spending-pattern:${address.toLowerCase()}`;
     const cached = cache.get(cacheKey);
     if (cached) return NextResponse.json({ ...cached, cached: true });
 
     const client = createPublicClient({ chain: mainnet, transport: http() });
     
-    const retention = {
+    const pattern = {
       address: address.toLowerCase(),
-      retentionRate: 0,
-      averageHoldingPeriod: 0,
-      longTermHolders: 0,
-      shortTermHolders: 0,
+      dailyGasSpent: '0',
+      averageGasPrice: '0',
+      spendingPattern: 'normal',
+      optimizationOpportunities: [],
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, retention, 300000);
-    return NextResponse.json(retention);
+    cache.set(cacheKey, pattern, 300000);
+    return NextResponse.json(pattern);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to calculate holder retention' },
+      { error: 'Failed to analyze gas spending pattern' },
       { status: 500 }
     );
   }
 }
+
