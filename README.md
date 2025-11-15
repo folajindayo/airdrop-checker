@@ -429,12 +429,42 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 469. **Token Momentum Indicator** - Calculate token price momentum with RSI and trend analysis
 470. **Contract Audit Status Checker** - Check contract audit status and security verification
 
-#### Advanced Onchain Tools (471-475)
+#### Advanced Onchain Tools (471-505)
 471. **Token Holder Growth Tracker** - Track token holder growth over time with adoption trends
 472. **Transaction Cost Analyzer** - Analyze transaction costs and gas spending patterns
-473. **Gas Optimization Advisor** - Get recommendations for optimizing gas usage
-474. **Portfolio Risk Assessor** - Comprehensive portfolio risk assessment across chains
-475. **Complete Onchain Analytics Suite** - Comprehensive on-chain analytics combining all advanced features above
+473. **Token Sentiment Analyzer** - Analyze token sentiment based on holder behavior patterns
+474. **Wallet Clustering Detection** - Detect wallet clusters and related addresses
+475. **Token Arbitrage Opportunities** - Find arbitrage opportunities across DEXs
+476. **Token Whale Alerts** - Monitor whale movements for a token
+477. **Token Lock Detector** - Detect token locks and vesting schedules
+478. **Token Tax Analyzer** - Analyze token tax structure and fees
+479. **Wallet Age Verification** - Verify wallet age and first transaction date
+480. **Token Pair Analyzer** - Analyze token trading pairs across DEXs
+481. **Contract Interaction Graph** - Build interaction graph for wallet or contract
+482. **Token Holder Migration** - Track holder migration patterns and retention
+483. **Token Ownership Concentration** - Calculate ownership concentration metrics
+484. **Token Trading Volume** - Analyze token trading volume patterns
+485. **Wallet Transaction Pattern** - Analyze wallet transaction patterns and strategies
+486. **Token Price Impact** - Calculate price impact for token trades
+487. **Token Concentration Risk** - Assess concentration risk for token
+488. **Token Deflation Tracker** - Track token deflation mechanisms
+489. **Token Inflation Monitor** - Track token inflation and minting
+490. **Token Mint Rate** - Calculate token minting rate
+491. **Wallet Balance History** - Track wallet balance history over time
+492. **Token Dilution Tracker** - Track token dilution from new mints
+493. **Token Market Cap** - Calculate token market capitalization
+494. **Token Holder Retention** - Calculate holder retention rate
+495. **Token Price Correlation** - Calculate price correlation with other assets
+496. **Wallet Gas Optimization** - Analyze wallet gas usage and provide optimization tips
+497. **Token Holder Activity** - Analyze holder activity levels
+498. **Token Liquidity Depth** - Measure liquidity depth across price levels
+499. **Token Holder Distribution Score** - Calculate distribution score for token
+500. **Token Holder Turnover** - Calculate holder turnover rate
+501. **Token Holder Value Distribution** - Analyze value distribution among holders
+502. **Token Holder Geographic** - Analyze geographic distribution of holders
+503. **Gas Optimization Advisor** - Get recommendations for optimizing gas usage
+504. **Portfolio Risk Assessor** - Comprehensive portfolio risk assessment across chains
+505. **Complete Onchain Analytics Suite** - Comprehensive on-chain analytics combining all advanced features above
 
 #### Advanced Token Analytics Features (476-505)
 476. **Token Slippage Calculator** - Calculate token slippage for swaps using Reown Wallet integration
