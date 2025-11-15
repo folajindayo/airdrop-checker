@@ -4,3 +4,8 @@ export interface ChainInfo {
   name: string;
 }
 
+export interface GasPrice {
+  chainId: number;
+  price: string;
+}
+
