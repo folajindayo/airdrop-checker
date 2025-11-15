@@ -32,3 +32,20 @@ export async function GET(request: NextRequest) {
     const strength = Math.abs(parseFloat(correlation)) > 0.7 ? 'strong' : 
                      Math.abs(parseFloat(correlation)) > 0.4 ? 'moderate' : 'weak';
 
+    return NextResponse.json({
+      success: true,
+      token1,
+      token2,
+      correlation: parseFloat(correlation),
+      strength,
+      direction: parseFloat(correlation) > 0 ? 'positive' : 'negative',
+      timestamp: Date.now(),
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || 'Failed to calculate correlation' },
+      { status: 500 }
+    );
+  }
+}
+
