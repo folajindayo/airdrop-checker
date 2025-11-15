@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+import { goldrushClient } from '@/lib/goldrush/client';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
@@ -15,31 +16,46 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
+    const chainId = searchParams.get('chainId');
     const txHash = searchParams.get('txHash');
 
-    if (!isValidAddress(address) || !txHash) {
-      return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
+    if (!isValidAddress(address)) {
+      return NextResponse.json(
+        { error: 'Invalid Ethereum address' },
+        { status: 400 }
+      );
     }
 
-    const cacheKey = `tx-decoder:${address}:${txHash}`;
-    const cached = cache.get(cacheKey);
-    if (cached) return NextResponse.json({ ...cached, cached: true });
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-tx-decoder:${normalizedAddress}:${txHash || 'all'}:${chainId || 'all'}`;
+    const cachedResult = cache.get(cacheKey);
 
-    const decoded = {
-      contractAddress: address,
-      txHash,
-      functionName: 'transfer',
-      parameters: {},
+    if (cachedResult) {
+      return NextResponse.json({ ...cachedResult, cached: true });
+    }
+
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const decoded: any = {
+      contractAddress: normalizedAddress,
+      chainId: targetChainId,
+      txHash: txHash || null,
+      functionName: null,
+      parameters: [],
+      decoded: false,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, decoded, 300 * 1000);
+    cache.set(cacheKey, decoded, 5 * 60 * 1000);
     return NextResponse.json(decoded);
   } catch (error) {
+    console.error('TX decoder error:', error);
     return NextResponse.json(
-      { error: 'Failed to decode transaction' },
+      {
+        error: 'Failed to decode transaction',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
 }
-
