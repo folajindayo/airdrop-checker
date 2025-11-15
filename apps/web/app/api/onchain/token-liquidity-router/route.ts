@@ -38,3 +38,9 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
+    const dexes = [
+      { name: 'Uniswap V3', factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984' },
+      { name: 'Uniswap V2', factoryAddress: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f' },
+      { name: 'SushiSwap', factoryAddress: '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac' },
+    ];
+
