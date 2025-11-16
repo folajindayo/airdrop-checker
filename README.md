@@ -794,6 +794,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 765. **Token Token Staking Rewards Tracker** - Track staking rewards and claimable amounts
 766. **Token Token Farming Rewards Tracker** - Track farming rewards and yield calculations
 767. **Token Token Claimable Amount Calculator** - Calculate claimable token amounts for wallets
+768. **Token Token Holder Activity Score** - Calculate comprehensive activity score for token holders
+769. **Token Token Transfer Rate Calculator** - Calculate token transfer rates and velocity metrics
+770. **Token Token Market Cap Tracker** - Track real-time market capitalization across chains
+771. **Token Token Volume Analyzer** - Analyze trading volume patterns and trends
+772. **Token Token Price Tracker** - Track token prices with historical data and charts
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
