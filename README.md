@@ -819,6 +819,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 790. **Token Token Slashing Detector** - Detect slashing events for validators
 791. **Token Token Validator Exit Tracker** - Track validator exit queue status
 792. **Token Token MEV Rewards Tracker** - Track MEV rewards and block builder payments
+793. **Token Token Relayer Fees Tracker** - Track relayer fees and meta-transaction costs
+794. **Token Token Gas Refund Tracker** - Track gas refunds from failed transactions
+795. **Token Token Transaction Batching Analyzer** - Analyze transaction batching patterns
+796. **Token Token Multisig Approval Tracker** - Track multisig approval requirements
+797. **Token Token Complete Onchain Suite** - Complete onchain analytics suite with Reown integration
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
