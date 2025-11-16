@@ -779,6 +779,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 750. **Token Token Price Oracle Aggregator** - Aggregate prices from multiple oracle sources
 751. **Token Liquidity Mining Rewards Calculator** - Calculate liquidity mining rewards and APY
 752. **Token Token Holder Concentration Analyzer** - Analyze token holder concentration and distribution
+753. **Token Token Swap Route Optimizer** - Optimize swap routes for best prices and lowest slippage
+754. **Token Token Unlock Schedule Tracker** - Track token unlock schedules and vesting cliffs
+755. **Token Token Minting Event Tracker** - Track token minting events and supply increases
+756. **Token Token Tax Fee Calculator** - Calculate token tax fees and reflection rewards
+757. **Token Token Whitelist Status Checker** - Check whitelist status for token addresses
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
