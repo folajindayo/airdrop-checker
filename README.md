@@ -789,6 +789,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 760. **Token Token Pause Status Detector** - Detect token pause functionality and status
 761. **Token Token Max Wallet Size Checker** - Check maximum wallet size restrictions
 762. **Token Token Max Transaction Size Checker** - Check maximum transaction size limits
+763. **Token Token Cooldown Period Tracker** - Track cooldown periods between transactions
+764. **Token Token Reward Distribution Tracker** - Track reward distribution mechanisms and schedules
+765. **Token Token Staking Rewards Tracker** - Track staking rewards and claimable amounts
+766. **Token Token Farming Rewards Tracker** - Track farming rewards and yield calculations
+767. **Token Token Claimable Amount Calculator** - Calculate claimable token amounts for wallets
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
