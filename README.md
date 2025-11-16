@@ -677,6 +677,36 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 648. **Token Market Cap Efficiency Calculator** - Calculate market capitalization efficiency with Reown support
 649. **Token Trading Intensity Score Calculator** - Measure trading intensity scores
 650. **Token Liquidity Quality Score Calculator** - Calculate comprehensive liquidity quality score
+651. **Token Flash Loan Detector** - Detect flash loan usage patterns in token transactions
+652. **Token MEV Bot Detector** - Detect MEV bot activity patterns and scoring
+653. **Token Sandwich Attack Detector** - Detect sandwich attack patterns in token swaps
+654. **Token Front-Running Detector** - Detect front-running patterns in transactions
+655. **Token Back-Running Detector** - Detect back-running patterns in transactions
+656. **Token Liquidity Sniping Detector** - Detect liquidity sniping patterns in token launches
+657. **Token Pump and Dump Detector** - Detect pump and dump schemes in token trading
+658. **Token Wash Trading Detector** - Detect wash trading patterns in token transactions
+659. **Token Circular Trading Detector** - Detect circular trading patterns between addresses
+660. **Token Price Manipulation Detector** - Detect price manipulation patterns with scoring system
+661. **Token Order Flow Analyzer** - Analyze order flow patterns in token transactions
+662. **Token Dark Pool Detector** - Detect dark pool trading patterns with large transactions
+663. **Token Insider Trading Detector** - Detect potential insider trading patterns with timing analysis
+664. **Token Coordinated Trading Detector** - Detect coordinated trading patterns across multiple addresses
+665. **Token Bot Cluster Detector** - Detect bot cluster patterns in trading activity with scoring
+666. **Token Sybil Attack Detector** - Detect Sybil attack patterns with multiple related addresses
+667. **Token Airdrop Farming Detector** - Detect airdrop farming patterns and eligibility gaming with protocol analysis
+668. **Token Sniping Bot Detector** - Detect sniping bot activity in token launches
+669. **Token Gas War Detector** - Detect gas war patterns in competitive transactions
+670. **Token Priority Fee Analyzer** - Analyze priority fee patterns with statistical metrics
+671. **Token EIP-1559 Fee Analyzer** - Analyze EIP-1559 fee structure and base fee trends
+672. **Token Layer 2 Bridge Analyzer** - Analyze Layer 2 bridge activity patterns with Reown
+673. **Token Cross-Chain Arbitrage Detector** - Detect cross-chain arbitrage opportunities
+674. **Token Bridge Risk Analyzer** - Analyze bridge transaction risks with security scoring
+675. **Token Bridge Volume Tracker** - Track bridge transaction volumes across chains and protocols
+676. **Token Bridge Fee Calculator** - Calculate bridge fees and compare across protocols
+677. **Token Bridge Time Estimator** - Estimate bridge transaction completion times for planning
+678. **Token Bridge Security Checker** - Check bridge security status and audit compliance
+679. **Token Bridge Liquidity Checker** - Check bridge liquidity availability across routes
+680. **Token Bridge Status Monitor** - Monitor bridge status and health metrics with Reown
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
