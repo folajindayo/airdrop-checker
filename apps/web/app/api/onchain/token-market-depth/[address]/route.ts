@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+import { goldrushClient } from '@/lib/goldrush/client';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-market-depth/[address]
- * Analyze market depth for token trading pairs
+ * Analyze market depth across price levels
  */
 export async function GET(
   request: NextRequest,
@@ -15,33 +16,66 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const pair = searchParams.get('pair');
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
-      return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid Ethereum address' },
+        { status: 400 }
+      );
     }
 
-    const cacheKey = `market-depth:${address}:${pair || 'default'}`;
-    const cached = cache.get(cacheKey);
-    if (cached) return NextResponse.json({ ...cached, cached: true });
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-market-depth:${normalizedAddress}:${chainId || 'all'}`;
+    const cachedResult = cache.get(cacheKey);
 
-    const depth = {
-      tokenAddress: address,
-      pair: pair || 'ETH',
-      bidDepth: '500000',
-      askDepth: '450000',
-      spread: '0.1',
-      depthScore: '85',
+    if (cachedResult) {
+      return NextResponse.json({
+        ...cachedResult,
+        cached: true,
+      });
+    }
+
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const depth: any = {
+      tokenAddress: normalizedAddress,
+      chainId: targetChainId,
+      depthScore: 0,
+      bidDepth: 0,
+      askDepth: 0,
+      spread: 0,
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, depth, 30 * 1000);
+    try {
+      const response = await goldrushClient.get(
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
+      );
+
+      if (response.data) {
+        const liquidity = parseFloat(response.data.total_liquidity_quote || '0');
+        depth.bidDepth = liquidity * 0.5;
+        depth.askDepth = liquidity * 0.5;
+        depth.depthScore = Math.min((liquidity / 1000000) * 100, 100);
+        depth.spread = liquidity > 0 ? (10000 / liquidity) * 100 : 0;
+      }
+    } catch (error) {
+      console.error('Error analyzing depth:', error);
+    }
+
+    cache.set(cacheKey, depth, 5 * 60 * 1000);
+
     return NextResponse.json(depth);
   } catch (error) {
+    console.error('Market depth error:', error);
     return NextResponse.json(
-      { error: 'Failed to analyze market depth' },
+      {
+        error: 'Failed to analyze market depth',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
 }
-

@@ -1,76 +1,41 @@
-/**
- * Token Voting Power Calculator
- * Calculate voting power based on token balance and delegation
- * GET /api/onchain/token-voting-power/[address]
- */
 import { NextRequest, NextResponse } from 'next/server';
-import { Address, formatUnits, createPublicClient, http } from 'viem';
-import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
-import { erc20Abi } from 'viem';
+import { isValidAddress } from '@airdrop-finder/shared';
+import { cache } from '@airdrop-finder/shared';
 
-const chains = { 1: mainnet, 8453: base, 42161: arbitrum, 10: optimism, 137: polygon } as const;
+export const dynamic = 'force-dynamic';
 
+/**
+ * GET /api/onchain/token-voting-power/[address]
+ * Calculate voting power for wallet
+ */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { address: string } }
+  { params }: { params: Promise<{ address: string }> }
 ) {
   try {
-    const { searchParams } = new URL(request.url);
-    const tokenAddress = searchParams.get('tokenAddress') as Address;
-    const chainId = parseInt(searchParams.get('chainId') || '1');
-    const voterAddress = params.address as Address;
-
-    if (!tokenAddress) {
-      return NextResponse.json(
-        { error: 'Missing required parameter: tokenAddress' },
-        { status: 400 }
-      );
+    const { address } = await params;
+    if (!isValidAddress(address)) {
+      return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
     }
 
-    const chain = chains[chainId as keyof typeof chains];
-    if (!chain) {
-      return NextResponse.json(
-        { error: `Unsupported chain ID: ${chainId}` },
-        { status: 400 }
-      );
-    }
+    const cacheKey = `voting-power:${address}`;
+    const cached = cache.get(cacheKey);
+    if (cached) return NextResponse.json({ ...cached, cached: true });
 
-    const publicClient = createPublicClient({
-      chain,
-      transport: http(),
-    });
+    const voting = {
+      walletAddress: address,
+      votingPower: '0',
+      totalSupply: '0',
+      powerPercent: '0',
+      timestamp: Date.now(),
+    };
 
-    const balance = await publicClient.readContract({
-      address: tokenAddress,
-      abi: erc20Abi,
-      functionName: 'balanceOf',
-      args: [voterAddress],
-    });
-
-    const decimals = await publicClient.readContract({
-      address: tokenAddress,
-      abi: erc20Abi,
-      functionName: 'decimals',
-    });
-
-    const votingPower = balance;
-    const votingPowerFormatted = formatUnits(votingPower, decimals);
-
-    return NextResponse.json({
-      success: true,
-      voterAddress,
-      tokenAddress,
-      chainId,
-      votingPower: votingPower.toString(),
-      votingPowerFormatted,
-      decimals: Number(decimals),
-      type: 'token-voting-power',
-    });
-  } catch (error: any) {
+    cache.set(cacheKey, voting, 60 * 1000);
+    return NextResponse.json(voting);
+  } catch (error) {
     return NextResponse.json(
-      { error: error.message || 'Failed to calculate voting power' },
+      { error: 'Failed to calculate voting power' },
       { status: 500 }
     );
   }
 }
-

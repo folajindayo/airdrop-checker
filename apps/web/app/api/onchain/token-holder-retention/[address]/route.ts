@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
 import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-holder-retention/[address]
- * Calculate holder retention rate
- * Measures long-term holder loyalty
+ * Measure holder retention metrics
  */
 export async function GET(
   request: NextRequest,
@@ -45,7 +43,7 @@ export async function GET(
       chainId: targetChainId,
       retentionRate: 0,
       longTermHolders: 0,
-      averageHoldTime: 0,
+      averageHoldingDays: 0,
       timestamp: Date.now(),
     };
 
@@ -60,15 +58,14 @@ export async function GET(
         const longTerm = holders.filter((h: any) => {
           const lastTransfer = new Date(h.last_transferred_at || 0);
           const daysAgo = (Date.now() - lastTransfer.getTime()) / (1000 * 60 * 60 * 24);
-          return daysAgo > 90;
+          return daysAgo > 180;
         });
-
         retention.longTermHolders = longTerm.length;
         retention.retentionRate = holders.length > 0 ? 
           (longTerm.length / holders.length) * 100 : 0;
       }
     } catch (error) {
-      console.error('Error calculating retention:', error);
+      console.error('Error measuring retention:', error);
     }
 
     cache.set(cacheKey, retention, 5 * 60 * 1000);
@@ -78,7 +75,7 @@ export async function GET(
     console.error('Holder retention error:', error);
     return NextResponse.json(
       {
-        error: 'Failed to calculate holder retention',
+        error: 'Failed to measure holder retention',
         details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }

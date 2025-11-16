@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
 import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
@@ -9,7 +8,6 @@ export const dynamic = 'force-dynamic';
 /**
  * GET /api/onchain/token-holder-migration/[address]
  * Track holder migration patterns
- * Analyzes holder movement and retention
  */
 export async function GET(
   request: NextRequest,
@@ -43,10 +41,9 @@ export async function GET(
     const migration: any = {
       tokenAddress: normalizedAddress,
       chainId: targetChainId,
+      migrationRate: 0,
       newHolders: 0,
-      lostHolders: 0,
-      retentionRate: 0,
-      migrationTrend: 'stable',
+      departedHolders: 0,
       timestamp: Date.now(),
     };
 
@@ -58,17 +55,14 @@ export async function GET(
 
       if (response.data?.items) {
         const holders = response.data.items;
-        const recentHolders = holders.filter((h: any) => {
-          const lastTransfer = new Date(h.last_transferred_at || 0);
-          const daysAgo = (Date.now() - lastTransfer.getTime()) / (1000 * 60 * 60 * 24);
-          return daysAgo < 30;
+        const newHolders = holders.filter((h: any) => {
+          const firstTransfer = new Date(h.first_transferred_at || 0);
+          const daysAgo = (Date.now() - firstTransfer.getTime()) / (1000 * 60 * 60 * 24);
+          return daysAgo < 7;
         });
-
-        migration.newHolders = recentHolders.length;
-        migration.retentionRate = holders.length > 0 ? 
-          ((holders.length - recentHolders.length) / holders.length) * 100 : 0;
-        migration.migrationTrend = migration.newHolders > migration.lostHolders ? 
-          'growing' : migration.lostHolders > migration.newHolders ? 'declining' : 'stable';
+        migration.newHolders = newHolders.length;
+        migration.migrationRate = holders.length > 0 ? 
+          (newHolders.length / holders.length) * 100 : 0;
       }
     } catch (error) {
       console.error('Error tracking migration:', error);
@@ -78,7 +72,7 @@ export async function GET(
 
     return NextResponse.json(migration);
   } catch (error) {
-    console.error('Holder migration tracking error:', error);
+    console.error('Holder migration error:', error);
     return NextResponse.json(
       {
         error: 'Failed to track holder migration',
@@ -88,4 +82,3 @@ export async function GET(
     );
   }
 }
-

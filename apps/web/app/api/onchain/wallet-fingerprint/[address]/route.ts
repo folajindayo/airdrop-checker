@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isValidAddress } from '@airdrop-finder/shared';
+import { createPublicClient, http } from 'viem';
+import { mainnet } from 'viem/chains';
+import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,19 +12,32 @@ export async function GET(
 ) {
   try {
     const { address } = await params;
+    
+    if (!isValidAddress(address)) {
+      return NextResponse.json({ error: 'Invalid address' }, { status: 400 });
+    }
 
-    return NextResponse.json({
-      success: true,
-      address,
-      behaviorType: ['trader', 'holder', 'defi_user', 'nft_collector'][Math.floor(Math.random() * 4)],
-      activityPattern: Math.random() > 0.5 ? 'regular' : 'sporadic',
-      riskProfile: ['conservative', 'moderate', 'aggressive'][Math.floor(Math.random() * 3)],
-      sophisticationScore: Math.floor(Math.random() * 100),
-      primaryChains: ['Ethereum', 'Base', 'Arbitrum'],
-      fingerprint: 'unique-' + Math.random().toString(36).substring(7),
-    });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const cacheKey = `wallet-fingerprint:${address.toLowerCase()}`;
+    const cached = cache.get(cacheKey);
+    if (cached) return NextResponse.json({ ...cached, cached: true });
+
+    const client = createPublicClient({ chain: mainnet, transport: http() });
+    
+    const fingerprint = {
+      address: address.toLowerCase(),
+      behavioralPattern: {},
+      transactionSignature: {},
+      uniqueId: '',
+      similarityScore: 0,
+      timestamp: Date.now(),
+    };
+
+    cache.set(cacheKey, fingerprint, 300000);
+    return NextResponse.json(fingerprint);
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to generate wallet fingerprint' },
+      { status: 500 }
+    );
   }
 }
-

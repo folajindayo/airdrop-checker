@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
 import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-mint-rate/[address]
- * Calculate token minting rate
- * Tracks new token creation speed
+ * Track token minting rate and inflation
  */
 export async function GET(
   request: NextRequest,
@@ -43,10 +41,9 @@ export async function GET(
     const mintRate: any = {
       tokenAddress: normalizedAddress,
       chainId: targetChainId,
-      dailyMintRate: 0,
-      weeklyMintRate: 0,
-      monthlyMintRate: 0,
-      mintingActive: false,
+      mintedAmount: 0,
+      mintRate: 0,
+      inflationRate: 0,
       timestamp: Date.now(),
     };
 
@@ -57,21 +54,24 @@ export async function GET(
       );
 
       if (response.data) {
-        mintRate.mintingActive = true;
-        mintRate.dailyMintRate = 0;
+        const totalSupply = parseFloat(response.data.total_supply || '0');
+        const circulatingSupply = parseFloat(response.data.circulating_supply || totalSupply);
+        mintRate.mintedAmount = totalSupply - circulatingSupply;
+        mintRate.inflationRate = circulatingSupply > 0 ? 
+          ((totalSupply - circulatingSupply) / circulatingSupply) * 100 : 0;
       }
     } catch (error) {
-      console.error('Error calculating mint rate:', error);
+      console.error('Error tracking mint rate:', error);
     }
 
     cache.set(cacheKey, mintRate, 5 * 60 * 1000);
 
     return NextResponse.json(mintRate);
   } catch (error) {
-    console.error('Token mint rate error:', error);
+    console.error('Mint rate error:', error);
     return NextResponse.json(
       {
-        error: 'Failed to calculate mint rate',
+        error: 'Failed to track mint rate',
         details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }

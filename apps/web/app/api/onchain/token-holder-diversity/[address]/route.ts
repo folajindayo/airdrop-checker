@@ -1,42 +1,93 @@
-/**
- * Token Holder Diversity Analyzer
- * Analyze diversity of token holders
- * GET /api/onchain/token-holder-diversity/[address]
- */
 import { NextRequest, NextResponse } from 'next/server';
-import { Address } from 'viem';
-import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
+import { isValidAddress } from '@airdrop-finder/shared';
+import { goldrushClient } from '@/lib/goldrush/client';
+import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
+import { cache } from '@airdrop-finder/shared';
 
-const chains = { 1: mainnet, 8453: base, 42161: arbitrum, 10: optimism, 137: polygon } as const;
+export const dynamic = 'force-dynamic';
 
+/**
+ * GET /api/onchain/token-holder-diversity/[address]
+ * Measure holder diversity metrics
+ * Analyzes distribution across holder types
+ */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { address: string } }
+  { params }: { params: Promise<{ address: string }> }
 ) {
   try {
-    const { searchParams } = new URL(request.url);
-    const chainId = parseInt(searchParams.get('chainId') || '1');
-    const tokenAddress = params.address as Address;
+    const { address } = await params;
+    const searchParams = request.nextUrl.searchParams;
+    const chainId = searchParams.get('chainId');
 
-    const chain = chains[chainId as keyof typeof chains];
-    if (!chain) {
+    if (!isValidAddress(address)) {
       return NextResponse.json(
-        { error: `Unsupported chain ID: ${chainId}` },
+        { error: 'Invalid Ethereum address' },
         { status: 400 }
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      tokenAddress,
-      chainId,
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-holder-diversity:${normalizedAddress}:${chainId || 'all'}`;
+    const cachedResult = cache.get(cacheKey);
+
+    if (cachedResult) {
+      return NextResponse.json({
+        ...cachedResult,
+        cached: true,
+      });
+    }
+
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const diversity: any = {
+      tokenAddress: normalizedAddress,
+      chainId: targetChainId,
       diversityScore: 0,
-      holderCount: 0,
-      type: 'holder-diversity',
-    });
-  } catch (error: any) {
+      holderTypes: 0,
+      distribution: {} as Record<string, number>,
+      timestamp: Date.now(),
+    };
+
+    try {
+      const response = await goldrushClient.get(
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/token_holders/`,
+        { 'quote-currency': 'USD', 'page-size': 100 }
+      );
+
+      if (response.data?.items) {
+        const holders = response.data.items;
+        const totalValue = holders.reduce((sum: number, h: any) => 
+          sum + parseFloat(h.quote || '0'), 0);
+
+        const categories = new Set<string>();
+        holders.forEach((holder: any) => {
+          const value = parseFloat(holder.quote || '0');
+          const percentage = totalValue > 0 ? (value / totalValue) * 100 : 0;
+          
+          if (percentage > 1) categories.add('whale');
+          else if (percentage > 0.1) categories.add('dolphin');
+          else if (percentage > 0.01) categories.add('fish');
+          else categories.add('retail');
+        });
+
+        diversity.holderTypes = categories.size;
+        diversity.diversityScore = categories.size * 25;
+      }
+    } catch (error) {
+      console.error('Error measuring diversity:', error);
+    }
+
+    cache.set(cacheKey, diversity, 5 * 60 * 1000);
+
+    return NextResponse.json(diversity);
+  } catch (error) {
+    console.error('Holder diversity error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze holder diversity' },
+      {
+        error: 'Failed to measure holder diversity',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }

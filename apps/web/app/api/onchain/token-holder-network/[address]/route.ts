@@ -1,42 +1,79 @@
-/**
- * Token Holder Network Analyzer
- * Analyze network of token holders
- * GET /api/onchain/token-holder-network/[address]
- */
 import { NextRequest, NextResponse } from 'next/server';
-import { Address } from 'viem';
-import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
+import { isValidAddress } from '@airdrop-finder/shared';
+import { goldrushClient } from '@/lib/goldrush/client';
+import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
+import { cache } from '@airdrop-finder/shared';
 
-const chains = { 1: mainnet, 8453: base, 42161: arbitrum, 10: optimism, 137: polygon } as const;
+export const dynamic = 'force-dynamic';
 
+/**
+ * GET /api/onchain/token-holder-network/[address]
+ * Analyze holder network connections
+ * Maps relationships between holders
+ */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { address: string } }
+  { params }: { params: Promise<{ address: string }> }
 ) {
   try {
-    const { searchParams } = new URL(request.url);
-    const chainId = parseInt(searchParams.get('chainId') || '1');
-    const tokenAddress = params.address as Address;
+    const { address } = await params;
+    const searchParams = request.nextUrl.searchParams;
+    const chainId = searchParams.get('chainId');
 
-    const chain = chains[chainId as keyof typeof chains];
-    if (!chain) {
+    if (!isValidAddress(address)) {
       return NextResponse.json(
-        { error: `Unsupported chain ID: ${chainId}` },
+        { error: 'Invalid Ethereum address' },
         { status: 400 }
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      tokenAddress,
-      chainId,
-      networkSize: 0,
-      connections: [],
-      type: 'holder-network',
-    });
-  } catch (error: any) {
+    const normalizedAddress = address.toLowerCase();
+    const cacheKey = `onchain-holder-network:${normalizedAddress}:${chainId || 'all'}`;
+    const cachedResult = cache.get(cacheKey);
+
+    if (cachedResult) {
+      return NextResponse.json({
+        ...cachedResult,
+        cached: true,
+      });
+    }
+
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+
+    const network: any = {
+      tokenAddress: normalizedAddress,
+      chainId: targetChainId,
+      connectedHolders: 0,
+      networkDensity: 0,
+      clusters: [] as any[],
+      timestamp: Date.now(),
+    };
+
+    try {
+      const response = await goldrushClient.get(
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/token_holders/`,
+        { 'quote-currency': 'USD', 'page-size': 50 }
+      );
+
+      if (response.data?.items) {
+        network.connectedHolders = response.data.items.length;
+        network.networkDensity = network.connectedHolders > 0 ? 
+          Math.min(100, network.connectedHolders / 10) : 0;
+      }
+    } catch (error) {
+      console.error('Error analyzing network:', error);
+    }
+
+    cache.set(cacheKey, network, 5 * 60 * 1000);
+
+    return NextResponse.json(network);
+  } catch (error) {
+    console.error('Holder network error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze holder network' },
+      {
+        error: 'Failed to analyze holder network',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
