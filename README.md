@@ -814,6 +814,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 785. **Token Token Options Position Tracker** - Track options positions and Greeks
 786. **Token Token Perpetual Position Tracker** - Track perpetual futures positions
 787. **Token Token Stablecoin Peg Monitor** - Monitor stablecoin peg stability
+788. **Token Token Rebase Tracker** - Track rebase token supply adjustments
+789. **Token Token Validator Rewards Tracker** - Track validator staking rewards
+790. **Token Token Slashing Detector** - Detect slashing events for validators
+791. **Token Token Validator Exit Tracker** - Track validator exit queue status
+792. **Token Token MEV Rewards Tracker** - Track MEV rewards and block builder payments
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
