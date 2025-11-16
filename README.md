@@ -774,6 +774,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 745. **Token Vesting Schedule Calculator** - Calculate vesting schedules and unlock timelines
 746. **Token Airdrop Eligibility Checker** - Check airdrop eligibility based on on-chain activity
 747. **Token Smart Contract Upgrade Tracker** - Track smart contract upgrades and version changes
+748. **Token Token Transfer Flow Analyzer** - Analyze token transfer flows and patterns
+749. **Token Wallet Activity Heatmap Generator** - Generate activity heatmaps by time and day
+750. **Token Token Price Oracle Aggregator** - Aggregate prices from multiple oracle sources
+751. **Token Liquidity Mining Rewards Calculator** - Calculate liquidity mining rewards and APY
+752. **Token Token Holder Concentration Analyzer** - Analyze token holder concentration and distribution
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
