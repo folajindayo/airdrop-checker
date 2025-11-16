@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 770 Production-Ready Features!
+## 🎉 800 Production-Ready Features!
 
 ## ✨ Features
 
@@ -1158,6 +1158,36 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-defi-risk-calculator/[address]` - Calculate DeFi risks
 - `GET /api/onchain/token-cross-chain-portfolio-optimizer/[address]` - Optimize cross-chain portfolio
 - `GET /api/onchain/token-complete-analytics-suite/[address]` - Complete analytics suite
+- `GET /api/onchain/token-smart-contract-security-scanner/[address]` - Scan smart contracts for security vulnerabilities
+- `GET /api/onchain/token-token-holder-snapshot-generator/[address]` - Generate token holder snapshots
+- `GET /api/onchain/token-liquidity-pool-health-monitor/[address]` - Monitor liquidity pool health
+- `GET /api/onchain/token-yield-farming-position-tracker/[address]` - Track yield farming positions
+- `GET /api/onchain/token-cross-chain-arbitrage-finder/[address]` - Find cross-chain arbitrage opportunities
+- `GET /api/onchain/token-flash-loan-usage-detector/[address]` - Detect flash loan usage
+- `GET /api/onchain/token-token-burn-event-tracker/[address]` - Track token burn events
+- `GET /api/onchain/token-vesting-schedule-calculator/[address]` - Calculate vesting schedules
+- `GET /api/onchain/token-airdrop-eligibility-checker/[address]` - Check airdrop eligibility
+- `GET /api/onchain/token-smart-contract-upgrade-tracker/[address]` - Track smart contract upgrades
+- `GET /api/onchain/token-token-transfer-flow-analyzer/[address]` - Analyze token transfer flows
+- `GET /api/onchain/token-wallet-activity-heatmap-generator/[address]` - Generate activity heatmaps
+- `GET /api/onchain/token-token-price-oracle-aggregator/[address]` - Aggregate price oracles
+- `GET /api/onchain/token-liquidity-mining-rewards-calculator/[address]` - Calculate liquidity mining rewards
+- `GET /api/onchain/token-token-holder-concentration-analyzer/[address]` - Analyze holder concentration
+- `GET /api/onchain/token-token-swap-route-optimizer/[address]` - Optimize swap routes
+- `GET /api/onchain/token-token-unlock-schedule-tracker/[address]` - Track unlock schedules
+- `GET /api/onchain/token-token-minting-event-tracker/[address]` - Track minting events
+- `GET /api/onchain/token-token-tax-fee-calculator/[address]` - Calculate token tax fees
+- `GET /api/onchain/token-token-whitelist-status-checker/[address]` - Check whitelist status
+- `GET /api/onchain/token-token-blacklist-status-checker/[address]` - Check blacklist status
+- `GET /api/onchain/token-token-freeze-status-detector/[address]` - Detect freeze status
+- `GET /api/onchain/token-token-pause-status-detector/[address]` - Detect pause status
+- `GET /api/onchain/token-token-max-wallet-size-checker/[address]` - Check max wallet size
+- `GET /api/onchain/token-token-max-transaction-size-checker/[address]` - Check max transaction size
+- `GET /api/onchain/token-token-cooldown-period-tracker/[address]` - Track cooldown periods
+- `GET /api/onchain/token-token-reward-distribution-tracker/[address]` - Track reward distribution
+- `GET /api/onchain/token-token-staking-rewards-tracker/[address]` - Track staking rewards
+- `GET /api/onchain/token-token-farming-rewards-tracker/[address]` - Track farming rewards
+- `GET /api/onchain/token-token-claimable-amount-calculator/[address]` - Calculate claimable amounts
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
