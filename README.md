@@ -764,6 +764,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 735. **Token DeFi Risk Calculator** - Calculate DeFi protocol risks and exposure levels
 736. **Token Cross-Chain Portfolio Optimizer** - Optimize cross-chain portfolio allocation
 737. **Token Complete Analytics Suite** - Complete on-chain analytics suite combining all features
+738. **Token Smart Contract Security Scanner** - Scan smart contracts for security vulnerabilities and risks
+739. **Token Token Holder Snapshot Generator** - Generate token holder snapshots at specific block heights
+740. **Token Liquidity Pool Health Monitor** - Monitor liquidity pool health and impermanent loss risks
+741. **Token Yield Farming Position Tracker** - Track yield farming positions across multiple protocols
+742. **Token Cross-Chain Arbitrage Finder** - Find arbitrage opportunities across different blockchain networks
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
