@@ -754,6 +754,16 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 725. **Token Smart Contract Interaction Profiler** - Profile smart contract interactions and call patterns
 726. **Token DeFi Position Aggregator** - Aggregate DeFi positions across multiple protocols
 727. **Token Cross-Chain Bridge Analyzer** - Analyze cross-chain bridge usage and efficiency
+728. **Token MEV Protection Score** - Calculate MEV protection score and transaction security
+729. **Token Liquidity Provider Analytics** - Comprehensive analytics for liquidity providers
+730. **Token Staking Rewards Optimizer** - Optimize staking rewards across multiple protocols
+731. **Token Governance Proposal Analyzer** - Analyze governance proposals and voting patterns
+732. **Token Token Distribution Validator** - Validate token distribution fairness and transparency
+733. **Token On-Chain Metrics Dashboard** - Comprehensive on-chain metrics dashboard
+734. **Token Wallet Behavior Profiler** - Profile wallet behavior patterns and strategies
+735. **Token DeFi Risk Calculator** - Calculate DeFi protocol risks and exposure levels
+736. **Token Cross-Chain Portfolio Optimizer** - Optimize cross-chain portfolio allocation
+737. **Token Complete Analytics Suite** - Complete on-chain analytics suite combining all features
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
