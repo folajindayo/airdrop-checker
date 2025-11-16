@@ -809,6 +809,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 780. **Token Token DEX Aggregator** - Aggregate prices and liquidity across DEX platforms
 781. **Token Token Bridge Tracker** - Track cross-chain bridge transactions and volumes
 782. **Token Token Staking Position Tracker** - Track staking positions and rewards
+783. **Token Token Governance Tracker** - Track governance proposals and voting activity
+784. **Token Token NFT Floor Price Tracker** - Track NFT collection floor prices
+785. **Token Token Options Position Tracker** - Track options positions and Greeks
+786. **Token Token Perpetual Position Tracker** - Track perpetual futures positions
+787. **Token Token Stablecoin Peg Monitor** - Monitor stablecoin peg stability
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
