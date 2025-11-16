@@ -804,6 +804,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 775. **Token Token Supply Tracker** - Track token supply changes and inflation rates
 776. **Token Token Distribution Analyzer** - Analyze token distribution across addresses
 777. **Token Token Transaction Analyzer** - Analyze transaction patterns and frequencies
+778. **Token Token Holder Retention Analyzer** - Analyze holder retention rates and loyalty
+779. **Token Token Whale Tracker** - Track whale wallet movements and large transactions
+780. **Token Token DEX Aggregator** - Aggregate prices and liquidity across DEX platforms
+781. **Token Token Bridge Tracker** - Track cross-chain bridge transactions and volumes
+782. **Token Token Staking Position Tracker** - Track staking positions and rewards
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
