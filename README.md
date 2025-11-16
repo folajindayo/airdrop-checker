@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 710 Production-Ready Features!
+## 🎉 740 Production-Ready Features!
 
 ## ✨ Features
 
@@ -1014,6 +1014,33 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-bridge-security-checker/[address]` - Check bridge security status
 - `GET /api/onchain/token-bridge-liquidity-checker/[address]` - Check bridge liquidity availability
 - `GET /api/onchain/token-bridge-status-monitor/[address]` - Monitor bridge status and health
+- `GET /api/onchain/token-dex-aggregator/[address]` - Aggregate DEX prices across exchanges
+- `GET /api/onchain/token-lending-position/[address]` - Track lending positions
+- `GET /api/onchain/token-borrow-position/[address]` - Track borrowing positions
+- `GET /api/onchain/token-collateral-tracker/[address]` - Track collateral positions
+- `GET /api/onchain/token-liquidation-monitor/[address]` - Monitor liquidation risk
+- `GET /api/onchain/token-yield-aggregator/[address]` - Aggregate yield opportunities
+- `GET /api/onchain/token-vault-tracker/[address]` - Track vault positions
+- `GET /api/onchain/token-governance-proposal-tracker/[address]` - Track governance proposals
+- `GET /api/onchain/token-delegation-analyzer/[address]` - Analyze delegation patterns
+- `GET /api/onchain/token-nft-floor-price/[address]` - Track NFT floor prices
+- `GET /api/onchain/token-nft-royalty-tracker/[address]` - Track NFT royalties
+- `GET /api/onchain/token-options-position/[address]` - Track options positions
+- `GET /api/onchain/token-perpetual-position/[address]` - Track perpetual positions
+- `GET /api/onchain/token-liquidity-mining/[address]` - Track liquidity mining rewards
+- `GET /api/onchain/token-stablecoin-peg/[address]` - Monitor stablecoin peg
+- `GET /api/onchain/token-rebase-tracker/[address]` - Track rebase events
+- `GET /api/onchain/token-validator-rewards/[address]` - Track validator rewards
+- `GET /api/onchain/token-slashing-detector/[address]` - Detect slashing events
+- `GET /api/onchain/token-validator-exit/[address]` - Track validator exit queue
+- `GET /api/onchain/token-mev-rewards/[address]` - Track MEV rewards
+- `GET /api/onchain/token-relayer-fees/[address]` - Track relayer fees
+- `GET /api/onchain/token-gas-refund-tracker/[address]` - Track gas refunds
+- `GET /api/onchain/token-transaction-batching/[address]` - Analyze transaction batching
+- `GET /api/onchain/token-multisig-approval/[address]` - Track multisig approvals
+- `GET /api/onchain/token-timelock-queue/[address]` - Track timelock queue
+- `GET /api/onchain/token-proxy-upgrade/[address]` - Track proxy upgrades
+- `GET /api/onchain/token-account-abstraction/[address]` - Track account abstraction
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
