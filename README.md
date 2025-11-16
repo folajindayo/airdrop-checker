@@ -769,6 +769,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 740. **Token Liquidity Pool Health Monitor** - Monitor liquidity pool health and impermanent loss risks
 741. **Token Yield Farming Position Tracker** - Track yield farming positions across multiple protocols
 742. **Token Cross-Chain Arbitrage Finder** - Find arbitrage opportunities across different blockchain networks
+743. **Token Flash Loan Usage Detector** - Detect and analyze flash loan usage in transactions
+744. **Token Token Burn Event Tracker** - Track token burn events and supply reduction mechanisms
+745. **Token Vesting Schedule Calculator** - Calculate vesting schedules and unlock timelines
+746. **Token Airdrop Eligibility Checker** - Check airdrop eligibility based on on-chain activity
+747. **Token Smart Contract Upgrade Tracker** - Track smart contract upgrades and version changes
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
