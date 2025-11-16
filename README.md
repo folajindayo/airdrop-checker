@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 622+ Production-Ready Features!
+## 🎉 710 Production-Ready Features!
 
 ## ✨ Features
 
@@ -954,6 +954,36 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-market-cap-efficiency/[address]` - Calculate market cap efficiency
 - `GET /api/onchain/token-trading-intensity-score/[address]` - Measure trading intensity score
 - `GET /api/onchain/token-liquidity-quality-score/[address]` - Calculate liquidity quality score
+- `GET /api/onchain/token-flash-loan-detector/[address]` - Detect flash loan usage patterns
+- `GET /api/onchain/token-mev-bot-detector/[address]` - Detect MEV bot activity patterns
+- `GET /api/onchain/token-sandwich-attack-detector/[address]` - Detect sandwich attack patterns
+- `GET /api/onchain/token-front-running-detector/[address]` - Detect front-running patterns
+- `GET /api/onchain/token-back-running-detector/[address]` - Detect back-running patterns
+- `GET /api/onchain/token-liquidity-sniping-detector/[address]` - Detect liquidity sniping patterns
+- `GET /api/onchain/token-pump-dump-detector/[address]` - Detect pump and dump schemes
+- `GET /api/onchain/token-wash-trading-detector/[address]` - Detect wash trading patterns
+- `GET /api/onchain/token-circular-trading-detector/[address]` - Detect circular trading patterns
+- `GET /api/onchain/token-price-manipulation-detector/[address]` - Detect price manipulation patterns
+- `GET /api/onchain/token-order-flow-analyzer/[address]` - Analyze order flow patterns
+- `GET /api/onchain/token-dark-pool-detector/[address]` - Detect dark pool trading patterns
+- `GET /api/onchain/token-insider-trading-detector/[address]` - Detect insider trading patterns
+- `GET /api/onchain/token-coordinated-trading-detector/[address]` - Detect coordinated trading patterns
+- `GET /api/onchain/token-bot-cluster-detector/[address]` - Detect bot cluster patterns
+- `GET /api/onchain/token-sybil-attack-detector/[address]` - Detect Sybil attack patterns
+- `GET /api/onchain/token-airdrop-farming-detector/[address]` - Detect airdrop farming patterns
+- `GET /api/onchain/token-sniping-bot-detector/[address]` - Detect sniping bot activity
+- `GET /api/onchain/token-gas-war-detector/[address]` - Detect gas war patterns
+- `GET /api/onchain/token-priority-fee-analyzer/[address]` - Analyze priority fee patterns
+- `GET /api/onchain/token-eip1559-fee-analyzer/[address]` - Analyze EIP-1559 fee structure
+- `GET /api/onchain/token-layer2-bridge-analyzer/[address]` - Analyze Layer 2 bridge activity
+- `GET /api/onchain/token-cross-chain-arbitrage/[address]` - Detect cross-chain arbitrage
+- `GET /api/onchain/token-bridge-risk-analyzer/[address]` - Analyze bridge transaction risks
+- `GET /api/onchain/token-bridge-volume-tracker/[address]` - Track bridge transaction volumes
+- `GET /api/onchain/token-bridge-fee-calculator/[address]` - Calculate bridge fees
+- `GET /api/onchain/token-bridge-time-estimator/[address]` - Estimate bridge transaction times
+- `GET /api/onchain/token-bridge-security-checker/[address]` - Check bridge security status
+- `GET /api/onchain/token-bridge-liquidity-checker/[address]` - Check bridge liquidity availability
+- `GET /api/onchain/token-bridge-status-monitor/[address]` - Monitor bridge status and health
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
