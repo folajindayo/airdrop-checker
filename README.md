@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 740 Production-Ready Features!
+## 🎉 770 Production-Ready Features!
 
 ## ✨ Features
 
@@ -1098,6 +1098,36 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-timelock-queue/[address]` - Track timelock queue
 - `GET /api/onchain/token-proxy-upgrade/[address]` - Track proxy upgrades
 - `GET /api/onchain/token-account-abstraction/[address]` - Track account abstraction
+- `GET /api/onchain/token-smart-contract-wallet-tracker/[address]` - Track smart contract wallet usage
+- `GET /api/onchain/token-layer2-activity-analyzer/[address]` - Analyze Layer 2 activity patterns
+- `GET /api/onchain/token-cross-chain-token-tracker/[address]` - Track token movements across chains
+- `GET /api/onchain/token-defi-protocol-integration-analyzer/[address]` - Analyze DeFi protocol integration
+- `GET /api/onchain/token-governance-participation-score/[address]` - Calculate governance participation score
+- `GET /api/onchain/token-liquidity-migration-tracker/[address]` - Track liquidity migration patterns
+- `GET /api/onchain/token-tokenomics-validator/[address]` - Validate tokenomics structure
+- `GET /api/onchain/token-security-audit-tracker/[address]` - Track security audit status
+- `GET /api/onchain/token-community-engagement-analyzer/[address]` - Analyze community engagement
+- `GET /api/onchain/token-developer-activity-tracker/[address]` - Track developer activity
+- `GET /api/onchain/token-protocol-upgrade-monitor/[address]` - Monitor protocol upgrades
+- `GET /api/onchain/token-risk-assessment-engine/[address]` - Comprehensive risk assessment
+- `GET /api/onchain/token-yield-strategy-optimizer/[address]` - Optimize yield strategies
+- `GET /api/onchain/token-portfolio-rebalancer/[address]` - Portfolio rebalancing recommendations
+- `GET /api/onchain/token-gas-fee-optimizer/[address]` - Optimize gas fees
+- `GET /api/onchain/token-transaction-privacy-analyzer/[address]` - Analyze transaction privacy
+- `GET /api/onchain/token-wallet-clustering-analyzer/[address]` - Cluster related wallets
+- `GET /api/onchain/token-smart-contract-interaction-profiler/[address]` - Profile contract interactions
+- `GET /api/onchain/token-defi-position-aggregator/[address]` - Aggregate DeFi positions
+- `GET /api/onchain/token-cross-chain-bridge-analyzer/[address]` - Analyze cross-chain bridges
+- `GET /api/onchain/token-mev-protection-score/[address]` - Calculate MEV protection score
+- `GET /api/onchain/token-liquidity-provider-analytics/[address]` - Liquidity provider analytics
+- `GET /api/onchain/token-staking-rewards-optimizer/[address]` - Optimize staking rewards
+- `GET /api/onchain/token-governance-proposal-analyzer/[address]` - Analyze governance proposals
+- `GET /api/onchain/token-token-distribution-validator/[address]` - Validate token distribution
+- `GET /api/onchain/token-onchain-metrics-dashboard/[address]` - Comprehensive metrics dashboard
+- `GET /api/onchain/token-wallet-behavior-profiler/[address]` - Profile wallet behavior
+- `GET /api/onchain/token-defi-risk-calculator/[address]` - Calculate DeFi risks
+- `GET /api/onchain/token-cross-chain-portfolio-optimizer/[address]` - Optimize cross-chain portfolio
+- `GET /api/onchain/token-complete-analytics-suite/[address]` - Complete analytics suite
 
 ### Transaction Endpoints (POST)
 - `POST /api/onchain/token-transfer` - Transfer tokens
