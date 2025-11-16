@@ -799,6 +799,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 770. **Token Token Market Cap Tracker** - Track real-time market capitalization across chains
 771. **Token Token Volume Analyzer** - Analyze trading volume patterns and trends
 772. **Token Token Price Tracker** - Track token prices with historical data and charts
+773. **Token Token Liquidity Analyzer** - Analyze liquidity depth and market maker activity
+774. **Token Token Holder Growth Tracker** - Track token holder growth over time periods
+775. **Token Token Supply Tracker** - Track token supply changes and inflation rates
+776. **Token Token Distribution Analyzer** - Analyze token distribution across addresses
+777. **Token Token Transaction Analyzer** - Analyze transaction patterns and frequencies
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
