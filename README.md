@@ -707,6 +707,33 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 678. **Token Bridge Security Checker** - Check bridge security status and audit compliance
 679. **Token Bridge Liquidity Checker** - Check bridge liquidity availability across routes
 680. **Token Bridge Status Monitor** - Monitor bridge status and health metrics with Reown
+681. **Token DEX Aggregator** - Aggregate DEX prices and liquidity across multiple exchanges
+682. **Token Lending Position** - Track lending positions across DeFi protocols
+683. **Token Borrow Position** - Track borrowing positions and debt across protocols
+684. **Token Collateral Tracker** - Track collateral positions and ratios
+685. **Token Liquidation Monitor** - Monitor liquidation risk and thresholds
+686. **Token Yield Aggregator** - Aggregate yield opportunities across DeFi protocols
+687. **Token Vault Tracker** - Track vault positions and strategies
+688. **Token Governance Proposal Tracker** - Track governance proposals and voting activity
+689. **Token Delegation Analyzer** - Analyze token delegation patterns and voting power
+690. **Token NFT Floor Price** - Track NFT collection floor prices and trends
+691. **Token NFT Royalty Tracker** - Track NFT royalty earnings and payments
+692. **Token Options Position** - Track options positions and Greeks
+693. **Token Perpetual Position** - Track perpetual futures positions and funding rates
+694. **Token Liquidity Mining** - Track liquidity mining rewards and APY
+695. **Token Stablecoin Peg** - Monitor stablecoin peg stability and deviations
+696. **Token Rebase Tracker** - Track rebase token supply adjustments
+697. **Token Validator Rewards** - Track validator staking rewards and performance
+698. **Token Slashing Detector** - Detect slashing events for validators
+699. **Token Validator Exit** - Track validator exit queue and withdrawal status
+700. **Token MEV Rewards** - Track MEV rewards and block builder payments
+701. **Token Relayer Fees** - Track relayer fees and meta-transaction costs
+702. **Token Gas Refund Tracker** - Track gas refunds from failed transactions
+703. **Token Transaction Batching** - Analyze transaction batching patterns and gas savings
+704. **Token Multisig Approval** - Track multisig approval requirements and status
+705. **Token Timelock Queue** - Track timelock queue and execution delays
+706. **Token Proxy Upgrade** - Track proxy contract upgrades and implementation changes
+707. **Token Account Abstraction** - Track account abstraction usage and smart contract wallets
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
