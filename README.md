@@ -784,6 +784,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 755. **Token Token Minting Event Tracker** - Track token minting events and supply increases
 756. **Token Token Tax Fee Calculator** - Calculate token tax fees and reflection rewards
 757. **Token Token Whitelist Status Checker** - Check whitelist status for token addresses
+758. **Token Token Blacklist Status Checker** - Check blacklist status for token addresses
+759. **Token Token Freeze Status Detector** - Detect token freeze functionality and status
+760. **Token Token Pause Status Detector** - Detect token pause functionality and status
+761. **Token Token Max Wallet Size Checker** - Check maximum wallet size restrictions
+762. **Token Token Max Transaction Size Checker** - Check maximum transaction size limits
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
