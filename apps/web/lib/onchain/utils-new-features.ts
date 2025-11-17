@@ -54,3 +54,24 @@ export function calculatePegDeviation(currentPrice: string, targetPrice: string)
   return ((current - target) / target) * 100;
 }
 
+export function calculateTimelockDelay(queuedAt: Date, delaySeconds: number): Date {
+  return new Date(queuedAt.getTime() + delaySeconds * 1000);
+}
+
+export function detectProxyPattern(bytecode: string): boolean {
+  return bytecode.includes('0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc');
+}
+
+export function calculateContractComplexity(bytecodeSize: number, functionCount: number): number {
+  return Math.min((bytecodeSize / 1000 + functionCount / 10) * 10, 100);
+}
+
+export function segmentHoldersByBalance(balance: string, totalSupply: string): 'whale' | 'dolphin' | 'fish' {
+  const bal = Number(balance);
+  const supply = Number(totalSupply);
+  const percentage = (bal / supply) * 100;
+  if (percentage > 1) return 'whale';
+  if (percentage > 0.1) return 'dolphin';
+  return 'fish';
+}
+
