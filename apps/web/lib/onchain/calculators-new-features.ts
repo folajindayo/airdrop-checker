@@ -33,3 +33,22 @@ export function calculateGasEfficiency(savedGas: string, totalGas: string): numb
   return (saved / total) * 100;
 }
 
+export function calculateHolderStabilityScore(churnRate: number, retentionRate: number): number {
+  return (retentionRate - churnRate) * 100;
+}
+
+export function calculateContractInteractionFrequency(interactions: number, timeDays: number): number {
+  if (timeDays === 0) return 0;
+  return interactions / timeDays;
+}
+
+export function calculateDeploymentCostEstimate(bytecodeSize: number, gasPrice: string): string {
+  const gas = 21000 + bytecodeSize * 200;
+  const price = Number(gasPrice);
+  return (gas * price).toString();
+}
+
+export function calculateHolderMomentumScore(growthRate: number, activityRate: number): number {
+  return (growthRate * 0.6 + activityRate * 0.4);
+}
+
