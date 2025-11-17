@@ -834,6 +834,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 805. **Token Token Interface Detector** - Detect ERC interfaces implemented by contracts
 806. **Token Token Standard Detector** - Detect token standard (ERC20, ERC721, ERC1155)
 807. **Token Token Compatibility Checker** - Check token compatibility with protocols
+808. **Token Token Liquidation Price Calculator** - Calculate liquidation price for positions
+809. **Token Token Safety Score Calculator** - Calculate comprehensive safety score for tokens
+810. **Token Token Honeypot Detector** - Detect honeypot tokens and scams
+811. **Token Token Sniper Protection Checker** - Check sniper protection mechanisms
+812. **Token Token Anti-Bot Analyzer** - Analyze anti-bot mechanisms and restrictions
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
