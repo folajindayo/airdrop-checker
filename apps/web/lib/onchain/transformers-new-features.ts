@@ -27,3 +27,26 @@ export function transformToPegStability(deviation: number): number {
   return Math.max(0, 100 - Math.abs(deviation) * 10);
 }
 
+export function transformToHolderHealth(distribution: number, retention: number, activity: number): number {
+  return (distribution * 0.4 + retention * 0.4 + activity * 0.2);
+}
+
+export function transformToContractComplexity(bytecodeSize: number, functions: number): number {
+  return Math.min((bytecodeSize / 1000 + functions / 10) * 10, 100);
+}
+
+export function transformToTimelockUrgency(delay: number, timeRemaining: number): 'low' | 'medium' | 'high' {
+  const ratio = timeRemaining / delay;
+  if (ratio < 0.1) return 'high';
+  if (ratio < 0.5) return 'medium';
+  return 'low';
+}
+
+export function transformToProxyRisk(isProxy: boolean, hasUpgrade: boolean, upgradeCount: number): number {
+  if (!isProxy) return 0;
+  let risk = 20;
+  if (hasUpgrade) risk += 30;
+  risk += Math.min(upgradeCount * 10, 50);
+  return risk;
+}
+

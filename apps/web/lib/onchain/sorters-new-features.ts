@@ -27,3 +27,23 @@ export function sortByDate(data: Array<{ date: string | Date }>): Array<{ date: 
   });
 }
 
+export function sortByContractComplexity(contracts: Array<{ address: string; complexity: number }>): Array<{ address: string; complexity: number }> {
+  return [...contracts].sort((a, b) => b.complexity - a.complexity);
+}
+
+export function sortByTimelockUrgency(actions: Array<{ id: string; timeRemaining: number }>): Array<{ id: string; timeRemaining: number }> {
+  return [...actions].sort((a, b) => a.timeRemaining - b.timeRemaining);
+}
+
+export function sortByHolderQuality(holders: Array<{ address: string; qualityScore: number }>): Array<{ address: string; qualityScore: number }> {
+  return [...holders].sort((a, b) => b.qualityScore - a.qualityScore);
+}
+
+export function sortByInteractionCount(interactions: Array<{ contract: string; count: number }>): Array<{ contract: string; count: number }> {
+  return [...interactions].sort((a, b) => b.count - a.count);
+}
+
+export function sortByProxyRisk(proxies: Array<{ address: string; risk: number }>): Array<{ address: string; risk: number }> {
+  return [...proxies].sort((a, b) => b.risk - a.risk);
+}
+

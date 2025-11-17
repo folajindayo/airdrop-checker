@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       success: true,
       tokenAddress,
       chainId,
-      priceOracle: {
+      oracleAggregation: {
         aggregatedPrice: '0',
         oracleSources: ['Chainlink', 'Uniswap', 'CoinGecko'],
         priceVariance: 0.02,
@@ -33,4 +33,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-

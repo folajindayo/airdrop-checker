@@ -83,3 +83,42 @@ export interface ValidatorRewards {
   performance: string;
 }
 
+export interface TimelockQueue {
+  pendingActions: any[];
+  delay: number;
+  nextExecution: string | null;
+  queueLength: number;
+}
+
+export interface ProxyUpgrade {
+  isProxy: boolean;
+  upgradeHistory: any[];
+  currentImplementation: string | null;
+  lastUpgrade: string | null;
+}
+
+export interface AccountAbstraction {
+  isSmartWallet: boolean;
+  usagePatterns: any[];
+  transactionCount: number;
+  abstractionType: string;
+}
+
+export interface ContractAnalysis {
+  bytecodeSize: number;
+  functionCount: number;
+  eventCount: number;
+  complexity: number;
+}
+
+export interface HolderSegmentation {
+  whales: any[];
+  dolphins: any[];
+  fish: any[];
+  segments: {
+    whale: { count: number; percentage: number };
+    dolphin: { count: number; percentage: number };
+    fish: { count: number; percentage: number };
+  };
+}
+
