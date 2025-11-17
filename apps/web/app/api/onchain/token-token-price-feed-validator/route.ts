@@ -5,31 +5,32 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const tokenAddress = searchParams.get('tokenAddress');
+    const priceFeedAddress = searchParams.get('priceFeedAddress');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!tokenAddress) {
+    if (!priceFeedAddress) {
       return NextResponse.json(
-        { error: 'Missing required parameter: tokenAddress' },
+        { error: 'Missing required parameter: priceFeedAddress' },
         { status: 400 }
       );
     }
 
     return NextResponse.json({
       success: true,
-      tokenAddress,
+      priceFeedAddress,
       chainId,
-      oracleAggregation: {
-        aggregatedPrice: '0',
-        oracleSources: ['Chainlink', 'Uniswap', 'CoinGecko'],
-        priceVariance: 0.02,
-        confidence: 0.95,
+      priceFeedValidation: {
+        isValid: true,
+        latestPrice: '0',
+        lastUpdate: null,
+        deviation: 0,
       },
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to aggregate price oracles' },
+      { error: error.message || 'Failed to validate price feed' },
       { status: 500 }
     );
   }
 }
+

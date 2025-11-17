@@ -5,31 +5,34 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const tokenAddress = searchParams.get('tokenAddress');
+    const contractAddress = searchParams.get('contractAddress');
+    const blockNumber = searchParams.get('blockNumber');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!tokenAddress) {
+    if (!contractAddress) {
       return NextResponse.json(
-        { error: 'Missing required parameter: tokenAddress' },
+        { error: 'Missing required parameter: contractAddress' },
         { status: 400 }
       );
     }
 
     return NextResponse.json({
       success: true,
-      tokenAddress,
+      contractAddress,
+      blockNumber,
       chainId,
-      oracleAggregation: {
-        aggregatedPrice: '0',
-        oracleSources: ['Chainlink', 'Uniswap', 'CoinGecko'],
-        priceVariance: 0.02,
-        confidence: 0.95,
+      stateChanges: {
+        changes: [],
+        totalChanges: 0,
+        lastChange: null,
+        stateSnapshot: {},
       },
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to aggregate price oracles' },
+      { error: error.message || 'Failed to track state changes' },
       { status: 500 }
     );
   }
 }
+
