@@ -824,6 +824,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 795. **Token Token Transaction Batching Analyzer** - Analyze transaction batching patterns
 796. **Token Token Multisig Approval Tracker** - Track multisig approval requirements
 797. **Token Token Complete Onchain Suite** - Complete onchain analytics suite with Reown integration
+798. **Token Token Timelock Tracker** - Track timelock delays and execution schedules
+799. **Token Token Proxy Admin Tracker** - Track proxy admin addresses and upgrade permissions
+800. **Token Token Implementation Tracker** - Track implementation addresses for proxy contracts
+801. **Token Token Storage Slot Reader** - Read contract storage slots and decode data
+802. **Token Token Event Parser** - Parse and decode contract events and logs
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
