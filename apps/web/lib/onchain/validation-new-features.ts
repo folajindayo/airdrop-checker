@@ -49,3 +49,24 @@ export function validatePercentage(value: number): boolean {
   return value >= 0 && value <= 100;
 }
 
+export function validateBlockNumber(blockNumber: string | number): boolean {
+  const num = typeof blockNumber === 'string' ? parseInt(blockNumber) : blockNumber;
+  return !isNaN(num) && num > 0;
+}
+
+export function validateBytecode(bytecode: string): boolean {
+  return /^0x[a-fA-F0-9]*$/.test(bytecode);
+}
+
+export function validateFunctionSignature(signature: string): boolean {
+  return /^[a-zA-Z_][a-zA-Z0-9_]*\([^)]*\)$/.test(signature);
+}
+
+export function validateTimelockDelay(delay: number): boolean {
+  return delay >= 0 && delay <= 2592000;
+}
+
+export function validateMultisigThreshold(threshold: number, totalSigners: number): boolean {
+  return threshold > 0 && threshold <= totalSigners && totalSigners > 0;
+}
+

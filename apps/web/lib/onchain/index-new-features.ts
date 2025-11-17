@@ -1,5 +1,5 @@
 /**
- * Main index file for latest onchain features (768-797)
+ * Main index file for latest onchain features (798-827)
  * Centralized exports for all new feature utilities
  */
 
@@ -13,16 +13,16 @@ export * from './transformers-new-features';
 export * from './mappers-new-features';
 export * from './sorters-new-features';
 
-export const FEATURES_768_797 = {
+export const FEATURES_798_827 = {
   COUNT: 30,
-  RANGE: '768-797',
+  RANGE: '798-827',
   CATEGORIES: [
-    'Market Analytics',
-    'Liquidity & Supply',
-    'Holder Analysis',
-    'Governance & Derivatives',
-    'Validator & MEV',
-    'Fees & Batching',
+    'Timelock & Governance',
+    'Wallet Detection',
+    'Contract Analysis',
+    'Multisig & Price Feeds',
+    'Distribution & Locks',
+    'Holder Analytics',
   ],
 } as const;
 

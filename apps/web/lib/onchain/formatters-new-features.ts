@@ -34,3 +34,28 @@ export function formatPegStatus(deviation: number): 'stable' | 'deviating' | 'un
   return 'unstable';
 }
 
+export function formatTimelockDelay(delaySeconds: number): string {
+  if (delaySeconds < 60) return `${delaySeconds}s`;
+  if (delaySeconds < 3600) return `${Math.floor(delaySeconds / 60)}m`;
+  if (delaySeconds < 86400) return `${Math.floor(delaySeconds / 3600)}h`;
+  return `${Math.floor(delaySeconds / 86400)}d`;
+}
+
+export function formatContractSize(size: number): string {
+  if (size < 1024) return `${size}B`;
+  if (size < 1048576) return `${(size / 1024).toFixed(2)}KB`;
+  return `${(size / 1048576).toFixed(2)}MB`;
+}
+
+export function formatHolderSegment(percentage: number): 'whale' | 'dolphin' | 'fish' {
+  if (percentage > 1) return 'whale';
+  if (percentage > 0.1) return 'dolphin';
+  return 'fish';
+}
+
+export function formatProxyStatus(isProxy: boolean, hasUpgrade: boolean): string {
+  if (!isProxy) return 'not_proxy';
+  if (hasUpgrade) return 'upgradeable';
+  return 'proxy';
+}
+

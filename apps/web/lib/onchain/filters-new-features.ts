@@ -35,3 +35,23 @@ export function filterHighActivity(transactions: any[], minCount: number): any[]
     .map(([address]) => ({ address }));
 }
 
+export function filterProxyContracts(contracts: any[]): any[] {
+  return contracts.filter((contract) => contract.isProxy === true);
+}
+
+export function filterSmartWallets(addresses: any[]): any[] {
+  return addresses.filter((addr) => addr.isSmartWallet === true);
+}
+
+export function filterByHolderSegment(holders: any[], segment: 'whale' | 'dolphin' | 'fish'): any[] {
+  return holders.filter((holder) => holder.segment === segment);
+}
+
+export function filterByTimelockStatus(actions: any[], status: 'pending' | 'executed' | 'cancelled'): any[] {
+  return actions.filter((action) => action.status === status);
+}
+
+export function filterByContractComplexity(contracts: any[], minComplexity: number): any[] {
+  return contracts.filter((contract) => contract.complexity >= minComplexity);
+}
+
