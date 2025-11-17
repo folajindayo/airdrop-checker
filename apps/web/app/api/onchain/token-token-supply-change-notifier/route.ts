@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Address, createPublicClient, http } from 'viem';
+import { Address, createPublicClient, http, erc20Abi } from 'viem';
 import { mainnet } from 'viem/chains';
 
 export async function GET(request: NextRequest) {
@@ -15,21 +15,33 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const publicClient = createPublicClient({
+      chain: mainnet,
+      transport: http(),
+    });
+
+    const totalSupply = await publicClient.readContract({
+      address: tokenAddress as Address,
+      abi: erc20Abi,
+      functionName: 'totalSupply',
+    });
+
     return NextResponse.json({
       success: true,
       tokenAddress,
       chainId,
-      oracleAggregation: {
-        aggregatedPrice: '0',
-        oracleSources: ['Chainlink', 'Uniswap', 'CoinGecko'],
-        priceVariance: 0.02,
-        confidence: 0.95,
+      supplyChangeNotification: {
+        currentSupply: totalSupply.toString(),
+        previousSupply: totalSupply.toString(),
+        change: '0',
+        notifications: [],
       },
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to aggregate price oracles' },
+      { error: error.message || 'Failed to monitor supply changes' },
       { status: 500 }
     );
   }
 }
+
