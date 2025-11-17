@@ -829,6 +829,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 800. **Token Token Implementation Tracker** - Track implementation addresses for proxy contracts
 801. **Token Token Storage Slot Reader** - Read contract storage slots and decode data
 802. **Token Token Event Parser** - Parse and decode contract events and logs
+803. **Token Token Transaction Decoder** - Decode transaction data and function calls
+804. **Token Token ABI Generator** - Generate ABI from contract bytecode
+805. **Token Token Interface Detector** - Detect ERC interfaces implemented by contracts
+806. **Token Token Standard Detector** - Detect token standard (ERC20, ERC721, ERC1155)
+807. **Token Token Compatibility Checker** - Check token compatibility with protocols
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
