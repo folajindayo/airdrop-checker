@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 830 Production-Ready Features!
+## 🎉 860 Production-Ready Features!
 
 ## ✨ Features
 
@@ -829,6 +829,31 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 800. **Token Token Account Abstraction Analyzer** - Analyze account abstraction usage patterns
 801. **Token Token Smart Contract Wallet Detector** - Detect smart contract wallet deployments
 802. **Token Token Layer 2 Bridge Monitor** - Monitor Layer 2 bridge activity and efficiency
+803. **Token Token DEX Liquidity Scanner** - Scan liquidity across multiple DEXes
+804. **Token Token Contract Interaction Counter** - Count contract interactions
+805. **Token Token Event Listener Setup** - Setup event listeners for contracts
+806. **Token Token Contract Bytecode Diff** - Compare bytecode between contracts
+807. **Token Token Contract Deployment Cost** - Calculate deployment costs
+808. **Token Token Contract Function Decoder** - Decode function calls
+809. **Token Token Contract Function Selector** - Get function selectors
+810. **Token Token Contract Function Call Simulator** - Simulate function calls
+811. **Token Token Contract Event Indexer** - Index contract events
+812. **Token Token Contract ABI Validator** - Validate contract ABIs
+813. **Token Token Contract State Change** - Track contract state changes
+814. **Token Token Multisig Threshold** - Get multisig threshold requirements
+815. **Token Token Price Feed Validator** - Validate price feed data
+816. **Token Token Price Oracle Aggregator** - Aggregate prices from multiple oracles
+817. **Token Token Supply Change Notifier** - Monitor supply changes
+818. **Token Token Distribution Snapshot** - Generate distribution snapshots
+819. **Token Token Lock Monitor** - Monitor token locks
+820. **Token Token Holder Segmentation** - Segment holders by balance
+821. **Token Token Holder Health** - Calculate holder health metrics
+822. **Token Token Holder Momentum** - Calculate holder momentum scores
+823. **Token Token Holder Quality** - Calculate holder quality scores
+824. **Token Token Holder Stability** - Calculate holder stability metrics
+825. **Token Token Holder Behavior** - Analyze holder behavior patterns
+826. **Token Token Holder Change** - Track holder changes over time
+827. **Token Token Holder Acquisition** - Track new holder acquisition
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
@@ -1285,6 +1310,36 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `POST /api/onchain/token-swap-aggregator` - Find best swap routes
 - `POST /api/onchain/token-rebalancer` - Calculate rebalancing strategy
 - `POST /api/onchain/token-correlation` - Calculate token correlations
+- `GET /api/onchain/token-token-timelock-queue-tracker` - Track timelock queue
+- `GET /api/onchain/token-token-proxy-upgrade-monitor` - Monitor proxy upgrades
+- `GET /api/onchain/token-token-account-abstraction-analyzer` - Analyze account abstraction
+- `GET /api/onchain/token-token-smart-contract-wallet-detector` - Detect smart wallets
+- `GET /api/onchain/token-token-layer2-bridge-monitor` - Monitor Layer 2 bridges
+- `GET /api/onchain/token-token-dex-liquidity-scanner` - Scan DEX liquidity
+- `GET /api/onchain/token-token-contract-interaction-counter` - Count interactions
+- `GET /api/onchain/token-token-event-listener-setup` - Setup event listeners
+- `GET /api/onchain/token-token-contract-bytecode-diff` - Compare bytecode
+- `GET /api/onchain/token-token-contract-deployment-cost` - Calculate deployment cost
+- `GET /api/onchain/token-token-contract-function-decoder` - Decode functions
+- `GET /api/onchain/token-token-contract-function-selector` - Get selectors
+- `GET /api/onchain/token-token-contract-function-call-simulator` - Simulate calls
+- `GET /api/onchain/token-token-contract-event-indexer` - Index events
+- `GET /api/onchain/token-token-contract-abi-validator` - Validate ABIs
+- `GET /api/onchain/token-token-contract-state-change` - Track state changes
+- `GET /api/onchain/token-token-multisig-threshold` - Get multisig threshold
+- `GET /api/onchain/token-token-price-feed-validator` - Validate price feeds
+- `GET /api/onchain/token-token-price-oracle-aggregator` - Aggregate oracles
+- `GET /api/onchain/token-token-supply-change-notifier` - Monitor supply
+- `GET /api/onchain/token-token-distribution-snapshot` - Generate snapshots
+- `GET /api/onchain/token-token-lock-monitor` - Monitor locks
+- `GET /api/onchain/token-token-holder-segmentation` - Segment holders
+- `GET /api/onchain/token-token-holder-health` - Calculate holder health
+- `GET /api/onchain/token-token-holder-momentum` - Calculate momentum
+- `GET /api/onchain/token-token-holder-quality` - Calculate quality
+- `GET /api/onchain/token-token-holder-stability` - Calculate stability
+- `GET /api/onchain/token-token-holder-behavior` - Analyze behavior
+- `GET /api/onchain/token-token-holder-change` - Track changes
+- `GET /api/onchain/token-token-holder-acquisition` - Track acquisition
 
 All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
 
