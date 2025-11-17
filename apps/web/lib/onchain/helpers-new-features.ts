@@ -61,3 +61,27 @@ export function calculateGovernanceParticipation(votes: number, proposals: numbe
   return (votes / proposals) * 100;
 }
 
+export function calculateBytecodeSimilarity(code1: string, code2: string): number {
+  if (!code1 || !code2) return 0;
+  if (code1 === code2) return 100;
+  const len = Math.min(code1.length, code2.length);
+  let matches = 0;
+  for (let i = 0; i < len; i++) {
+    if (code1[i] === code2[i]) matches++;
+  }
+  return (matches / len) * 100;
+}
+
+export function estimateDeploymentGas(bytecodeSize: number): bigint {
+  return BigInt(21000 + bytecodeSize * 200);
+}
+
+export function calculateHolderQualityScore(distribution: number, retention: number, activity: number): number {
+  return (distribution * 0.4 + retention * 0.4 + activity * 0.2);
+}
+
+export function detectSmartWalletPattern(bytecode: string): boolean {
+  const patterns = ['0x5af43d82803e903d91602b57fd5bf3', '0x608060405234801561001057600080fd5b'];
+  return patterns.some(pattern => bytecode.includes(pattern));
+}
+
