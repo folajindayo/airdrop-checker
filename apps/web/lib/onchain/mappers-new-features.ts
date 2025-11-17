@@ -48,3 +48,33 @@ export function mapToPegStatus(deviation: number): 'stable' | 'deviating' | 'uns
   return 'unstable';
 }
 
+export function mapToContractType(bytecode: string): 'proxy' | 'smart_wallet' | 'standard' {
+  if (bytecode.includes('0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc')) {
+    return 'proxy';
+  }
+  if (bytecode.includes('0x5af43d82803e903d91602b57fd5bf3')) {
+    return 'smart_wallet';
+  }
+  return 'standard';
+}
+
+export function mapToHolderStability(churnRate: number, retentionRate: number): 'stable' | 'volatile' | 'unstable' {
+  const stability = retentionRate - churnRate;
+  if (stability > 0.7) return 'stable';
+  if (stability > 0.3) return 'volatile';
+  return 'unstable';
+}
+
+export function mapToTimelockPriority(delay: number, timeRemaining: number): 'low' | 'medium' | 'high' {
+  const ratio = timeRemaining / delay;
+  if (ratio < 0.1) return 'high';
+  if (ratio < 0.5) return 'medium';
+  return 'low';
+}
+
+export function mapToAccountAbstractionType(code: string | null): 'eoa' | 'smart_contract' | 'account_abstraction' {
+  if (!code || code === '0x') return 'eoa';
+  if (code.includes('0x5af43d82803e903d91602b57fd5bf3')) return 'account_abstraction';
+  return 'smart_contract';
+}
+
