@@ -38,3 +38,26 @@ export function calculateSlippage(amount: string, slippagePercent: number): stri
   return (num * (slippagePercent / 100)).toString();
 }
 
+export function calculateHolderGrowthRate(current: number, previous: number, days: number): number {
+  if (previous === 0) return 0;
+  const growth = ((current - previous) / previous) * 100;
+  return growth / days;
+}
+
+export function calculateSupplyInflationRate(currentSupply: string, previousSupply: string): number {
+  const current = Number(currentSupply);
+  const previous = Number(previousSupply);
+  if (previous === 0) return 0;
+  return ((current - previous) / previous) * 100;
+}
+
+export function detectWhaleThreshold(totalSupply: string, thresholdPercent: number = 1): string {
+  const supply = Number(totalSupply);
+  return (supply * (thresholdPercent / 100)).toString();
+}
+
+export function calculateGovernanceParticipation(votes: number, proposals: number): number {
+  if (proposals === 0) return 0;
+  return (votes / proposals) * 100;
+}
+
