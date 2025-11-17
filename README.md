@@ -824,21 +824,11 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 795. **Token Token Transaction Batching Analyzer** - Analyze transaction batching patterns
 796. **Token Token Multisig Approval Tracker** - Track multisig approval requirements
 797. **Token Token Complete Onchain Suite** - Complete onchain analytics suite with Reown integration
-798. **Token Token Timelock Tracker** - Track timelock delays and execution schedules
-799. **Token Token Proxy Admin Tracker** - Track proxy admin addresses and upgrade permissions
-800. **Token Token Implementation Tracker** - Track implementation addresses for proxy contracts
-801. **Token Token Storage Slot Reader** - Read contract storage slots and decode data
-802. **Token Token Event Parser** - Parse and decode contract events and logs
-803. **Token Token Transaction Decoder** - Decode transaction data and function calls
-804. **Token Token ABI Generator** - Generate ABI from contract bytecode
-805. **Token Token Interface Detector** - Detect ERC interfaces implemented by contracts
-806. **Token Token Standard Detector** - Detect token standard (ERC20, ERC721, ERC1155)
-807. **Token Token Compatibility Checker** - Check token compatibility with protocols
-808. **Token Token Liquidation Price Calculator** - Calculate liquidation price for positions
-809. **Token Token Safety Score Calculator** - Calculate comprehensive safety score for tokens
-810. **Token Token Honeypot Detector** - Detect honeypot tokens and scams
-811. **Token Token Sniper Protection Checker** - Check sniper protection mechanisms
-812. **Token Token Anti-Bot Analyzer** - Analyze anti-bot mechanisms and restrictions
+798. **Token Token Timelock Queue Tracker** - Track timelock queue and execution delays
+799. **Token Token Proxy Upgrade Monitor** - Monitor proxy contract upgrades and implementations
+800. **Token Token Account Abstraction Analyzer** - Analyze account abstraction usage patterns
+801. **Token Token Smart Contract Wallet Detector** - Detect smart contract wallet deployments
+802. **Token Token Layer 2 Bridge Monitor** - Monitor Layer 2 bridge activity and efficiency
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
