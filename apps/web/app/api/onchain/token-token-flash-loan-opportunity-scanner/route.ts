@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const protocolAddress = searchParams.get('protocolAddress');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!protocolAddress) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: protocolAddress' },
         { status: 400 }
       );
     }
@@ -20,25 +20,26 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
-      recommendations: [],
+    // Scan for flash loan opportunities
+    const flashLoanOpportunities = {
+      availableProtocols: [],
+      maxLoanAmount: '0',
+      fees: [],
+      opportunities: [],
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
+      protocolAddress,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      flashLoanOpportunities,
+      message: 'Flash loan opportunities scanned',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to scan flash loan opportunities' },
       { status: 500 }
     );
   }
 }
+
