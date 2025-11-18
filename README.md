@@ -1395,6 +1395,35 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-token-holder-behavior` - Analyze behavior
 - `GET /api/onchain/token-token-holder-change` - Track changes
 - `GET /api/onchain/token-token-holder-acquisition` - Track acquisition
+- `GET /api/onchain/token-transaction-anomaly-detector/[address]` - Detect transaction anomalies
+- `GET /api/onchain/token-liquidity-fragmentation/[address]` - Analyze liquidity fragmentation
+- `GET /api/onchain/token-holder-churn-predictor/[address]` - Predict holder churn
+- `GET /api/onchain/token-network-effect-analyzer/[address]` - Analyze network effects
+- `GET /api/onchain/token-price-discovery-efficiency/[address]` - Measure price discovery efficiency
+- `GET /api/onchain/token-slippage-predictor/[address]` - Predict slippage for swaps
+- `GET /api/onchain/token-market-maker-score/[address]` - Calculate market maker score
+- `GET /api/onchain/token-holder-segmentation-advanced/[address]` - Advanced holder segmentation
+- `GET /api/onchain/token-volatility-forecast/[address]` - Forecast volatility
+- `GET /api/onchain/token-liquidity-migration-tracker/[address]` - Track liquidity migration
+- `GET /api/onchain/token-holder-loyalty-score/[address]` - Calculate loyalty scores
+- `GET /api/onchain/token-trading-pattern-analyzer/[address]` - Analyze trading patterns
+- `GET /api/onchain/token-market-depth-analyzer/[address]` - Analyze market depth
+- `GET /api/onchain/token-holder-value-distribution-advanced/[address]` - Advanced value distribution
+- `GET /api/onchain/token-holder-engagement-metrics/[address]` - Calculate engagement metrics
+- `GET /api/onchain/token-price-momentum-indicator/[address]` - Calculate momentum indicators
+- `GET /api/onchain/token-liquidity-quality-score/[address]` - Calculate liquidity quality
+- `GET /api/onchain/token-holder-acquisition-cost/[address]` - Calculate acquisition cost
+- `GET /api/onchain/token-market-cap-efficiency-calculator/[address]` - Calculate market cap efficiency
+- `GET /api/onchain/token-trading-intensity-analyzer/[address]` - Analyze trading intensity
+- `GET /api/onchain/token-holder-retention-forecast/[address]` - Forecast retention rates
+- `GET /api/onchain/token-liquidity-stability-monitor/[address]` - Monitor liquidity stability
+- `GET /api/onchain/token-price-correlation-matrix/[address]` - Calculate price correlation
+- `GET /api/onchain/token-holder-lifecycle-tracker/[address]` - Track holder lifecycle
+- `GET /api/onchain/token-market-maker-activity-detector/[address]` - Detect MM activity
+- `GET /api/onchain/token-price-discovery-quality-assessor/[address]` - Assess price discovery quality
+- `GET /api/onchain/token-holder-value-score-calculator/[address]` - Calculate value score
+- `GET /api/onchain/token-market-momentum-analyzer/[address]` - Analyze market momentum
+- `GET /api/onchain/token-comprehensive-analytics-suite/[address]` - Comprehensive analytics suite
 
 All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
 
