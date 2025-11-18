@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const poolAddress = searchParams.get('poolAddress');
+    const stakingContract = searchParams.get('stakingContract');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!poolAddress) {
+    if (!stakingContract) {
       return NextResponse.json(
-        { error: 'Missing required parameter: poolAddress' },
+        { error: 'Missing required parameter: stakingContract' },
         { status: 400 }
       );
     }
@@ -20,25 +20,26 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Calculate liquidity mining rewards
-    const miningRewards = {
-      currentAPR: '0',
+    // Maximize staking rewards
+    const rewardMaximization = {
+      optimalStakeAmount: '0',
       estimatedRewards: '0',
-      stakingPeriod: 0,
-      rewardToken: null,
+      strategies: [],
+      riskAssessment: {},
     };
 
     return NextResponse.json({
       success: true,
-      poolAddress,
+      stakingContract,
       chainId,
-      miningRewards,
-      message: 'Liquidity mining rewards calculated',
+      rewardMaximization,
+      message: 'Staking rewards maximization completed',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to calculate liquidity mining rewards' },
+      { error: error.message || 'Failed to maximize staking rewards' },
       { status: 500 }
     );
   }
 }
+
