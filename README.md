@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 860 Production-Ready Features!
+## 🎉 890 Production-Ready Features!
 
 ## ✨ Features
 
@@ -854,6 +854,36 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 825. **Token Token Holder Behavior** - Analyze holder behavior patterns
 826. **Token Token Holder Change** - Track holder changes over time
 827. **Token Token Holder Acquisition** - Track new holder acquisition
+828. **Token Token Cross Chain Arbitrage Finder** - Find arbitrage opportunities across multiple chains
+829. **Token Token Flash Loan Opportunity Scanner** - Scan for flash loan opportunities in DeFi protocols
+830. **Token Token MEV Protection Analyzer** - Analyze MEV protection status for transactions
+831. **Token Token Sandwich Attack Detector** - Detect sandwich attacks on transactions
+832. **Token Token Front Running Monitor** - Monitor for front-running attempts
+833. **Token Token Gas Optimization Advisor** - Get gas optimization recommendations
+834. **Token Token Contract Security Scanner** - Scan contracts for security vulnerabilities
+835. **Token Token Reentrancy Vulnerability Detector** - Detect reentrancy vulnerabilities
+836. **Token Token Access Control Validator** - Validate access control mechanisms
+837. **Token Token Integer Overflow Checker** - Check for integer overflow vulnerabilities
+838. **Token Token Signature Replay Detector** - Detect signature replay attacks
+839. **Token Token Oracle Manipulation Monitor** - Monitor for oracle price manipulation
+840. **Token Token Liquidity Pool Exploit Scanner** - Scan liquidity pools for potential exploits
+841. **Token Token Governance Attack Detector** - Detect governance attack vectors
+842. **Token Token Tokenomics Simulator** - Simulate tokenomics scenarios
+843. **Token Token Vesting Schedule Calculator** - Calculate vesting schedules
+844. **Token Token Airdrop Eligibility Checker** - Check airdrop eligibility for addresses
+845. **Token Token Snapshot Generator** - Generate token distribution snapshots
+846. **Token Token Merkle Tree Builder** - Build Merkle trees for airdrop claims
+847. **Token Token Claim Distribution Manager** - Manage claim distributions
+848. **Token Token Yield Farming Optimizer** - Optimize yield farming strategies
+849. **Token Token Liquidity Mining Calculator** - Calculate liquidity mining rewards
+850. **Token Token Staking Rewards Maximizer** - Maximize staking rewards
+851. **Token Token Portfolio Rebalancer** - Rebalance token portfolios
+852. **Token Token Risk Assessment Engine** - Assess token and protocol risks
+853. **Token Token Compliance Checker** - Check regulatory compliance
+854. **Token Token Tax Calculator** - Calculate tax obligations for transactions
+855. **Token Token Transaction Cost Optimizer** - Optimize transaction costs
+856. **Token Token Multi Chain Portfolio Tracker** - Track portfolios across chains
+857. **Token Token DeFi Protocol Aggregator** - Aggregate DeFi protocols and rates
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
@@ -1329,6 +1359,36 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-token-multisig-threshold` - Get multisig threshold
 - `GET /api/onchain/token-token-price-feed-validator` - Validate price feeds
 - `GET /api/onchain/token-token-price-oracle-aggregator` - Aggregate oracles
+- `GET /api/onchain/token-token-cross-chain-arbitrage-finder` - Find cross-chain arbitrage opportunities
+- `GET /api/onchain/token-token-flash-loan-opportunity-scanner` - Scan flash loan opportunities
+- `GET /api/onchain/token-token-mev-protection-analyzer` - Analyze MEV protection
+- `GET /api/onchain/token-token-sandwich-attack-detector` - Detect sandwich attacks
+- `GET /api/onchain/token-token-front-running-monitor` - Monitor front-running
+- `GET /api/onchain/token-token-gas-optimization-advisor` - Get gas optimization advice
+- `GET /api/onchain/token-token-contract-security-scanner` - Scan contract security
+- `GET /api/onchain/token-token-reentrancy-vulnerability-detector` - Detect reentrancy vulnerabilities
+- `GET /api/onchain/token-token-access-control-validator` - Validate access control
+- `GET /api/onchain/token-token-integer-overflow-checker` - Check integer overflow
+- `GET /api/onchain/token-token-signature-replay-detector` - Detect signature replay
+- `GET /api/onchain/token-token-oracle-manipulation-monitor` - Monitor oracle manipulation
+- `GET /api/onchain/token-token-liquidity-pool-exploit-scanner` - Scan pool exploits
+- `GET /api/onchain/token-token-governance-attack-detector` - Detect governance attacks
+- `GET /api/onchain/token-token-tokenomics-simulator` - Simulate tokenomics
+- `GET /api/onchain/token-token-vesting-schedule-calculator` - Calculate vesting schedules
+- `GET /api/onchain/token-token-airdrop-eligibility-checker` - Check airdrop eligibility
+- `GET /api/onchain/token-token-snapshot-generator` - Generate snapshots
+- `GET /api/onchain/token-token-merkle-tree-builder` - Build Merkle trees
+- `GET /api/onchain/token-token-claim-distribution-manager` - Manage claim distributions
+- `GET /api/onchain/token-token-yield-farming-optimizer` - Optimize yield farming
+- `GET /api/onchain/token-token-liquidity-mining-calculator` - Calculate mining rewards
+- `GET /api/onchain/token-token-staking-rewards-maximizer` - Maximize staking rewards
+- `GET /api/onchain/token-token-portfolio-rebalancer` - Rebalance portfolios
+- `GET /api/onchain/token-token-risk-assessment-engine` - Assess risks
+- `GET /api/onchain/token-token-compliance-checker` - Check compliance
+- `GET /api/onchain/token-token-tax-calculator` - Calculate taxes
+- `GET /api/onchain/token-token-transaction-cost-optimizer` - Optimize transaction costs
+- `GET /api/onchain/token-token-multi-chain-portfolio-tracker` - Track multi-chain portfolios
+- `GET /api/onchain/token-token-defi-protocol-aggregator` - Aggregate DeFi protocols
 - `GET /api/onchain/token-token-supply-change-notifier` - Monitor supply
 - `GET /api/onchain/token-token-distribution-snapshot` - Generate snapshots
 - `GET /api/onchain/token-token-lock-monitor` - Monitor locks
