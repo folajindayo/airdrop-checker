@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-trading-pattern-analyzer/[address]
- * Analyze trading patterns and strategies
- * Identifies trading behavior types
+ * Analyze trading patterns and behaviors
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-trading-pattern:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-trading-pattern:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,55 +36,37 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const patterns: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
-      patternType: 'unknown',
+      dominantPattern: 'normal',
       frequency: 0,
-      averageSize: 0,
+      patternScore: 0,
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/transactions/`,
+        `/v2/${targetChainId}/addresses/${normalizedAddress}/transactions/`,
         { 'quote-currency': 'USD', 'page-size': 100 }
       );
 
-      if (response.data?.items) {
-        const transactions = response.data.items;
-        patterns.frequency = transactions.length;
-        
-        const sizes = transactions.map((tx: any) => 
-          parseFloat(tx.value_quote || '0')).filter((s: number) => s > 0);
-        
-        if (sizes.length > 0) {
-          patterns.averageSize = sizes.reduce((a, b) => a + b, 0) / sizes.length;
-          
-          const variance = sizes.reduce((sum, s) => 
-            sum + Math.pow(s - patterns.averageSize, 2), 0) / sizes.length;
-          const stdDev = Math.sqrt(variance);
-          
-          if (stdDev / patterns.averageSize < 0.3) {
-            patterns.patternType = 'consistent';
-          } else if (transactions.length > 20) {
-            patterns.patternType = 'frequent';
-          } else {
-            patterns.patternType = 'irregular';
-          }
-        }
+      if (response.data && response.data.items) {
+        patterns.frequency = response.data.items.length;
+        patterns.patternScore = Math.min(100, patterns.frequency * 2);
+        patterns.dominantPattern = patterns.frequency > 50 ? 'high_frequency' : 'normal';
       }
     } catch (error) {
       console.error('Error analyzing patterns:', error);
     }
 
-    cache.set(cacheKey, patterns, 10 * 60 * 1000);
+    cache.set(cacheKey, patterns, 5 * 60 * 1000);
 
     return NextResponse.json(patterns);
   } catch (error) {
-    console.error('Trading pattern analysis error:', error);
+    console.error('Trading pattern analyzer error:', error);
     return NextResponse.json(
       {
         error: 'Failed to analyze trading patterns',
@@ -95,4 +76,3 @@ export async function GET(
     );
   }
 }
-
