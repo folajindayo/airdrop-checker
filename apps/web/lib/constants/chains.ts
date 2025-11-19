@@ -1,314 +1,91 @@
 /**
- * Blockchain chain configurations
- * Centralized chain data for the application
+ * Blockchain Chain Configurations
+ * Supported chains and their properties
  */
 
-export interface ChainConfig {
+export interface Chain {
   id: number;
   name: string;
-  slug: string;
-  nativeCurrency: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-  rpcUrls: string[];
-  blockExplorers: {
-    name: string;
-    url: string;
-  }[];
-  testnet: boolean;
-  icon?: string;
+  displayName: string;
+  symbol: string;
+  decimals: number;
+  rpcUrl: string;
+  blockExplorer: string;
+  iconUrl?: string;
 }
 
-/**
- * Supported blockchain networks
- */
-export const CHAINS: Record<string, ChainConfig> = {
-  ethereum: {
+export const CHAINS: Record<number, Chain> = {
+  1: {
     id: 1,
-    name: 'Ethereum',
-    slug: 'ethereum',
-    nativeCurrency: {
-      name: 'Ether',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://eth.llamarpc.com'],
-    blockExplorers: [
-      {
-        name: 'Etherscan',
-        url: 'https://etherscan.io',
-      },
-    ],
-    testnet: false,
-    icon: '/chains/ethereum.svg',
+    name: "ethereum",
+    displayName: "Ethereum",
+    symbol: "ETH",
+    decimals: 18,
+    rpcUrl: "https://eth.llamarpc.com",
+    blockExplorer: "https://etherscan.io",
   },
-  
-  polygon: {
+  137: {
     id: 137,
-    name: 'Polygon',
-    slug: 'polygon',
-    nativeCurrency: {
-      name: 'MATIC',
-      symbol: 'MATIC',
-      decimals: 18,
-    },
-    rpcUrls: ['https://polygon-rpc.com'],
-    blockExplorers: [
-      {
-        name: 'PolygonScan',
-        url: 'https://polygonscan.com',
-      },
-    ],
-    testnet: false,
-    icon: '/chains/polygon.svg',
+    name: "polygon",
+    displayName: "Polygon",
+    symbol: "MATIC",
+    decimals: 18,
+    rpcUrl: "https://polygon-rpc.com",
+    blockExplorer: "https://polygonscan.com",
   },
-
-  arbitrum: {
-    id: 42161,
-    name: 'Arbitrum One',
-    slug: 'arbitrum',
-    nativeCurrency: {
-      name: 'Ether',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://arb1.arbitrum.io/rpc'],
-    blockExplorers: [
-      {
-        name: 'Arbiscan',
-        url: 'https://arbiscan.io',
-      },
-    ],
-    testnet: false,
-    icon: '/chains/arbitrum.svg',
-  },
-
-  optimism: {
-    id: 10,
-    name: 'Optimism',
-    slug: 'optimism',
-    nativeCurrency: {
-      name: 'Ether',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://mainnet.optimism.io'],
-    blockExplorers: [
-      {
-        name: 'Optimistic Etherscan',
-        url: 'https://optimistic.etherscan.io',
-      },
-    ],
-    testnet: false,
-    icon: '/chains/optimism.svg',
-  },
-
-  base: {
-    id: 8453,
-    name: 'Base',
-    slug: 'base',
-    nativeCurrency: {
-      name: 'Ether',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://mainnet.base.org'],
-    blockExplorers: [
-      {
-        name: 'BaseScan',
-        url: 'https://basescan.org',
-      },
-    ],
-    testnet: false,
-    icon: '/chains/base.svg',
-  },
-
-  avalanche: {
-    id: 43114,
-    name: 'Avalanche C-Chain',
-    slug: 'avalanche',
-    nativeCurrency: {
-      name: 'Avalanche',
-      symbol: 'AVAX',
-      decimals: 18,
-    },
-    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-    blockExplorers: [
-      {
-        name: 'SnowTrace',
-        url: 'https://snowtrace.io',
-      },
-    ],
-    testnet: false,
-    icon: '/chains/avalanche.svg',
-  },
-
-  bsc: {
+  56: {
     id: 56,
-    name: 'BNB Smart Chain',
-    slug: 'bsc',
-    nativeCurrency: {
-      name: 'BNB',
-      symbol: 'BNB',
-      decimals: 18,
-    },
-    rpcUrls: ['https://bsc-dataseed.binance.org'],
-    blockExplorers: [
-      {
-        name: 'BscScan',
-        url: 'https://bscscan.com',
-      },
-    ],
-    testnet: false,
-    icon: '/chains/bsc.svg',
+    name: "bsc",
+    displayName: "BNB Chain",
+    symbol: "BNB",
+    decimals: 18,
+    rpcUrl: "https://bsc-dataseed.binance.org",
+    blockExplorer: "https://bscscan.com",
   },
-
-  zksync: {
-    id: 324,
-    name: 'zkSync Era',
-    slug: 'zksync',
-    nativeCurrency: {
-      name: 'Ether',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://mainnet.era.zksync.io'],
-    blockExplorers: [
-      {
-        name: 'zkSync Era Block Explorer',
-        url: 'https://explorer.zksync.io',
-      },
-    ],
-    testnet: false,
-    icon: '/chains/zksync.svg',
+  42161: {
+    id: 42161,
+    name: "arbitrum",
+    displayName: "Arbitrum One",
+    symbol: "ETH",
+    decimals: 18,
+    rpcUrl: "https://arb1.arbitrum.io/rpc",
+    blockExplorer: "https://arbiscan.io",
   },
-
-  linea: {
-    id: 59144,
-    name: 'Linea',
-    slug: 'linea',
-    nativeCurrency: {
-      name: 'Ether',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rpc.linea.build'],
-    blockExplorers: [
-      {
-        name: 'LineaScan',
-        url: 'https://lineascan.build',
-      },
-    ],
-    testnet: false,
-    icon: '/chains/linea.svg',
-  },
-
-  scroll: {
-    id: 534352,
-    name: 'Scroll',
-    slug: 'scroll',
-    nativeCurrency: {
-      name: 'Ether',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rpc.scroll.io'],
-    blockExplorers: [
-      {
-        name: 'Scrollscan',
-        url: 'https://scrollscan.com',
-      },
-    ],
-    testnet: false,
-    icon: '/chains/scroll.svg',
+  10: {
+    id: 10,
+    name: "optimism",
+    displayName: "Optimism",
+    symbol: "ETH",
+    decimals: 18,
+    rpcUrl: "https://mainnet.optimism.io",
+    blockExplorer: "https://optimistic.etherscan.io",
   },
 };
 
-/**
- * Get chain configuration by ID
- */
-export function getChainById(chainId: number): ChainConfig | undefined {
-  return Object.values(CHAINS).find((chain) => chain.id === chainId);
+export const SUPPORTED_CHAIN_IDS = Object.keys(CHAINS).map(Number);
+export const DEFAULT_CHAIN_ID = 1;
+
+export function getChain(chainId: number): Chain | undefined {
+  return CHAINS[chainId];
 }
 
-/**
- * Get chain configuration by slug
- */
-export function getChainBySlug(slug: string): ChainConfig | undefined {
-  return CHAINS[slug];
+export function isChainSupported(chainId: number): boolean {
+  return chainId in CHAINS;
 }
 
-/**
- * Get all mainnet chains
- */
-export function getMainnetChains(): ChainConfig[] {
-  return Object.values(CHAINS).filter((chain) => !chain.testnet);
+export function getBlockExplorerUrl(
+  chainId: number,
+  type: "tx" | "address" | "token",
+  value: string
+): string {
+  const chain = getChain(chainId);
+  if (!chain) return "";
+
+  const paths = {
+    tx: "tx",
+    address: "address",
+    token: "token",
+  };
+
+  return `${chain.blockExplorer}/${paths[type]}/${value}`;
 }
-
-/**
- * Get all testnet chains
- */
-export function getTestnetChains(): ChainConfig[] {
-  return Object.values(CHAINS).filter((chain) => chain.testnet);
-}
-
-/**
- * Get all chain IDs
- */
-export function getAllChainIds(): number[] {
-  return Object.values(CHAINS).map((chain) => chain.id);
-}
-
-/**
- * Check if chain ID is supported
- */
-export function isSupportedChain(chainId: number): boolean {
-  return getAllChainIds().includes(chainId);
-}
-
-/**
- * Get chain name by ID
- */
-export function getChainName(chainId: number): string {
-  const chain = getChainById(chainId);
-  return chain?.name || `Unknown Chain (${chainId})`;
-}
-
-/**
- * Get block explorer URL for address
- */
-export function getExplorerUrl(chainId: number, address: string): string | null {
-  const chain = getChainById(chainId);
-  if (!chain || chain.blockExplorers.length === 0) return null;
-  
-  return `${chain.blockExplorers[0]?.url}/address/${address}`;
-}
-
-/**
- * Get block explorer URL for transaction
- */
-export function getTransactionUrl(chainId: number, txHash: string): string | null {
-  const chain = getChainById(chainId);
-  if (!chain || chain.blockExplorers.length === 0) return null;
-  
-  return `${chain.blockExplorers[0]?.url}/tx/${txHash}`;
-}
-
-/**
- * Default chain (Ethereum)
- */
-export const DEFAULT_CHAIN = CHAINS.ethereum;
-
-/**
- * Popular chains for quick access
- */
-export const POPULAR_CHAINS = [
-  CHAINS.ethereum,
-  CHAINS.polygon,
-  CHAINS.arbitrum,
-  CHAINS.optimism,
-  CHAINS.base,
-];
-
