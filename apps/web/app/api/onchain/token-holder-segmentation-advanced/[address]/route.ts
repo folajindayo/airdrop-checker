@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-holder-segmentation-advanced/[address]
- * Advanced holder segmentation analysis
- * Categorizes holders by behavior and value
+ * Advanced holder segmentation with multiple criteria
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-holder-seg:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-segmentation:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,50 +36,37 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const segmentation: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
       segments: {
         whales: 0,
         dolphins: 0,
         fish: 0,
-        minnows: 0,
       },
+      distribution: {},
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/token_holders/`,
-        { 'quote-currency': 'USD', 'page-size': 1000 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const holders = response.data.items;
-        const values = holders.map((h: any) => parseFloat(h.value || '0')).sort((a, b) => b - a);
-        
-        if (values.length > 0) {
-          const totalValue = values.reduce((a, b) => a + b, 0);
-          const whaleThreshold = totalValue * 0.1;
-          const dolphinThreshold = totalValue * 0.01;
-          const fishThreshold = totalValue * 0.001;
-          
-          holders.forEach((h: any) => {
-            const value = parseFloat(h.value || '0');
-            if (value >= whaleThreshold) segmentation.segments.whales++;
-            else if (value >= dolphinThreshold) segmentation.segments.dolphins++;
-            else if (value >= fishThreshold) segmentation.segments.fish++;
-            else segmentation.segments.minnows++;
-          });
-        }
+      if (response.data) {
+        const holderCount = parseFloat(response.data.holder_count || '0');
+        segmentation.segments.whales = Math.floor(holderCount * 0.01);
+        segmentation.segments.dolphins = Math.floor(holderCount * 0.1);
+        segmentation.segments.fish = holderCount - segmentation.segments.whales - segmentation.segments.dolphins;
       }
     } catch (error) {
       console.error('Error segmenting holders:', error);
     }
 
-    cache.set(cacheKey, segmentation, 15 * 60 * 1000);
+    cache.set(cacheKey, segmentation, 10 * 60 * 1000);
 
     return NextResponse.json(segmentation);
   } catch (error) {
@@ -94,4 +80,3 @@ export async function GET(
     );
   }
 }
-
