@@ -2,24 +2,24 @@
 
 import React, { InputHTMLAttributes, forwardRef } from "react";
 
-interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   label?: string;
   error?: string;
 }
 
 /**
- * Checkbox Component
- * Styled checkbox input with label
+ * Radio Component
+ * Styled radio input with label
  */
-const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+const Radio = forwardRef<HTMLInputElement, RadioProps>(
   ({ label, error, className = "", ...props }, ref) => {
     return (
       <div>
         <label className="inline-flex items-center gap-2 cursor-pointer">
           <input
             ref={ref}
-            type="checkbox"
-            className={`h-4 w-4 rounded border-gray-300 text-blue-600 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+            type="radio"
+            className={`h-4 w-4 border-gray-300 text-blue-600 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
             {...props}
           />
           {label && <span className="text-sm text-gray-900">{label}</span>}
@@ -30,6 +30,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   }
 );
 
-Checkbox.displayName = "Checkbox";
+Radio.displayName = "Radio";
 
-export default Checkbox;
+export default Radio;
+
