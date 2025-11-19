@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-market-depth-analyzer/[address]
- * Analyze market depth at different price levels
- * Measures order book depth
+ * Analyze market depth across different price levels
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-market-depth:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-market-depth:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,44 +36,38 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const depth: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
+      bidDepth: 0,
+      askDepth: 0,
       depthScore: 0,
-      liquidityLayers: [],
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/pools/`,
-        { 'quote-currency': 'USD', 'page-size': 10 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const pools = response.data.items;
-        const totalLiquidity = pools.reduce((sum: number, p: any) => 
-          sum + parseFloat(p.total_liquidity_quote || '0'), 0);
-        
-        depth.depthScore = Math.min((totalLiquidity / 1000000) * 100, 100);
-        
-        depth.liquidityLayers = pools.slice(0, 5).map((p: any, index: number) => ({
-          layer: index + 1,
-          liquidity: parseFloat(p.total_liquidity_quote || '0'),
-          poolAddress: p.address,
-        }));
+      if (response.data) {
+        const liquidity = parseFloat(response.data.total_liquidity_quote || '0');
+        depth.bidDepth = liquidity * 0.5;
+        depth.askDepth = liquidity * 0.5;
+        depth.depthScore = Math.min(100, (liquidity / 1000000) * 20);
       }
     } catch (error) {
       console.error('Error analyzing depth:', error);
     }
 
-    cache.set(cacheKey, depth, 5 * 60 * 1000);
+    cache.set(cacheKey, depth, 2 * 60 * 1000);
 
     return NextResponse.json(depth);
   } catch (error) {
-    console.error('Market depth analysis error:', error);
+    console.error('Market depth analyzer error:', error);
     return NextResponse.json(
       {
         error: 'Failed to analyze market depth',
@@ -84,4 +77,3 @@ export async function GET(
     );
   }
 }
-
