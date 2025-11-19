@@ -1,19 +1,8 @@
 /**
- * Consolidated Validation Export
- * 
- * Unified validation schemas, validators, and utilities
+ * Validation module exports
  */
 
-// Address validation
-export * from './address.schema';
-export * from './address.validator';
+export * from "./schemas";
 
-// API validation
-export * from './api.schema';
-
-// Form schemas
-export * from './forms.schema';
-
-// Validators
-export * from './params.validator';
-export * from './schema-validator';
+// Re-export Zod for convenience
+export { z } from "zod";
