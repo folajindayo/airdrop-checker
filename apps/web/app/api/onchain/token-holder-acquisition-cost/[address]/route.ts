@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-holder-acquisition-cost/[address]
- * Calculate cost to acquire new holders
- * Measures marketing efficiency
+ * Calculate cost of acquiring new token holders
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-acquisition-cost:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-acquisition-cost:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,55 +36,39 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
-    const acquisition: any = {
-      tokenAddress: normalizedAddress,
+    const cost: any = {
+      address: normalizedAddress,
       chainId: targetChainId,
-      averageAcquisitionCost: 0,
-      newHoldersRate: 0,
-      growthEfficiency: 0,
+      costPerHolder: 0,
+      totalAcquisitionCost: 0,
+      efficiency: 0,
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/token_holders/`,
-        { 'quote-currency': 'USD', 'page-size': 100 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const holders = response.data.items;
-        const now = Date.now();
-        const weekAgo = now - (7 * 24 * 60 * 60 * 1000);
-        
-        const newHolders = holders.filter((h: any) => {
-          const firstTx = h.first_transaction_date;
-          if (!firstTx) return false;
-          return new Date(firstTx).getTime() > weekAgo;
-        });
-        
-        acquisition.newHoldersRate = holders.length > 0 
-          ? (newHolders.length / holders.length) * 100 
-          : 0;
-        
-        const totalValue = holders.reduce((sum: number, h: any) => 
-          sum + parseFloat(h.value || '0'), 0);
-        
-        if (newHolders.length > 0 && totalValue > 0) {
-          acquisition.averageAcquisitionCost = totalValue / holders.length;
-          acquisition.growthEfficiency = newHolders.length / (totalValue / 1000000);
-        }
+      if (response.data) {
+        const holderCount = parseFloat(response.data.holder_count || '0');
+        const marketCap = parseFloat(response.data.market_cap_quote || '0');
+        cost.costPerHolder = holderCount > 0 ? marketCap / holderCount : 0;
+        cost.totalAcquisitionCost = marketCap * 0.1;
+        cost.efficiency = cost.costPerHolder < 100 ? 90 : 60;
       }
     } catch (error) {
-      console.error('Error calculating acquisition:', error);
+      console.error('Error calculating acquisition cost:', error);
     }
 
-    cache.set(cacheKey, acquisition, 15 * 60 * 1000);
+    cache.set(cacheKey, cost, 10 * 60 * 1000);
 
-    return NextResponse.json(acquisition);
+    return NextResponse.json(cost);
   } catch (error) {
-    console.error('Acquisition cost error:', error);
+    console.error('Holder acquisition cost error:', error);
     return NextResponse.json(
       {
         error: 'Failed to calculate acquisition cost',
@@ -95,4 +78,3 @@ export async function GET(
     );
   }
 }
-
