@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 622+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 652+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 936 Production-Ready Features!
+## 🎉 966 Production-Ready Features!
 
 ## ✨ Features
 
@@ -26,6 +26,34 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 - 📱 **Mobile Responsive**: Fully responsive design for all devices
 - 🌙 **Dark Mode**: Beautiful dark mode support
 - ⚡ **Fast & Optimized**: Cached responses and optimized queries
+
+### Onchain Analysis Features
+- 🚜 **Yield Farming Optimizer**: Optimize yield farming strategies across protocols
+- 🔄 **Liquidity Migration Advisor**: Get recommendations for protocol migrations
+- 🌉 **Cross-Chain Yield Aggregator**: Find best yields across multiple chains
+- 💰 **Staking Compound Calculator**: Calculate compound interest for staking
+- 🎁 **Airdrop Eligibility Scorer**: Advanced scoring for airdrop qualification
+- 🗳️ **Governance Participation Advisor**: Optimize governance participation
+- 📅 **Vesting Schedule Optimizer**: Maximize value from vesting schedules
+- 🛡️ **MEV Protection Advisor**: Protect transactions from MEV attacks
+- ⚠️ **Rug Pull Early Warning**: Early detection system for potential rug pulls
+- 🔧 **Contract Upgrade Risk Analyzer**: Assess risks of contract upgrades
+- 🔐 **Proxy Security Checker**: Verify security of proxy patterns
+- ⏱️ **Multisig Delay Tracker**: Track multi-sig transaction delays
+- 💼 **Treasury Allocation Analyzer**: Analyze treasury management
+- 🔥 **Burn Rate Optimizer**: Optimize token burn mechanisms
+- 💎 **Reflection Efficiency Calculator**: Calculate holder reward efficiency
+- 💸 **Tax Optimization Advisor**: Optimize transaction tax strategies
+- 🐋 **Anti-Whale Threshold Analyzer**: Analyze whale protection mechanisms
+- 📊 **Transaction Limit Optimizer**: Optimize trading limits
+- ⏳ **Cooldown Efficiency Calculator**: Calculate cooldown period effectiveness
+- 🚫 **Blacklist Risk Checker**: Check blacklist risks
+- ✅ **Whitelist Eligibility Checker**: Verify whitelist qualification
+- ⏸️ **Pause Impact Analyzer**: Analyze contract pause functionality
+- 🧊 **Freeze Duration Tracker**: Track token freeze schedules
+- 🪙 **Minting Schedule Analyzer**: Analyze inflation and minting
+- 📈 **Supply Growth Predictor**: Predict future token supply
+- 💳 **Transfer Fee Optimizer**: Optimize transaction fees
 
 ### Developer Features
 - 🧪 **Comprehensive Tests**: 80+ test files with 1000+ test cases
