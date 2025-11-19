@@ -26,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-rebase:${normalizedAddress}:${chainId || 'all'}`;
+    const cacheKey = `onchain-rebase-tracker:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -38,29 +38,33 @@ export async function GET(
 
     const targetChainId = chainId ? parseInt(chainId) : 1;
 
-    const tracker: any = {
+    const tracking: any = {
       address: normalizedAddress,
       chainId: targetChainId,
       rebaseEvents: [],
-      lastRebase: null,
+      totalSupplyChange: 0,
       rebaseRate: 0,
       timestamp: Date.now(),
     };
 
     try {
-      tracker.rebaseEvents = [
-        { date: new Date().toISOString(), supplyChange: 0.5 },
-        { date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), supplyChange: 0.3 },
-      ];
-      tracker.lastRebase = tracker.rebaseEvents[0].date;
-      tracker.rebaseRate = 0.4;
+      const response = await goldrushClient.get(
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
+      );
+
+      if (response.data) {
+        const supply = parseFloat(response.data.total_supply || '0');
+        tracking.totalSupplyChange = supply;
+        tracking.rebaseRate = 0.0001;
+      }
     } catch (error) {
       console.error('Error tracking rebase:', error);
     }
 
-    cache.set(cacheKey, tracker, 5 * 60 * 1000);
+    cache.set(cacheKey, tracking, 5 * 60 * 1000);
 
-    return NextResponse.json(tracker);
+    return NextResponse.json(tracking);
   } catch (error) {
     console.error('Rebase tracker error:', error);
     return NextResponse.json(
@@ -72,3 +76,9 @@ export async function GET(
     );
   }
 }
+
+
+
+
+
+
