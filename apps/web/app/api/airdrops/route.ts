@@ -1,76 +1,50 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { cache, CACHE_TTL } from '@airdrop-finder/shared';
-import type { AirdropProject, AirdropStatus } from '@airdrop-finder/shared';
-import { findAllProjects, findProjectsByStatus } from '@/lib/db/models/project';
+import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic';
-
-/**
- * GET /api/airdrops
- * Get list of all airdrop projects
- * Query params:
- * - status: filter by status (confirmed, rumored, expired, speculative)
- */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const statusFilter = searchParams.get('status') as AirdropStatus | null;
+    const searchParams = request.nextUrl.searchParams;
+    const status = searchParams.get("status");
+    const chain = searchParams.get("chain");
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const limit = parseInt(searchParams.get("limit") || "20", 10);
 
-    // Build cache key
-    const cacheKey = statusFilter
-      ? `airdrops:status:${statusFilter}`
-      : 'airdrops:all';
+    // Mock data - in real app, query database or external API
+    const mockAirdrops = Array.from({ length: 50 }, (_, i) => ({
+      id: `airdrop-${i}`,
+      name: `Airdrop Project ${i + 1}`,
+      chain: ["ethereum", "polygon", "arbitrum"][i % 3],
+      status: ["active", "upcoming", "ended"][i % 3],
+      amount: `${Math.floor(Math.random() * 10000)} tokens`,
+      deadline: new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+    }));
 
-    // Check cache
-    const cachedProjects = cache.get<AirdropProject[]>(cacheKey);
+    let filteredAirdrops = mockAirdrops;
 
-    if (cachedProjects) {
-      return NextResponse.json({
-        projects: cachedProjects,
-        cached: true,
-      });
+    if (status) {
+      filteredAirdrops = filteredAirdrops.filter((a) => a.status === status);
     }
 
-    // Fetch from database
-    let projects: AirdropProject[];
-
-    if (statusFilter) {
-      projects = await findProjectsByStatus(statusFilter);
-    } else {
-      projects = await findAllProjects();
+    if (chain) {
+      filteredAirdrops = filteredAirdrops.filter((a) => a.chain === chain);
     }
 
-    // Sort by status priority (confirmed > rumored > speculative > expired)
-    const statusPriority: Record<AirdropStatus, number> = {
-      confirmed: 4,
-      rumored: 3,
-      speculative: 2,
-      expired: 1,
-    };
-
-    projects.sort((a, b) => {
-      const priorityDiff = statusPriority[b.status] - statusPriority[a.status];
-      if (priorityDiff !== 0) return priorityDiff;
-      return a.name.localeCompare(b.name);
-    });
-
-    // Cache the result
-    cache.set(cacheKey, projects, CACHE_TTL.AIRDROPS_LIST);
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedData = filteredAirdrops.slice(startIndex, endIndex);
 
     return NextResponse.json({
-      projects,
-      count: projects.length,
+      data: paginatedData,
+      pagination: {
+        page,
+        limit,
+        total: filteredAirdrops.length,
+        totalPages: Math.ceil(filteredAirdrops.length / limit),
+      },
     });
   } catch (error) {
-    console.error('Error fetching airdrops:', error);
-    
     return NextResponse.json(
-      {
-        error: 'Failed to fetch airdrops',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
+      { error: error instanceof Error ? error.message : "Failed to fetch airdrops" },
       { status: 500 }
     );
   }
 }
-
