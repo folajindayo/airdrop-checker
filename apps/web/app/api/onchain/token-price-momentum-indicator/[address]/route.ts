@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-price-momentum-indicator/[address]
- * Calculate price momentum indicators
- * RSI and trend analysis
+ * Calculate price momentum indicators for trend analysis
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-momentum:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-momentum:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,71 +36,47 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const momentum: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
       rsi: 50,
-      trend: 'neutral',
+      macd: 0,
       momentumScore: 0,
+      trend: 'neutral',
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/transactions/`,
-        { 'quote-currency': 'USD', 'page-size': 30 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const transactions = response.data.items;
-        const prices = transactions
-          .map((tx: any) => parseFloat(tx.value_quote || '0'))
-          .filter((p: number) => p > 0)
-          .slice(0, 14);
-        
+      if (response.data && response.data.prices) {
+        const prices = response.data.prices;
         if (prices.length > 1) {
-          const gains = [];
-          const losses = [];
-          
-          for (let i = 1; i < prices.length; i++) {
-            const change = prices[i] - prices[i - 1];
-            if (change > 0) gains.push(change);
-            else losses.push(Math.abs(change));
-          }
-          
-          const avgGain = gains.length > 0 ? gains.reduce((a, b) => a + b, 0) / gains.length : 0;
-          const avgLoss = losses.length > 0 ? losses.reduce((a, b) => a + b, 0) / losses.length : 0;
-          
-          if (avgLoss > 0) {
-            const rs = avgGain / avgLoss;
-            momentum.rsi = 100 - (100 / (1 + rs));
-          }
-          
-          const recentTrend = prices[prices.length - 1] - prices[0];
-          if (recentTrend > 0) momentum.trend = 'bullish';
-          else if (recentTrend < 0) momentum.trend = 'bearish';
-          
-          momentum.momentumScore = momentum.rsi;
+          const priceChange = (prices[0].price - prices[1].price) / prices[1].price;
+          momentum.momentumScore = priceChange > 0 ? 60 : 40;
+          momentum.trend = priceChange > 0.05 ? 'bullish' : priceChange < -0.05 ? 'bearish' : 'neutral';
         }
       }
     } catch (error) {
       console.error('Error calculating momentum:', error);
     }
 
-    cache.set(cacheKey, momentum, 5 * 60 * 1000);
+    cache.set(cacheKey, momentum, 2 * 60 * 1000);
 
     return NextResponse.json(momentum);
   } catch (error) {
-    console.error('Momentum indicator error:', error);
+    console.error('Price momentum indicator error:', error);
     return NextResponse.json(
       {
-        error: 'Failed to calculate momentum indicators',
+        error: 'Failed to calculate price momentum',
         details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );
   }
 }
-
