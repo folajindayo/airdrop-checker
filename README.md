@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 857 Production-Ready Features!
+## 🎉 882 Production-Ready Features!
 
 ## ✨ Features
 
@@ -884,6 +884,31 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 855. **Token Market Cap Efficiency Calculator** - Calculate market cap efficiency with advanced metrics
 856. **Token Smart Contract Interaction Profiler** - Profile smart contract interactions and call patterns
 857. **Token DeFi Position Aggregator** - Aggregate DeFi positions across multiple protocols
+858. **Token Yield Optimization Engine** - Optimize yield farming strategies across DeFi protocols
+859. **Token Whale Movement Tracker** - Track whale wallet movements and large transactions
+860. **Token Gas Optimization Advisor** - Provide gas optimization recommendations for transactions
+861. **Token Liquidity Pool Health** - Monitor liquidity pool health and impermanent loss risks
+862. **Token Tokenomics Analyzer** - Analyze tokenomics structure and sustainability
+863. **Token Cross-Chain Arbitrage Finder** - Find arbitrage opportunities across different blockchains
+864. **Token Staking Rewards Calculator** - Calculate staking rewards and APY for token positions
+865. **Token Price Impact Calculator** - Calculate price impact for different trade sizes
+866. **Token Governance Participation** - Track governance participation and voting activity
+867. **Token Risk Assessment Engine** - Comprehensive risk assessment for token investments
+868. **Token Lending Borrowing Analyzer** - Analyze lending and borrowing positions across protocols
+869. **Token NFT Analytics** - Comprehensive NFT analytics and collection insights
+870. **Token Portfolio Diversification** - Analyze portfolio diversification across assets and chains
+871. **Token Transaction Batch Optimizer** - Optimize batch transactions for gas efficiency
+872. **Token Liquidity Provider Rewards** - Calculate liquidity provider rewards and fees earned
+873. **Token Smart Money Tracking** - Track smart money wallets and profitable trading patterns
+874. **Token Bridge Fee Optimizer** - Find optimal bridge routes with lowest fees
+875. **Token Impermanent Loss Calculator** - Calculate impermanent loss for liquidity positions
+876. **Token Treasury Tracker** - Track treasury balances and movements for tokens
+877. **Token Validator Performance** - Track validator performance and staking metrics
+878. **Token Flash Loan Analyzer** - Analyze flash loan usage and opportunities
+879. **Token MEV Protection Analyzer** - Analyze MEV protection status and transaction security
+880. **Token Options Greeks Calculator** - Calculate options Greeks for token positions
+881. **Token Perpetual Funding Rate** - Track perpetual futures funding rates and positions
+882. **Token Stablecoin Peg Monitor** - Monitor stablecoin peg stability and deviations
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
@@ -1400,6 +1425,31 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-market-cap-efficiency-calculator/[address]` - Advanced market cap efficiency
 - `GET /api/onchain/token-smart-contract-interaction-profiler/[address]` - Profile contract interactions
 - `GET /api/onchain/token-defi-position-aggregator/[address]` - Aggregate DeFi positions
+- `GET /api/onchain/token-yield-optimization-engine/[address]` - Optimize yield farming strategies
+- `GET /api/onchain/token-whale-movement-tracker/[address]` - Track whale wallet movements
+- `GET /api/onchain/token-gas-optimization-advisor/[address]` - Get gas optimization recommendations
+- `GET /api/onchain/token-liquidity-pool-health/[address]` - Monitor liquidity pool health
+- `GET /api/onchain/token-tokenomics-analyzer/[address]` - Analyze tokenomics structure
+- `GET /api/onchain/token-cross-chain-arbitrage-finder/[address]` - Find cross-chain arbitrage
+- `GET /api/onchain/token-staking-rewards-calculator/[address]` - Calculate staking rewards
+- `GET /api/onchain/token-price-impact-calculator/[address]` - Calculate price impact
+- `GET /api/onchain/token-governance-participation/[address]` - Track governance participation
+- `GET /api/onchain/token-risk-assessment-engine/[address]` - Comprehensive risk assessment
+- `GET /api/onchain/token-lending-borrowing-analyzer/[address]` - Analyze lending positions
+- `GET /api/onchain/token-nft-analytics/[address]` - Comprehensive NFT analytics
+- `GET /api/onchain/token-portfolio-diversification/[address]` - Analyze portfolio diversification
+- `GET /api/onchain/token-transaction-batch-optimizer/[address]` - Optimize batch transactions
+- `GET /api/onchain/token-liquidity-provider-rewards/[address]` - Calculate LP rewards
+- `GET /api/onchain/token-smart-money-tracking/[address]` - Track smart money wallets
+- `GET /api/onchain/token-bridge-fee-optimizer/[address]` - Find optimal bridge routes
+- `GET /api/onchain/token-impermanent-loss-calculator/[address]` - Calculate impermanent loss
+- `GET /api/onchain/token-treasury-tracker/[address]` - Track treasury balances
+- `GET /api/onchain/token-validator-performance/[address]` - Track validator performance
+- `GET /api/onchain/token-flash-loan-analyzer/[address]` - Analyze flash loan usage
+- `GET /api/onchain/token-mev-protection-analyzer/[address]` - Analyze MEV protection
+- `GET /api/onchain/token-options-greeks-calculator/[address]` - Calculate options Greeks
+- `GET /api/onchain/token-perpetual-funding-rate/[address]` - Track perpetual funding rates
+- `GET /api/onchain/token-stablecoin-peg-monitor/[address]` - Monitor stablecoin peg
 
 All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
 
