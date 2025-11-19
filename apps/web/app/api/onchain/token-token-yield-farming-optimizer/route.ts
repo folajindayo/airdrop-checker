@@ -5,35 +5,26 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const protocolAddress = searchParams.get('protocolAddress');
+    const tokenAddress = searchParams.get('tokenAddress');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!protocolAddress) {
+    if (!tokenAddress) {
       return NextResponse.json(
-        { error: 'Missing required parameter: protocolAddress' },
+        { error: 'Missing required parameter: tokenAddress' },
         { status: 400 }
       );
     }
 
-    const publicClient = createPublicClient({
-      chain: mainnet,
-      transport: http(),
-    });
-
-    // Optimize yield farming strategies
-    const optimization = {
-      bestPools: [],
-      estimatedAPY: '0',
-      recommendations: [],
-      riskScore: 0,
-    };
-
     return NextResponse.json({
       success: true,
-      protocolAddress,
+      tokenAddress,
       chainId,
-      optimization,
-      message: 'Yield farming optimization completed',
+      yieldOptimization: {
+        bestStrategy: null,
+        estimatedAPY: 0,
+        strategies: [],
+        riskScore: 0,
+      },
     });
   } catch (error: any) {
     return NextResponse.json(
@@ -42,3 +33,4 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+

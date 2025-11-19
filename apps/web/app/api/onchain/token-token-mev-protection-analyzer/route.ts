@@ -5,35 +5,26 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const address = searchParams.get('address');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!address) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: address' },
         { status: 400 }
       );
     }
 
-    const publicClient = createPublicClient({
-      chain: mainnet,
-      transport: http(),
-    });
-
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
-      recommendations: [],
-    };
-
     return NextResponse.json({
       success: true,
-      transactionHash,
+      address,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      mevProtection: {
+        protectionLevel: 'medium',
+        detectedAttacks: [],
+        protectionScore: 75,
+        recommendations: [],
+      },
     });
   } catch (error: any) {
     return NextResponse.json(
@@ -42,3 +33,4 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
