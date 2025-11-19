@@ -991,6 +991,34 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 934. **Token Token Contract Interaction Counter** - Count contract interactions and call frequency
 935. **Token Token DEX Liquidity Scanner** - Scan liquidity across multiple DEX platforms
 936. **Token Token Layer 2 Bridge Monitor** - Monitor Layer 2 bridge activity and efficiency
+937. **Token Smart Contract Wallet Detector** - Detect smart contract wallet deployments and usage
+938. **Token Token Interface Detector** - Detect ERC interfaces implemented by contract
+939. **Token Token Standard Detector** - Detect token standard (ERC20, ERC721, ERC1155)
+940. **Token Token Compatibility** - Check token compatibility with protocols and standards
+941. **Token Token ABI Generator** - Generate ABI from contract bytecode
+942. **Token Token TX Decoder** - Decode transaction data and function calls
+943. **Token Token Event Parser** - Parse and decode contract events
+944. **Token Token Storage Slot** - Read contract storage slots and decode values
+945. **Token Token Implementation** - Track implementation addresses for proxy contracts
+946. **Token Token Proxy Admin** - Track proxy admin addresses for upgradeable contracts
+947. **Token Token Execution Tracker** - Track proposal execution status and results
+948. **Token Token Voting Period** - Track voting period status for proposals
+949. **Token Token Quorum Tracker** - Track quorum requirements for proposals
+950. **Token Token Proposal Voting** - Track voting activity on proposals
+951. **Token Token Governance Treasury** - Track governance treasury balances
+952. **Token Token Protocol Fees** - Track protocol fees collected over time
+953. **Token Token Protocol Revenue** - Track protocol revenue over time
+954. **Token Token Utilization Rate** - Calculate pool utilization rate for lending protocols
+955. **Token Token Supply Rate** - Get supply rates for lending protocols
+956. **Token Token Borrow Rate** - Get current borrow rates for lending protocols
+957. **Token Token Health Factor** - Calculate health factor for lending positions
+958. **Token Token Liquidation Threshold** - Calculate liquidation threshold for positions
+959. **Token Token Collateral Ratio** - Calculate collateral ratio for lending protocols
+960. **Token Token Backing Calculator** - Calculate token backing value and collateralization
+961. **Token Token Reserve Tracker** - Track token reserves and backing assets
+962. **Token Token Timelock Tracker** - Track timelock delays for proposals
+963. **Token Token Liquidation Price** - Calculate liquidation price for positions
+964. **Token Token Safety Score** - Calculate comprehensive safety score for tokens
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
@@ -1586,6 +1614,34 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-token-contract-interaction-counter/[address]` - Count interactions
 - `GET /api/onchain/token-token-dex-liquidity-scanner/[address]` - Scan DEX liquidity
 - `GET /api/onchain/token-token-layer2-bridge-monitor/[address]` - Monitor Layer 2 bridges
+- `GET /api/onchain/token-smart-contract-wallet-detector/[address]` - Detect smart contract wallets
+- `GET /api/onchain/token-token-interface-detector/[address]` - Detect ERC interfaces
+- `GET /api/onchain/token-token-standard-detector/[address]` - Detect token standards
+- `GET /api/onchain/token-token-compatibility/[address]` - Check protocol compatibility
+- `GET /api/onchain/token-token-abi-generator/[address]` - Generate contract ABIs
+- `GET /api/onchain/token-token-tx-decoder/[address]` - Decode transactions
+- `GET /api/onchain/token-token-event-parser/[address]` - Parse contract events
+- `GET /api/onchain/token-token-storage-slot/[address]` - Read storage slots
+- `GET /api/onchain/token-token-implementation/[address]` - Track implementation addresses
+- `GET /api/onchain/token-token-proxy-admin/[address]` - Track proxy admin addresses
+- `GET /api/onchain/token-token-execution-tracker/[address]` - Track proposal execution
+- `GET /api/onchain/token-token-voting-period/[address]` - Track voting periods
+- `GET /api/onchain/token-token-quorum-tracker/[address]` - Track quorum requirements
+- `GET /api/onchain/token-token-proposal-voting/[address]` - Track proposal voting
+- `GET /api/onchain/token-token-governance-treasury/[address]` - Track governance treasury
+- `GET /api/onchain/token-token-protocol-fees/[address]` - Track protocol fees
+- `GET /api/onchain/token-token-protocol-revenue/[address]` - Track protocol revenue
+- `GET /api/onchain/token-token-utilization-rate/[address]` - Calculate utilization rate
+- `GET /api/onchain/token-token-supply-rate/[address]` - Get supply rates
+- `GET /api/onchain/token-token-borrow-rate/[address]` - Get borrow rates
+- `GET /api/onchain/token-token-health-factor/[address]` - Calculate health factor
+- `GET /api/onchain/token-token-liquidation-threshold/[address]` - Calculate liquidation threshold
+- `GET /api/onchain/token-token-collateral-ratio/[address]` - Calculate collateral ratio
+- `GET /api/onchain/token-token-backing-calculator/[address]` - Calculate backing value
+- `GET /api/onchain/token-token-reserve-tracker/[address]` - Track reserves
+- `GET /api/onchain/token-token-timelock-tracker/[address]` - Track timelock delays
+- `GET /api/onchain/token-token-liquidation-price/[address]` - Calculate liquidation price
+- `GET /api/onchain/token-token-safety-score/[address]` - Calculate safety score
 
 All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
 
