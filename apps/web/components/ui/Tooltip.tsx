@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, ReactNode } from "react";
+import { ReactNode, useState, useRef, useEffect } from "react";
 
 interface TooltipProps {
   content: string;
@@ -9,67 +9,95 @@ interface TooltipProps {
   delay?: number;
 }
 
-/**
- * Tooltip Component
- * Hover tooltip with configurable position
- */
-export default function Tooltip({
+export function Tooltip({
   content,
   children,
   position = "top",
   delay = 200,
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const timeoutRef = useRef<NodeJS.Timeout>();
+  const triggerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseEnter = () => {
-    const id = setTimeout(() => {
-      setIsVisible(true);
+  const showTooltip = () => {
+    timeoutRef.current = setTimeout(() => {
+      if (triggerRef.current) {
+        const rect = triggerRef.current.getBoundingClientRect();
+        const tooltipCoords = calculatePosition(rect, position);
+        setCoords(tooltipCoords);
+        setIsVisible(true);
+      }
     }, delay);
-    setTimeoutId(id);
   };
 
-  const handleMouseLeave = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
+  const hideTooltip = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
     setIsVisible(false);
   };
 
-  const positionClasses = {
-    top: "bottom-full left-1/2 -translate-x-1/2 -translate-y-2",
-    bottom: "top-full left-1/2 -translate-x-1/2 translate-y-2",
-    left: "right-full top-1/2 -translate-x-2 -translate-y-1/2",
-    right: "left-full top-1/2 translate-x-2 -translate-y-1/2",
-  };
-
-  const arrowClasses = {
-    top: "top-full left-1/2 -translate-x-1/2 border-t-gray-900",
-    bottom: "bottom-full left-1/2 -translate-x-1/2 border-b-gray-900",
-    left: "left-full top-1/2 -translate-y-1/2 border-l-gray-900",
-    right: "right-full top-1/2 -translate-y-1/2 border-r-gray-900",
-  };
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <div
-      className="relative inline-block"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {children}
-
+    <>
+      <div
+        ref={triggerRef}
+        onMouseEnter={showTooltip}
+        onMouseLeave={hideTooltip}
+        className="inline-block"
+      >
+        {children}
+      </div>
+      
       {isVisible && (
         <div
-          className={`absolute z-50 whitespace-nowrap rounded-lg bg-gray-900 px-3 py-2 text-sm text-white shadow-lg ${positionClasses[position]}`}
-          role="tooltip"
+          className="pointer-events-none fixed z-50 rounded bg-gray-900 px-2 py-1 text-xs text-white shadow-lg"
+          style={{
+            top: coords.top,
+            left: coords.left,
+          }}
         >
           {content}
-          <div
-            className={`absolute h-0 w-0 border-4 border-transparent ${arrowClasses[position]}`}
-          />
         </div>
       )}
-    </div>
+    </>
   );
 }
 
+function calculatePosition(
+  rect: DOMRect,
+  position: "top" | "bottom" | "left" | "right"
+): { top: number; left: number } {
+  const offset = 8;
+  
+  switch (position) {
+    case "top":
+      return {
+        top: rect.top - offset,
+        left: rect.left + rect.width / 2,
+      };
+    case "bottom":
+      return {
+        top: rect.bottom + offset,
+        left: rect.left + rect.width / 2,
+      };
+    case "left":
+      return {
+        top: rect.top + rect.height / 2,
+        left: rect.left - offset,
+      };
+    case "right":
+      return {
+        top: rect.top + rect.height / 2,
+        left: rect.right + offset,
+      };
+  }
+}
