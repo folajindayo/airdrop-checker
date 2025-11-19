@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-market-cap-efficiency/[address]
- * Measure market cap efficiency metrics
+ * Calculate market capitalization efficiency metrics
  */
 export async function GET(
   request: NextRequest,
@@ -26,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-marketcap-efficiency:${normalizedAddress}:${chainId || 'all'}`;
+    const cacheKey = `onchain-mcap-efficiency:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -39,11 +39,11 @@ export async function GET(
     const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const efficiency: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
+      marketCap: 0,
+      liquidityRatio: 0,
       efficiencyScore: 0,
-      volumeToMarketCapRatio: 0,
-      liquidityToMarketCapRatio: 0,
       timestamp: Date.now(),
     };
 
@@ -54,30 +54,27 @@ export async function GET(
       );
 
       if (response.data) {
-        const marketCap = parseFloat(response.data.market_cap_quote || '0');
-        const volume = parseFloat(response.data.volume_24h || '0');
+        efficiency.marketCap = parseFloat(response.data.market_cap_quote || '0');
         const liquidity = parseFloat(response.data.total_liquidity_quote || '0');
-        efficiency.volumeToMarketCapRatio = marketCap > 0 ? (volume / marketCap) * 100 : 0;
-        efficiency.liquidityToMarketCapRatio = marketCap > 0 ? (liquidity / marketCap) * 100 : 0;
-        efficiency.efficiencyScore = (efficiency.volumeToMarketCapRatio + efficiency.liquidityToMarketCapRatio) / 2;
+        efficiency.liquidityRatio = efficiency.marketCap > 0 ? 
+          (liquidity / efficiency.marketCap) * 100 : 0;
+        efficiency.efficiencyScore = Math.min(100, efficiency.liquidityRatio * 10);
       }
     } catch (error) {
-      console.error('Error measuring efficiency:', error);
+      console.error('Error calculating efficiency:', error);
     }
 
-    cache.set(cacheKey, efficiency, 5 * 60 * 1000);
+    cache.set(cacheKey, efficiency, 2 * 60 * 1000);
 
     return NextResponse.json(efficiency);
   } catch (error) {
     console.error('Market cap efficiency error:', error);
     return NextResponse.json(
       {
-        error: 'Failed to measure market cap efficiency',
+        error: 'Failed to calculate market cap efficiency',
         details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );
   }
 }
-
-
