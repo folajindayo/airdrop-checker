@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 882 Production-Ready Features!
+## 🎉 905 Production-Ready Features!
 
 ## ✨ Features
 
@@ -909,6 +909,29 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 880. **Token Options Greeks Calculator** - Calculate options Greeks for token positions
 881. **Token Perpetual Funding Rate** - Track perpetual futures funding rates and positions
 882. **Token Stablecoin Peg Monitor** - Monitor stablecoin peg stability and deviations
+883. **Token Liquidation Risk Calculator** - Calculate liquidation risk for lending positions
+884. **Token Vesting Schedule Tracker** - Track token vesting schedules and unlock timelines
+885. **Token DEX Price Aggregator** - Aggregate token prices across multiple DEX platforms
+886. **Token Token Approval Scanner** - Scan and analyze token approvals for security risks
+887. **Token Liquidity Snapshot** - Generate liquidity snapshots at specific block heights
+888. **Token Token Burn Tracker** - Track token burn events and supply reduction
+889. **Token Uniswap V3 Position** - Track Uniswap V3 concentrated liquidity positions
+890. **Token Token Tax Calculator** - Calculate token tax structure and fees
+891. **Token Holder Concentration Index** - Calculate holder concentration and distribution metrics
+892. **Token AMM Price Impact** - Calculate AMM price impact for swaps
+893. **Token Lending APY Comparison** - Compare lending APY across multiple DeFi protocols
+894. **Token Token Lock Detector** - Detect token locks and vesting mechanisms
+895. **Token DeFi Protocol Risk** - Assess DeFi protocol risks and security scores
+896. **Token Token Transfer Analyzer** - Analyze token transfer patterns and flows
+897. **Token Yield Farming APR** - Calculate yield farming APR across protocols
+898. **Token Token Holder Growth** - Track token holder growth over time periods
+899. **Token Liquidity Migration Analyzer** - Analyze liquidity migration patterns between DEXes
+900. **Token Token Supply Analyzer** - Analyze token supply metrics and inflation rates
+901. **Token Options Position Tracker** - Track options positions and PnL calculations
+902. **Token Token Holder Activity Heatmap** - Generate activity heatmap by time and day
+903. **Token Token Holder Sentiment** - Analyze holder sentiment based on on-chain behavior
+904. **Token Token Holder Retention Rate** - Calculate holder retention rates and loyalty metrics
+905. **Token Token Holder Value Score** - Calculate holder value distribution score
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
@@ -1450,6 +1473,29 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-options-greeks-calculator/[address]` - Calculate options Greeks
 - `GET /api/onchain/token-perpetual-funding-rate/[address]` - Track perpetual funding rates
 - `GET /api/onchain/token-stablecoin-peg-monitor/[address]` - Monitor stablecoin peg
+- `GET /api/onchain/token-liquidation-risk-calculator/[address]` - Calculate liquidation risk
+- `GET /api/onchain/token-vesting-schedule-tracker/[address]` - Track vesting schedules
+- `GET /api/onchain/token-dex-price-aggregator/[address]` - Aggregate DEX prices
+- `GET /api/onchain/token-token-approval-scanner/[address]` - Scan token approvals
+- `GET /api/onchain/token-liquidity-snapshot/[address]` - Generate liquidity snapshots
+- `GET /api/onchain/token-token-burn-tracker/[address]` - Track token burn events
+- `GET /api/onchain/token-uniswap-v3-position/[address]` - Track Uniswap V3 positions
+- `GET /api/onchain/token-token-tax-calculator/[address]` - Calculate token taxes
+- `GET /api/onchain/token-holder-concentration-index/[address]` - Calculate concentration index
+- `GET /api/onchain/token-amm-price-impact/[address]` - Calculate AMM price impact
+- `GET /api/onchain/token-lending-apy-comparison/[address]` - Compare lending APY
+- `GET /api/onchain/token-token-lock-detector/[address]` - Detect token locks
+- `GET /api/onchain/token-defi-protocol-risk/[address]` - Assess protocol risks
+- `GET /api/onchain/token-token-transfer-analyzer/[address]` - Analyze transfer patterns
+- `GET /api/onchain/token-yield-farming-apr/[address]` - Calculate yield farming APR
+- `GET /api/onchain/token-token-holder-growth/[address]` - Track holder growth
+- `GET /api/onchain/token-liquidity-migration-analyzer/[address]` - Analyze liquidity migration
+- `GET /api/onchain/token-token-supply-analyzer/[address]` - Analyze token supply
+- `GET /api/onchain/token-options-position-tracker/[address]` - Track options positions
+- `GET /api/onchain/token-token-holder-activity-heatmap/[address]` - Generate activity heatmap
+- `GET /api/onchain/token-token-holder-sentiment/[address]` - Analyze holder sentiment
+- `GET /api/onchain/token-token-holder-retention-rate/[address]` - Calculate retention rate
+- `GET /api/onchain/token-token-holder-value-score/[address]` - Calculate value score
 
 All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
 
