@@ -8,7 +8,6 @@ export const dynamic = 'force-dynamic';
 /**
  * GET /api/onchain/token-liquidity-quality-score/[address]
  * Calculate comprehensive liquidity quality score
- * Measures liquidity health and stability
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-liq-quality:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-liquidity-quality:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,37 +36,34 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const quality: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
-      qualityScore: 0,
       depthScore: 0,
-      stabilityScore: 0,
+      spreadScore: 0,
+      qualityScore: 0,
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/pools/`,
-        { 'quote-currency': 'USD', 'page-size': 20 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const pools = response.data.items;
-        const totalLiquidity = pools.reduce((sum: number, p: any) => 
-          sum + parseFloat(p.total_liquidity_quote || '0'), 0);
-        
-        quality.depthScore = Math.min((totalLiquidity / 1000000) * 50, 50);
-        quality.stabilityScore = pools.length > 1 ? 30 : 20;
-        quality.qualityScore = quality.depthScore + quality.stabilityScore;
+      if (response.data) {
+        const liquidity = parseFloat(response.data.total_liquidity_quote || '0');
+        quality.depthScore = Math.min(100, (liquidity / 1000000) * 10);
+        quality.spreadScore = liquidity > 500000 ? 90 : 60;
+        quality.qualityScore = (quality.depthScore + quality.spreadScore) / 2;
       }
     } catch (error) {
       console.error('Error calculating quality:', error);
     }
 
-    cache.set(cacheKey, quality, 10 * 60 * 1000);
+    cache.set(cacheKey, quality, 3 * 60 * 1000);
 
     return NextResponse.json(quality);
   } catch (error) {
@@ -81,4 +77,3 @@ export async function GET(
     );
   }
 }
-

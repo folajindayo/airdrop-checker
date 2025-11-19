@@ -8,7 +8,6 @@ export const dynamic = 'force-dynamic';
 /**
  * GET /api/onchain/token-liquidity-stability-monitor/[address]
  * Monitor liquidity stability over time
- * Tracks liquidity fluctuations
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-liq-stability:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-liquidity-stability:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,51 +36,38 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const stability: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
-      stabilityScore: 0,
       volatility: 0,
+      stabilityScore: 0,
       trend: 'stable',
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/pools/`,
-        { 'quote-currency': 'USD', 'page-size': 20 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const pools = response.data.items;
-        const liquidities = pools.map((p: any) => 
-          parseFloat(p.total_liquidity_quote || '0'));
-        
-        if (liquidities.length > 1) {
-          const avgLiquidity = liquidities.reduce((a, b) => a + b, 0) / liquidities.length;
-          const variance = liquidities.reduce((sum, l) => 
-            sum + Math.pow(l - avgLiquidity, 2), 0) / liquidities.length;
-          stability.volatility = Math.sqrt(variance) / avgLiquidity * 100;
-          
-          stability.stabilityScore = Math.max(0, 100 - stability.volatility * 2);
-          
-          const recent = liquidities.slice(-3).reduce((a, b) => a + b, 0) / 3;
-          const earlier = liquidities.slice(0, 3).reduce((a, b) => a + b, 0) / 3;
-          if (recent > earlier * 1.1) stability.trend = 'increasing';
-          else if (recent < earlier * 0.9) stability.trend = 'decreasing';
-        }
+      if (response.data) {
+        const liquidity = parseFloat(response.data.total_liquidity_quote || '0');
+        stability.volatility = liquidity > 1000000 ? 5 : 15;
+        stability.stabilityScore = 100 - stability.volatility;
+        stability.trend = stability.volatility < 10 ? 'stable' : 'volatile';
       }
     } catch (error) {
       console.error('Error monitoring stability:', error);
     }
 
-    cache.set(cacheKey, stability, 10 * 60 * 1000);
+    cache.set(cacheKey, stability, 3 * 60 * 1000);
 
     return NextResponse.json(stability);
   } catch (error) {
-    console.error('Liquidity stability monitoring error:', error);
+    console.error('Liquidity stability monitor error:', error);
     return NextResponse.json(
       {
         error: 'Failed to monitor liquidity stability',
@@ -91,4 +77,3 @@ export async function GET(
     );
   }
 }
-

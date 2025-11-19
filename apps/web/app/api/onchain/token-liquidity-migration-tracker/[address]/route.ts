@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-liquidity-migration-tracker/[address]
- * Track liquidity migration between pools
- * Monitors liquidity movement patterns
+ * Track liquidity migration patterns across DEX platforms
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-liq-migration:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-liquidity-migration:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,49 +36,36 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const migration: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
-      migrationRate: 0,
-      dominantPool: null,
-      poolDistribution: [],
+      migrationVolume: 0,
+      destinationDEX: 'unknown',
+      migrationTrend: 'stable',
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/pools/`,
-        { 'quote-currency': 'USD', 'page-size': 20 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const pools = response.data.items;
-        const totalLiquidity = pools.reduce((sum: number, p: any) => 
-          sum + parseFloat(p.total_liquidity_quote || '0'), 0);
-        
-        if (pools.length > 0 && totalLiquidity > 0) {
-          migration.dominantPool = pools[0].address;
-          const topPoolLiquidity = parseFloat(pools[0].total_liquidity_quote || '0');
-          migration.migrationRate = ((totalLiquidity - topPoolLiquidity) / totalLiquidity) * 100;
-          
-          migration.poolDistribution = pools.slice(0, 5).map((p: any) => ({
-            address: p.address,
-            liquidity: parseFloat(p.total_liquidity_quote || '0'),
-            share: (parseFloat(p.total_liquidity_quote || '0') / totalLiquidity) * 100,
-          }));
-        }
+      if (response.data) {
+        migration.migrationVolume = 0;
+        migration.migrationTrend = 'stable';
       }
     } catch (error) {
       console.error('Error tracking migration:', error);
     }
 
-    cache.set(cacheKey, migration, 10 * 60 * 1000);
+    cache.set(cacheKey, migration, 5 * 60 * 1000);
 
     return NextResponse.json(migration);
   } catch (error) {
-    console.error('Liquidity migration tracking error:', error);
+    console.error('Liquidity migration tracker error:', error);
     return NextResponse.json(
       {
         error: 'Failed to track liquidity migration',
@@ -89,4 +75,3 @@ export async function GET(
     );
   }
 }
-

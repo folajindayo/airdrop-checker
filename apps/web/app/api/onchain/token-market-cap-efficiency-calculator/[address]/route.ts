@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-market-cap-efficiency-calculator/[address]
- * Calculate market cap efficiency metrics
- * Measures valuation relative to activity
+ * Calculate market cap efficiency with advanced metrics
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-mcap-efficiency:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-mcap-efficiency-calc:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,55 +36,40 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const efficiency: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
+      marketCap: 0,
+      liquidityRatio: 0,
+      volumeRatio: 0,
       efficiencyScore: 0,
-      volumeToMarketCap: 0,
-      holderToMarketCap: 0,
       timestamp: Date.now(),
     };
 
     try {
-      const tokenResponse = await goldrushClient.get(
+      const response = await goldrushClient.get(
         `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
         { 'quote-currency': 'USD' }
       );
 
-      const holdersResponse = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/token_holders/`,
-        { 'quote-currency': 'USD', 'page-size': 1 }
-      );
-
-      if (tokenResponse.data?.items?.[0]) {
-        const token = tokenResponse.data.items[0];
-        const marketCap = parseFloat(token.market_cap_quote || '0');
-        const volume24h = parseFloat(token.volume_24h_quote || '0');
-        
-        if (marketCap > 0) {
-          efficiency.volumeToMarketCap = (volume24h / marketCap) * 100;
-          
-          if (holdersResponse.data?.items) {
-            const holderCount = holdersResponse.data.items.length;
-            efficiency.holderToMarketCap = marketCap > 0 
-              ? marketCap / Math.max(holderCount, 1) 
-              : 0;
-          }
-          
-          efficiency.efficiencyScore = Math.min(efficiency.volumeToMarketCap * 10, 100);
-        }
+      if (response.data) {
+        efficiency.marketCap = parseFloat(response.data.market_cap_quote || '0');
+        const liquidity = parseFloat(response.data.total_liquidity_quote || '0');
+        efficiency.liquidityRatio = efficiency.marketCap > 0 ? 
+          (liquidity / efficiency.marketCap) * 100 : 0;
+        efficiency.efficiencyScore = Math.min(100, efficiency.liquidityRatio * 2);
       }
     } catch (error) {
       console.error('Error calculating efficiency:', error);
     }
 
-    cache.set(cacheKey, efficiency, 10 * 60 * 1000);
+    cache.set(cacheKey, efficiency, 2 * 60 * 1000);
 
     return NextResponse.json(efficiency);
   } catch (error) {
-    console.error('Market cap efficiency error:', error);
+    console.error('Market cap efficiency calculator error:', error);
     return NextResponse.json(
       {
         error: 'Failed to calculate market cap efficiency',
@@ -95,4 +79,3 @@ export async function GET(
     );
   }
 }
-

@@ -1,137 +1,114 @@
-/**
- * API Client Base
- * 
- * Base HTTP client for external API calls
- */
-
-export interface ApiClientConfig {
-  baseURL: string;
-  apiKey?: string;
-  timeout?: number;
-  retries?: number;
-  headers?: Record<string, string>;
-}
-
-export interface ApiClientOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-  headers?: Record<string, string>;
-  body?: any;
+export interface RequestConfig extends RequestInit {
   params?: Record<string, string>;
   timeout?: number;
 }
 
-export class ApiClient {
-  private config: ApiClientConfig;
+export class ApiClientError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public response?: any
+  ) {
+    super(message);
+    this.name = "ApiClientError";
+  }
+}
 
-  constructor(config: ApiClientConfig) {
-    this.config = {
-      timeout: 30000,
-      retries: 3,
-      ...config,
-    };
+export class ApiClient {
+  private baseURL: string;
+  private defaultTimeout: number;
+
+  constructor(baseURL: string = "/api", defaultTimeout: number = 30000) {
+    this.baseURL = baseURL;
+    this.defaultTimeout = defaultTimeout;
   }
 
-  /**
-   * Make HTTP request
-   */
-  async request<T>(endpoint: string, options: ApiClientOptions = {}): Promise<T> {
-    const url = this.buildUrl(endpoint, options.params);
-    const headers = this.buildHeaders(options.headers);
+  private buildURL(endpoint: string, params?: Record<string, string>): string {
+    const url = `${this.baseURL}${endpoint}`;
+
+    if (!params) {
+      return url;
+    }
+
+    const searchParams = new URLSearchParams(params);
+    return `${url}?${searchParams.toString()}`;
+  }
+
+  private async makeRequest<T>(
+    endpoint: string,
+    config: RequestConfig = {}
+  ): Promise<T> {
+    const { params, timeout = this.defaultTimeout, ...fetchConfig } = config;
+
+    const url = this.buildURL(endpoint, params);
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => {
-      controller.abort();
-    }, options.timeout || this.config.timeout);
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
 
     try {
       const response = await fetch(url, {
-        method: options.method || 'GET',
-        headers,
-        body: options.body ? JSON.stringify(options.body) : undefined,
+        ...fetchConfig,
         signal: controller.signal,
+        headers: {
+          "Content-Type": "application/json",
+          ...fetchConfig.headers,
+        },
       });
 
-      clearTimeout(timeout);
+      clearTimeout(timeoutId);
+
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new ApiClientError(
+          data.error || "Request failed",
+          response.status,
+          data
+        );
       }
 
-      return await response.json();
+      return data;
     } catch (error) {
-      clearTimeout(timeout);
-      throw this.handleError(error);
+      clearTimeout(timeoutId);
+
+      if (error instanceof ApiClientError) {
+        throw error;
+      }
+
+      if (error instanceof Error && error.name === "AbortError") {
+        throw new ApiClientError("Request timeout", 408);
+      }
+
+      throw new ApiClientError(
+        error instanceof Error ? error.message : "Unknown error",
+        500
+      );
     }
   }
 
-  /**
-   * GET request
-   */
-  async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
-    return this.request<T>(endpoint, { method: 'GET', params });
+  async get<T>(endpoint: string, config?: RequestConfig): Promise<T> {
+    return this.makeRequest<T>(endpoint, { ...config, method: "GET" });
   }
 
-  /**
-   * POST request
-   */
-  async post<T>(endpoint: string, body: any): Promise<T> {
-    return this.request<T>(endpoint, { method: 'POST', body });
+  async post<T>(endpoint: string, body?: any, config?: RequestConfig): Promise<T> {
+    return this.makeRequest<T>(endpoint, {
+      ...config,
+      method: "POST",
+      body: JSON.stringify(body),
+    });
   }
 
-  /**
-   * PUT request
-   */
-  async put<T>(endpoint: string, body: any): Promise<T> {
-    return this.request<T>(endpoint, { method: 'PUT', body });
+  async put<T>(endpoint: string, body?: any, config?: RequestConfig): Promise<T> {
+    return this.makeRequest<T>(endpoint, {
+      ...config,
+      method: "PUT",
+      body: JSON.stringify(body),
+    });
   }
 
-  /**
-   * DELETE request
-   */
-  async delete<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: 'DELETE' });
-  }
-
-  /**
-   * Build full URL with query parameters
-   */
-  private buildUrl(endpoint: string, params?: Record<string, string>): string {
-    const url = new URL(endpoint, this.config.baseURL);
-
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        url.searchParams.append(key, value);
-      });
-    }
-
-    return url.toString();
-  }
-
-  /**
-   * Build request headers
-   */
-  private buildHeaders(customHeaders?: Record<string, string>): HeadersInit {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      ...this.config.headers,
-      ...customHeaders,
-    };
-
-    if (this.config.apiKey) {
-      headers['Authorization'] = `Bearer ${this.config.apiKey}`;
-    }
-
-    return headers;
-  }
-
-  /**
-   * Handle request errors
-   */
-  private handleError(error: any): Error {
-    if (error.name === 'AbortError') {
-      return new Error('Request timeout');
-    }
-
-    return error instanceof Error ? error : new Error('Unknown error');
+  async delete<T>(endpoint: string, config?: RequestConfig): Promise<T> {
+    return this.makeRequest<T>(endpoint, { ...config, method: "DELETE" });
   }
 }
+
+export const apiClient = new ApiClient();

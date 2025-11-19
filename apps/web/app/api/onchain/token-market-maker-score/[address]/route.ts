@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-market-maker-score/[address]
- * Calculate market maker activity score
- * Measures liquidity provision quality
+ * Calculate market maker quality and activity score
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-mm-score:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-mm-score:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,44 +36,32 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const mmScore: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
+      liquidityProvided: 0,
+      activityFrequency: 0,
       marketMakerScore: 0,
-      liquidityDepth: 0,
-      spreadTightness: 0,
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/pools/`,
-        { 'quote-currency': 'USD', 'page-size': 10 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items && response.data.items.length > 0) {
-        const pools = response.data.items;
-        const totalLiquidity = pools.reduce((sum: number, p: any) => 
-          sum + parseFloat(p.total_liquidity_quote || '0'), 0);
-        
-        mmScore.liquidityDepth = totalLiquidity;
-        mmScore.marketMakerScore = Math.min((totalLiquidity / 1000000) * 100, 100);
-        
-        if (pools.length > 1) {
-          const spreads = pools.map((p: any) => {
-            const fee = parseFloat(p.fee_tier || '0.003');
-            return fee * 100;
-          });
-          mmScore.spreadTightness = spreads.reduce((a, b) => a + b, 0) / spreads.length;
-        }
+      if (response.data) {
+        mmScore.liquidityProvided = parseFloat(response.data.total_liquidity_quote || '0');
+        mmScore.marketMakerScore = Math.min(100, (mmScore.liquidityProvided / 1000000) * 10);
       }
     } catch (error) {
       console.error('Error calculating MM score:', error);
     }
 
-    cache.set(cacheKey, mmScore, 10 * 60 * 1000);
+    cache.set(cacheKey, mmScore, 3 * 60 * 1000);
 
     return NextResponse.json(mmScore);
   } catch (error) {
@@ -88,4 +75,3 @@ export async function GET(
     );
   }
 }
-

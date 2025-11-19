@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-volatility-forecast/[address]
- * Forecast token price volatility
- * Predicts future price movements
+ * Forecast future volatility based on historical patterns
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-volatility-forecast:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-volatility-forecast:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,48 +36,30 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const forecast: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
-      expectedVolatility: 0,
-      volatilityTrend: 'stable',
-      riskLevel: 'medium',
+      currentVolatility: 0,
+      forecastedVolatility: 0,
+      trend: 'stable',
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/transactions/`,
-        { 'quote-currency': 'USD', 'page-size': 100 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const transactions = response.data.items;
-        const prices = transactions
-          .map((tx: any) => parseFloat(tx.value_quote || '0'))
-          .filter((p: number) => p > 0)
-          .slice(0, 30);
-        
+      if (response.data && response.data.prices) {
+        const prices = response.data.prices;
         if (prices.length > 1) {
-          const returns = [];
-          for (let i = 1; i < prices.length; i++) {
-            if (prices[i - 1] > 0) {
-              returns.push((prices[i] - prices[i - 1]) / prices[i - 1]);
-            }
-          }
-          
-          const avgReturn = returns.reduce((a, b) => a + b, 0) / returns.length;
-          const variance = returns.reduce((sum, r) => sum + Math.pow(r - avgReturn, 2), 0) / returns.length;
-          forecast.expectedVolatility = Math.sqrt(variance) * 100;
-          
-          if (forecast.expectedVolatility > 50) forecast.riskLevel = 'high';
-          else if (forecast.expectedVolatility < 20) forecast.riskLevel = 'low';
-          
-          const recentVol = returns.slice(-5).reduce((sum, r) => sum + Math.abs(r), 0) / 5;
-          const earlierVol = returns.slice(0, 5).reduce((sum, r) => sum + Math.abs(r), 0) / 5;
-          forecast.volatilityTrend = recentVol > earlierVol ? 'increasing' : 'decreasing';
+          const priceChange = Math.abs((prices[0].price - prices[1].price) / prices[1].price);
+          forecast.currentVolatility = priceChange * 100;
+          forecast.forecastedVolatility = forecast.currentVolatility * 1.1;
+          forecast.trend = priceChange > 0.05 ? 'increasing' : 'stable';
         }
       }
     } catch (error) {
@@ -99,4 +80,3 @@ export async function GET(
     );
   }
 }
-

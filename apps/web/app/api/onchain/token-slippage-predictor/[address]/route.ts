@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-slippage-predictor/[address]
- * Predict slippage for token swaps
- * Estimates price impact for different trade sizes
+ * Predict slippage for token trades based on liquidity
  */
 export async function GET(
   request: NextRequest,
@@ -17,8 +16,8 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
-    const tradeSize = parseFloat(searchParams.get('tradeSize') || '1000');
+    const chainId = searchParams.get('chainId');
+    const tradeSize = searchParams.get('tradeSize');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -28,7 +27,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-slippage-predict:${normalizedAddress}:${chainId}:${tradeSize}`;
+    const cacheKey = `onchain-slippage-predict:${normalizedAddress}:${tradeSize || 'default'}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -38,45 +37,39 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
+    const size = tradeSize ? parseFloat(tradeSize) : 1000;
 
     const prediction: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
-      tradeSize,
-      expectedSlippage: 0,
-      priceImpact: 0,
-      recommendedMaxSize: 0,
+      tradeSize: size,
+      estimatedSlippage: 0,
+      confidence: 0,
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/pools/`,
-        { 'quote-currency': 'USD', 'page-size': 10 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items && response.data.items.length > 0) {
-        const topPool = response.data.items[0];
-        const poolLiquidity = parseFloat(topPool.total_liquidity_quote || '0');
-        
-        if (poolLiquidity > 0) {
-          const liquidityRatio = tradeSize / poolLiquidity;
-          prediction.priceImpact = liquidityRatio * 100;
-          prediction.expectedSlippage = Math.min(prediction.priceImpact * 1.2, 50);
-          
-          prediction.recommendedMaxSize = poolLiquidity * 0.01;
-        }
+      if (response.data) {
+        const liquidity = parseFloat(response.data.total_liquidity_quote || '0');
+        prediction.estimatedSlippage = liquidity > 0 ? 
+          Math.min(5, (size / liquidity) * 100) : 5;
+        prediction.confidence = liquidity > size * 10 ? 90 : 60;
       }
     } catch (error) {
       console.error('Error predicting slippage:', error);
     }
 
-    cache.set(cacheKey, prediction, 2 * 60 * 1000);
+    cache.set(cacheKey, prediction, 1 * 60 * 1000);
 
     return NextResponse.json(prediction);
   } catch (error) {
-    console.error('Slippage prediction error:', error);
+    console.error('Slippage predictor error:', error);
     return NextResponse.json(
       {
         error: 'Failed to predict slippage',
@@ -86,4 +79,3 @@ export async function GET(
     );
   }
 }
-

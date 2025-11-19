@@ -18,6 +18,6 @@ export * from './sorters-new-features';
 export * from './config-new-features';
 
 export const LATEST_FEATURES_COUNT = 30;
-export const LATEST_FEATURES_RANGE = '828-857';
-export const TOTAL_FEATURES = 890;
+export const LATEST_FEATURES_RANGE = '798-827';
+export const TOTAL_FEATURES = 860;
 

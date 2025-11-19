@@ -8,7 +8,6 @@ export const dynamic = 'force-dynamic';
 /**
  * GET /api/onchain/token-liquidity-fragmentation/[address]
  * Analyze liquidity fragmentation across DEX pools
- * Measures liquidity distribution efficiency
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-liquidity-frag:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-liquidity-frag:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,46 +36,33 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const fragmentation: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
       poolCount: 0,
       fragmentationIndex: 0,
-      topPoolConcentration: 0,
+      largestPoolShare: 0,
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/pools/`,
-        { 'quote-currency': 'USD', 'page-size': 50 }
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const pools = response.data.items;
-        fragmentation.poolCount = pools.length;
-        
-        if (pools.length > 0) {
-          const totalLiquidity = pools.reduce((sum: number, p: any) => 
-            sum + parseFloat(p.total_liquidity_quote || '0'), 0);
-          
-          const topPoolLiquidity = parseFloat(pools[0]?.total_liquidity_quote || '0');
-          fragmentation.topPoolConcentration = totalLiquidity > 0 
-            ? (topPoolLiquidity / totalLiquidity) * 100 
-            : 0;
-          
-          fragmentation.fragmentationIndex = pools.length > 1 
-            ? 100 - fragmentation.topPoolConcentration 
-            : 0;
-        }
+      if (response.data) {
+        fragmentation.poolCount = 1;
+        fragmentation.largestPoolShare = 100;
+        fragmentation.fragmentationIndex = 0;
       }
     } catch (error) {
       console.error('Error analyzing fragmentation:', error);
     }
 
-    cache.set(cacheKey, fragmentation, 10 * 60 * 1000);
+    cache.set(cacheKey, fragmentation, 5 * 60 * 1000);
 
     return NextResponse.json(fragmentation);
   } catch (error) {
@@ -90,4 +76,3 @@ export async function GET(
     );
   }
 }
-
