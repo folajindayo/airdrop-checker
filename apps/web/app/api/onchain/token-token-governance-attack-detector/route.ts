@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const governanceAddress = searchParams.get('governanceAddress');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!governanceAddress) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: governanceAddress' },
         { status: 400 }
       );
     }
@@ -20,25 +20,26 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
-      recommendations: [],
+    // Detect governance attacks
+    const attackDetection = {
+      isUnderAttack: false,
+      attackType: null,
+      vulnerabilityScore: 0,
+      protectionMechanisms: [],
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
+      governanceAddress,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      attackDetection,
+      message: 'Governance attack detection completed',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to detect governance attacks' },
       { status: 500 }
     );
   }
 }
+

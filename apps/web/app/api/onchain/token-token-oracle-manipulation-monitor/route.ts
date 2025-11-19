@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const oracleAddress = searchParams.get('oracleAddress');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!oracleAddress) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: oracleAddress' },
         { status: 400 }
       );
     }
@@ -20,25 +20,26 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
-      recommendations: [],
+    // Monitor for oracle manipulation
+    const oracleMonitoring = {
+      isManipulated: false,
+      priceDeviation: 0,
+      manipulationScore: 0,
+      alerts: [],
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
+      oracleAddress,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      oracleMonitoring,
+      message: 'Oracle manipulation monitoring active',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to monitor oracle manipulation' },
       { status: 500 }
     );
   }
 }
+

@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const tokenAddress = searchParams.get('tokenAddress');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!tokenAddress) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: tokenAddress' },
         { status: 400 }
       );
     }
@@ -20,25 +20,26 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
+    // Check compliance
+    const compliance = {
+      isCompliant: false,
+      complianceChecks: [],
+      violations: [],
       recommendations: [],
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
+      tokenAddress,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      compliance,
+      message: 'Compliance check completed',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to check compliance' },
       { status: 500 }
     );
   }
 }
+

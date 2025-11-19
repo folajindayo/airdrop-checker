@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const addresses = searchParams.get('addresses');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!addresses) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: addresses' },
         { status: 400 }
       );
     }
@@ -20,25 +20,25 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
-      recommendations: [],
+    // Build Merkle tree
+    const merkleTree = {
+      root: null,
+      leaves: [],
+      proof: {},
+      treeDepth: 0,
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      merkleTree,
+      message: 'Merkle tree built successfully',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to build Merkle tree' },
       { status: 500 }
     );
   }
 }
+

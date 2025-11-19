@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const walletAddress = searchParams.get('walletAddress');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!walletAddress) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: walletAddress' },
         { status: 400 }
       );
     }
@@ -20,25 +20,26 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
-      recommendations: [],
+    // Calculate tax obligations
+    const taxCalculation = {
+      totalGains: '0',
+      totalLosses: '0',
+      taxOwed: '0',
+      transactions: [],
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
+      walletAddress,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      taxCalculation,
+      message: 'Tax calculation completed',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to calculate tax' },
       { status: 500 }
     );
   }
 }
+

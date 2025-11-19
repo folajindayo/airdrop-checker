@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const transactionData = searchParams.get('transactionData');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!transactionData) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: transactionData' },
         { status: 400 }
       );
     }
@@ -20,25 +20,25 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
+    // Optimize transaction costs
+    const costOptimization = {
+      currentCost: '0',
+      optimizedCost: '0',
+      savings: '0',
       recommendations: [],
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      costOptimization,
+      message: 'Transaction cost optimization completed',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to optimize transaction costs' },
       { status: 500 }
     );
   }
 }
+

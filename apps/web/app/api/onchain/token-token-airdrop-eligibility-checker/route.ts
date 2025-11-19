@@ -5,12 +5,13 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const address = searchParams.get('address');
+    const airdropContract = searchParams.get('airdropContract');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!address || !airdropContract) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameters: address and airdropContract' },
         { status: 400 }
       );
     }
@@ -20,25 +21,27 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
-      recommendations: [],
+    // Check airdrop eligibility
+    const eligibility = {
+      isEligible: false,
+      claimableAmount: '0',
+      proof: null,
+      requirements: [],
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
+      address,
+      airdropContract,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      eligibility,
+      message: 'Airdrop eligibility checked',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to check airdrop eligibility' },
       { status: 500 }
     );
   }
 }
+

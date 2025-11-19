@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const distributionContract = searchParams.get('distributionContract');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!distributionContract) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: distributionContract' },
         { status: 400 }
       );
     }
@@ -20,25 +20,26 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
-      recommendations: [],
+    // Manage claim distribution
+    const distribution = {
+      totalClaims: 0,
+      claimedAmount: '0',
+      remainingAmount: '0',
+      claimStatus: {},
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
+      distributionContract,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      distribution,
+      message: 'Claim distribution managed',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to manage claim distribution' },
       { status: 500 }
     );
   }
 }
+

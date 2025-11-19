@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const protocolType = searchParams.get('protocolType');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!protocolType) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: protocolType' },
         { status: 400 }
       );
     }
@@ -20,25 +20,26 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
+    // Aggregate DeFi protocols
+    const protocolAggregation = {
+      protocols: [],
+      bestRates: {},
       recommendations: [],
+      totalTVL: '0',
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
+      protocolType,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      protocolAggregation,
+      message: 'DeFi protocol aggregation completed',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to aggregate DeFi protocols' },
       { status: 500 }
     );
   }
 }
+

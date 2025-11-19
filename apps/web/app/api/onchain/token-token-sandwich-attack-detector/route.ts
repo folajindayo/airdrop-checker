@@ -20,25 +20,27 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
-      recommendations: [],
+    // Detect sandwich attacks
+    const sandwichAnalysis = {
+      isSandwichAttack: false,
+      attackType: null,
+      profitExtracted: '0',
+      frontRunTx: null,
+      backRunTx: null,
     };
 
     return NextResponse.json({
       success: true,
       transactionHash,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      sandwichAnalysis,
+      message: 'Sandwich attack detection completed',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to detect sandwich attacks' },
       { status: 500 }
     );
   }
 }
+

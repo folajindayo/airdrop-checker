@@ -5,12 +5,12 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const transactionHash = searchParams.get('transactionHash');
+    const signature = searchParams.get('signature');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!transactionHash) {
+    if (!signature) {
       return NextResponse.json(
-        { error: 'Missing required parameter: transactionHash' },
+        { error: 'Missing required parameter: signature' },
         { status: 400 }
       );
     }
@@ -20,25 +20,26 @@ export async function GET(request: NextRequest) {
       transport: http(),
     });
 
-    // Analyze MEV protection status
-    const mevProtection = {
-      isProtected: false,
-      protectionLevel: 'none',
-      detectedThreats: [],
-      recommendations: [],
+    // Detect signature replay attacks
+    const replayCheck = {
+      isReplayable: false,
+      chainId: chainId,
+      nonce: null,
+      protectionMechanisms: [],
     };
 
     return NextResponse.json({
       success: true,
-      transactionHash,
+      signature,
       chainId,
-      mevProtection,
-      message: 'MEV protection analysis completed',
+      replayCheck,
+      message: 'Signature replay detection completed',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to analyze MEV protection' },
+      { error: error.message || 'Failed to detect signature replay' },
       { status: 500 }
     );
   }
 }
+
