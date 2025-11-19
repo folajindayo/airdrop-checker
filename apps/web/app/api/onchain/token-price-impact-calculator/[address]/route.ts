@@ -17,7 +17,7 @@ export async function GET(
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
     const chainId = searchParams.get('chainId');
-    const tradeSize = searchParams.get('tradeSize') || '1000';
+    const tradeSize = searchParams.get('tradeSize');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,8 +27,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const tradeAmount = parseFloat(tradeSize);
-    const cacheKey = `onchain-price-impact-calc:${normalizedAddress}:${chainId || 'all'}:${tradeAmount}`;
+    const cacheKey = `onchain-price-impact:${normalizedAddress}:${tradeSize || 'default'}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -39,14 +38,15 @@ export async function GET(
     }
 
     const targetChainId = chainId ? parseInt(chainId) : 1;
+    const size = tradeSize ? parseFloat(tradeSize) : 10000;
 
     const impact: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
-      tradeSize: tradeAmount,
+      tradeSize: size,
       priceImpact: 0,
+      executionPrice: 0,
       slippage: 0,
-      recommendedMaxSize: 0,
       timestamp: Date.now(),
     };
 
@@ -58,14 +58,12 @@ export async function GET(
 
       if (response.data) {
         const liquidity = parseFloat(response.data.total_liquidity_quote || '0');
-        if (liquidity > 0) {
-          impact.priceImpact = (tradeAmount / liquidity) * 100;
-          impact.slippage = impact.priceImpact * 0.5;
-          impact.recommendedMaxSize = liquidity * 0.05;
-        }
+        impact.priceImpact = liquidity > 0 ? (size / liquidity) * 100 : 5;
+        impact.slippage = impact.priceImpact * 0.8;
+        impact.executionPrice = parseFloat(response.data.prices?.[0]?.price || '0') * (1 + impact.priceImpact / 100);
       }
     } catch (error) {
-      console.error('Error calculating impact:', error);
+      console.error('Error calculating price impact:', error);
     }
 
     cache.set(cacheKey, impact, 2 * 60 * 1000);
