@@ -7,8 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-network-effect-analyzer/[address]
- * Analyze network effects and token adoption patterns
- * Measures viral growth potential
+ * Analyze network effects and growth patterns for tokens
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function GET(
   try {
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId') || '1';
+    const chainId = searchParams.get('chainId');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-network-effect:${normalizedAddress}:${chainId}`;
+    const cacheKey = `onchain-network-effect:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -37,55 +36,36 @@ export async function GET(
       });
     }
 
-    const targetChainId = parseInt(chainId);
+    const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const networkEffect: any = {
-      tokenAddress: normalizedAddress,
+      address: normalizedAddress,
       chainId: targetChainId,
+      holderGrowthRate: 0,
+      transactionVelocity: 0,
       networkScore: 0,
-      growthVelocity: 0,
-      adoptionRate: 0,
       timestamp: Date.now(),
     };
 
     try {
-      const holdersResponse = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/token_holders/`,
-        { 'quote-currency': 'USD', 'page-size': 100 }
+      const response = await goldrushClient.get(
+        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
+        { 'quote-currency': 'USD' }
       );
 
-      if (holdersResponse.data?.items) {
-        const holders = holdersResponse.data.items;
-        networkEffect.holderCount = holders.length;
-        
-        const recentGrowth = holders.filter((h: any) => {
-          const firstTx = h.first_transaction_date;
-          if (!firstTx) return false;
-          const daysSince = (Date.now() - new Date(firstTx).getTime()) / (1000 * 60 * 60 * 24);
-          return daysSince < 7;
-        }).length;
-        
-        networkEffect.growthVelocity = recentGrowth;
-        networkEffect.adoptionRate = holders.length > 0 
-          ? (recentGrowth / holders.length) * 100 
-          : 0;
-        
-        networkEffect.networkScore = Math.min(
-          (networkEffect.holderCount / 1000) * 30 + 
-          (networkEffect.growthVelocity / 10) * 40 + 
-          (networkEffect.adoptionRate / 10) * 30,
-          100
-        );
+      if (response.data) {
+        networkEffect.holderGrowthRate = parseFloat(response.data.holder_count || '0');
+        networkEffect.networkScore = networkEffect.holderGrowthRate > 1000 ? 85 : 50;
       }
     } catch (error) {
       console.error('Error analyzing network effects:', error);
     }
 
-    cache.set(cacheKey, networkEffect, 10 * 60 * 1000);
+    cache.set(cacheKey, networkEffect, 5 * 60 * 1000);
 
     return NextResponse.json(networkEffect);
   } catch (error) {
-    console.error('Network effect analysis error:', error);
+    console.error('Network effect analyzer error:', error);
     return NextResponse.json(
       {
         error: 'Failed to analyze network effects',
