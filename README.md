@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 652+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 682+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 996 Production-Ready Features!
+## 🎉 1026 Production-Ready Features!
 
 ## ✨ Features
 
@@ -54,6 +54,36 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 - 🪙 **Minting Schedule Analyzer**: Analyze inflation and minting
 - 📈 **Supply Growth Predictor**: Predict future token supply
 - 💳 **Transfer Fee Optimizer**: Optimize transaction fees
+- 🔒 **Liquidity Lock Duration Tracker**: Track liquidity lock periods for security
+- 🔗 **Pair Creation Tracker**: Monitor DEX pair creation events
+- 📊 **DEX Listing Tracker**: Track token listings across exchanges
+- ⚡ **Slippage Optimizer**: Optimize slippage tolerance for trades
+- 💰 **Gas Rebate Tracker**: Track gas rebates and refunds
+- 📉 **Impermanent Loss Protection**: Calculate and protect against IL
+- 📊 **Price Impact Calculator**: Analyze price impact for swaps
+- 🌊 **Liquidity Depth Analyzer**: Analyze liquidity at price levels
+- 🔄 **Arbitrage Opportunity Finder**: Find arbitrage across DEXes
+- ⚡ **Flash Loan Analyzer**: Analyze flash loan opportunities
+- ⚠️ **Liquidation Monitor**: Monitor liquidation risks
+- 📈 **Yield Aggregator**: Aggregate yields from protocols
+- 💎 **Staking Rewards Tracker**: Track staking APY and rewards
+- 🗳️ **Governance Voting Power**: Calculate voting power
+- 📅 **Vesting Unlock Calculator**: Calculate unlock schedules
+- 🐋 **Whale Alert System**: Alert on large movements
+- 🔍 **Price Oracle Aggregator**: Aggregate oracle prices
+- 💚 **Liquidity Pool Health Monitor**: Monitor pool health metrics
+- 📊 **Tokenomics Analyzer**: Analyze token economics
+- ✅ **Smart Contract Verification**: Verify contract security
+- ⚡ **Transaction Batch Optimizer**: Optimize gas via batching
+- 🎯 **Market Maker Detector**: Detect MM activity patterns
+- 💰 **LP Rewards Tracker**: Track liquidity provider rewards
+- 🌉 **Cross-Chain Bridge Tracker**: Track bridge transfers
+- 📊 **DeFi Position Aggregator**: Aggregate all DeFi positions
+- ⛽ **Gas Price Predictor**: Predict optimal gas prices
+- 📈 **Holder Distribution Analyzer**: Analyze decentralization
+- 💼 **Treasury Balance Tracker**: Track treasury allocations
+- 🔄 **Liquidity Migration Tracker**: Track protocol migrations
+- 📸 **Airdrop Snapshot Eligibility**: Check snapshot eligibility
 
 ### Developer Features
 - 🧪 **Comprehensive Tests**: 80+ test files with 1000+ test cases
