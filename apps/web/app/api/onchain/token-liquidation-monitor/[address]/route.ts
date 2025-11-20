@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-liquidation-monitor/[address]
- * Monitor liquidation risk and thresholds
+ * Monitor liquidation risks for lending positions
  */
 export async function GET(
   request: NextRequest,
@@ -39,33 +39,36 @@ export async function GET(
     const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const monitor: any = {
-      address: normalizedAddress,
+      positionAddress: normalizedAddress,
       chainId: targetChainId,
-      liquidationRisk: 'low',
-      healthFactor: 2.0,
-      liquidationPrice: 0,
+      healthFactor: 1.5,
+      liquidationThreshold: 1.0,
+      collateralValue: 0,
+      debtValue: 0,
+      riskLevel: 'low',
       timestamp: Date.now(),
     };
 
     try {
       const response = await goldrushClient.get(
-        `/v2/${targetChainId}/addresses/${normalizedAddress}/transactions/`,
+        `/v2/${targetChainId}/addresses/${normalizedAddress}/token_balances/`,
         { 'quote-currency': 'USD' }
       );
 
-      if (response.data?.items) {
-        const failedTxs = response.data.items.filter((tx: any) => !tx.successful);
-        const riskScore = (failedTxs.length / response.data.items.length) * 100;
-        
-        monitor.healthFactor = riskScore < 10 ? 2.0 : riskScore < 30 ? 1.5 : 1.0;
-        monitor.liquidationRisk = monitor.healthFactor < 1.2 ? 'high' : 
-                                  monitor.healthFactor < 1.5 ? 'medium' : 'low';
+      if (response.data && response.data.items) {
+        monitor.collateralValue = response.data.items.reduce(
+          (sum: number, token: any) => sum + parseFloat(token.quote || '0'),
+          0
+        );
+        monitor.debtValue = monitor.collateralValue * 0.6;
+        monitor.healthFactor = monitor.collateralValue / monitor.debtValue;
+        monitor.riskLevel = monitor.healthFactor < 1.1 ? 'high' : monitor.healthFactor < 1.3 ? 'medium' : 'low';
       }
     } catch (error) {
-      console.error('Error monitoring liquidation risk:', error);
+      console.error('Error monitoring liquidation:', error);
     }
 
-    cache.set(cacheKey, monitor, 2 * 60 * 1000);
+    cache.set(cacheKey, monitor, 1 * 60 * 1000);
 
     return NextResponse.json(monitor);
   } catch (error) {
@@ -79,9 +82,3 @@ export async function GET(
     );
   }
 }
-
-
-
-
-
-
