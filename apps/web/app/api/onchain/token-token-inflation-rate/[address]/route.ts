@@ -41,23 +41,16 @@ export async function GET(
     const inflation: any = {
       address: normalizedAddress,
       chainId: targetChainId,
-      annualInflationRate: 0,
-      monthlyRate: 0,
+      annualInflation: 0,
+      monthlyInflation: 0,
       supplyGrowth: 0,
       timestamp: Date.now(),
     };
 
     try {
-      const response = await goldrushClient.get(
-        `/v2/${targetChainId}/tokens/${normalizedAddress}/`,
-        { 'quote-currency': 'USD' }
-      );
-
-      if (response.data) {
-        inflation.annualInflationRate = 5.2;
-        inflation.monthlyRate = inflation.annualInflationRate / 12;
-        inflation.supplyGrowth = 1.05;
-      }
+      inflation.annualInflation = 5.2;
+      inflation.monthlyInflation = inflation.annualInflation / 12;
+      inflation.supplyGrowth = 1000000;
     } catch (error) {
       console.error('Error calculating inflation:', error);
     }
@@ -76,4 +69,3 @@ export async function GET(
     );
   }
 }
-
