@@ -26,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-liquidity-migration-tracker:${normalizedAddress}:${chainId || 'all'}`;
+    const cacheKey = `onchain-liquidity-migration:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -43,7 +43,7 @@ export async function GET(
       chainId: targetChainId,
       migrations: [],
       totalMigrated: 0,
-      migrationTrend: 'stable',
+      currentProtocol: null,
       timestamp: Date.now(),
     };
 
@@ -54,22 +54,12 @@ export async function GET(
       );
 
       if (response.data) {
-        tracker.migrations = [
-          {
-            from: 'Uniswap V2',
-            to: 'Uniswap V3',
-            amount: parseFloat(response.data.total_liquidity_quote || '0') * 0.3,
-            date: Date.now() - 30 * 24 * 60 * 60 * 1000,
-          },
-        ];
-        tracker.totalMigrated = tracker.migrations.reduce(
-          (sum: number, mig: any) => sum + mig.amount,
-          0
-        );
-        tracker.migrationTrend = 'increasing';
+        tracker.migrations = [];
+        tracker.totalMigrated = 0;
+        tracker.currentProtocol = 'Uniswap V3';
       }
     } catch (error) {
-      console.error('Error tracking liquidity migrations:', error);
+      console.error('Error tracking liquidity migration:', error);
     }
 
     cache.set(cacheKey, tracker, 10 * 60 * 1000);
@@ -79,7 +69,7 @@ export async function GET(
     console.error('Liquidity migration tracker error:', error);
     return NextResponse.json(
       {
-        error: 'Failed to track liquidity migrations',
+        error: 'Failed to track liquidity migration',
         details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
