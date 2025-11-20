@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-token-tax-calculator/[address]
- * Calculate token tax structure and fees
+ * Calculate token taxes and fees on transactions
  */
 export async function GET(
   request: NextRequest,
@@ -17,7 +17,7 @@ export async function GET(
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
     const chainId = searchParams.get('chainId');
-    const tradeAmount = searchParams.get('tradeAmount');
+    const amount = searchParams.get('amount');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -27,8 +27,8 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const amount = tradeAmount ? parseFloat(tradeAmount) : 1000;
-    const cacheKey = `onchain-tax-calculator:${normalizedAddress}:${amount}:${chainId || 'all'}`;
+    const txAmount = amount ? parseFloat(amount) : 1000;
+    const cacheKey = `onchain-tax-calculator:${normalizedAddress}:${txAmount}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -43,6 +43,7 @@ export async function GET(
     const tax: any = {
       address: normalizedAddress,
       chainId: targetChainId,
+      transactionAmount: txAmount,
       buyTax: 0,
       sellTax: 0,
       transferTax: 0,
@@ -54,7 +55,7 @@ export async function GET(
       tax.buyTax = 2.5;
       tax.sellTax = 3.0;
       tax.transferTax = 0;
-      tax.totalTax = (amount * tax.sellTax) / 100;
+      tax.totalTax = tax.sellTax;
     } catch (error) {
       console.error('Error calculating tax:', error);
     }
@@ -73,4 +74,3 @@ export async function GET(
     );
   }
 }
-
