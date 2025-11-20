@@ -2,22 +2,38 @@
  * Chain Constants
  */
 
-export const SUPPORTED_CHAINS = [1, 56, 137, 42161, 10, 8453] as const;
+export interface Chain {
+  id: number;
+  name: string;
+  rpcUrl: string;
+  explorerUrl: string;
+  nativeCurrency: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+}
 
-export const CHAIN_NAMES: Record<number, string> = {
-  1: 'Ethereum',
-  56: 'BNB Chain',
-  137: 'Polygon',
-  42161: 'Arbitrum',
-  10: 'Optimism',
-  8453: 'Base',
-};
-
-export const CHAIN_RPC_URLS: Record<number, string> = {
-  1: 'https://eth.llamarpc.com',
-  56: 'https://bsc-dataseed.binance.org',
-  137: 'https://polygon-rpc.com',
-  42161: 'https://arb1.arbitrum.io/rpc',
-  10: 'https://mainnet.optimism.io',
-  8453: 'https://mainnet.base.org',
+export const SUPPORTED_CHAINS: Record<number, Chain> = {
+  1: {
+    id: 1,
+    name: 'Ethereum',
+    rpcUrl: 'https://eth.llamarpc.com',
+    explorerUrl: 'https://etherscan.io',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  },
+  137: {
+    id: 137,
+    name: 'Polygon',
+    rpcUrl: 'https://polygon-rpc.com',
+    explorerUrl: 'https://polygonscan.com',
+    nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
+  },
+  8453: {
+    id: 8453,
+    name: 'Base',
+    rpcUrl: 'https://mainnet.base.org',
+    explorerUrl: 'https://basescan.org',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  },
 };
