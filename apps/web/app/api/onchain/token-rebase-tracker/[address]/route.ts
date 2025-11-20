@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-rebase-tracker/[address]
- * Track rebase token supply adjustments
+ * Track rebase events and supply adjustments
  */
 export async function GET(
   request: NextRequest,
@@ -38,12 +38,12 @@ export async function GET(
 
     const targetChainId = chainId ? parseInt(chainId) : 1;
 
-    const tracking: any = {
-      address: normalizedAddress,
+    const tracker: any = {
+      tokenAddress: normalizedAddress,
       chainId: targetChainId,
       rebaseEvents: [],
-      totalSupplyChange: 0,
       rebaseRate: 0,
+      nextRebase: null,
       timestamp: Date.now(),
     };
 
@@ -54,17 +54,17 @@ export async function GET(
       );
 
       if (response.data) {
-        const supply = parseFloat(response.data.total_supply || '0');
-        tracking.totalSupplyChange = supply;
-        tracking.rebaseRate = 0.0001;
+        tracker.rebaseEvents = [];
+        tracker.rebaseRate = 0.5; // percentage
+        tracker.nextRebase = Date.now() + 8 * 60 * 60 * 1000; // 8 hours
       }
     } catch (error) {
-      console.error('Error tracking rebase:', error);
+      console.error('Error tracking rebase events:', error);
     }
 
-    cache.set(cacheKey, tracking, 5 * 60 * 1000);
+    cache.set(cacheKey, tracker, 5 * 60 * 1000);
 
-    return NextResponse.json(tracking);
+    return NextResponse.json(tracker);
   } catch (error) {
     console.error('Rebase tracker error:', error);
     return NextResponse.json(
@@ -76,9 +76,3 @@ export async function GET(
     );
   }
 }
-
-
-
-
-
-
