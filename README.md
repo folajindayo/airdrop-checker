@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 712+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 742+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 1056 Production-Ready Features!
+## 🎉 1086 Production-Ready Features!
 
 ## ✨ Features
 
@@ -113,6 +113,40 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 - 🪙 **Minting Cap Tracker**: Track minting caps and supply limits
 - 📈 **Supply Cap Tracker**: Track total supply caps and inflation limits
 - 🔒 **Transfer Restrictions Analyzer**: Analyze transfer restrictions and limitations
+- 🌊 **Liquidity Depth Analyzer**: Analyze liquidity at different price levels
+- 🔄 **Arbitrage Opportunity Finder**: Find arbitrage opportunities across DEXes
+- ⚡ **Flash Loan Analyzer**: Analyze flash loan opportunities and costs
+- ⚠️ **Liquidation Monitor**: Monitor liquidation risks for lending positions
+- 📈 **Yield Aggregator**: Aggregate yield opportunities from multiple protocols
+- 💎 **Staking Rewards Tracker**: Track staking APY and reward distributions
+- 🐋 **Whale Alert System**: Alert system for large token movements
+- 💚 **Liquidity Pool Health Monitor**: Monitor liquidity pool health metrics
+- 📊 **Tokenomics Analyzer**: Analyze comprehensive token economics
+- ✅ **Smart Contract Verification**: Verify smart contract security and authenticity
+- ⚡ **Transaction Batch Optimizer**: Optimize gas costs via transaction batching
+- 🎯 **Market Maker Detector**: Detect market maker activity patterns
+- 💰 **LP Rewards Tracker**: Track liquidity provider rewards and fees
+- 🌉 **Cross-Chain Bridge Tracker**: Track cross-chain bridge transfers
+- 📊 **DeFi Position Aggregator**: Aggregate all DeFi positions across protocols
+- ⛽ **Gas Price Predictor**: Predict optimal gas prices for transactions
+- 📈 **Holder Distribution Analyzer**: Analyze token holder distribution and decentralization
+- 💼 **Treasury Balance Tracker**: Track treasury balance and allocations
+- 🔄 **Liquidity Migration Tracker**: Track liquidity migrations between protocols
+- 🔄 **Rebase Tracker**: Track rebase events and supply adjustments
+- 📈 **Inflation Rate Calculator**: Calculate token inflation rate over time
+- 🔥 **Deflation Mechanism Tracker**: Track deflation mechanisms and burn events
+- 📊 **Tokenomics Model Analyzer**: Analyze tokenomics model and economic structure
+- 📅 **Emission Schedule Tracker**: Track token emission schedule and release timeline
+- 📅 **Vesting Analyzer**: Analyze vesting schedules and unlock patterns
+- 🔒 **Lockup Analyzer**: Analyze token lockup periods and restrictions
+- 🔒 **Transfer Restrictions Detector**: Detect transfer restrictions and limitations
+- ✅ **Whitelist Checker**: Check if address is whitelisted for token operations
+- 🚫 **Blacklist Detector**: Detect blacklisted addresses and restrictions
+- ⏸️ **Pause Detector**: Detect if token contract is paused
+- 🧊 **Freeze Detector**: Detect frozen accounts and balance restrictions
+- 🔐 **Permission Manager**: Track permissions and access controls
+- 🔐 **Role Assignment**: Track role assignments and access rights
+- 🔒 **Cap Enforcer**: Check supply cap enforcement and limits
 
 ### Developer Features
 - 🧪 **Comprehensive Tests**: 80+ test files with 1000+ test cases
