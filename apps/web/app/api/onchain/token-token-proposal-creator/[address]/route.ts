@@ -42,20 +42,23 @@ export async function GET(
       address: normalizedAddress,
       chainId: targetChainId,
       proposalsCreated: 0,
-      proposalsPassed: 0,
+      proposals: [],
       successRate: 0,
       timestamp: Date.now(),
     };
 
     try {
       creator.proposalsCreated = 12;
-      creator.proposalsPassed = 9;
-      creator.successRate = (creator.proposalsPassed / creator.proposalsCreated) * 100;
+      creator.proposals = [
+        { id: 1, status: 'passed', votes: 1500000 },
+        { id: 2, status: 'failed', votes: 800000 },
+      ];
+      creator.successRate = 75;
     } catch (error) {
       console.error('Error tracking proposals:', error);
     }
 
-    cache.set(cacheKey, creator, 10 * 60 * 1000);
+    cache.set(cacheKey, creator, 5 * 60 * 1000);
 
     return NextResponse.json(creator);
   } catch (error) {
@@ -69,4 +72,3 @@ export async function GET(
     );
   }
 }
-
