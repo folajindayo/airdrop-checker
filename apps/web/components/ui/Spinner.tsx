@@ -1,29 +1,21 @@
-"use client";
+/**
+ * Spinner Component
+ */
+
+'use client';
 
 interface SpinnerProps {
-  size?: "sm" | "md" | "lg" | "xl";
-  className?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
-export function Spinner({ size = "md", className = "" }: SpinnerProps) {
-  const sizeClasses = {
-    sm: "h-4 w-4 border-2",
-    md: "h-8 w-8 border-2",
-    lg: "h-12 w-12 border-3",
-    xl: "h-16 w-16 border-4",
+export function Spinner({ size = 'md' }: SpinnerProps) {
+  const sizes = {
+    sm: 'w-4 h-4',
+    md: 'w-8 h-8',
+    lg: 'w-12 h-12',
   };
 
   return (
-    <div
-      className={`
-        animate-spin rounded-full border-gray-300 border-t-blue-600
-        ${sizeClasses[size]}
-        ${className}
-      `}
-      role="status"
-      aria-label="Loading"
-    >
-      <span className="sr-only">Loading...</span>
-    </div>
+    <div className={`${sizes[size]} animate-spin rounded-full border-2 border-gray-300 border-t-blue-600`} />
   );
 }
