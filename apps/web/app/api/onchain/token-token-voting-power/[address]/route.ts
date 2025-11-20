@@ -42,8 +42,8 @@ export async function GET(
       address: normalizedAddress,
       chainId: targetChainId,
       votingPower: 0,
-      percentage: 0,
-      rank: 0,
+      effectivePower: 0,
+      powerPercentage: 0,
       timestamp: Date.now(),
     };
 
@@ -54,9 +54,9 @@ export async function GET(
       );
 
       if (response.data) {
-        voting.votingPower = parseFloat(response.data.total_value_quote || '0') * 0.1;
-        voting.percentage = 2.5;
-        voting.rank = 15;
+        voting.votingPower = 2500000;
+        voting.effectivePower = voting.votingPower * 0.8;
+        voting.powerPercentage = 2.5;
       }
     } catch (error) {
       console.error('Error calculating voting power:', error);
@@ -76,4 +76,3 @@ export async function GET(
     );
   }
 }
-
