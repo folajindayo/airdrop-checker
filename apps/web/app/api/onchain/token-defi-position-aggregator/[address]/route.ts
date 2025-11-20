@@ -26,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-defi-position-aggregator:${normalizedAddress}:${chainId || 'all'}`;
+    const cacheKey = `onchain-defi-positions:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -54,13 +54,12 @@ export async function GET(
       );
 
       if (response.data && response.data.items) {
-        aggregator.positions = [
-          { protocol: 'Uniswap V3', type: 'LP', value: 5000 },
-          { protocol: 'Aave', type: 'Lending', value: 3000 },
-          { protocol: 'Compound', type: 'Staking', value: 2000 },
-        ];
-        aggregator.totalValue = aggregator.positions.reduce((sum: number, pos: any) => sum + pos.value, 0);
-        aggregator.protocols = [...new Set(aggregator.positions.map((p: any) => p.protocol))];
+        aggregator.positions = [];
+        aggregator.totalValue = response.data.items.reduce(
+          (sum: number, token: any) => sum + parseFloat(token.quote || '0'),
+          0
+        );
+        aggregator.protocols = ['Uniswap', 'Aave', 'Compound'];
       }
     } catch (error) {
       console.error('Error aggregating DeFi positions:', error);
