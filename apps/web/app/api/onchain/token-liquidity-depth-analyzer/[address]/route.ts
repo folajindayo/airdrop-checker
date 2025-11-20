@@ -26,7 +26,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-depth-analyzer:${normalizedAddress}:${chainId || 'all'}`;
+    const cacheKey = `onchain-liquidity-depth:${normalizedAddress}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -38,12 +38,12 @@ export async function GET(
 
     const targetChainId = chainId ? parseInt(chainId) : 1;
 
-    const depth: any = {
+    const analyzer: any = {
       tokenAddress: normalizedAddress,
       chainId: targetChainId,
+      depthLevels: [],
+      averageDepth: 0,
       depthScore: 0,
-      orderBookDepth: 0,
-      priceLevels: [],
       timestamp: Date.now(),
     };
 
@@ -55,21 +55,21 @@ export async function GET(
 
       if (response.data) {
         const liquidity = parseFloat(response.data.total_liquidity_quote || '0');
-        depth.orderBookDepth = liquidity;
-        depth.depthScore = Math.min((liquidity / 1000000) * 100, 100);
-        depth.priceLevels = [
-          { level: '1%', depth: liquidity * 0.5 },
-          { level: '2%', depth: liquidity * 0.3 },
-          { level: '5%', depth: liquidity * 0.2 },
+        analyzer.depthLevels = [
+          { priceLevel: 0.95, liquidity: liquidity * 0.3 },
+          { priceLevel: 1.0, liquidity: liquidity * 0.5 },
+          { priceLevel: 1.05, liquidity: liquidity * 0.2 },
         ];
+        analyzer.averageDepth = liquidity / 3;
+        analyzer.depthScore = liquidity > 100000 ? 90 : liquidity > 10000 ? 70 : 50;
       }
     } catch (error) {
-      console.error('Error analyzing depth:', error);
+      console.error('Error analyzing liquidity depth:', error);
     }
 
-    cache.set(cacheKey, depth, 5 * 60 * 1000);
+    cache.set(cacheKey, analyzer, 5 * 60 * 1000);
 
-    return NextResponse.json(depth);
+    return NextResponse.json(analyzer);
   } catch (error) {
     console.error('Liquidity depth analyzer error:', error);
     return NextResponse.json(
@@ -81,9 +81,3 @@ export async function GET(
     );
   }
 }
-
-
-
-
-
-
