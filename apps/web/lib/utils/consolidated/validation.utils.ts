@@ -2,24 +2,24 @@
  * Validation Utilities
  */
 
-export const isValidEmail = (email: string): boolean => {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-};
+export function isValidEmail(email: string): boolean {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
 
-export const isValidURL = (url: string): boolean => {
+export function isValidURL(url: string): boolean {
   try {
     new URL(url);
     return true;
   } catch {
     return false;
   }
-};
+}
 
-export const isValidAddress = (address: string): boolean => {
+export function isValidEthAddress(address: string): boolean {
   return /^0x[a-fA-F0-9]{40}$/.test(address);
-};
+}
 
-export const isValidTxHash = (hash: string): boolean => {
-  return /^0x[a-fA-F0-9]{64}$/.test(hash);
-};
-
+export function isValidENS(name: string): boolean {
+  return /^[a-z0-9-]+\.eth$/.test(name.toLowerCase());
+}
