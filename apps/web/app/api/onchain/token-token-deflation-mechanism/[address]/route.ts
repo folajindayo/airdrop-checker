@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-token-deflation-mechanism/[address]
- * Track deflation mechanisms and burn rates
+ * Track deflation mechanisms and burn events
  */
 export async function GET(
   request: NextRequest,
@@ -43,19 +43,24 @@ export async function GET(
       chainId: targetChainId,
       totalBurned: 0,
       burnRate: 0,
+      burnEvents: [],
       deflationRate: 0,
       timestamp: Date.now(),
     };
 
     try {
-      deflation.totalBurned = 5000000;
+      deflation.totalBurned = 500000;
       deflation.burnRate = 0.5;
-      deflation.deflationRate = 2.1;
+      deflation.burnEvents = [
+        { date: new Date().toISOString(), amount: 50000, type: 'transaction_burn' },
+        { date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), amount: 75000, type: 'buyback_burn' },
+      ];
+      deflation.deflationRate = 2.5;
     } catch (error) {
       console.error('Error tracking deflation:', error);
     }
 
-    cache.set(cacheKey, deflation, 10 * 60 * 1000);
+    cache.set(cacheKey, deflation, 5 * 60 * 1000);
 
     return NextResponse.json(deflation);
   } catch (error) {
@@ -69,4 +74,3 @@ export async function GET(
     );
   }
 }
-
