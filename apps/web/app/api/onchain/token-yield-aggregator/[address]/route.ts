@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
 import { goldrushClient } from '@/lib/goldrush/client';
-import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
 import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
@@ -44,7 +43,6 @@ export async function GET(
       chainId: targetChainId,
       opportunities: [],
       bestYield: null,
-      averageYield: 0,
       timestamp: Date.now(),
     };
 
@@ -57,11 +55,10 @@ export async function GET(
       if (response.data) {
         aggregator.opportunities = [
           { protocol: 'Compound', apy: 8.5, risk: 'low' },
-          { protocol: 'Aave', apy: 7.2, risk: 'low' },
-          { protocol: 'Yearn', apy: 12.3, risk: 'medium' },
+          { protocol: 'Aave', apy: 9.2, risk: 'low' },
+          { protocol: 'Yearn', apy: 12.0, risk: 'medium' },
         ];
-        aggregator.bestYield = aggregator.opportunities[2];
-        aggregator.averageYield = aggregator.opportunities.reduce((sum: number, opp: any) => sum + opp.apy, 0) / aggregator.opportunities.length;
+        aggregator.bestYield = aggregator.opportunities.sort((a, b) => b.apy - a.apy)[0];
       }
     } catch (error) {
       console.error('Error aggregating yields:', error);
