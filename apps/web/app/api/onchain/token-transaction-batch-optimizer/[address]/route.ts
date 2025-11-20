@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-transaction-batch-optimizer/[address]
- * Optimize batch transactions for gas efficiency
+ * Optimize transaction batching for gas savings
  */
 export async function GET(
   request: NextRequest,
@@ -17,6 +17,7 @@ export async function GET(
     const { address } = await params;
     const searchParams = request.nextUrl.searchParams;
     const chainId = searchParams.get('chainId');
+    const txCount = parseInt(searchParams.get('txCount') || '5');
 
     if (!isValidAddress(address)) {
       return NextResponse.json(
@@ -26,7 +27,7 @@ export async function GET(
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-batch-optimizer:${normalizedAddress}:${chainId || 'all'}`;
+    const cacheKey = `onchain-transaction-batch-optimizer:${normalizedAddress}:${txCount}:${chainId || 'all'}`;
     const cachedResult = cache.get(cacheKey);
 
     if (cachedResult) {
@@ -39,33 +40,29 @@ export async function GET(
     const targetChainId = chainId ? parseInt(chainId) : 1;
 
     const optimizer: any = {
-      address: normalizedAddress,
+      walletAddress: normalizedAddress,
       chainId: targetChainId,
-      recommendedBatches: [],
+      txCount,
+      individualGasCost: 0,
+      batchedGasCost: 0,
       gasSavings: 0,
-      optimizationRate: 0,
+      recommendations: [],
       timestamp: Date.now(),
     };
 
     try {
-      const response = await goldrushClient.get(
-        `/v2/${targetChainId}/addresses/${normalizedAddress}/transactions/`,
-        { 'quote-currency': 'USD', 'page-size': 50 }
-      );
-
-      if (response.data && response.data.items) {
-        optimizer.recommendedBatches = [
-          { transactions: 3, gasSavings: 45000 },
-          { transactions: 5, gasSavings: 75000 },
-        ];
-        optimizer.gasSavings = optimizer.recommendedBatches[0].gasSavings;
-        optimizer.optimizationRate = 35;
-      }
+      optimizer.individualGasCost = txCount * 21000;
+      optimizer.batchedGasCost = 21000 + (txCount - 1) * 5000;
+      optimizer.gasSavings = optimizer.individualGasCost - optimizer.batchedGasCost;
+      optimizer.recommendations = [
+        `Batching ${txCount} transactions saves ${optimizer.gasSavings} gas`,
+        'Use batch transactions for multiple operations',
+      ];
     } catch (error) {
-      console.error('Error optimizing batches:', error);
+      console.error('Error optimizing batch transactions:', error);
     }
 
-    cache.set(cacheKey, optimizer, 5 * 60 * 1000);
+    cache.set(cacheKey, optimizer, 10 * 60 * 1000);
 
     return NextResponse.json(optimizer);
   } catch (error) {
@@ -79,4 +76,3 @@ export async function GET(
     );
   }
 }
-
