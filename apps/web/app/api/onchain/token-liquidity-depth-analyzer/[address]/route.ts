@@ -42,8 +42,8 @@ export async function GET(
       tokenAddress: normalizedAddress,
       chainId: targetChainId,
       depthLevels: [],
+      totalDepth: 0,
       averageDepth: 0,
-      depthScore: 0,
       timestamp: Date.now(),
     };
 
@@ -57,11 +57,11 @@ export async function GET(
         const liquidity = parseFloat(response.data.total_liquidity_quote || '0');
         analyzer.depthLevels = [
           { priceLevel: 0.95, liquidity: liquidity * 0.3 },
-          { priceLevel: 1.0, liquidity: liquidity * 0.5 },
-          { priceLevel: 1.05, liquidity: liquidity * 0.2 },
+          { priceLevel: 1.0, liquidity: liquidity * 0.4 },
+          { priceLevel: 1.05, liquidity: liquidity * 0.3 },
         ];
-        analyzer.averageDepth = liquidity / 3;
-        analyzer.depthScore = liquidity > 100000 ? 90 : liquidity > 10000 ? 70 : 50;
+        analyzer.totalDepth = liquidity;
+        analyzer.averageDepth = liquidity / analyzer.depthLevels.length;
       }
     } catch (error) {
       console.error('Error analyzing liquidity depth:', error);
