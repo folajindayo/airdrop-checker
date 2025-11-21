@@ -1,30 +1,30 @@
-import type { Metadata } from "next"
-import { Inter } from 'next/font/google'
-import "./globals.css"
-import { WalletProvider } from "@/components/providers/wallet-provider"
-import { Toaster } from "sonner"
+/**
+ * Root Layout
+ */
 
-const inter = Inter({ subsets: ["latin"] })
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Airdrop Finder - Check Your Eligibility",
-  description: "Discover airdrops you're eligible for based on your onchain activity. Check wallet eligibility for popular crypto airdrops.",
-  keywords: ["airdrop", "crypto", "blockchain", "eligibility", "wallet"],
-}
+  title: 'Airdrop Checker - Track Your Eligibility',
+  description: 'Check your airdrop eligibility across multiple chains',
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <WalletProvider>
+        <main className="min-h-screen bg-gray-50">
           {children}
-          <Toaster richColors />
-        </WalletProvider>
+        </main>
       </body>
     </html>
-  )
+  );
 }
