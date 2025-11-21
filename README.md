@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 772+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 776+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 1116 Production-Ready Features!
+## 🎉 1120 Production-Ready Features!
 
 ## ✨ Features
 
@@ -179,6 +179,11 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 - ⛽ **Gas Sponsorship Tracker**: Audit Reown relay coverage and paymaster spending.
 - 🗺️ **Ecosystem Contribution Map**: Visualize category-weighted contributions across protocols.
 - 🔐 **Reown Session Health Monitor**: Track handshake latency, failure counts, and intervention needs.
+- 📡 **Intent Settlement Reliability**: Measure solver success, settlement delay, and fee drag on intents.
+- 🌁 **Bridge Risk Sentiment Gauge**: Score bridge routes by failure rate, gas overhead, and venue concentration.
+- 🛠️ **Validator Yield Leakage Monitor**: Contrast staking principal with gas drag and inactivity penalties.
+- 🧾 **Quest Completion Ledger**: Chronicle quest platforms touched, streaks, and gas footprint.
+- 💸 **MEV Refund Attribution**: Attribute Flashbots/CoW refunds with per-source USD breakdowns.
 
 ### Developer Features
 - 🧪 **Comprehensive Tests**: 80+ test files with 1000+ test cases
