@@ -1,34 +1,38 @@
 /**
  * Airdrop Mapper
- * Converts between domain entities and DTOs
  */
 
-import { AirdropEntity } from '../../domain/entities/airdrop.entity';
+import { Airdrop } from '../../domain/entities/airdrop.entity';
 import { AirdropDTO } from '../dtos/airdrop.dto';
 
 export class AirdropMapper {
-  static toDTO(entity: AirdropEntity): AirdropDTO {
+  static toDTO(entity: Airdrop): AirdropDTO {
     return {
       id: entity.id,
       name: entity.name,
-      symbol: entity.symbol,
-      totalAmount: entity.totalAmount.toString(),
-      claimAmount: entity.claimAmount.toString(),
-      startDate: entity.startDate.toISOString(),
-      endDate: entity.endDate.toISOString(),
-      chainId: entity.chainId,
-      contractAddress: entity.contractAddress,
+      description: entity.description,
       status: entity.status,
       eligibilityCriteria: entity.eligibilityCriteria,
-      metadata: entity.metadata,
-      isActive: entity.isActive(),
-      canClaim: entity.canClaim(),
-      claimPercentage: entity.getClaimPercentage(),
+      rewardAmount: entity.rewardAmount,
+      startDate: entity.startDate,
+      endDate: entity.endDate,
     };
   }
 
-  static toDTOList(entities: AirdropEntity[]): AirdropDTO[] {
-    return entities.map((entity) => this.toDTO(entity));
+  static toDTOList(entities: Airdrop[]): AirdropDTO[] {
+    return entities.map(entity => this.toDTO(entity));
+  }
+
+  static toEntity(dto: AirdropDTO): Airdrop {
+    return new Airdrop(
+      dto.id,
+      dto.name,
+      dto.description,
+      dto.status,
+      dto.eligibilityCriteria,
+      dto.rewardAmount,
+      dto.startDate,
+      dto.endDate
+    );
   }
 }
-
