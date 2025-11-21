@@ -1,58 +1,31 @@
 /**
- * Address validation schemas
+ * Address Validator
  */
 
-import { isValidAddress, isValidTxHash } from '@airdrop-finder/shared';
+export function isValidAddress(address: string): boolean {
+  return /^0x[a-fA-F0-9]{40}$/.test(address);
+}
 
-export interface AddressValidationResult {
+export function isValidEnsName(name: string): boolean {
+  return /^[a-z0-9-]+\.eth$/.test(name);
+}
+
+export function validateAddressOrEns(input: string): {
   isValid: boolean;
-  normalized?: string;
+  type: 'address' | 'ens' | 'invalid';
   error?: string;
-}
-
-export function validateEthereumAddress(address: string): AddressValidationResult {
-  if (!address) {
-    return { isValid: false, error: 'Address is required' };
-  }
-  
-  if (!isValidAddress(address)) {
-    return { isValid: false, error: 'Invalid Ethereum address format' };
-  }
-  
-  return { isValid: true, normalized: address.toLowerCase() };
-}
-
-export function validateTransactionHash(txHash: string): AddressValidationResult {
-  if (!txHash) {
-    return { isValid: false, error: 'Transaction hash is required' };
-  }
-  
-  if (!isValidTxHash(txHash)) {
-    return { isValid: false, error: 'Invalid transaction hash format' };
-  }
-  
-  return { isValid: true, normalized: txHash.toLowerCase() };
-}
-
-export function validateMultipleAddresses(addresses: string[]): {
-  valid: string[];
-  invalid: string[];
-  errors: Record<string, string>;
 } {
-  const valid: string[] = [];
-  const invalid: string[] = [];
-  const errors: Record<string, string> = {};
+  if (isValidAddress(input)) {
+    return { isValid: true, type: 'address' };
+  }
   
-  addresses.forEach((addr) => {
-    const result = validateEthereumAddress(addr);
-    if (result.isValid && result.normalized) {
-      valid.push(result.normalized);
-    } else {
-      invalid.push(addr);
-      errors[addr] = result.error || 'Invalid address';
-    }
-  });
+  if (isValidEnsName(input)) {
+    return { isValid: true, type: 'ens' };
+  }
   
-  return { valid, invalid, errors };
+  return {
+    isValid: false,
+    type: 'invalid',
+    error: 'Invalid Ethereum address or ENS name',
+  };
 }
-
