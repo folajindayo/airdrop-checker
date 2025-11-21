@@ -1,66 +1,36 @@
-import { useState, useEffect } from "react";
-import { Airdrop, airdropService } from "@/lib/services/airdropService";
+/**
+ * useAirdrops Hook
+ */
 
-interface AirdropFilters {
-  status?: string;
-  chain?: string;
-  page?: number;
-  limit?: number;
-}
+import { useState, useEffect } from 'react';
 
-interface UseAirdropsResult {
-  airdrops: Airdrop[];
-  loading: boolean;
-  error: string | null;
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-  setFilters: (filters: AirdropFilters) => void;
-  refetch: () => Promise<void>;
-}
-
-export function useAirdrops(initialFilters: AirdropFilters = {}): UseAirdropsResult {
-  const [airdrops, setAirdrops] = useState<Airdrop[]>([]);
+export function useAirdrops(chainId?: number) {
+  const [airdrops, setAirdrops] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState<AirdropFilters>(initialFilters);
-  const [pagination, setPagination] = useState({
-    page: 1,
-    limit: 20,
-    total: 0,
-    totalPages: 0,
-  });
-
-  const fetchAirdrops = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await airdropService.getAirdrops(filters);
-
-      setAirdrops(result.data);
-      setPagination(result.pagination);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load airdrops");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    const fetchAirdrops = async () => {
+      try {
+        setLoading(true);
+        const query = chainId ? `?chainId=${chainId}` : '';
+        const response = await fetch(`/api/airdrops${query}`);
+        const data = await response.json();
+        
+        if (data.success) {
+          setAirdrops(data.data.airdrops);
+        } else {
+          throw new Error(data.error);
+        }
+      } catch (err) {
+        setError(err as Error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchAirdrops();
-  }, [JSON.stringify(filters)]);
+  }, [chainId]);
 
-  return {
-    airdrops,
-    loading,
-    error,
-    pagination,
-    setFilters,
-    refetch: fetchAirdrops,
-  };
+  return { airdrops, loading, error };
 }
-
