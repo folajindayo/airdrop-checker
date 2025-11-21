@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 742+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 772+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 1086 Production-Ready Features!
+## 🎉 1116 Production-Ready Features!
 
 ## ✨ Features
 
@@ -147,6 +147,38 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 - 🔐 **Permission Manager**: Track permissions and access controls
 - 🔐 **Role Assignment**: Track role assignments and access rights
 - 🔒 **Cap Enforcer**: Check supply cap enforcement and limits
+
+#### New Onchain Intelligence Additions
+- ⚖️ **Sybil Cluster Detector**: Identify coordinated Reown-connected wallets farming airdrops.
+- 🕵️ **Sybil Risk Score**: Stack cooldown, funding, and timing heuristics into a single risk grade.
+- 🧭 **Engagement Score Engine**: Rank quest completions and cadence for reward prioritization.
+- 🌟 **Retroactive Reputation Index**: Blend governance, tenure, and onchain footprint for retro drops.
+- 🔄 **Cross-Chain Reward Sync**: Ensure reward checkpoints stay aligned across L1 and L2 deployments.
+- 🌉 **Bridged Supply Ratio Monitor**: Compare native and bridged circulating supply to catch imbalances.
+- ⏱️ **Bridge Latency Monitor**: Track mean and tail transfer latency plus stuck transfer counts.
+- 💸 **Bridge Fee Anomaly Detector**: Flag sudden basis-point spikes before users overspend.
+- 🌐 **LRT Diversification Score**: Quantify validator concentration risk across restaking operators.
+- 🪙 **LRT Withdrawal Queue Tracker**: Surface pending exits, checkpoint slots, and wait estimates.
+- 📈 **Real Yield Tracker**: Highlight sustainable, revenue-backed APR for the token.
+- 💧 **Streaming Rewards Monitor**: Watch active reward streams, cliff breaches, and reset windows.
+- 🕳️ **Liquidity Fragmentation Score**: Measure depth fragmentation across major DEX venues.
+- ⚓ **LP Reward Stability Meter**: Expose epoch-to-epoch incentive volatility for LPs.
+- 🤝 **Onchain Support SLA Tracker**: Quantify decentralized ticket response times and escalations.
+- 🗳️ **Governance Abstain Monitor**: Detect apathetic or malicious delegate voting patterns.
+- 📑 **Proposal Impact Analyzer**: Estimate contract blast radius and treasury deltas per proposal.
+- 🎯 **Quest Participation Score**: Track streaks and campaign completions for loyalty boosts.
+- 🛠️ **Developer Grant Tracker**: Monitor funded milestones, USD exposure, and schedule health.
+- 🛡️ **Validator Stake Exposure**: Watch slashing history and concentration across operators.
+- 📡 **Validator Behavior Tracker**: Surface missed slots, queue depth, and rotation needs.
+- 🚫 **Anti-Censorship Monitor**: Measure relay coverage, inclusion delays, and censored blocks.
+- 🔗 **Multi-Wallet Correlation Engine**: Flag overlapping gas payers and behavioral overlaps.
+- 🎯 **Airdrop Hunter Ratio**: Compare organic usage vs. claim-heavy activity to spot hunters.
+- 📨 **Cross-Domain Message Lag**: Track optimistic bridge message finality delays and backlog.
+- ⚡ **Layer2 Activity Momentum**: Blend rollup throughput with bridge inflows to gauge momentum.
+- 🎁 **Airdrop Contribution Calculator**: Compute next-tier requirements per wallet.
+- ⛽ **Gas Sponsorship Tracker**: Audit Reown relay coverage and paymaster spending.
+- 🗺️ **Ecosystem Contribution Map**: Visualize category-weighted contributions across protocols.
+- 🔐 **Reown Session Health Monitor**: Track handshake latency, failure counts, and intervention needs.
 
 ### Developer Features
 - 🧪 **Comprehensive Tests**: 80+ test files with 1000+ test cases
