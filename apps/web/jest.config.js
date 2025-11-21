@@ -4,17 +4,18 @@
 
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-  roots: ['<rootDir>'],
-  testMatch: ['**/__tests__/**/*.test.ts', '**/__tests__/**/*.test.tsx'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/$1',
+  testEnvironment: 'node',
+  roots: ['<rootDir>/src', '<rootDir>/__tests__'],
+  testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
+  transform: {
+    '^.+\\.ts$': 'ts-jest',
   },
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   collectCoverageFrom: [
-    'lib/**/*.{ts,tsx}',
-    'components/**/*.{ts,tsx}',
-    'hooks/**/*.{ts,tsx}',
-    '!**/__tests__/**',
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/**/__tests__/**',
   ],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
 };
