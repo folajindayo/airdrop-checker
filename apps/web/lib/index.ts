@@ -1,33 +1,18 @@
 /**
- * Main library exports
- * Central export point for all library modules
+ * Main Library Exports
  */
 
-// Configuration
-export * from './config';
-
-// Constants
-export * from './constants';
-
-// Types
-export * from './types';
+// Services
+export * from './services/airdrop.service';
+export * from './services/token.service';
 
 // Utilities
-export * from './utils';
+export * from './utils/consolidated/format.utils';
+export * from './utils/consolidated/validation.utils';
 
-// Hooks
-export * from './hooks';
+// Constants
+export * from './constants/chains';
+export * from './constants/networks';
 
-// Analyzers
-export * from './analyzers/activity';
-export * from './analyzers/trending-airdrops';
-export * from './analyzers/airdrop-highlights';
-export * from './analyzers/protocol-insights';
-
-// GoldRush integration
-export * from './goldrush';
-
-// Database
-export * from './db/prisma';
-export * from './db/models/project';
-
+// Types
+export * from './types/wallet.types';
