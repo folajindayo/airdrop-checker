@@ -1,55 +1,40 @@
 /**
- * Airdrop Data Transfer Objects
+ * Airdrop DTOs
  */
 
 export interface AirdropDTO {
   id: string;
   name: string;
-  symbol: string;
-  totalAmount: string;
-  claimAmount: string;
-  startDate: string;
-  endDate: string;
-  chainId: number;
-  contractAddress: string;
+  description: string;
   status: string;
-  eligibilityCriteria: EligibilityCriteriaDTO[];
-  metadata?: AirdropMetadataDTO;
-  isActive: boolean;
-  canClaim: boolean;
-  claimPercentage: number;
+  eligibilityCriteria: string[];
+  rewardAmount: string;
+  startDate: Date;
+  endDate: Date;
 }
 
-export interface EligibilityCriteriaDTO {
-  type: string;
-  requirement: string;
-  value: string | number;
-  met?: boolean;
+export interface CreateAirdropDTO {
+  name: string;
+  description: string;
+  eligibilityCriteria: string[];
+  rewardAmount: string;
+  startDate: Date;
+  endDate: Date;
 }
 
-export interface AirdropMetadataDTO {
+export interface UpdateAirdropDTO {
+  name?: string;
   description?: string;
-  website?: string;
-  twitter?: string;
-  logoUrl?: string;
-  requirements?: string[];
+  status?: string;
+  eligibilityCriteria?: string[];
+  rewardAmount?: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
-export interface CheckEligibilityDTO {
-  walletAddress: string;
-  chainId: number;
-  airdropId?: string;
+export interface AirdropListDTO {
+  airdrops: AirdropDTO[];
+  total: number;
+  page: number;
+  pageSize: number;
 }
-
-export interface EligibilityResultDTO {
-  airdrop: AirdropDTO;
-  isEligible: boolean;
-  criteriaResults: {
-    type: string;
-    requirement: string;
-    met: boolean;
-    reason?: string;
-  }[];
-  claimStatus: string;
-}
-
