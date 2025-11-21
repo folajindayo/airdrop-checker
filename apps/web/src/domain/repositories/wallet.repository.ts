@@ -1,35 +1,74 @@
 /**
  * Wallet Repository Interface
- * Defines contract for wallet data access
+ * Defines the contract for wallet data persistence
  */
 
-import { WalletEntity } from '../entities';
+import { WalletEntity } from '../entities/wallet.entity';
 
-export interface WalletRepository {
+export interface WalletFilters {
+  chainId?: number;
+  minBalance?: bigint;
+  minTransactionCount?: number;
+  hasNFT?: boolean;
+  tags?: string[];
+  isActive?: boolean;
+}
+
+export interface IWalletRepository {
   /**
-   * Find wallet by address and chain
+   * Find wallet by address
    */
   findByAddress(address: string, chainId: number): Promise<WalletEntity | null>;
 
   /**
-   * Save wallet
+   * Find wallet by ENS name
    */
-  save(wallet: WalletEntity): Promise<WalletEntity>;
+  findByENS(ens: string): Promise<WalletEntity | null>;
+
+  /**
+   * Find wallets with filters
+   */
+  find(filters: WalletFilters): Promise<WalletEntity[]>;
+
+  /**
+   * Create new wallet record
+   */
+  create(wallet: WalletEntity): Promise<WalletEntity>;
+
+  /**
+   * Update wallet record
+   */
+  update(address: string, chainId: number, wallet: WalletEntity): Promise<WalletEntity>;
+
+  /**
+   * Delete wallet record
+   */
+  delete(address: string, chainId: number): Promise<void>;
 
   /**
    * Update wallet balance
    */
-  updateBalance(address: string, chainId: number, balance: Partial<WalletEntity['balance']>): Promise<WalletEntity>;
+  updateBalance(address: string, chainId: number, balance: bigint): Promise<void>;
 
   /**
-   * Update transaction summary
+   * Update wallet activity timestamp
    */
-  updateTransactions(address: string, chainId: number, transactions: Partial<WalletEntity['transactions']>): Promise<WalletEntity>;
+  updateLastActivity(address: string, chainId: number): Promise<void>;
+
+  /**
+   * Add tag to wallet
+   */
+  addTag(address: string, chainId: number, tag: string): Promise<void>;
+
+  /**
+   * Remove tag from wallet
+   */
+  removeTag(address: string, chainId: number, tag: string): Promise<void>;
 
   /**
    * Get wallet eligibility score
    */
-  getEligibilityScore(address: string): Promise<number>;
+  getEligibilityScore(address: string, chainId: number): Promise<number>;
 
   /**
    * Check if wallet exists
@@ -37,8 +76,12 @@ export interface WalletRepository {
   exists(address: string, chainId: number): Promise<boolean>;
 
   /**
-   * Delete wallet data
+   * Get wallet statistics
    */
-  delete(address: string, chainId: number): Promise<boolean>;
+  getStats(address: string, chainId: number): Promise<{
+    totalValue: number;
+    tokenCount: number;
+    nftCount: number;
+    transactionCount: number;
+  }>;
 }
-
