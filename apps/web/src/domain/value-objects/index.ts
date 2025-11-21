@@ -1,7 +1,6 @@
 /**
- * Domain Value Objects Barrel Export
+ * Value Objects Barrel Export
  */
 
-export * from './address.vo';
-export * from './chain-id.vo';
-
+export { ChainId } from './chain-id.vo';
+export { WalletAddress } from './wallet-address.vo';
