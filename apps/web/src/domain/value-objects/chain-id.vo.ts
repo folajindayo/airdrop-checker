@@ -1,111 +1,74 @@
 /**
  * ChainId Value Object
- * Represents a blockchain network identifier
+ * Represents a blockchain chain ID with validation
  */
 
 export class ChainId {
-  private readonly _value: number;
-  private readonly _name: string;
+  private readonly value: number;
 
-  private static readonly SUPPORTED_CHAINS: Record<number, string> = {
-    1: 'Ethereum',
-    5: 'Goerli',
-    56: 'BNB Chain',
-    137: 'Polygon',
-    42161: 'Arbitrum',
-    10: 'Optimism',
-    43114: 'Avalanche',
-    250: 'Fantom',
-    8453: 'Base',
-    324: 'zkSync Era',
-    59144: 'Linea',
-    534352: 'Scroll',
-  };
+  private static readonly SUPPORTED_CHAINS = new Set([
+    1, // Ethereum Mainnet
+    10, // Optimism
+    56, // BSC
+    137, // Polygon
+    250, // Fantom
+    42161, // Arbitrum
+    43114, // Avalanche
+    8453, // Base
+    59144, // Linea
+    534352, // Scroll
+  ]);
 
   private constructor(value: number) {
-    if (!ChainId.isSupported(value)) {
-      throw new Error(`Unsupported chain ID: ${value}`);
-    }
-    this._value = value;
-    this._name = ChainId.SUPPORTED_CHAINS[value];
+    this.value = value;
   }
 
-  /**
-   * Create ChainId from number
-   */
   static create(value: number): ChainId {
+    if (!Number.isInteger(value) || value <= 0) {
+      throw new Error('Chain ID must be a positive integer');
+    }
+
     return new ChainId(value);
   }
 
-  /**
-   * Check if chain ID is supported
-   */
-  static isSupported(chainId: number): boolean {
-    return chainId in ChainId.SUPPORTED_CHAINS;
+  getValue(): number {
+    return this.value;
   }
 
-  /**
-   * Get all supported chain IDs
-   */
-  static getSupportedChains(): number[] {
-    return Object.keys(ChainId.SUPPORTED_CHAINS).map(Number);
+  isSupported(): boolean {
+    return ChainId.SUPPORTED_CHAINS.has(this.value);
   }
 
-  /**
-   * Get chain name from ID
-   */
-  static getChainName(chainId: number): string | undefined {
-    return ChainId.SUPPORTED_CHAINS[chainId];
+  getChainName(): string {
+    const chainNames: Record<number, string> = {
+      1: 'Ethereum',
+      10: 'Optimism',
+      56: 'BNB Smart Chain',
+      137: 'Polygon',
+      250: 'Fantom',
+      42161: 'Arbitrum One',
+      43114: 'Avalanche C-Chain',
+      8453: 'Base',
+      59144: 'Linea',
+      534352: 'Scroll',
+    };
+
+    return chainNames[this.value] || `Chain ${this.value}`;
   }
 
-  /**
-   * Get the chain ID value
-   */
-  get value(): number {
-    return this._value;
+  equals(other: ChainId): boolean {
+    return this.value === other.value;
   }
 
-  /**
-   * Get the chain name
-   */
-  get name(): string {
-    return this._name;
-  }
-
-  /**
-   * Check if mainnet
-   */
-  get isMainnet(): boolean {
-    return this._value === 1;
-  }
-
-  /**
-   * Check if testnet
-   */
-  get isTestnet(): boolean {
-    return [5, 80001, 97, 421613, 420, 43113, 4002].includes(this._value);
-  }
-
-  /**
-   * Check equality
-   */
-  equals(other: ChainId | number): boolean {
-    const otherValue = typeof other === 'number' ? other : other.value;
-    return this._value === otherValue;
-  }
-
-  /**
-   * Convert to string
-   */
   toString(): string {
-    return `${this._name} (${this._value})`;
+    return this.value.toString();
   }
 
-  /**
-   * Convert to number
-   */
-  toNumber(): number {
-    return this._value;
+  toJSON() {
+    return {
+      value: this.value,
+      name: this.getChainName(),
+      isSupported: this.isSupported(),
+    };
   }
 }
-
