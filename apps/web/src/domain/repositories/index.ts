@@ -1,7 +1,6 @@
 /**
- * Domain Repositories Barrel Export
+ * Repositories Barrel Export
  */
 
-export * from './airdrop.repository';
-export * from './wallet.repository';
-
+export type { IAirdropRepository } from './airdrop.repository';
+export type { IWalletRepository } from './wallet.repository';
