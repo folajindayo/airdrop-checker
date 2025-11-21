@@ -1,81 +1,105 @@
 /**
  * Airdrop Repository Interface
- * Defines contract for airdrop data access
+ * Defines the contract for airdrop data persistence
  */
 
-import { AirdropEntity, AirdropStatus } from '../entities';
+import { AirdropEntity } from '../entities/airdrop.entity';
 
-export interface AirdropRepository {
+export interface AirdropFilters {
+  chainId?: number;
+  status?: string;
+  minAmount?: bigint;
+  startDate?: Date;
+  endDate?: Date;
+  search?: string;
+}
+
+export interface PaginationParams {
+  page: number;
+  limit: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface PaginatedResult<T> {
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface IAirdropRepository {
   /**
    * Find airdrop by ID
    */
   findById(id: string): Promise<AirdropEntity | null>;
 
   /**
-   * Find all airdrops
+   * Find airdrops with filters and pagination
    */
-  findAll(filters?: AirdropFilters): Promise<AirdropEntity[]>;
+  find(
+    filters: AirdropFilters,
+    pagination: PaginationParams
+  ): Promise<PaginatedResult<AirdropEntity>>;
 
   /**
-   * Find airdrops by status
+   * Find all active airdrops
    */
-  findByStatus(status: AirdropStatus): Promise<AirdropEntity[]>;
+  findActive(): Promise<AirdropEntity[]>;
 
   /**
-   * Find airdrops by protocol
+   * Find airdrops by chain ID
    */
-  findByProtocol(protocol: string): Promise<AirdropEntity[]>;
+  findByChainId(chainId: number): Promise<AirdropEntity[]>;
 
   /**
-   * Check eligibility for wallet
+   * Find airdrops by wallet eligibility
    */
-  checkEligibility(airdropId: string, walletAddress: string): Promise<EligibilityResult>;
+  findEligibleForWallet(walletAddress: string): Promise<AirdropEntity[]>;
 
   /**
-   * Save airdrop
+   * Find upcoming airdrops
    */
-  save(airdrop: AirdropEntity): Promise<AirdropEntity>;
+  findUpcoming(limit?: number): Promise<AirdropEntity[]>;
+
+  /**
+   * Create new airdrop
+   */
+  create(airdrop: AirdropEntity): Promise<AirdropEntity>;
+
+  /**
+   * Update existing airdrop
+   */
+  update(id: string, airdrop: AirdropEntity): Promise<AirdropEntity>;
 
   /**
    * Delete airdrop
    */
-  delete(id: string): Promise<boolean>;
+  delete(id: string): Promise<void>;
 
   /**
-   * Count airdrops
+   * Count airdrops with filters
    */
-  count(filters?: AirdropFilters): Promise<number>;
-}
+  count(filters: AirdropFilters): Promise<number>;
 
-export interface AirdropFilters {
-  status?: AirdropStatus[];
-  chainIds?: number[];
-  protocols?: string[];
-  search?: string;
-  verified?: boolean;
-  featured?: boolean;
-  tags?: string[];
-  limit?: number;
-  offset?: number;
-  sortBy?: 'startDate' | 'endDate' | 'name' | 'protocol';
-  sortOrder?: 'asc' | 'desc';
-}
+  /**
+   * Check if airdrop exists
+   */
+  exists(id: string): Promise<boolean>;
 
-export interface EligibilityResult {
-  eligible: boolean;
-  airdropId: string;
-  walletAddress: string;
-  criteriaResults: CriteriaResult[];
-  estimatedAllocation?: string;
-  score: number;
-  checkedAt: Date;
-}
+  /**
+   * Find airdrops by contract address
+   */
+  findByContractAddress(contractAddress: string): Promise<AirdropEntity[]>;
 
-export interface CriteriaResult {
-  type: string;
-  requirement: string;
-  met: boolean;
-  value?: string | number;
-  message?: string;
-}
+  /**
+   * Bulk create airdrops
+   */
+  bulkCreate(airdrops: AirdropEntity[]): Promise<AirdropEntity[]>;
 
+  /**
+   * Mark airdrop as claimed for wallet
+   */
+  markAsClaimed(airdropId: string, walletAddress: string): Promise<void>;
+}
