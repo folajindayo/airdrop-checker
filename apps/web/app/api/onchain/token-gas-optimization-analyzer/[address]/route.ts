@@ -107,6 +107,7 @@ export async function GET(
     return NextResponse.json(payload);
   } catch (error) {
     console.error('Gas optimization analyzer error:', error);
+    // Enhanced error logging for debugging
     return NextResponse.json(
       {
         error: 'Failed to analyze gas optimization',
