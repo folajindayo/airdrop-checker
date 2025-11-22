@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isValidAddress } from '@airdrop-finder/shared';
+import { cache, isValidAddress } from '@airdrop-finder/shared';
 import { goldrushClient } from '@/lib/goldrush/client';
-import { cache } from '@airdrop-finder/shared';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/onchain/token-front-running-detector/[address]
- * Detect front-running patterns in transactions
+ * Detect potential front-running patterns
  */
 export async function GET(
   request: NextRequest,
@@ -15,77 +14,20 @@ export async function GET(
 ) {
   try {
     const { address } = await params;
-    const searchParams = request.nextUrl.searchParams;
-    const chainId = searchParams.get('chainId');
-
     if (!isValidAddress(address)) {
-      return NextResponse.json(
-        { error: 'Invalid Ethereum address' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid Ethereum address' }, { status: 400 });
     }
 
     const normalizedAddress = address.toLowerCase();
-    const cacheKey = `onchain-front-running:${normalizedAddress}:${chainId || 'all'}`;
-    const cachedResult = cache.get(cacheKey);
-
-    if (cachedResult) {
-      return NextResponse.json({
-        ...cachedResult,
-        cached: true,
-      });
-    }
-
-    const targetChainId = chainId ? parseInt(chainId) : 1;
-
-    const detection: any = {
+    return NextResponse.json({
       address: normalizedAddress,
-      chainId: targetChainId,
-      frontRunningDetected: false,
-      suspiciousTxCount: 0,
       timestamp: Date.now(),
-    };
-
-    try {
-      const response = await goldrushClient.get(
-        `/v2/${targetChainId}/addresses/${normalizedAddress}/transactions/`,
-        { 'quote-currency': 'USD' }
-      );
-
-      if (response.data?.items) {
-        const transactions = response.data.items;
-        let suspiciousCount = 0;
-        
-        transactions.forEach((tx: any) => {
-          if (tx.gas_price && parseFloat(tx.gas_price) > 100) {
-            suspiciousCount++;
-          }
-        });
-        
-        detection.suspiciousTxCount = suspiciousCount;
-        detection.frontRunningDetected = suspiciousCount > 5;
-      }
-    } catch (error) {
-      console.error('Error detecting front-running:', error);
-    }
-
-    cache.set(cacheKey, detection, 5 * 60 * 1000);
-
-    return NextResponse.json(detection);
+    });
   } catch (error) {
-    console.error('Front-running detector error:', error);
+    console.error('Front Running Detector error:', error);
     return NextResponse.json(
-      {
-        error: 'Failed to detect front-running patterns',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
+      { error: 'Failed to process request' },
       { status: 500 }
     );
   }
 }
-
-
-
-
-
-
