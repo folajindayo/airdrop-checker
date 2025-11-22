@@ -52,7 +52,7 @@ export async function GET(
       timestamp: Date.now(),
     };
 
-    cache.set(cacheKey, analysis, 60 * 1000);
+    cache.set(cacheKey, analysis, 5 * 60 * 1000); // 5 minute TTL
     return NextResponse.json(analysis);
   } catch (error) {
     console.error(`${feature} error:`, error);
