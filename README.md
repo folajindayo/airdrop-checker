@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 831+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 861+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 1175 Production-Ready Features!
+## 🎉 1205 Production-Ready Features!
 
 ## ✨ Features
 
@@ -1234,6 +1234,36 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 1022. **Token Contract Complexity Analyzer** - Analyze contract complexity and code metrics
 1023. **Token Event Emission Efficiency** - Analyze event emission efficiency and gas costs
 1024. **Token Storage Optimization Score** - Calculate storage optimization scores and opportunities
+1025. **Token Price Impact Calculator** - Calculate price impact for token trades and swaps
+1026. **Token Liquidity Provider Score** - Calculate liquidity provider scores and contribution metrics
+1027. **Token Market Maker Activity Tracker** - Track market maker activity and spread analysis
+1028. **Token Rug Pull Risk Score** - Assess rug pull risk and safety scores
+1029. **Token Contract Audit Status** - Check contract audit status and findings
+1030. **Token Tokenomics Health Score** - Calculate comprehensive tokenomics health scores
+1031. **Token Holder Distribution Gini** - Calculate Gini coefficient for holder distribution
+1032. **Token Trading Volume Predictor** - Predict trading volume based on historical patterns
+1033. **Token Price Volatility Analyzer** - Analyze price volatility and risk assessment
+1034. **Token Market Sentiment Analyzer** - Analyze market sentiment and bullish/bearish indicators
+1035. **Token Social Media Sentiment** - Track social media sentiment across platforms
+1036. **Token Developer Activity Monitor** - Monitor developer activity and contributions
+1037. **Token Community Growth Tracker** - Track community growth and engagement metrics
+1038. **Token Exchange Listing Tracker** - Track exchange listings and trading pairs
+1039. **Token Pair Creation Monitor** - Monitor trading pair creation and liquidity distribution
+1040. **Token Liquidity Lock Tracker** - Track liquidity locks and unlock schedules
+1041. **Token Vesting Schedule Analyzer** - Analyze vesting schedules and unlock periods
+1042. **Token Airdrop Snapshot Generator** - Generate airdrop snapshots at specific block numbers
+1043. **Token Merkle Tree Validator** - Validate merkle tree proofs for airdrop claims
+1044. **Token Claim Eligibility Verifier** - Verify claim eligibility and requirements
+1045. **Token Multisig Wallet Monitor** - Monitor multisig wallet status and transactions
+1046. **Token Proxy Contract Analyzer** - Analyze proxy contracts and implementation addresses
+1047. **Token Upgrade History Tracker** - Track contract upgrade history and frequency
+1048. **Token Event Log Analyzer** - Analyze contract event logs and patterns
+1049. **Token Gas Price Optimizer** - Optimize gas prices for cost efficiency
+1050. **Token Transaction Fee Calculator** - Calculate comprehensive transaction fees
+1051. **Token Slippage Tolerance Optimizer** - Optimize slippage tolerance for trades
+1052. **Token Route Finder** - Find optimal swap routes across DEXes
+1053. **Token Price Alert System** - Set up price alerts and notifications
+1054. **Token Portfolio Rebalancer** - Calculate portfolio rebalancing strategies
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
@@ -1917,6 +1947,36 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-contract-complexity-analyzer` - Analyze contract complexity
 - `GET /api/onchain/token-event-emission-efficiency` - Analyze event emission efficiency
 - `GET /api/onchain/token-storage-optimization-score` - Calculate storage optimization score
+- `GET /api/onchain/token-price-impact-calculator` - Calculate price impact for trades
+- `GET /api/onchain/token-liquidity-provider-score` - Calculate liquidity provider score
+- `GET /api/onchain/token-market-maker-activity-tracker` - Track market maker activity
+- `GET /api/onchain/token-rug-pull-risk-score` - Assess rug pull risk score
+- `GET /api/onchain/token-contract-audit-status` - Check contract audit status
+- `GET /api/onchain/token-tokenomics-health-score` - Calculate tokenomics health score
+- `GET /api/onchain/token-holder-distribution-gini` - Calculate holder distribution Gini coefficient
+- `GET /api/onchain/token-trading-volume-predictor` - Predict trading volume
+- `GET /api/onchain/token-price-volatility-analyzer` - Analyze price volatility
+- `GET /api/onchain/token-market-sentiment-analyzer` - Analyze market sentiment
+- `GET /api/onchain/token-social-media-sentiment` - Track social media sentiment
+- `GET /api/onchain/token-developer-activity-monitor` - Monitor developer activity
+- `GET /api/onchain/token-community-growth-tracker` - Track community growth
+- `GET /api/onchain/token-exchange-listing-tracker` - Track exchange listings
+- `GET /api/onchain/token-pair-creation-monitor` - Monitor pair creation
+- `GET /api/onchain/token-liquidity-lock-tracker` - Track liquidity locks
+- `GET /api/onchain/token-vesting-schedule-analyzer` - Analyze vesting schedules
+- `GET /api/onchain/token-airdrop-snapshot-generator` - Generate airdrop snapshots
+- `GET /api/onchain/token-merkle-tree-validator` - Validate merkle tree proofs
+- `GET /api/onchain/token-claim-eligibility-verifier` - Verify claim eligibility
+- `GET /api/onchain/token-multisig-wallet-monitor` - Monitor multisig wallets
+- `GET /api/onchain/token-proxy-contract-analyzer` - Analyze proxy contracts
+- `GET /api/onchain/token-upgrade-history-tracker` - Track upgrade history
+- `GET /api/onchain/token-event-log-analyzer` - Analyze event logs
+- `GET /api/onchain/token-gas-price-optimizer` - Optimize gas prices
+- `GET /api/onchain/token-transaction-fee-calculator` - Calculate transaction fees
+- `GET /api/onchain/token-slippage-tolerance-optimizer` - Optimize slippage tolerance
+- `GET /api/onchain/token-route-finder` - Find optimal swap routes
+- `GET /api/onchain/token-price-alert-system` - Set up price alerts
+- `GET /api/onchain/token-portfolio-rebalancer` - Calculate portfolio rebalancing
 
 All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
 
