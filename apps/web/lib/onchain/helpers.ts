@@ -68,3 +68,52 @@ export function getChainName(chainId: number): string {
   return chainNames[chainId] || `Chain ${chainId}`;
 }
 
+// Feature 2: MEV protection analyzer helpers
+import type { MEVProtectionAnalysis } from './types';
+
+export function calculateMEVRiskScore(
+  gasPricePremium: number,
+  hasPrivatePool: boolean,
+  hasFlashbots: boolean
+): number {
+  let riskScore = 0;
+  
+  // Gas price premium contributes to risk
+  if (gasPricePremium > 0.5) riskScore += 40;
+  else if (gasPricePremium > 0.2) riskScore += 20;
+  else if (gasPricePremium > 0.1) riskScore += 10;
+  
+  // Protection mechanisms reduce risk
+  if (hasPrivatePool) riskScore -= 30;
+  if (hasFlashbots) riskScore -= 20;
+  
+  return Math.max(0, Math.min(100, riskScore));
+}
+
+export function determineProtectionLevel(riskScore: number): 'none' | 'low' | 'medium' | 'high' {
+  if (riskScore >= 70) return 'none';
+  if (riskScore >= 40) return 'low';
+  if (riskScore >= 20) return 'medium';
+  return 'high';
+}
+
+export function generateMEVRecommendations(riskScore: number, hasProtection: boolean): string[] {
+  const recommendations: string[] = [];
+  
+  if (riskScore > 50) {
+    recommendations.push('Consider using private transaction pools');
+    recommendations.push('Use Flashbots protection for sensitive transactions');
+  }
+  
+  if (riskScore > 30) {
+    recommendations.push('Increase gas price to reduce frontrunning risk');
+    recommendations.push('Consider batching transactions');
+  }
+  
+  if (!hasProtection && riskScore > 20) {
+    recommendations.push('Enable MEV protection in your wallet settings');
+  }
+  
+  return recommendations;
+}
+
