@@ -31,6 +31,7 @@ export async function GET(
     });
   } catch (error) {
     console.error('Smart contract security scanner error:', error);
+    // Enhanced error logging for debugging
     return NextResponse.json(
       {
         error: 'Failed to scan contract security',
