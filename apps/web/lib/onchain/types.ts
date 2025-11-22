@@ -310,3 +310,102 @@ export interface MigrationPath {
   bestRoute: boolean;
 }
 
+// Feature 11: Contract storage layout analyzer types
+export interface StorageLayoutRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface StorageSlot {
+  slot: number;
+  variable: string;
+  type: string;
+  offset: number;
+  size: number;
+}
+
+export interface StorageLayout {
+  contractAddress: Address;
+  slots: StorageSlot[];
+  totalSlots: number;
+  packedSlots: number;
+}
+
+// Feature 12: Token arbitrage opportunity finder types
+export interface ArbitrageOpportunityRequest {
+  tokenA: Address;
+  tokenB: Address;
+  chainIds: number[];
+  minProfit?: string;
+}
+
+export interface ArbitrageOpportunity {
+  chainId: number;
+  dexA: string;
+  dexB: string;
+  tokenA: Address;
+  tokenB: Address;
+  buyPrice: string;
+  sellPrice: string;
+  profit: string;
+  profitPercentage: number;
+  estimatedGas: number;
+}
+
+// Feature 13: Contract proxy pattern detector types
+export interface ProxyPatternRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface ProxyPattern {
+  contractAddress: Address;
+  isProxy: boolean;
+  proxyType?: 'transparent' | 'uups' | 'beacon' | 'minimal';
+  implementationAddress?: Address;
+  adminAddress?: Address;
+  hasTimelock: boolean;
+}
+
+// Feature 14: Token cross-chain bridge risk analyzer types
+export interface BridgeRiskRequest {
+  tokenAddress: Address;
+  sourceChainId: number;
+  destinationChainId: number;
+  amount: string;
+}
+
+export interface BridgeRiskAnalysis {
+  tokenAddress: Address;
+  sourceChainId: number;
+  destinationChainId: number;
+  riskLevel: 'low' | 'medium' | 'high';
+  risks: {
+    bridgeSecurity: number;
+    liquidityRisk: number;
+    slippageRisk: number;
+    timeRisk: number;
+  };
+  recommendations: string[];
+}
+
+// Feature 15: Contract reentrancy vulnerability scanner types
+export interface ReentrancyScanRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface ReentrancyVulnerability {
+  functionName: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  description: string;
+  recommendation: string;
+}
+
+export interface ReentrancyScanReport {
+  contractAddress: Address;
+  vulnerabilities: ReentrancyVulnerability[];
+  hasReentrancy: boolean;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+}
+
