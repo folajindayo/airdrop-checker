@@ -25,7 +25,9 @@ export async function GET(
     const searchParams = request.nextUrl.searchParams;
     const chainId = searchParams.get('chainId');
     const limit = Math.min(parseInt(searchParams.get('limit') || '200', 10), 300);
-
+    if (limit < 1 || limit > 300) {
+      return NextResponse.json({ error: "Invalid limit parameter" }, { status: 400 });
+    }
     if (!isValidAddress(address)) {
       return NextResponse.json({ error: 'Invalid Ethereum address' }, { status: 400 });
     }
