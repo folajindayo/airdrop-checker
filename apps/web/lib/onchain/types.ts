@@ -510,3 +510,214 @@ export interface SlippageProtection {
   recommendations: string[];
 }
 
+// Feature 21: Contract gas consumption profiler types
+export interface GasProfilingRequest {
+  contractAddress: Address;
+  functionName: string;
+  chainId: number;
+}
+
+export interface GasProfile {
+  functionName: string;
+  gasUsed: number;
+  gasLimit: number;
+  efficiency: number;
+  breakdown: {
+    storage: number;
+    computation: number;
+    external: number;
+  };
+}
+
+// Feature 22: Token yield curve analyzer types
+export interface YieldCurveRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeframe: '7d' | '30d' | '90d';
+}
+
+export interface YieldCurve {
+  tokenAddress: Address;
+  currentYield: number;
+  averageYield: number;
+  yieldHistory: {
+    timestamp: number;
+    yield: number;
+  }[];
+  trend: 'increasing' | 'decreasing' | 'stable';
+}
+
+// Feature 23: Contract function call tracer types
+export interface FunctionCallTraceRequest {
+  transactionHash: string;
+  chainId: number;
+}
+
+export interface FunctionCall {
+  contractAddress: Address;
+  functionName: string;
+  args: any[];
+  returnValue?: any;
+  gasUsed: number;
+  depth: number;
+}
+
+export interface FunctionCallTrace {
+  transactionHash: string;
+  calls: FunctionCall[];
+  totalCalls: number;
+  totalGas: number;
+}
+
+// Feature 24: Token holder distribution analyzer types
+export interface HolderDistributionRequest {
+  tokenAddress: Address;
+  chainId: number;
+  topN?: number;
+}
+
+export interface HolderSegment {
+  range: string;
+  holders: number;
+  percentage: number;
+  totalBalance: string;
+}
+
+export interface HolderDistribution {
+  tokenAddress: Address;
+  segments: HolderSegment[];
+  giniCoefficient: number;
+  topHolders: {
+    address: Address;
+    balance: string;
+    percentage: number;
+  }[];
+}
+
+// Feature 25: Contract storage slot collision detector types
+export interface StorageCollisionRequest {
+  contractAddress: Address;
+  upgradeAddress: Address;
+  chainId: number;
+}
+
+export interface StorageCollision {
+  slot: number;
+  variable: string;
+  collisionType: 'overwrite' | 'shift' | 'safe';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+}
+
+export interface StorageCollisionReport {
+  contractAddress: Address;
+  upgradeAddress: Address;
+  collisions: StorageCollision[];
+  hasCollisions: boolean;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+}
+
+// Feature 26: Token liquidity depth analyzer types
+export interface LiquidityDepthRequest {
+  tokenAddress: Address;
+  chainId: number;
+  priceRange?: number;
+}
+
+export interface LiquidityDepth {
+  price: string;
+  liquidity: string;
+  depth: number;
+}
+
+export interface LiquidityDepthAnalysis {
+  tokenAddress: Address;
+  depths: LiquidityDepth[];
+  averageDepth: number;
+  maxDepth: number;
+  minDepth: number;
+}
+
+// Feature 27: Contract upgrade compatibility checker types
+export interface UpgradeCompatibilityRequest {
+  currentAddress: Address;
+  newAddress: Address;
+  chainId: number;
+}
+
+export interface CompatibilityIssue {
+  type: 'abi' | 'storage' | 'function' | 'event';
+  description: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+}
+
+export interface UpgradeCompatibility {
+  currentAddress: Address;
+  newAddress: Address;
+  isCompatible: boolean;
+  issues: CompatibilityIssue[];
+  compatibilityScore: number;
+}
+
+// Feature 28: Token cross-DEX price aggregator types
+export interface CrossDEXPriceRequest {
+  tokenAddress: Address;
+  chainId: number;
+  dexes?: string[];
+}
+
+export interface DEXPrice {
+  dex: string;
+  price: string;
+  liquidity: string;
+  volume24h: string;
+}
+
+export interface CrossDEXPrice {
+  tokenAddress: Address;
+  prices: DEXPrice[];
+  averagePrice: string;
+  bestPrice: string;
+  priceSpread: number;
+}
+
+// Feature 29: Contract state transition validator types
+export interface StateTransitionRequest {
+  contractAddress: Address;
+  fromState: string;
+  toState: string;
+  chainId: number;
+}
+
+export interface StateTransition {
+  fromState: string;
+  toState: string;
+  isValid: boolean;
+  requiredConditions: string[];
+  missingConditions: string[];
+}
+
+// Feature 30: Token smart routing optimizer types
+export interface SmartRoutingRequest {
+  tokenIn: Address;
+  tokenOut: Address;
+  amountIn: string;
+  chainId: number;
+  maxHops?: number;
+}
+
+export interface RoutingStep {
+  dex: string;
+  tokenIn: Address;
+  tokenOut: Address;
+  amountIn: string;
+  amountOut: string;
+}
+
+export interface SmartRoute {
+  steps: RoutingStep[];
+  totalAmountOut: string;
+  totalGas: number;
+  priceImpact: number;
+  efficiency: number;
+}
+
