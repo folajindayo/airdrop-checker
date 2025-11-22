@@ -93,6 +93,7 @@ export async function GET(
     return NextResponse.json(payload);
   } catch (error) {
     console.error('NFT collection value tracker error:', error);
+    // Enhanced error logging for debugging
     return NextResponse.json(
       {
         error: 'Failed to track NFT collection values',
