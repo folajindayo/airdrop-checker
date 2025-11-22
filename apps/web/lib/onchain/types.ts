@@ -142,3 +142,70 @@ export interface MEVProtectionAnalysis {
   };
 }
 
+// Feature 3: Token rug pull detector types
+export interface RugPullDetectionRequest {
+  tokenAddress: Address;
+  chainId: number;
+}
+
+export interface RugPullAnalysis {
+  tokenAddress: Address;
+  isRugPull: boolean;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  riskFactors: {
+    liquidityLocked: boolean;
+    ownershipRenounced: boolean;
+    contractVerified: boolean;
+    hasTax: boolean;
+    highOwnership: boolean;
+    suspiciousActivity: boolean;
+  };
+  riskScore: number;
+  recommendations: string[];
+}
+
+// Feature 4: Smart contract dependency mapper types
+export interface ContractDependencyRequest {
+  contractAddress: Address;
+  chainId: number;
+  depth?: number;
+}
+
+export interface ContractDependency {
+  address: Address;
+  type: 'contract' | 'library' | 'interface';
+  relationship: 'imports' | 'inherits' | 'calls' | 'stores';
+  depth: number;
+}
+
+export interface ContractDependencyMap {
+  contractAddress: Address;
+  dependencies: ContractDependency[];
+  totalDependencies: number;
+  maxDepth: number;
+}
+
+// Feature 5: Gas optimization advisor types
+export interface GasOptimizationRequest {
+  contractAddress: Address;
+  functionName: string;
+  args: any[];
+  chainId: number;
+}
+
+export interface GasOptimization {
+  suggestion: string;
+  currentGas: number;
+  estimatedSavings: number;
+  priority: 'low' | 'medium' | 'high';
+  implementation: string;
+}
+
+export interface GasOptimizationReport {
+  contractAddress: Address;
+  functionName: string;
+  currentGasEstimate: number;
+  optimizations: GasOptimization[];
+  totalPotentialSavings: number;
+}
+
