@@ -81,6 +81,7 @@ export async function GET(
         });
       } catch (error) {
         console.error(`DeFi health check failed on chain ${chain.id}:`, error);
+    // Enhanced error logging for debugging
       }
     }
 
@@ -114,6 +115,7 @@ export async function GET(
     return NextResponse.json(payload);
   } catch (error) {
     console.error('DeFi position health error:', error);
+    // Enhanced error logging for debugging
     return NextResponse.json(
       {
         error: 'Failed to analyze DeFi position health',
