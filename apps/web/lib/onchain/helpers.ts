@@ -39,3 +39,32 @@ export function isUnlimitedApproval(allowance: bigint): boolean {
   return allowance >= maxUint256 - BigInt(1000); // Allow small margin for rounding
 }
 
+// Feature 1: Cross-chain token balance aggregator helpers
+import type { ChainBalance } from './types';
+
+export function aggregateCrossChainBalances(balances: ChainBalance[]): string {
+  return balances.reduce((total, balance) => {
+    const balanceBigInt = BigInt(balance.balance);
+    return (BigInt(total) + balanceBigInt).toString();
+  }, '0');
+}
+
+export function formatAggregatedBalance(totalBalance: string, decimals: number = 18): string {
+  const divisor = BigInt(10 ** decimals);
+  const balanceBigInt = BigInt(totalBalance);
+  const formatted = Number(balanceBigInt) / Number(divisor);
+  return formatted.toFixed(6);
+}
+
+export function getChainName(chainId: number): string {
+  const chainNames: Record<number, string> = {
+    1: 'Ethereum',
+    8453: 'Base',
+    42161: 'Arbitrum',
+    10: 'Optimism',
+    137: 'Polygon',
+    324: 'zkSync',
+  };
+  return chainNames[chainId] || `Chain ${chainId}`;
+}
+
