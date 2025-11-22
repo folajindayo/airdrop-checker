@@ -95,3 +95,29 @@ export interface OnchainResponse {
   message?: string;
 }
 
+// Feature 1: Cross-chain token balance aggregator types
+export interface CrossChainBalanceRequest {
+  address: Address;
+  tokenAddress?: Address;
+  chainIds: number[];
+}
+
+export interface ChainBalance {
+  chainId: number;
+  chainName: string;
+  balance: string;
+  balanceFormatted: string;
+  tokenAddress?: Address;
+  tokenSymbol?: string;
+  decimals: number;
+}
+
+export interface CrossChainBalanceResponse {
+  address: Address;
+  totalBalance: string;
+  totalBalanceFormatted: string;
+  balances: ChainBalance[];
+  chainCount: number;
+  tokenAddress?: Address;
+}
+
