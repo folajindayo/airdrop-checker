@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 776+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 781+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 1120 Production-Ready Features!
+## 🎉 1125 Production-Ready Features!
 
 ## ✨ Features
 
@@ -184,6 +184,11 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 - 🛠️ **Validator Yield Leakage Monitor**: Contrast staking principal with gas drag and inactivity penalties.
 - 🧾 **Quest Completion Ledger**: Chronicle quest platforms touched, streaks, and gas footprint.
 - 💸 **MEV Refund Attribution**: Attribute Flashbots/CoW refunds with per-source USD breakdowns.
+- 🧱 **Restaking Operator Drift Monitor**: Capture delegate churn, penalty hits, and inactivity across EigenLayer-style operators.
+- ⚡ **Lending Health Voltage Analyzer**: Track supply/borrow ratios, rate changes, and liquidation buffers per lending market.
+- 🕰️ **Cross-Rollup Withdrawal Aging**: Measure pending vs. finalized exits across Optimism, Base, and Arbitrum routes.
+- 🧾 **RWA Redemption Latency Tracker**: Pair redemption requests with settlements for Ondo, Maple, Hifi, and Backed vaults.
+- 🌐 **Social Proof Graph**: Link POAPs, quests, governance votes, and identity signals into a reputation cluster map.
 
 ### Developer Features
 - 🧪 **Comprehensive Tests**: 80+ test files with 1000+ test cases
