@@ -121,3 +121,24 @@ export interface CrossChainBalanceResponse {
   tokenAddress?: Address;
 }
 
+// Feature 2: MEV protection analyzer types
+export interface MEVProtectionRequest {
+  transactionHash: string;
+  chainId: number;
+}
+
+export interface MEVProtectionAnalysis {
+  transactionHash: string;
+  isProtected: boolean;
+  protectionLevel: 'none' | 'low' | 'medium' | 'high';
+  detectedMEV: boolean;
+  mevType?: 'frontrunning' | 'backrunning' | 'sandwich' | 'arbitrage';
+  riskScore: number;
+  recommendations: string[];
+  gasPriceAnalysis: {
+    current: string;
+    average: string;
+    premium: string;
+  };
+}
+
