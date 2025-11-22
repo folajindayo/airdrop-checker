@@ -1,6 +1,6 @@
 # 🎁 Airdrop Checker
 
-A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 791+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
+A comprehensive onchain dashboard that helps users check whether their wallet might be eligible for ongoing or upcoming airdrops. Users connect their wallet via **Reown Wallet** (formerly WalletConnect) and instantly see a summary of protocols they've interacted with, activity patterns, and how closely they match known airdrop eligibility criteria. The platform includes 801+ onchain transaction and query features, all powered by Reown Wallet for secure, decentralized access.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
@@ -8,7 +8,7 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🎉 1135 Production-Ready Features!
+## 🎉 1145 Production-Ready Features!
 
 ## ✨ Features
 
@@ -199,6 +199,16 @@ A comprehensive onchain dashboard that helps users check whether their wallet mi
 - 🔍 **Cross-Chain Arbitrage Scanner**: Detect potential arbitrage opportunities across different chains.
 - 🎯 **Airdrop Farming Pattern Detector**: Identify farming patterns from transaction timing and protocol interactions.
 - 🔐 **Wallet Behavior Fingerprint**: Generate behavioral fingerprints from transaction patterns, timing, and chain preferences.
+- 📊 **Token Holder Concentration Analyzer**: Analyze token holder concentration and distribution patterns across protocols.
+- ⛽ **Gas Efficiency Optimizer**: Analyze gas efficiency and suggest optimizations for transaction patterns.
+- 🔥 **Contract Interaction Heatmap**: Generate a heatmap of smart contract interactions over time.
+- 🌾 **Yield Farming Strategy Optimizer**: Optimize yield farming strategies across multiple protocols.
+- ⚖️ **Cross-Chain Portfolio Rebalancer**: Analyze cross-chain portfolio distribution and suggest rebalancing.
+- ⏰ **Transaction Timing Optimizer**: Analyze transaction timing patterns and suggest optimal times.
+- ⚠️ **Protocol Risk Assessor**: Assess risk levels of protocols the wallet interacts with.
+- 💰 **Liquidity Provision ROI Calculator**: Calculate ROI for liquidity provision activities.
+- 📅 **Token Unlock Schedule Tracker**: Track token unlock schedules and vesting events.
+- 🎯 **Wallet Activity Clustering**: Cluster wallet activities into behavioral patterns.
 
 ### Developer Features
 - 🧪 **Comprehensive Tests**: 80+ test files with 1000+ test cases
