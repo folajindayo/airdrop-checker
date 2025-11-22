@@ -53,7 +53,7 @@ export async function GET(
     };
 
     cache.set(cacheKey, analysis, 60 * 1000);
-    return NextResponse.json(analysis);
+    return NextResponse.json({...analysis, metadata: { version: "1.0", feature: "token-transfer-velocity-analyzer" }});
   } catch (error) {
     console.error(`${feature} error:`, error);
     return NextResponse.json(
