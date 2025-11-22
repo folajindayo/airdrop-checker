@@ -1887,6 +1887,36 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 - `GET /api/onchain/token-token-dividend-tracker/[address]` - Track dividend distributions
 - `GET /api/onchain/token-token-auto-compound/[address]` - Calculate auto-compound benefits
 - `GET /api/onchain/token-token-rewards-claim-optimizer/[address]` - Optimize rewards claiming
+- `GET /api/onchain/token-cross-chain-bridge-efficiency` - Analyze cross-chain bridge efficiency
+- `GET /api/onchain/token-mev-protection-score` - Calculate MEV protection score
+- `GET /api/onchain/token-front-running-risk` - Assess front-running risk
+- `GET /api/onchain/token-sandwich-attack-vulnerability` - Analyze sandwich attack vulnerability
+- `GET /api/onchain/token-slippage-protection-monitor` - Monitor slippage protection
+- `GET /api/onchain/token-liquidity-migration-tracker` - Track liquidity migration
+- `GET /api/onchain/token-protocol-integration-score` - Calculate protocol integration score
+- `GET /api/onchain/token-smart-contract-upgrade-risk` - Assess upgrade risk
+- `GET /api/onchain/token-governance-participation-rate` - Calculate governance participation rate
+- `GET /api/onchain/token-treasury-diversification-score` - Analyze treasury diversification
+- `GET /api/onchain/token-burn-mechanism-efficiency` - Analyze burn mechanism efficiency
+- `GET /api/onchain/token-reflection-distribution-fairness` - Assess reflection fairness
+- `GET /api/onchain/token-anti-whale-mechanism-strength` - Evaluate anti-whale strength
+- `GET /api/onchain/token-tax-optimization-calculator` - Calculate tax optimization
+- `GET /api/onchain/token-holder-loyalty-score` - Calculate holder loyalty score
+- `GET /api/onchain/token-transaction-cost-efficiency` - Analyze transaction cost efficiency
+- `GET /api/onchain/token-cross-chain-arbitrage-opportunity` - Find arbitrage opportunities
+- `GET /api/onchain/token-flash-loan-risk-assessment` - Assess flash loan risk
+- `GET /api/onchain/token-liquidation-risk-monitor` - Monitor liquidation risk
+- `GET /api/onchain/token-collateral-health-score` - Calculate collateral health score
+- `GET /api/onchain/token-yield-farming-efficiency` - Analyze yield farming efficiency
+- `GET /api/onchain/token-staking-pool-health` - Assess staking pool health
+- `GET /api/onchain/token-validator-performance-score` - Calculate validator performance
+- `GET /api/onchain/token-bridge-security-score` - Assess bridge security score
+- `GET /api/onchain/token-layer2-activity-monitor` - Monitor Layer 2 activity
+- `GET /api/onchain/token-account-abstraction-adoption` - Track account abstraction adoption
+- `GET /api/onchain/token-gas-optimization-score` - Calculate gas optimization score
+- `GET /api/onchain/token-contract-complexity-analyzer` - Analyze contract complexity
+- `GET /api/onchain/token-event-emission-efficiency` - Analyze event emission efficiency
+- `GET /api/onchain/token-storage-optimization-score` - Calculate storage optimization score
 
 All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
 
