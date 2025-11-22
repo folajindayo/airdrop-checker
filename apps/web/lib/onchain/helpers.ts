@@ -117,3 +117,40 @@ export function generateMEVRecommendations(riskScore: number, hasProtection: boo
   return recommendations;
 }
 
+// Feature 3: Rug pull detector helpers
+import type { RugPullAnalysis } from './types';
+
+export function calculateRugPullRiskScore(riskFactors: RugPullAnalysis['riskFactors']): number {
+  let score = 0;
+  
+  if (!riskFactors.liquidityLocked) score += 30;
+  if (!riskFactors.ownershipRenounced) score += 25;
+  if (!riskFactors.contractVerified) score += 20;
+  if (riskFactors.hasTax) score += 10;
+  if (riskFactors.highOwnership) score += 10;
+  if (riskFactors.suspiciousActivity) score += 15;
+  
+  return Math.min(100, score);
+}
+
+export function determineRugPullRiskLevel(riskScore: number): 'low' | 'medium' | 'high' | 'critical' {
+  if (riskScore >= 70) return 'critical';
+  if (riskScore >= 50) return 'high';
+  if (riskScore >= 30) return 'medium';
+  return 'low';
+}
+
+// Feature 5: Gas optimization helpers
+import type { GasOptimization } from './types';
+
+export function calculateGasSavings(currentGas: number, optimizedGas: number): number {
+  return currentGas - optimizedGas;
+}
+
+export function determineOptimizationPriority(savings: number, currentGas: number): 'low' | 'medium' | 'high' {
+  const percentage = (savings / currentGas) * 100;
+  if (percentage > 20) return 'high';
+  if (percentage > 10) return 'medium';
+  return 'low';
+}
+
