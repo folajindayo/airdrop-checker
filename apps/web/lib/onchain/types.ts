@@ -209,3 +209,104 @@ export interface GasOptimizationReport {
   totalPotentialSavings: number;
 }
 
+// Feature 6: Token liquidity migration tracker types
+export interface LiquidityMigrationRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface LiquidityMigration {
+  fromDex: string;
+  toDex: string;
+  amount: string;
+  timestamp: number;
+  transactionHash: string;
+}
+
+export interface LiquidityMigrationReport {
+  tokenAddress: Address;
+  migrations: LiquidityMigration[];
+  totalMigrations: number;
+  netLiquidityChange: string;
+  topDestination: string;
+}
+
+// Feature 7: Contract upgrade risk analyzer types
+export interface UpgradeRiskRequest {
+  proxyAddress: Address;
+  chainId: number;
+}
+
+export interface UpgradeRiskAnalysis {
+  proxyAddress: Address;
+  implementationAddress: Address;
+  riskLevel: 'low' | 'medium' | 'high';
+  risks: {
+    hasTimelock: boolean;
+    hasMultisig: boolean;
+    upgradeFrequency: number;
+    lastUpgrade: number;
+  };
+  recommendations: string[];
+}
+
+// Feature 8: Token pair correlation analyzer types
+export interface PairCorrelationRequest {
+  tokenA: Address;
+  tokenB: Address;
+  chainId: number;
+  timeframe: '24h' | '7d' | '30d';
+}
+
+export interface PairCorrelation {
+  tokenA: Address;
+  tokenB: Address;
+  correlationCoefficient: number;
+  priceMovement: {
+    tokenA: number;
+    tokenB: number;
+  };
+  tradingVolume: {
+    tokenA: string;
+    tokenB: string;
+  };
+}
+
+// Feature 9: Flash loan attack detector types
+export interface FlashLoanAttackRequest {
+  transactionHash: string;
+  chainId: number;
+}
+
+export interface FlashLoanAttackAnalysis {
+  transactionHash: string;
+  isFlashLoanAttack: boolean;
+  attackType?: 'arbitrage' | 'liquidation' | 'price-manipulation';
+  flashLoanAmount: string;
+  profit: string;
+  protocols: string[];
+  riskLevel: 'low' | 'medium' | 'high';
+}
+
+// Feature 10: Token migration path finder types
+export interface MigrationPathRequest {
+  fromToken: Address;
+  toToken: Address;
+  amount: string;
+  chainId: number;
+}
+
+export interface MigrationPath {
+  steps: {
+    action: 'swap' | 'bridge' | 'wrap';
+    from: Address;
+    to: Address;
+    amount: string;
+    dex?: string;
+  }[];
+  totalCost: string;
+  estimatedGas: number;
+  bestRoute: boolean;
+}
+
