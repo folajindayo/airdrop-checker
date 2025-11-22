@@ -19,19 +19,19 @@ export async function GET(request: NextRequest) {
       success: true,
       tokenAddress,
       chainId,
-      mevProtection: {
-        score: 0,
-        frontRunningRisk: 0,
-        sandwichRisk: 0,
-        protectionLevel: 'low',
-        recommendations: [],
+      frontRunningRisk: {
+        riskScore: 0,
+        vulnerabilityLevel: 'low',
+        detectedInstances: 0,
+        protectionMeasures: [],
         integration: 'Reown Wallet',
       },
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to calculate MEV protection score' },
+      { error: error.message || 'Failed to assess front-running risk' },
       { status: 500 }
     );
   }
 }
+

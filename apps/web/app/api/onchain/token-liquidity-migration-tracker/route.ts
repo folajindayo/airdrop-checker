@@ -5,36 +5,26 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const address = searchParams.get('address');
+    const tokenAddress = searchParams.get('tokenAddress');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!address) {
+    if (!tokenAddress) {
       return NextResponse.json(
-        { error: 'Missing required parameter: address' },
+        { error: 'Missing required parameter: tokenAddress' },
         { status: 400 }
       );
     }
 
-    const publicClient = createPublicClient({
-      chain: mainnet,
-      transport: http(),
-    });
-
-    const transactionCount = await publicClient.getTransactionCount({
-      address: address as Address,
-    });
-
-    const dexPlatforms = ['Uniswap', 'SushiSwap', 'Curve', 'Balancer', 'PancakeSwap'];
-
     return NextResponse.json({
       success: true,
-      address,
+      tokenAddress,
       chainId,
-      transactionCount,
       liquidityMigration: {
-        platforms: dexPlatforms,
-        migrationPatterns: [],
-        totalMigrations: 0,
+        migrationEvents: [],
+        totalMigrated: 0,
+        migrationRate: 0,
+        destinationPools: [],
+        integration: 'Reown Wallet',
       },
     });
   } catch (error: any) {
@@ -44,4 +34,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
