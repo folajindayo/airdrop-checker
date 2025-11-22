@@ -5,34 +5,37 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const address = searchParams.get('address');
-    const targetAllocation = searchParams.get('targetAllocation');
+    const tokenAddress = searchParams.get('tokenAddress');
+    const targetPrice = searchParams.get('targetPrice');
+    const alertType = searchParams.get('alertType') || 'above';
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!address) {
+    if (!tokenAddress || !targetPrice) {
       return NextResponse.json(
-        { error: 'Missing required parameter: address' },
+        { error: 'Missing required parameters: tokenAddress, targetPrice' },
         { status: 400 }
       );
     }
 
     return NextResponse.json({
       success: true,
-      address,
-      targetAllocation,
+      tokenAddress,
+      targetPrice,
+      alertType,
       chainId,
-      rebalancing: {
-        currentAllocation: {},
-        targetAllocation: {},
-        rebalanceActions: [],
-        estimatedGas: 0,
+      alert: {
+        active: false,
+        currentPrice: 0,
+        triggerPrice: 0,
+        status: 'pending',
         integration: 'Reown Wallet',
       },
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to calculate portfolio rebalancing' },
+      { error: error.message || 'Failed to set up price alert' },
       { status: 500 }
     );
   }
 }
+

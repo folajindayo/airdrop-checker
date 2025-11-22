@@ -5,34 +5,35 @@ import { mainnet } from 'viem/chains';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const address = searchParams.get('address');
-    const targetAllocation = searchParams.get('targetAllocation');
+    const tokenAddress = searchParams.get('tokenAddress');
+    const amount = searchParams.get('amount');
     const chainId = parseInt(searchParams.get('chainId') || '1');
 
-    if (!address) {
+    if (!tokenAddress || !amount) {
       return NextResponse.json(
-        { error: 'Missing required parameter: address' },
+        { error: 'Missing required parameters: tokenAddress, amount' },
         { status: 400 }
       );
     }
 
     return NextResponse.json({
       success: true,
-      address,
-      targetAllocation,
+      tokenAddress,
+      amount,
       chainId,
-      rebalancing: {
-        currentAllocation: {},
-        targetAllocation: {},
-        rebalanceActions: [],
-        estimatedGas: 0,
+      slippageOptimization: {
+        recommendedSlippage: 0,
+        currentSlippage: 0,
+        optimalSlippage: 0,
+        riskLevel: 'low',
         integration: 'Reown Wallet',
       },
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to calculate portfolio rebalancing' },
+      { error: error.message || 'Failed to optimize slippage tolerance' },
       { status: 500 }
     );
   }
 }
+
