@@ -1204,6 +1204,36 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 992. **Token Token Dividend Tracker** - Track dividend distributions and payments
 993. **Token Token Auto Compound** - Calculate auto-compounding benefits and optimal frequency
 994. **Token Token Rewards Claim Optimizer** - Optimize rewards claiming strategy for gas efficiency
+995. **Token Cross-Chain Bridge Efficiency** - Analyze cross-chain bridge efficiency and performance metrics
+996. **Token MEV Protection Score** - Calculate MEV protection score and vulnerability assessment
+997. **Token Front-Running Risk** - Assess front-running risk and protection measures
+998. **Token Sandwich Attack Vulnerability** - Analyze sandwich attack vulnerability and protection status
+999. **Token Slippage Protection Monitor** - Monitor slippage protection levels and recommendations
+1000. **Token Liquidity Migration Tracker** - Track liquidity migration events and patterns
+1001. **Token Protocol Integration Score** - Calculate protocol integration and compatibility scores
+1002. **Token Smart Contract Upgrade Risk** - Assess smart contract upgrade risks and history
+1003. **Token Governance Participation Rate** - Calculate governance participation rates and metrics
+1004. **Token Treasury Diversification Score** - Analyze treasury diversification and concentration risk
+1005. **Token Burn Mechanism Efficiency** - Analyze burn mechanism efficiency and effectiveness
+1006. **Token Reflection Distribution Fairness** - Assess reflection distribution fairness and equity
+1007. **Token Anti-Whale Mechanism Strength** - Evaluate anti-whale mechanism strength and limits
+1008. **Token Tax Optimization Calculator** - Calculate tax optimization opportunities and savings
+1009. **Token Holder Loyalty Score** - Calculate holder loyalty scores and retention metrics
+1010. **Token Transaction Cost Efficiency** - Analyze transaction cost efficiency and optimization
+1011. **Token Cross-Chain Arbitrage Opportunity** - Find cross-chain arbitrage opportunities and profit potential
+1012. **Token Flash Loan Risk Assessment** - Assess flash loan risks and vulnerabilities
+1013. **Token Liquidation Risk Monitor** - Monitor liquidation risks and health factors
+1014. **Token Collateral Health Score** - Calculate collateral health scores and ratios
+1015. **Token Yield Farming Efficiency** - Analyze yield farming efficiency and optimal strategies
+1016. **Token Staking Pool Health** - Assess staking pool health and utilization metrics
+1017. **Token Validator Performance Score** - Calculate validator performance scores and uptime
+1018. **Token Bridge Security Score** - Assess bridge security scores and audit status
+1019. **Token Layer 2 Activity Monitor** - Monitor Layer 2 activity and transaction volumes
+1020. **Token Account Abstraction Adoption** - Track account abstraction adoption and usage
+1021. **Token Gas Optimization Score** - Calculate gas optimization scores and savings potential
+1022. **Token Contract Complexity Analyzer** - Analyze contract complexity and code metrics
+1023. **Token Event Emission Efficiency** - Analyze event emission efficiency and gas costs
+1024. **Token Storage Optimization Score** - Calculate storage optimization scores and opportunities
 
 **Access:** All on-chain features are available via API endpoints and require wallet connection via Reown Wallet.
 
