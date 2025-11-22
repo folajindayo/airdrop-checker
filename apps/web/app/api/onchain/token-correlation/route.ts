@@ -1,54 +1,56 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createPublicClient, http, Address } from 'viem';
-import { mainnet } from 'viem/chains';
+import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
+import type { PairCorrelationRequest, PairCorrelation } from '@/lib/onchain/types';
 
-export const dynamic = 'force-dynamic';
+const chains = {
+  1: mainnet,
+  8453: base,
+  42161: arbitrum,
+  10: optimism,
+  137: polygon,
+} as const;
 
-// Correlation analysis configuration
-const CORRELATION_WINDOW = 30; // days
-
-const erc20Abi = [
-  {
-    inputs: [],
-    name: 'totalSupply',
-    outputs: [{ name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-] as const;
-
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const token1 = searchParams.get('token1');
-    const token2 = searchParams.get('token2');
+    const body: PairCorrelationRequest = await request.json();
+    const { tokenA, tokenB, chainId, timeframe = '7d' } = body;
 
-    if (!token1 || !token2) {
+    if (!tokenA || !tokenB) {
       return NextResponse.json(
-        { error: 'Both token1 and token2 addresses required' },
+        { error: 'Missing required parameters: tokenA, tokenB' },
         { status: 400 }
       );
     }
 
-    // Mock correlation calculation
-    const correlation = (Math.random() * 2 - 1).toFixed(3);
-    const strength = Math.abs(parseFloat(correlation)) > 0.7 ? 'strong' : 
-                     Math.abs(parseFloat(correlation)) > 0.4 ? 'moderate' : 'weak';
+    // Calculate correlation (simplified - would need historical price data)
+    const correlationCoefficient = 0.75; // Placeholder
+    const priceMovement = {
+      tokenA: 5.2,
+      tokenB: 4.8,
+    };
+    const tradingVolume = {
+      tokenA: '1000000',
+      tokenB: '950000',
+    };
+
+    const correlation: PairCorrelation = {
+      tokenA: tokenA as Address,
+      tokenB: tokenB as Address,
+      correlationCoefficient,
+      priceMovement,
+      tradingVolume,
+    };
 
     return NextResponse.json({
       success: true,
-      token1,
-      token2,
-      correlation: parseFloat(correlation),
-      strength,
-      direction: parseFloat(correlation) > 0 ? 'positive' : 'negative',
-      timestamp: Date.now(),
+      ...correlation,
+      type: 'token-correlation',
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to calculate correlation' },
+      { error: error.message || 'Failed to analyze token correlation' },
       { status: 500 }
     );
   }
 }
-
