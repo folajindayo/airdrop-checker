@@ -579,6 +579,38 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 440. **Token Price History Tracker** - Track on-chain token price history over time for blockchain price monitoring
 441. **Wallet Activity Score Calculator** - Calculate on-chain wallet activity scores for blockchain activity analysis
 442. **Token Holder Count Estimator** - Estimate on-chain token holder counts for blockchain holder analysis
+
+#### Advanced Onchain Analysis Features (443-472)
+443. **Cross-Chain Token Balance Aggregator** - Aggregate token balances across multiple chains with unified reporting and total balance calculations
+444. **MEV Protection Analyzer** - Analyze transactions for MEV protection levels, detect frontrunning risks, and provide security recommendations
+445. **Token Rug Pull Detector** - Detect rug pull indicators including ownership analysis, liquidity locks, and contract verification status
+446. **Smart Contract Dependency Mapper** - Map contract dependencies, libraries, and related contracts with configurable depth analysis
+447. **Gas Optimization Advisor** - Analyze contract functions and provide gas optimization suggestions with estimated savings
+448. **Token Liquidity Migration Tracker** - Track liquidity movements between DEXes with migration pattern analysis
+449. **Contract Upgrade Risk Analyzer** - Assess upgrade risks for proxy contracts including timelock and multisig protection
+450. **Token Pair Correlation Analyzer** - Calculate price correlation between token pairs with trading volume analysis
+451. **Flash Loan Attack Detector** - Detect flash loan attack patterns including arbitrage and price manipulation analysis
+452. **Token Migration Path Finder** - Find optimal paths for migrating between tokens with gas cost estimation
+453. **Contract Storage Layout Analyzer** - Analyze contract storage slots and identify packing opportunities for gas optimization
+454. **Token Arbitrage Opportunity Finder** - Scan multiple chains and DEXes to find profitable arbitrage opportunities
+455. **Contract Proxy Pattern Detector** - Detect proxy patterns including UUPS, transparent, and beacon proxies
+456. **Cross-Chain Bridge Risk Analyzer** - Assess risks for bridging tokens including security, liquidity, and slippage analysis
+457. **Contract Reentrancy Vulnerability Scanner** - Scan contracts for reentrancy vulnerabilities with security recommendations
+458. **Token Price Impact Calculator** - Calculate price impact for token swaps with slippage analysis
+459. **Contract Access Control Analyzer** - Analyze contract access control patterns and role-based permissions
+460. **Token Impermanent Loss Calculator** - Calculate impermanent loss for liquidity providers with break-even analysis
+461. **Contract Event Emission Tracker** - Track and analyze contract event emissions with frequency calculations
+462. **Token Slippage Protection Optimizer** - Calculate optimal slippage settings with protection level recommendations
+463. **Contract Gas Consumption Profiler** - Profile gas usage breakdown by storage, computation, and external calls
+464. **Token Yield Curve Analyzer** - Analyze yield trends over time with historical data and trend detection
+465. **Contract Function Call Tracer** - Trace function calls within transactions with gas usage and call depth analysis
+466. **Token Holder Distribution Analyzer** - Analyze token holder distribution with Gini coefficient and top holder analysis
+467. **Contract Storage Slot Collision Detector** - Detect storage slot collisions between contract versions to prevent upgrade issues
+468. **Token Liquidity Depth Analyzer** - Analyze liquidity depth across price ranges for better trade execution planning
+469. **Contract Upgrade Compatibility Checker** - Validate upgrade compatibility between contract versions with issue detection
+470. **Token Cross-DEX Price Aggregator** - Aggregate token prices across multiple DEXes with liquidity and volume data
+471. **Contract State Transition Validator** - Validate state transitions with required conditions checking
+472. **Token Smart Routing Optimizer** - Find optimal swap routes across DEXes with gas and price impact optimization
 443. **Contract Interaction Counter** - Count on-chain contract interactions for blockchain interaction tracking
 444. **Token Capitalization Calculator** - Calculate on-chain token market capitalization for blockchain market analysis
 445. **Block Transaction Counter** - Count on-chain block transactions for blockchain block analysis
