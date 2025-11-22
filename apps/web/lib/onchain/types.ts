@@ -409,3 +409,104 @@ export interface ReentrancyScanReport {
   riskLevel: 'low' | 'medium' | 'high' | 'critical';
 }
 
+// Feature 16: Token price impact calculator types
+export interface PriceImpactRequest {
+  tokenAddress: Address;
+  amount: string;
+  chainId: number;
+  dex?: string;
+}
+
+export interface PriceImpact {
+  tokenAddress: Address;
+  amount: string;
+  priceImpact: number;
+  priceImpactPercentage: number;
+  executionPrice: string;
+  averagePrice: string;
+  slippage: number;
+}
+
+// Feature 17: Contract access control analyzer types
+export interface AccessControlRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface AccessControlRole {
+  role: string;
+  members: Address[];
+  adminRole?: string;
+}
+
+export interface AccessControlAnalysis {
+  contractAddress: Address;
+  roles: AccessControlRole[];
+  hasAccessControl: boolean;
+  securityLevel: 'low' | 'medium' | 'high';
+  recommendations: string[];
+}
+
+// Feature 18: Token impermanent loss calculator types
+export interface ImpermanentLossRequest {
+  tokenA: Address;
+  tokenB: Address;
+  amountA: string;
+  amountB: string;
+  chainId: number;
+  timeRange: number;
+}
+
+export interface ImpermanentLoss {
+  tokenA: Address;
+  tokenB: Address;
+  initialValue: string;
+  hodlValue: string;
+  lpValue: string;
+  impermanentLoss: string;
+  impermanentLossPercentage: number;
+  breakEvenPrice: string;
+}
+
+// Feature 19: Contract event emission tracker types
+export interface EventEmissionRequest {
+  contractAddress: Address;
+  eventName: string;
+  chainId: number;
+  fromBlock?: number;
+  toBlock?: number;
+}
+
+export interface EventEmission {
+  eventName: string;
+  blockNumber: number;
+  transactionHash: string;
+  args: any;
+  timestamp: number;
+}
+
+export interface EventEmissionReport {
+  contractAddress: Address;
+  eventName: string;
+  emissions: EventEmission[];
+  totalEmissions: number;
+  frequency: number;
+}
+
+// Feature 20: Token slippage protection optimizer types
+export interface SlippageProtectionRequest {
+  tokenIn: Address;
+  tokenOut: Address;
+  amountIn: string;
+  chainId: number;
+  maxSlippage: number;
+}
+
+export interface SlippageProtection {
+  optimalSlippage: number;
+  recommendedSlippage: number;
+  estimatedSlippage: number;
+  protectionLevel: 'low' | 'medium' | 'high';
+  recommendations: string[];
+}
+
