@@ -611,6 +611,38 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 470. **Token Cross-DEX Price Aggregator** - Aggregate token prices across multiple DEXes with liquidity and volume data
 471. **Contract State Transition Validator** - Validate state transitions with required conditions checking
 472. **Token Smart Routing Optimizer** - Find optimal swap routes across DEXes with gas and price impact optimization
+
+#### Advanced Security & Analysis Features (473-502)
+473. **Token Wash Trading Detector** - Detect wash trading patterns and calculate wash trading scores for market manipulation analysis
+474. **Contract Bytecode Similarity Analyzer** - Compare contract bytecode to detect forks and similar contracts with similarity scoring
+475. **Liquidity Provider Reward Calculator** - Calculate LP rewards, APY, and distribution schedules for liquidity providers
+476. **Contract Function Selector Analyzer** - Analyze function selectors, visibility, and payable status for contract security assessment
+477. **Tokenomics Validator** - Validate token economics including supply, distribution, and burn mechanisms with scoring
+478. **Contract Event Signature Decoder** - Decode event signatures and extract parameter information for event analysis
+479. **Token Holder Activity Heatmap** - Generate activity heatmaps showing holder activity patterns by day and hour
+480. **Contract Initialization Vulnerability Scanner** - Scan contracts for initialization vulnerabilities including uninitialized storage risks
+481. **Cross-Chain Arbitrage Calculator** - Calculate arbitrage opportunities across chains with bridge cost analysis
+482. **Gas Refund Analyzer** - Analyze gas refunds and calculate net gas costs for transaction optimization
+483. **Transaction Pattern Analyzer** - Classify transaction patterns and calculate behavior scores for address analysis
+484. **Contract Self-Destruct Detector** - Detect self-destruct functionality and assess associated risks for fund safety
+485. **Token Holder Retention Analyzer** - Calculate holder retention rates and track retention trends over time
+486. **Contract Delegatecall Vulnerability Scanner** - Scan contracts for unsafe delegatecall usage and associated security risks
+487. **Token Price Manipulation Detector** - Detect price manipulation patterns including pump, dump, and wash trading
+488. **Contract Upgrade Path Analyzer** - Track upgrade history and assess upgrade frequency risks for proxy contracts
+489. **Token Liquidity Concentration Analyzer** - Analyze liquidity distribution across DEXes and identify concentration risks
+490. **Contract Function Visibility Analyzer** - Analyze function visibility and calculate security scores based on exposed functions
+491. **Token Transfer Velocity Calculator** - Calculate transfer velocity and frequency to assess market activity levels
+492. **Contract Storage Access Pattern Analyzer** - Analyze storage slot access patterns and identify gas optimization opportunities
+493. **Token Minting Schedule Analyzer** - Analyze minting schedules and calculate inflation rates for token supply management
+494. **Contract Call Depth Analyzer** - Analyze call depth in transactions and identify deep call risks for gas optimization
+495. **Token Burn Mechanism Analyzer** - Analyze burn mechanisms and track deflationary token characteristics
+496. **Contract Interface Detector** - Detect ERC standards and interface compliance for contract analysis
+497. **Token Holder Migration Tracker** - Track holder migrations and identify migration patterns for token analysis
+498. **Contract Fallback Function Analyzer** - Analyze fallback and receive functions for security risks and gas optimization
+499. **Token Tax Mechanism Analyzer** - Analyze tax structures including buy, sell, and transfer taxes with impact assessment
+500. **Contract Event Filter Builder** - Build event filters for efficient event querying with topic filtering
+501. **Token Price Stability Analyzer** - Analyze price stability and volatility trends for risk assessment
+502. **Contract Constructor Analyzer** - Analyze constructor initialization and identify missing initialization risks
 443. **Contract Interaction Counter** - Count on-chain contract interactions for blockchain interaction tracking
 444. **Token Capitalization Calculator** - Calculate on-chain token market capitalization for blockchain market analysis
 445. **Block Transaction Counter** - Count on-chain block transactions for blockchain block analysis
