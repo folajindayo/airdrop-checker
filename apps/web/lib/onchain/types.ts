@@ -721,3 +721,191 @@ export interface SmartRoute {
   efficiency: number;
 }
 
+// Feature 31: Token wash trading detector types
+export interface WashTradingRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface WashTradingAnalysis {
+  tokenAddress: Address;
+  isWashTrading: boolean;
+  washTradingScore: number;
+  suspiciousTransactions: {
+    transactionHash: string;
+    from: Address;
+    to: Address;
+    amount: string;
+    reason: string;
+  }[];
+  recommendations: string[];
+}
+
+// Feature 32: Contract bytecode similarity analyzer types
+export interface BytecodeSimilarityRequest {
+  contractA: Address;
+  contractB: Address;
+  chainId: number;
+}
+
+export interface BytecodeSimilarity {
+  contractA: Address;
+  contractB: Address;
+  similarityScore: number;
+  matchingFunctions: string[];
+  differences: string[];
+  isFork: boolean;
+}
+
+// Feature 33: Token liquidity provider reward calculator types
+export interface LPRewardRequest {
+  lpTokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface LPReward {
+  lpTokenAddress: Address;
+  totalRewards: string;
+  apy: number;
+  dailyRewards: string;
+  rewardToken: Address;
+  distributionSchedule: {
+    timestamp: number;
+    amount: string;
+  }[];
+}
+
+// Feature 34: Contract function selector analyzer types
+export interface FunctionSelectorRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface FunctionSelector {
+  selector: string;
+  functionName: string;
+  signature: string;
+  isPublic: boolean;
+  isPayable: boolean;
+}
+
+export interface FunctionSelectorAnalysis {
+  contractAddress: Address;
+  selectors: FunctionSelector[];
+  totalFunctions: number;
+  publicFunctions: number;
+  payableFunctions: number;
+}
+
+// Feature 35: Token tokenomics validator types
+export interface TokenomicsRequest {
+  tokenAddress: Address;
+  chainId: number;
+}
+
+export interface TokenomicsValidation {
+  tokenAddress: Address;
+  isValid: boolean;
+  issues: {
+    type: 'supply' | 'distribution' | 'burn' | 'mint' | 'tax';
+    severity: 'low' | 'medium' | 'high';
+    description: string;
+  }[];
+  score: number;
+  recommendations: string[];
+}
+
+// Feature 36: Contract event signature decoder types
+export interface EventSignatureRequest {
+  eventSignature: string;
+  chainId: number;
+}
+
+export interface DecodedEvent {
+  signature: string;
+  name: string;
+  parameters: {
+    name: string;
+    type: string;
+    indexed: boolean;
+  }[];
+  topics: string[];
+}
+
+// Feature 37: Token holder activity heatmap types
+export interface HolderActivityRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeframe: '7d' | '30d' | '90d';
+}
+
+export interface ActivityHeatmap {
+  tokenAddress: Address;
+  data: {
+    day: number;
+    hour: number;
+    activity: number;
+  }[];
+  peakActivity: {
+    day: number;
+    hour: number;
+    count: number;
+  };
+}
+
+// Feature 38: Contract initialization vulnerability scanner types
+export interface InitVulnerabilityRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface InitVulnerability {
+  contractAddress: Address;
+  hasVulnerability: boolean;
+  vulnerabilities: {
+    type: 'uninitialized' | 'reinitialization' | 'frontrunning';
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    description: string;
+    recommendation: string;
+  }[];
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+}
+
+// Feature 39: Token cross-chain arbitrage calculator types
+export interface CrossChainArbitrageRequest {
+  tokenAddress: Address;
+  sourceChainId: number;
+  destinationChainId: number;
+  amount: string;
+}
+
+export interface CrossChainArbitrage {
+  tokenAddress: Address;
+  sourceChainId: number;
+  destinationChainId: number;
+  sourcePrice: string;
+  destinationPrice: string;
+  profit: string;
+  profitPercentage: number;
+  bridgeCost: string;
+  netProfit: string;
+  isProfitable: boolean;
+}
+
+// Feature 40: Contract gas refund analyzer types
+export interface GasRefundRequest {
+  transactionHash: string;
+  chainId: number;
+}
+
+export interface GasRefund {
+  transactionHash: string;
+  originalGas: number;
+  refundedGas: number;
+  refundPercentage: number;
+  refundReason: string;
+  netGasCost: number;
+}
+
