@@ -1280,3 +1280,195 @@ export interface ConstructorAnalysis {
   riskLevel: 'low' | 'medium' | 'high';
 }
 
+// Feature 61: Token holder concentration risk analyzer types
+export interface HolderConcentrationRequest {
+  tokenAddress: Address;
+  chainId: number;
+  topN?: number;
+}
+
+export interface HolderConcentration {
+  tokenAddress: Address;
+  topHoldersPercentage: number;
+  concentrationIndex: number;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  topHolders: {
+    address: Address;
+    balance: string;
+    percentage: number;
+  }[];
+  recommendations: string[];
+}
+
+// Feature 62: Contract gas optimization opportunity finder types
+export interface GasOptimizationOpportunityRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface GasOptimizationOpportunity {
+  contractAddress: Address;
+  opportunities: {
+    type: 'storage' | 'computation' | 'external' | 'loop';
+    description: string;
+    currentGas: number;
+    optimizedGas: number;
+    savings: number;
+    priority: 'low' | 'medium' | 'high';
+  }[];
+  totalPotentialSavings: number;
+}
+
+// Feature 63: Token liquidity pool health monitor types
+export interface LiquidityPoolHealthRequest {
+  poolAddress: Address;
+  chainId: number;
+}
+
+export interface LiquidityPoolHealth {
+  poolAddress: Address;
+  healthScore: number;
+  metrics: {
+    liquidity: string;
+    volume24h: string;
+    fees24h: string;
+    utilization: number;
+    impermanentLoss: number;
+  };
+  riskLevel: 'low' | 'medium' | 'high';
+  recommendations: string[];
+}
+
+// Feature 64: Contract time-lock analyzer types
+export interface TimelockAnalyzerRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface TimelockAnalysis {
+  contractAddress: Address;
+  hasTimelock: boolean;
+  timelockDuration: number;
+  pendingActions: {
+    action: string;
+    executeTime: number;
+    proposer: Address;
+  }[];
+  securityLevel: 'low' | 'medium' | 'high';
+}
+
+// Feature 65: Token trading volume analyzer types
+export interface TradingVolumeRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeframe: '24h' | '7d' | '30d';
+}
+
+export interface TradingVolume {
+  tokenAddress: Address;
+  volume: string;
+  volumeChange: number;
+  averageVolume: string;
+  volumeDistribution: {
+    hour: number;
+    volume: string;
+  }[];
+  trend: 'increasing' | 'decreasing' | 'stable';
+}
+
+// Feature 66: Contract multi-sig threshold analyzer types
+export interface MultisigThresholdRequest {
+  multisigAddress: Address;
+  chainId: number;
+}
+
+export interface MultisigThreshold {
+  multisigAddress: Address;
+  threshold: number;
+  totalSigners: number;
+  pendingTransactions: number;
+  securityLevel: 'low' | 'medium' | 'high';
+  recommendations: string[];
+}
+
+// Feature 67: Token holder behavior profiler types
+export interface HolderBehaviorRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface HolderBehavior {
+  tokenAddress: Address;
+  behaviors: {
+    type: 'hodler' | 'trader' | 'whale' | 'bot';
+    count: number;
+    percentage: number;
+    characteristics: string[];
+  }[];
+  dominantBehavior: string;
+  marketSentiment: 'bullish' | 'bearish' | 'neutral';
+}
+
+// Feature 68: Contract storage optimization analyzer types
+export interface StorageOptimizationRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface StorageOptimization {
+  contractAddress: Address;
+  currentSlots: number;
+  optimizedSlots: number;
+  potentialSavings: number;
+  optimizations: {
+    slot: number;
+    currentLayout: string;
+    optimizedLayout: string;
+    savings: number;
+  }[];
+}
+
+// Feature 69: Token price oracle aggregator types
+export interface PriceOracleRequest {
+  tokenAddress: Address;
+  chainId: number;
+  oracles?: string[];
+}
+
+export interface PriceOracle {
+  tokenAddress: Address;
+  prices: {
+    oracle: string;
+    price: string;
+    lastUpdate: number;
+    confidence: number;
+  }[];
+  aggregatedPrice: string;
+  priceDeviation: number;
+  reliability: 'low' | 'medium' | 'high';
+}
+
+// Feature 70: Contract event log analyzer types
+export interface EventLogRequest {
+  contractAddress: Address;
+  eventName: string;
+  chainId: number;
+  fromBlock?: number;
+  toBlock?: number;
+}
+
+export interface EventLog {
+  contractAddress: Address;
+  eventName: string;
+  totalEvents: number;
+  events: {
+    blockNumber: number;
+    transactionHash: string;
+    args: any;
+    timestamp: number;
+  }[];
+  frequency: number;
+  patterns: string[];
+}
+
