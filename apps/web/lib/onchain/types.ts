@@ -1086,3 +1086,197 @@ export interface StorageAccess {
   gasSavings: number;
 }
 
+// Feature 51: Token minting schedule analyzer types
+export interface MintingScheduleRequest {
+  tokenAddress: Address;
+  chainId: number;
+}
+
+export interface MintingSchedule {
+  tokenAddress: Address;
+  schedule: {
+    timestamp: number;
+    amount: string;
+    recipient: Address;
+    vesting?: boolean;
+  }[];
+  totalMinted: string;
+  remainingMintable: string;
+  inflationRate: number;
+  nextMint: number;
+}
+
+// Feature 52: Contract call depth analyzer types
+export interface CallDepthRequest {
+  transactionHash: string;
+  chainId: number;
+}
+
+export interface CallDepth {
+  transactionHash: string;
+  maxDepth: number;
+  callTree: {
+    depth: number;
+    contract: Address;
+    function: string;
+    gasUsed: number;
+  }[];
+  deepCalls: number;
+  riskLevel: 'low' | 'medium' | 'high';
+}
+
+// Feature 53: Token burn mechanism analyzer types
+export interface BurnMechanismRequest {
+  tokenAddress: Address;
+  chainId: number;
+}
+
+export interface BurnMechanism {
+  tokenAddress: Address;
+  hasBurn: boolean;
+  burnType: 'manual' | 'automatic' | 'deflection';
+  totalBurned: string;
+  burnRate: number;
+  deflationary: boolean;
+  burnSchedule: {
+    timestamp: number;
+    amount: string;
+  }[];
+}
+
+// Feature 54: Contract interface detector types
+export interface InterfaceDetectionRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface InterfaceDetection {
+  contractAddress: Address;
+  interfaces: {
+    name: string;
+    standard: 'ERC20' | 'ERC721' | 'ERC1155' | 'ERC165' | 'custom';
+    functions: string[];
+    events: string[];
+  }[];
+  compliance: {
+    standard: string;
+    compliant: boolean;
+    missingFunctions: string[];
+  }[];
+}
+
+// Feature 55: Token holder migration tracker types
+export interface HolderMigrationRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface HolderMigration {
+  tokenAddress: Address;
+  migrations: {
+    from: Address;
+    to: Address;
+    amount: string;
+    timestamp: number;
+    reason?: string;
+  }[];
+  migrationRate: number;
+  topMigrators: Address[];
+  trend: 'increasing' | 'decreasing' | 'stable';
+}
+
+// Feature 56: Contract fallback function analyzer types
+export interface FallbackAnalyzerRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface FallbackAnalysis {
+  contractAddress: Address;
+  hasFallback: boolean;
+  hasReceive: boolean;
+  isPayable: boolean;
+  gasLimit: number;
+  riskLevel: 'low' | 'medium' | 'high';
+  recommendations: string[];
+}
+
+// Feature 57: Token tax mechanism analyzer types
+export interface TaxMechanismRequest {
+  tokenAddress: Address;
+  chainId: number;
+}
+
+export interface TaxMechanism {
+  tokenAddress: Address;
+  hasTax: boolean;
+  buyTax: number;
+  sellTax: number;
+  transferTax: number;
+  taxRecipient: Address;
+  exemptions: Address[];
+  impact: 'low' | 'medium' | 'high';
+}
+
+// Feature 58: Contract event filter builder types
+export interface EventFilterRequest {
+  contractAddress: Address;
+  eventName: string;
+  chainId: number;
+  filters?: Record<string, any>;
+}
+
+export interface EventFilter {
+  contractAddress: Address;
+  eventName: string;
+  filter: {
+    topics: string[];
+    fromBlock?: number;
+    toBlock?: number;
+  };
+  estimatedMatches: number;
+  isValid: boolean;
+}
+
+// Feature 59: Token price stability analyzer types
+export interface PriceStabilityRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface PriceStability {
+  tokenAddress: Address;
+  stabilityScore: number;
+  volatility: number;
+  priceRange: {
+    min: string;
+    max: string;
+    average: string;
+  };
+  stabilityTrend: 'improving' | 'deteriorating' | 'stable';
+  riskLevel: 'low' | 'medium' | 'high';
+}
+
+// Feature 60: Contract constructor analyzer types
+export interface ConstructorAnalyzerRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface ConstructorAnalysis {
+  contractAddress: Address;
+  hasConstructor: boolean;
+  constructorArgs: {
+    name: string;
+    type: string;
+    value: any;
+  }[];
+  initialization: {
+    complete: boolean;
+    missing: string[];
+  };
+  riskLevel: 'low' | 'medium' | 'high';
+}
+
