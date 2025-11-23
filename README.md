@@ -643,6 +643,38 @@ All on-chain features require wallet connection via Reown Wallet (formerly Walle
 500. **Contract Event Filter Builder** - Build event filters for efficient event querying with topic filtering
 501. **Token Price Stability Analyzer** - Analyze price stability and volatility trends for risk assessment
 502. **Contract Constructor Analyzer** - Analyze constructor initialization and identify missing initialization risks
+
+#### Advanced Analytics & Optimization Features (503-532)
+503. **Token Holder Concentration Risk Analyzer** - Analyze holder concentration and calculate concentration risk levels with top holder analysis
+504. **Contract Gas Optimization Opportunity Finder** - Identify gas optimization opportunities with detailed savings calculations and priority rankings
+505. **Liquidity Pool Health Monitor** - Monitor pool health metrics including utilization, impermanent loss, and fee generation
+506. **Contract Timelock Analyzer** - Analyze timelock mechanisms and pending actions for security assessment
+507. **Token Trading Volume Analyzer** - Analyze trading volume with hourly distribution and trend analysis
+508. **Contract Multisig Threshold Analyzer** - Analyze multisig threshold ratios and security levels with recommendations
+509. **Token Holder Behavior Profiler** - Profile holder behaviors and identify dominant behavior patterns with market sentiment
+510. **Contract Storage Optimization Analyzer** - Identify storage optimization opportunities with gas savings calculations
+511. **Token Price Oracle Aggregator** - Aggregate prices from multiple oracles with reliability assessment and deviation analysis
+512. **Contract Event Log Analyzer** - Analyze event logs with frequency calculations and pattern detection
+513. **Token Supply Inflation Tracker** - Track supply inflation rates and project future supply with historical data
+514. **Contract Access Pattern Analyzer** - Analyze function access frequency and identify most accessed functions
+515. **Token Holder Distribution Gini Coefficient Calculator** - Calculate Gini coefficient for token distribution inequality analysis
+516. **Contract Upgrade Safety Checker** - Validate upgrade safety and identify potential risks with safety scoring
+517. **Token Market Maker Activity Detector** - Detect market maker addresses and analyze their trading activity with impact assessment
+518. **Contract Function Gas Cost Estimator** - Estimate gas costs with breakdown and optimization tips
+519. **Token Holder Age Distribution Analyzer** - Analyze holder age distribution and identify oldest and newest holders
+520. **Contract Dependency Graph Builder** - Build dependency graphs with configurable depth for contract analysis
+521. **Token Transaction Fee Analyzer** - Analyze transaction fees with distribution and trend analysis
+522. **Contract Security Best Practices Checker** - Check security best practices and assign overall security grade
+523. **Token Holder Transaction Frequency Analyzer** - Analyze transaction frequency distribution and identify most active holders
+524. **Contract Code Complexity Analyzer** - Analyze code complexity with cyclomatic complexity and function metrics
+525. **Token Liquidity Provider Reward Tracker** - Track LP reward history with APY trends over time
+526. **Contract State Machine Validator** - Validate state machine transitions and identify invalid states
+527. **Token Holder Profit/Loss Calculator** - Calculate profit and loss for individual holders with entry price analysis
+528. **Contract External Dependency Risk Analyzer** - Analyze external dependencies and assess associated risks
+529. **Token Trading Pair Analyzer** - Analyze trading pairs across multiple DEXes with liquidity comparison
+530. **Contract Function Call Frequency Analyzer** - Analyze function call frequency and identify most called functions
+531. **Token Holder Clustering Analyzer** - Identify holder clusters and assess coordination risks
+532. **Contract Upgrade Impact Analyzer** - Assess upgrade impact and identify breaking changes with risk levels
 443. **Contract Interaction Counter** - Count on-chain contract interactions for blockchain interaction tracking
 444. **Token Capitalization Calculator** - Calculate on-chain token market capitalization for blockchain market analysis
 445. **Block Transaction Counter** - Count on-chain block transactions for blockchain block analysis
