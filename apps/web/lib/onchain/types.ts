@@ -909,3 +909,180 @@ export interface GasRefund {
   netGasCost: number;
 }
 
+// Feature 41: Token transaction pattern analyzer types
+export interface TransactionPatternRequest {
+  address: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface TransactionPattern {
+  address: Address;
+  patterns: {
+    type: 'regular' | 'bot' | 'whale' | 'arbitrage' | 'frontrunning';
+    confidence: number;
+    characteristics: string[];
+  }[];
+  behaviorScore: number;
+  riskLevel: 'low' | 'medium' | 'high';
+}
+
+// Feature 42: Contract self-destruct detector types
+export interface SelfDestructRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface SelfDestructAnalysis {
+  contractAddress: Address;
+  hasSelfDestruct: boolean;
+  canSelfDestruct: boolean;
+  destructConditions: string[];
+  riskLevel: 'low' | 'medium' | 'high';
+  recommendations: string[];
+}
+
+// Feature 43: Token holder retention analyzer types
+export interface HolderRetentionRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface HolderRetention {
+  tokenAddress: Address;
+  retentionRate: number;
+  newHolders: number;
+  lostHolders: number;
+  averageHoldTime: number;
+  retentionTrend: 'increasing' | 'decreasing' | 'stable';
+}
+
+// Feature 44: Contract delegatecall vulnerability scanner types
+export interface DelegatecallVulnerabilityRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface DelegatecallVulnerability {
+  contractAddress: Address;
+  hasVulnerability: boolean;
+  vulnerabilities: {
+    functionName: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    description: string;
+    recommendation: string;
+  }[];
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+}
+
+// Feature 45: Token price manipulation detector types
+export interface PriceManipulationRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface PriceManipulation {
+  tokenAddress: Address;
+  isManipulated: boolean;
+  manipulationScore: number;
+  suspiciousEvents: {
+    timestamp: number;
+    type: 'pump' | 'dump' | 'wash';
+    description: string;
+  }[];
+  riskLevel: 'low' | 'medium' | 'high';
+}
+
+// Feature 46: Contract upgrade path analyzer types
+export interface UpgradePathRequest {
+  proxyAddress: Address;
+  chainId: number;
+}
+
+export interface UpgradePath {
+  proxyAddress: Address;
+  currentImplementation: Address;
+  upgradeHistory: {
+    timestamp: number;
+    from: Address;
+    to: Address;
+    reason?: string;
+  }[];
+  upgradeFrequency: number;
+  riskAssessment: 'low' | 'medium' | 'high';
+}
+
+// Feature 47: Token liquidity concentration analyzer types
+export interface LiquidityConcentrationRequest {
+  tokenAddress: Address;
+  chainId: number;
+}
+
+export interface LiquidityConcentration {
+  tokenAddress: Address;
+  concentrationScore: number;
+  topPools: {
+    dex: string;
+    liquidity: string;
+    percentage: number;
+  }[];
+  riskLevel: 'low' | 'medium' | 'high';
+  recommendations: string[];
+}
+
+// Feature 48: Contract function visibility analyzer types
+export interface FunctionVisibilityRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface FunctionVisibility {
+  contractAddress: Address;
+  publicFunctions: number;
+  externalFunctions: number;
+  internalFunctions: number;
+  privateFunctions: number;
+  exposedFunctions: {
+    name: string;
+    visibility: 'public' | 'external';
+    risk: 'low' | 'medium' | 'high';
+  }[];
+  securityScore: number;
+}
+
+// Feature 49: Token transfer velocity calculator types
+export interface TransferVelocityRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface TransferVelocity {
+  tokenAddress: Address;
+  velocity: number;
+  averageTransferSize: string;
+  transferFrequency: number;
+  velocityTrend: 'increasing' | 'decreasing' | 'stable';
+  marketActivity: 'low' | 'medium' | 'high';
+}
+
+// Feature 50: Contract storage access pattern analyzer types
+export interface StorageAccessRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface StorageAccess {
+  contractAddress: Address;
+  accessPatterns: {
+    slot: number;
+    readCount: number;
+    writeCount: number;
+    accessType: 'frequent' | 'moderate' | 'rare';
+  }[];
+  optimizationOpportunities: string[];
+  gasSavings: number;
+}
+
