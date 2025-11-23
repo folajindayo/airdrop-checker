@@ -1669,3 +1669,195 @@ export interface SecurityBestPractices {
   overallGrade: 'A' | 'B' | 'C' | 'D' | 'F';
 }
 
+// Feature 81: Token holder transaction frequency analyzer types
+export interface TransactionFrequencyRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface TransactionFrequency {
+  tokenAddress: Address;
+  averageFrequency: number;
+  frequencyDistribution: {
+    range: string;
+    holders: number;
+    percentage: number;
+  }[];
+  mostActive: Address[];
+  activityTrend: 'increasing' | 'decreasing' | 'stable';
+}
+
+// Feature 82: Contract code complexity analyzer types
+export interface CodeComplexityRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface CodeComplexity {
+  contractAddress: Address;
+  complexityScore: number;
+  metrics: {
+    linesOfCode: number;
+    cyclomaticComplexity: number;
+    functionCount: number;
+    averageFunctionLength: number;
+  };
+  riskLevel: 'low' | 'medium' | 'high';
+  recommendations: string[];
+}
+
+// Feature 83: Token liquidity provider reward tracker types
+export interface LPRewardTrackerRequest {
+  lpTokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface LPRewardTracker {
+  lpTokenAddress: Address;
+  totalRewards: string;
+  rewardHistory: {
+    timestamp: number;
+    amount: string;
+    apy: number;
+  }[];
+  currentAPY: number;
+  trend: 'increasing' | 'decreasing' | 'stable';
+}
+
+// Feature 84: Contract state machine validator types
+export interface StateMachineRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface StateMachine {
+  contractAddress: Address;
+  states: string[];
+  transitions: {
+    from: string;
+    to: string;
+    conditions: string[];
+    valid: boolean;
+  }[];
+  isValid: boolean;
+  issues: string[];
+}
+
+// Feature 85: Token holder profit/loss calculator types
+export interface HolderPnLRequest {
+  tokenAddress: Address;
+  holderAddress: Address;
+  chainId: number;
+}
+
+export interface HolderPnL {
+  tokenAddress: Address;
+  holderAddress: Address;
+  totalInvested: string;
+  currentValue: string;
+  profitLoss: string;
+  profitLossPercentage: number;
+  averageEntryPrice: string;
+  currentPrice: string;
+}
+
+// Feature 86: Contract external dependency risk analyzer types
+export interface ExternalDependencyRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface ExternalDependency {
+  contractAddress: Address;
+  dependencies: {
+    address: Address;
+    type: 'oracle' | 'token' | 'protocol' | 'library';
+    riskLevel: 'low' | 'medium' | 'high';
+    description: string;
+  }[];
+  totalRisk: 'low' | 'medium' | 'high';
+  recommendations: string[];
+}
+
+// Feature 87: Token trading pair analyzer types
+export interface TradingPairRequest {
+  tokenA: Address;
+  tokenB: Address;
+  chainId: number;
+}
+
+export interface TradingPair {
+  tokenA: Address;
+  tokenB: Address;
+  pools: {
+    dex: string;
+    poolAddress: Address;
+    liquidity: string;
+    volume24h: string;
+    feeTier: number;
+  }[];
+  bestLiquidity: string;
+  averagePrice: string;
+}
+
+// Feature 88: Contract function call frequency analyzer types
+export interface FunctionCallFrequencyRequest {
+  contractAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface FunctionCallFrequency {
+  contractAddress: Address;
+  functions: {
+    name: string;
+    callCount: number;
+    uniqueCallers: number;
+    averageGas: number;
+    frequency: number;
+  }[];
+  mostCalled: string;
+  callTrend: 'increasing' | 'decreasing' | 'stable';
+}
+
+// Feature 89: Token holder clustering analyzer types
+export interface HolderClusteringRequest {
+  tokenAddress: Address;
+  chainId: number;
+}
+
+export interface HolderClustering {
+  tokenAddress: Address;
+  clusters: {
+    clusterId: number;
+    members: Address[];
+    totalBalance: string;
+    characteristics: string[];
+  }[];
+  clusterCount: number;
+  largestCluster: number;
+  riskLevel: 'low' | 'medium' | 'high';
+}
+
+// Feature 90: Contract upgrade impact analyzer types
+export interface UpgradeImpactRequest {
+  proxyAddress: Address;
+  newImplementation: Address;
+  chainId: number;
+}
+
+export interface UpgradeImpact {
+  proxyAddress: Address;
+  newImplementation: Address;
+  impactScore: number;
+  affectedFunctions: string[];
+  breakingChanges: {
+    function: string;
+    type: 'removed' | 'modified' | 'signature';
+    severity: 'low' | 'medium' | 'high';
+  }[];
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+}
+
