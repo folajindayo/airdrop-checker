@@ -232,3 +232,70 @@ export function calculateTransferVelocity(transferCount: number, timeRange: numb
   return Number(averageSize) * dailyTransfers;
 }
 
+// Feature 61: Holder concentration calculator
+export function calculateConcentrationIndex(topHoldersPercentage: number): number {
+  return topHoldersPercentage / 100;
+}
+
+export function determineConcentrationRisk(concentrationIndex: number): 'low' | 'medium' | 'high' | 'critical' {
+  if (concentrationIndex > 0.7) return 'critical';
+  if (concentrationIndex > 0.5) return 'high';
+  if (concentrationIndex > 0.3) return 'medium';
+  return 'low';
+}
+
+// Feature 73: Gini coefficient calculator
+export function calculateGiniCoefficient(balances: bigint[]): number {
+  if (balances.length === 0) return 0;
+  
+  const sorted = [...balances].sort((a, b) => {
+    if (a < b) return -1;
+    if (a > b) return 1;
+    return 0;
+  });
+  
+  const n = sorted.length;
+  const sum = sorted.reduce((acc, val) => acc + val, BigInt(0));
+  if (sum === BigInt(0)) return 0;
+  
+  let numerator = BigInt(0);
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      const diff = sorted[i] > sorted[j] ? sorted[i] - sorted[j] : sorted[j] - sorted[i];
+      numerator += diff;
+    }
+  }
+  
+  const denominator = BigInt(2) * BigInt(n) * BigInt(n) * sum / BigInt(n);
+  return Number(numerator) / Number(denominator);
+}
+
+export function interpretGiniCoefficient(gini: number): 'equal' | 'moderate' | 'unequal' | 'extreme' {
+  if (gini < 0.3) return 'equal';
+  if (gini < 0.5) return 'moderate';
+  if (gini < 0.7) return 'unequal';
+  return 'extreme';
+}
+
+// Feature 76: Gas breakdown calculator
+export function calculateGasBreakdown(totalGas: number) {
+  return {
+    base: Math.floor(totalGas * 0.21),
+    storage: Math.floor(totalGas * 0.35),
+    computation: Math.floor(totalGas * 0.30),
+    external: Math.floor(totalGas * 0.14),
+  };
+}
+
+// Feature 85: PnL calculator
+export function calculatePnL(invested: bigint, currentValue: bigint): { profitLoss: string; percentage: number } {
+  const profitLoss = currentValue - invested;
+  const percentage = invested > BigInt(0) 
+    ? Number((profitLoss * BigInt(10000)) / invested) / 100 
+    : 0;
+  return {
+    profitLoss: profitLoss.toString(),
+    percentage,
+  };
+}
+
