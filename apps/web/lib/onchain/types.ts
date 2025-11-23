@@ -1472,3 +1472,200 @@ export interface EventLog {
   patterns: string[];
 }
 
+// Feature 71: Token supply inflation tracker types
+export interface SupplyInflationRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface SupplyInflation {
+  tokenAddress: Address;
+  currentSupply: string;
+  inflationRate: number;
+  projectedSupply: string;
+  inflationHistory: {
+    timestamp: number;
+    supply: string;
+    inflationRate: number;
+  }[];
+  trend: 'increasing' | 'decreasing' | 'stable';
+}
+
+// Feature 72: Contract access pattern analyzer types
+export interface AccessPatternRequest {
+  contractAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface AccessPattern {
+  contractAddress: Address;
+  accessFrequency: {
+    function: string;
+    callCount: number;
+    uniqueCallers: number;
+    averageGas: number;
+  }[];
+  mostAccessed: string;
+  accessTrend: 'increasing' | 'decreasing' | 'stable';
+}
+
+// Feature 73: Token holder distribution Gini coefficient calculator types
+export interface GiniCoefficientRequest {
+  tokenAddress: Address;
+  chainId: number;
+}
+
+export interface GiniCoefficient {
+  tokenAddress: Address;
+  giniCoefficient: number;
+  interpretation: 'equal' | 'moderate' | 'unequal' | 'extreme';
+  percentileDistribution: {
+    percentile: number;
+    balance: string;
+    percentage: number;
+  }[];
+  recommendations: string[];
+}
+
+// Feature 74: Contract upgrade safety checker types
+export interface UpgradeSafetyRequest {
+  currentAddress: Address;
+  newAddress: Address;
+  chainId: number;
+}
+
+export interface UpgradeSafety {
+  currentAddress: Address;
+  newAddress: Address;
+  isSafe: boolean;
+  safetyScore: number;
+  risks: {
+    type: 'storage' | 'function' | 'event' | 'interface';
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    description: string;
+  }[];
+  recommendations: string[];
+}
+
+// Feature 75: Token market maker activity detector types
+export interface MarketMakerRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface MarketMaker {
+  tokenAddress: Address;
+  hasMarketMaker: boolean;
+  marketMakerAddresses: Address[];
+  activity: {
+    address: Address;
+    buyVolume: string;
+    sellVolume: string;
+    spread: number;
+    frequency: number;
+  }[];
+  impact: 'low' | 'medium' | 'high';
+}
+
+// Feature 76: Contract function gas cost estimator types
+export interface FunctionGasEstimateRequest {
+  contractAddress: Address;
+  functionName: string;
+  args: any[];
+  chainId: number;
+}
+
+export interface FunctionGasEstimate {
+  contractAddress: Address;
+  functionName: string;
+  estimatedGas: number;
+  gasBreakdown: {
+    base: number;
+    storage: number;
+    computation: number;
+    external: number;
+  };
+  optimizationTips: string[];
+}
+
+// Feature 77: Token holder age distribution analyzer types
+export interface HolderAgeRequest {
+  tokenAddress: Address;
+  chainId: number;
+}
+
+export interface HolderAge {
+  tokenAddress: Address;
+  distribution: {
+    ageRange: string;
+    holders: number;
+    percentage: number;
+    averageBalance: string;
+  }[];
+  averageAge: number;
+  oldestHolder: Address;
+  newestHolder: Address;
+}
+
+// Feature 78: Contract dependency graph builder types
+export interface DependencyGraphRequest {
+  contractAddress: Address;
+  chainId: number;
+  depth?: number;
+}
+
+export interface DependencyGraph {
+  contractAddress: Address;
+  nodes: {
+    address: Address;
+    type: 'contract' | 'library' | 'interface';
+    functions: string[];
+  }[];
+  edges: {
+    from: Address;
+    to: Address;
+    relationship: 'imports' | 'inherits' | 'calls';
+  }[];
+  complexity: 'low' | 'medium' | 'high';
+}
+
+// Feature 79: Token transaction fee analyzer types
+export interface TransactionFeeRequest {
+  tokenAddress: Address;
+  chainId: number;
+  timeRange?: number;
+}
+
+export interface TransactionFee {
+  tokenAddress: Address;
+  averageFee: string;
+  feeDistribution: {
+    range: string;
+    count: number;
+    percentage: number;
+  }[];
+  totalFees: string;
+  feeTrend: 'increasing' | 'decreasing' | 'stable';
+}
+
+// Feature 80: Contract security best practices checker types
+export interface SecurityBestPracticesRequest {
+  contractAddress: Address;
+  chainId: number;
+}
+
+export interface SecurityBestPractices {
+  contractAddress: Address;
+  score: number;
+  checks: {
+    practice: string;
+    passed: boolean;
+    severity: 'low' | 'medium' | 'high';
+    recommendation?: string;
+  }[];
+  overallGrade: 'A' | 'B' | 'C' | 'D' | 'F';
+}
+
