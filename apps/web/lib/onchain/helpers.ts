@@ -154,3 +154,81 @@ export function determineOptimizationPriority(savings: number, currentGas: numbe
   return 'low';
 }
 
+// Feature 31: Wash trading detector helpers
+export function calculateWashTradingScore(suspiciousCount: number, totalTransactions: number): number {
+  if (totalTransactions === 0) return 0;
+  const ratio = suspiciousCount / totalTransactions;
+  return Math.min(100, ratio * 100);
+}
+
+export function detectWashTradingPattern(from: string, to: string, amount: string, history: any[]): boolean {
+  // Check if same addresses trade back and forth
+  const reverseTrade = history.find(tx => 
+    tx.from === to && tx.to === from && tx.amount === amount
+  );
+  return !!reverseTrade;
+}
+
+// Feature 33: LP reward calculator helpers
+export function calculateAPY(totalRewards: bigint, stakedAmount: bigint, days: number): number {
+  if (stakedAmount === BigInt(0) || days === 0) return 0;
+  const annualRewards = (totalRewards * BigInt(365)) / BigInt(days);
+  return Number((annualRewards * BigInt(10000)) / stakedAmount) / 100;
+}
+
+export function calculateDailyRewards(totalRewards: bigint, days: number): string {
+  if (days === 0) return '0';
+  return (totalRewards / BigInt(days)).toString();
+}
+
+// Feature 35: Tokenomics validator helpers
+export function calculateTokenomicsScore(issues: any[]): number {
+  let score = 100;
+  issues.forEach(issue => {
+    if (issue.severity === 'high') score -= 20;
+    else if (issue.severity === 'medium') score -= 10;
+    else score -= 5;
+  });
+  return Math.max(0, score);
+}
+
+// Feature 41: Transaction pattern analyzer helpers
+export function classifyTransactionPattern(characteristics: string[]): 'regular' | 'bot' | 'whale' | 'arbitrage' | 'frontrunning' {
+  if (characteristics.includes('high_frequency')) return 'bot';
+  if (characteristics.includes('large_amount')) return 'whale';
+  if (characteristics.includes('cross_dex')) return 'arbitrage';
+  if (characteristics.includes('gas_premium')) return 'frontrunning';
+  return 'regular';
+}
+
+export function calculateBehaviorScore(patterns: any[]): number {
+  const riskPatterns = patterns.filter(p => 
+    p.type === 'bot' || p.type === 'frontrunning'
+  ).length;
+  return Math.max(0, 100 - (riskPatterns * 20));
+}
+
+// Feature 43: Holder retention calculator helpers
+export function calculateRetentionRate(newHolders: number, lostHolders: number, totalHolders: number): number {
+  if (totalHolders === 0) return 0;
+  const netChange = newHolders - lostHolders;
+  return ((totalHolders + netChange) / totalHolders) * 100;
+}
+
+// Feature 45: Price manipulation detector helpers
+export function calculateManipulationScore(suspiciousEvents: any[]): number {
+  let score = 0;
+  suspiciousEvents.forEach(event => {
+    if (event.type === 'pump' || event.type === 'dump') score += 30;
+    if (event.type === 'wash') score += 20;
+  });
+  return Math.min(100, score);
+}
+
+// Feature 49: Transfer velocity calculator helpers
+export function calculateTransferVelocity(transferCount: number, timeRange: number, averageSize: bigint): number {
+  if (timeRange === 0) return 0;
+  const dailyTransfers = (transferCount / timeRange) * 86400;
+  return Number(averageSize) * dailyTransfers;
+}
+
