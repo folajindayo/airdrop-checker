@@ -17,7 +17,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@types/node": "^20.10.6",
+    "@types/node": "^24.10.1",
     "eslint": "^8.56.0",
     "husky": "^8.0.3",
     "prettier": "^3.1.1",
