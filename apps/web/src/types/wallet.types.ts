@@ -1,37 +1,21 @@
 /**
- * Wallet Type Definitions
+ * Wallet Types
  */
 
-export interface IWallet {
+export type WalletProvider = 'metamask' | 'walletconnect' | 'coinbase' | 'other';
+
+export interface ConnectedWallet {
   address: string;
   chainId: number;
-  balance: string;
+  provider: WalletProvider;
   ensName?: string;
+  connectedAt: Date;
 }
 
-export interface ITokenBalance {
-  tokenAddress: string;
-  symbol: string;
-  decimals: number;
-  balance: string;
-  usdValue?: string;
-}
-
-export interface IPortfolio {
-  address: string;
-  chainId: number;
-  tokens: ITokenBalance[];
-  totalValue: string;
-  nfts?: any[];
-}
-
-export interface ITransaction {
-  hash: string;
-  from: string;
-  to: string;
-  value: string;
-  gasUsed: string;
-  timestamp: number;
-  status: 'success' | 'failed' | 'pending';
+export interface WalletConnection {
+  isConnected: boolean;
+  wallet?: ConnectedWallet;
+  isConnecting: boolean;
+  error?: string;
 }
 

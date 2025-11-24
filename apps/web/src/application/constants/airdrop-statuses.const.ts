@@ -20,3 +20,4 @@ export const AIRDROP_STATUS_LABELS: Record<string, string> = {
   expired: 'Expired',
 };
 
+

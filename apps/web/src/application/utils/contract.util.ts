@@ -27,3 +27,4 @@ export function parseContractError(error: any): string {
   return error.message || 'Contract call failed';
 }
 
+

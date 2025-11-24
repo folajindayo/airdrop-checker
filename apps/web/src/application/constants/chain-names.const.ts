@@ -19,3 +19,4 @@ export const getChainName = (chainId: number): string => {
   return CHAIN_NAMES[chainId] || `Chain ${chainId}`;
 };
 
+
