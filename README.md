@@ -1645,4 +1645,109 @@ All onchain API endpoints are prefixed with `/api/onchain/` and require Reown Wa
 
 All transaction endpoints return a prepared transaction object that can be executed via Reown Wallet using the `useOnchainTransaction` hook.
 
+## 🎮 Smart Contracts
+
+### DeveloperProfileNFT Contract
+
+**Contract Address (Base):** `0x28c783CF53ae745936741869ad3258E1c0cF5B60`
+
+NFT contract for minting GitHub achievement badges and storing Talent Protocol scores on Base network.
+
+#### Features
+- **GitHub achievement badges** for development milestones
+- **Talent Protocol integration** - Store builder scores on-chain
+- **Soulbound tokens** - Non-transferable for verified credentials
+- **Regular NFTs** - Transferable badges for general achievements
+- **GitCaster integration** - Analytics platform compatibility
+
+#### Achievement Types
+- **COMMITS_100** - 100 commits milestone
+- **COMMITS_1000** - 1000 commits milestone
+- **REPOS_10** - 10 repositories created
+- **REPOS_50** - 50 repositories created
+- **STARS_100** - 100 stars received
+- **STARS_1000** - 1000 stars received
+- **CONTRIBUTOR_10** - Contributed to 10 projects
+- **CONTRIBUTOR_50** - Contributed to 50 projects
+- **TALENT_VERIFIED** - Talent Protocol verified
+- **EARLY_ADOPTER** - Early GitCaster user
+- **BUILDER_SCORE_HIGH** - High Talent Protocol builder score
+
+#### Key Functions
+- `mintAchievement()` - Mint achievement badge for a developer
+- `batchMintAchievements()` - Mint multiple achievements at once
+- `linkGithubAccount()` - Link GitHub username to wallet address
+- `updateTalentScore()` - Update Talent Protocol builder score
+- `hasEarnedAchievement()` - Check if developer has earned an achievement
+- `tokensOfOwner()` - Get all badges owned by a developer
+- `getAchievement()` - Get achievement details for a token
+
+#### Soulbound vs Transferable
+- **Soulbound (non-transferable)**: Verified credentials like Talent Protocol verification
+- **Transferable**: General achievement badges that can be traded
+
+#### Contract ABI
+The complete ABI is available in [`abi.ts`](./abi.ts) at the project root.
+
+#### Usage Example
+
+```typescript
+import { DEVELOPER_PROFILE_NFT_ABI, DEVELOPER_PROFILE_NFT_ADDRESS } from './abi';
+
+// Link GitHub account
+const linkGithub = async (developerAddress: string, username: string) => {
+  const tx = await contract.linkGithubAccount(developerAddress, username);
+  await tx.wait();
+};
+
+// Mint achievement badge
+const mintBadge = async (
+  recipient: string,
+  achievementType: number,
+  githubUsername: string,
+  talentScore: number,
+  isSoulbound: boolean
+) => {
+  const tx = await contract.mintAchievement(
+    recipient,
+    achievementType,
+    githubUsername,
+    talentScore,
+    isSoulbound,
+    "ipfs://metadata-uri"
+  );
+  await tx.wait();
+};
+
+// Update Talent Protocol score
+const updateScore = async (developer: string, newScore: number) => {
+  const tx = await contract.updateTalentScore(developer, newScore);
+  await tx.wait();
+};
+
+// Check achievements
+const getAchievements = async (owner: string) => {
+  const tokenIds = await contract.tokensOfOwner(owner);
+  return tokenIds;
+};
+```
+
+#### Integration Documentation
+
+**📚 Complete Integration Guide**: See [`DEVELOPER_PROFILE_INTEGRATION.md`](./DEVELOPER_PROFILE_INTEGRATION.md) for:
+- React hook usage (`useDeveloperProfile`)
+- API route documentation
+- Complete code examples
+- Soulbound token handling
+- GitHub account linking
+- Talent Protocol integration
+
+**Integration Files**:
+- `/apps/web/lib/contracts/developer-profile-nft.ts` - Contract function implementations
+- `/apps/web/hooks/useDeveloperProfile.ts` - React hook for UI integration
+- `/apps/web/app/api/developer-profile/route.ts` - Server-side API endpoint
+
+#### Integration with GitCaster
+This contract powers the GitCaster analytics platform by providing on-chain verification of developer achievements and metrics. Developers can showcase their GitHub activity and Talent Protocol scores as verifiable NFT badges.
+
 **Built with ❤️ by the Airdrop Checker Team**

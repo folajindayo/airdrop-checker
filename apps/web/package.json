@@ -11,9 +11,10 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "seed": "tsx scripts/seed-airdrops.ts"
+    "seed": "tsx src/scripts/seed-airdrops.ts"
   },
   "dependencies": {
+    "@airdrop-finder/shared": "*",
     "@reown/appkit": "^1.3.1",
     "@reown/appkit-adapter-wagmi": "^1.3.1",
     "@tanstack/react-query": "^5.62.12",

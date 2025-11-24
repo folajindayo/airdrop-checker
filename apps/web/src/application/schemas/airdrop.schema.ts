@@ -35,3 +35,4 @@ export type AirdropInput = z.infer<typeof AirdropSchema>;
 export type CheckEligibilityInput = z.infer<typeof CheckEligibilitySchema>;
 export type SearchAirdropsInput = z.infer<typeof SearchAirdropsSchema>;
 
+
