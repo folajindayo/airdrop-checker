@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isValidAddress } from '@airdrop-finder/shared';
-import { createPublicClient, http } from 'viem';
-import { mainnet } from 'viem/chains';
 import { cache } from '@airdrop-finder/shared';
+import { createPublicClient, http } from 'viem';
+import { isValidAddress } from '@airdrop-finder/shared';
+import { mainnet } from 'viem/chains';
 
 export const dynamic = 'force-dynamic';
 
