@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createPublicClient, http, Address } from 'viem';
-import { base } from 'viem/chains';
 import {
+import { NextRequest, NextResponse } from 'next/server';
+import { base } from 'viem/chains';
+import { createPublicClient, http, Address } from 'viem';
+
   getGithubUsername,
   getAddressFromGithub,
   getTalentScore,
