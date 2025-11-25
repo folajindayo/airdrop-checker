@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { goldrushClient } from '@/lib/goldrush/client';
 import { CHAINS } from '@airdrop-finder/shared';
+import { NextRequest, NextResponse } from 'next/server';
+
+import { goldrushClient } from '@/lib/goldrush/client';
 
 interface NFTCollection {
   chainId: number;
