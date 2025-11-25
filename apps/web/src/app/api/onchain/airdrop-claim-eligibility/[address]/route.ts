@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isValidAddress } from '@airdrop-finder/shared';
-import { createPublicClient, http, formatUnits } from 'viem';
-import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
 import { cache } from '@airdrop-finder/shared';
+import { createPublicClient, http, formatUnits } from 'viem';
+import { isValidAddress } from '@airdrop-finder/shared';
+import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
 
 export const dynamic = 'force-dynamic';
 
