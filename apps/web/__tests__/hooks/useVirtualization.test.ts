@@ -1,6 +1,7 @@
-import { renderHook } from "@testing-library/react";
-import { useVirtualization } from "@/hooks/useVirtualization";
 import { RefObject } from "react";
+import { renderHook } from "@testing-library/react";
+
+import { useVirtualization } from "@/hooks/useVirtualization";
 
 describe("useVirtualization", () => {
   let scrollRef: RefObject<HTMLElement>;
