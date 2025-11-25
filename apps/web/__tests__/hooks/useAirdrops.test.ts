@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { useAirdrops } from "@/hooks/useAirdrops";
+
 import { airdropService } from "@/lib/services/airdropService";
+import { useAirdrops } from "@/hooks/useAirdrops";
 
 jest.mock("@/lib/services/airdropService");
 
