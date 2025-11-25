@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+
 import { findAllProjects } from '@/lib/db/models/project';
 
 interface CalendarEvent {
