@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { parseUnits, Address } from 'viem';
 import { createPublicClient, http } from 'viem';
 import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
+import { parseUnits, Address } from 'viem';
 
 const chains = {
   1: mainnet,
