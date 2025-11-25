@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { findAllProjects } from '@/lib/db/models/project';
 
 export const dynamic = 'force-dynamic';
