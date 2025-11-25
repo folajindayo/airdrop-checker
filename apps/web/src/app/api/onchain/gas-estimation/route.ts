@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { Address } from 'viem';
+import { NextRequest, NextResponse } from 'next/server';
 import { createPublicClient, http } from 'viem';
 import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
 
