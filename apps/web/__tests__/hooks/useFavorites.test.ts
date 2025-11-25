@@ -1,4 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
+
 import { useFavorites } from "@/hooks/useFavorites";
 
 // Mock localStorage
