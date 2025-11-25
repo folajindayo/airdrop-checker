@@ -12,9 +12,12 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "prepare": "husky install"
+    "lint": "eslint . --ext .ts,.js",
+    "format": "prettier --write \"src/**/*.{ts,js,json}\"",
+    "prepare": "husky install",
+    "type-check": "tsc --noEmit",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "devDependencies": {
     "@types/node": "^20.10.6",
