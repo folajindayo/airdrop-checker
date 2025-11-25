@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchAllChainTokenBalances, calculateTotalValue } from '@/lib/goldrush/tokens';
 import { SUPPORTED_CHAINS } from '@airdrop-finder/shared';
+
+import { fetchAllChainTokenBalances, calculateTotalValue } from '@/lib/goldrush/tokens';
 
 export const dynamic = 'force-dynamic';
 
