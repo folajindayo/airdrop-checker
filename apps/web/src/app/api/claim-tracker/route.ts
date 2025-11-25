@@ -1,7 +1,9 @@
+import {
 import { NextRequest } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+
 import { ClaimTrackerService } from '@/lib/services';
-import {
+
   createSuccessResponse,
   createErrorResponse,
   createValidationErrorResponse,
