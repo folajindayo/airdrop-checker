@@ -5,8 +5,3 @@ dist/
 *.log
 coverage/
 .DS_Store
-
-# Auto-generated directories
-scripts/
-*.log
-.DS_Store
