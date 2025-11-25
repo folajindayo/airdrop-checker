@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
-import { fetchAllChainTransactions, fetchAllChainNFTs } from '@/lib/goldrush';
+
 import { aggregateUserActivity } from '@/lib/analyzers/activity-aggregator';
-import { findAllProjects } from '@/lib/db/models/project';
 import { checkCriteria } from '@/lib/analyzers/criteria-checker';
+import { fetchAllChainTransactions, fetchAllChainNFTs } from '@/lib/goldrush';
+import { findAllProjects } from '@/lib/db/models/project';
 
 export const dynamic = 'force-dynamic';
 
