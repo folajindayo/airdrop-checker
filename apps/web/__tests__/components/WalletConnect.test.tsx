@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+
 import WalletConnect from "@/components/wallet/WalletConnect";
 
 describe("WalletConnect", () => {
