@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { cache, CACHE_TTL } from '@airdrop-finder/shared';
-import { findAllProjects } from '@/lib/db/models/project';
+
 import { buildAirdropHighlights, type AirdropHighlights } from '@/lib/analyzers/airdrop-highlights';
+import { findAllProjects } from '@/lib/db/models/project';
 
 export const dynamic = 'force-dynamic';
 
