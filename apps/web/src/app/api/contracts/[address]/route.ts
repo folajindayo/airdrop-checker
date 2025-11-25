@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidAddress } from '@airdrop-finder/shared';
+
 import { fetchAllChainTransactions } from '@/lib/goldrush';
 
 export const dynamic = 'force-dynamic';
