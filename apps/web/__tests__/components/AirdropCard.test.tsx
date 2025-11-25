@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+
 import AirdropCard from "@/components/airdrop/AirdropCard";
 
 describe("AirdropCard", () => {
