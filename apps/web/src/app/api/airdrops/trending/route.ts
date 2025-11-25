@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import {
+import { NextRequest, NextResponse } from 'next/server';
+
   cache,
   CACHE_TTL,
   type TrendingProjectSummary,
