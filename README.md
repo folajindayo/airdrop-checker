@@ -1767,3 +1767,29 @@ This contract powers the GitCaster analytics platform by providing on-chain veri
   - `0x748876944621F3908CECAfb8f1a4354257b3AADf`
 - **Deployment Date**: 2025-11-25
 
+## Architecture
+
+This project follows a clean architecture pattern with the following layers:
+
+### Layers
+- **Presentation Layer**: API routes and controllers
+- **Business Logic Layer**: Services and domain logic
+- **Data Access Layer**: Repositories and database interactions
+- **Infrastructure Layer**: External services and utilities
+
+### Design Patterns
+- Dependency Injection for loose coupling
+- Repository pattern for data access
+- Factory pattern for object creation
+- Observer pattern for event handling
+
+### Key Components
+```
+src/
+├── controllers/    # Request handlers
+├── services/       # Business logic
+├── repositories/   # Data access
+├── models/         # Data structures
+├── utils/          # Helper functions
+└── middleware/     # Express middleware
+```
