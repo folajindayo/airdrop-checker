@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isValidAddress } from '@airdrop-finder/shared';
-import { createPublicClient, http, formatUnits } from 'viem';
-import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
-import { erc20Abi } from 'viem';
-import { goldrushClient } from '@/lib/goldrush/client';
 import { cache } from '@airdrop-finder/shared';
+import { createPublicClient, http, formatUnits } from 'viem';
+import { erc20Abi } from 'viem';
+import { isValidAddress } from '@airdrop-finder/shared';
+import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
+
+import { goldrushClient } from '@/lib/goldrush/client';
 
 export const dynamic = 'force-dynamic';
 
