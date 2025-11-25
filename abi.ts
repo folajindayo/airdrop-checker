@@ -1172,3 +1172,23 @@ export const DEVELOPER_PROFILE_NFT_ABI = [
 export const DEVELOPER_PROFILE_NFT_ADDRESS = "0x28c783CF53ae745936741869ad3258E1c0cF5B60" as const;
 
 
+
+// AirdropDistributor
+export const AirdropDistributorABI = [
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{"name":"","type":"address"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "newOwner", "type": "address"}],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];
+export const AirdropDistributorAddress = "[0;34m[INFO][0m Deploying AirdropDistributor to Base Sepolia...
+[1;33m[WARNING][0m Deployment failed or simulated.";

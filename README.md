@@ -1751,3 +1751,19 @@ const getAchievements = async (owner: string) => {
 This contract powers the GitCaster analytics platform by providing on-chain verification of developer achievements and metrics. Developers can showcase their GitHub activity and Talent Protocol scores as verifiable NFT badges.
 
 **Built with ❤️ by the Airdrop Checker Team**
+
+## Smart Contracts
+
+### Deployed Contracts
+
+#### AirdropDistributor
+- **Type**: airdrop
+- **Network**: Base Sepolia
+- **Address**:   [`[0;34m[INFO][0m Deploying AirdropDistributor to Base Sepolia...
+[1;33m[WARNING][0m Deployment failed or simulated.`](https://sepolia.basescan.org/address/[0;34m[INFO][0m Deploying AirdropDistributor to Base Sepolia...
+[1;33m[WARNING][0m Deployment failed or simulated.)
+- **Owners**: 
+  - `0x21b805BBC4bfFA7769868BF7f488D77b71756d3E`
+  - `0x748876944621F3908CECAfb8f1a4354257b3AADf`
+- **Deployment Date**: 2025-11-25
+
