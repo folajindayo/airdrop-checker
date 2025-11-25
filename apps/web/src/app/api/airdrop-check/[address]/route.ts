@@ -1,10 +1,11 @@
+import type { CheckResult } from '@airdrop-finder/shared';
 import { NextRequest, NextResponse } from 'next/server';
 import { cache, CACHE_TTL } from '@airdrop-finder/shared';
-import type { CheckResult } from '@airdrop-finder/shared';
+
 import { checkAirdropEligibility } from '@/lib/services';
 import { createSuccessResponse } from '@/lib/utils/response-handlers';
-import { withErrorHandling } from '@/lib/utils/error-handler';
 import { validateAddressOrThrow } from '@/lib/utils/validation-helpers';
+import { withErrorHandling } from '@/lib/utils/error-handler';
 
 export const dynamic = 'force-dynamic';
 
